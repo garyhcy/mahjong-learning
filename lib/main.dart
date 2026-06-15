@@ -15,6 +15,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await Firebase.initializeApp();
+    firebaseAvailable = true;
   } catch (_) {
     // Firebase optional in local/dev until config is added.
   }
@@ -22,6 +23,8 @@ Future<void> main() async {
   await gameState.loadFromStorage();
   runApp(MahjongApp(gameState: gameState));
 }
+
+bool firebaseAvailable = false;
 
 class MahjongApp extends StatelessWidget {
   const MahjongApp({super.key, required this.gameState});
@@ -86,6 +89,7 @@ class _AuthGateState extends State<AuthGate> {
   @override
   void initState() {
     super.initState();
+    if (!firebaseAvailable) return;
     // Pre-load cloud progress when user signs in
     FirebaseAuth.instance.authStateChanges().listen((user) {
       if (user != null) {
@@ -96,6 +100,8 @@ class _AuthGateState extends State<AuthGate> {
 
   @override
   Widget build(BuildContext context) {
+    if (!firebaseAvailable) return const AuthScreen();
+
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
