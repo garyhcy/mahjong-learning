@@ -1,11 +1,11 @@
 {
-    "name": "mahjong_learning",
-    "short_name": "mahjong_learning",
+    "name": "Ludi",
+    "short_name": "Ludi",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Ludi - Your guide to mastering board games",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
