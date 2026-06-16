@@ -1152,7 +1152,7 @@ class _LearnScreenState extends State<LearnScreen> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: _shuffledOrderingTiles.length,
-                  onReorderItem: (oldIndex, newIndex) {
+                  onReorder: (oldIndex, newIndex) {
                     setState(() {
                       final tile = _shuffledOrderingTiles.removeAt(oldIndex);
                       _shuffledOrderingTiles.insert(newIndex, tile);

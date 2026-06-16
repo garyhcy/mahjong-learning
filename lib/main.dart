@@ -8,7 +8,6 @@ import 'providers/game_state.dart';
 import 'screens/auth_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/learn_screen.dart';
-import 'screens/social_screen.dart';
 import 'screens/profile_screen.dart';
 
 Future<void> main() async {
@@ -90,7 +89,6 @@ class _AuthGateState extends State<AuthGate> {
   void initState() {
     super.initState();
     if (!firebaseAvailable) return;
-    // Pre-load cloud progress when user signs in
     FirebaseAuth.instance.authStateChanges().listen((user) {
       if (user != null) {
         context.read<GameState>().loadCloudProgress();
@@ -141,7 +139,6 @@ class _MainShellState extends State<MainShell> {
   final _screens = const [
     HomeScreen(),
     LearnScreen(),
-    SocialScreen(),
     ProfileScreen(),
   ];
 
@@ -180,24 +177,23 @@ class _MainShellState extends State<MainShell> {
                 ),
               ],
             ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _navItem(0, Icons.home_rounded, 'Home'),
-                _navItem(1, Icons.school_rounded, 'Learn'),
-                _navItem(2, Icons.people_rounded, 'Social'),
-                _navItem(3, Icons.person_rounded, 'Profile'),
-              ],
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _navItem(0, Icons.home_rounded, 'Home'),
+                    _navItem(1, Icons.school_rounded, 'Learn'),
+                    _navItem(2, Icons.person_rounded, 'Profile'),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
       ),
-    ),
-  ),
-);
+    );
   }
 
   Widget _navItem(int index, IconData icon, String label) {
@@ -220,15 +216,13 @@ class _MainShellState extends State<MainShell> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                  icon,
+              Icon(icon,
                   color: active
                       ? const Color(0xFFD94040)
                       : const Color(0xFFBDBDBD),
                   size: 24),
               const SizedBox(height: 2),
-              Text(
-                  label,
+              Text(label,
                   style: GoogleFonts.nunito(
                     fontSize: 10,
                     fontWeight: active ? FontWeight.w700 : FontWeight.w500,
