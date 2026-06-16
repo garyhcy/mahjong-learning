@@ -1,12 +1,11 @@
-// Firebase config - fill in real values to enable Firebase
+// Firebase configuration for Ludi
 var firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyDB-Q9V3Xr52w7S3vlbR3zHvv5MHCaQwmw",
+  authDomain: "ludi-mahjong-46d78.firebaseapp.com",
+  projectId: "ludi-mahjong-46d78",
+  storageBucket: "ludi-mahjong-46d78.firebasestorage.app",
+  messagingSenderId: "154204299071",
+  appId: "1:154204299071:web:264fda333bdf76fdcefd8a",
+  measurementId: "G-CR8BKBHTSD"
 };
-if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
-  firebase.initializeApp(firebaseConfig);
-}
+firebase.initializeApp(firebaseConfig);
