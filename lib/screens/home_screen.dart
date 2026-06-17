@@ -3,9 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/game_state.dart';
 import '../models/mahjong_data.dart';
-import '../main.dart';
 import '../widgets/mascot_widget.dart';
 import '../services/audio_service.dart';
+import 'learn_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -122,7 +122,9 @@ class HomeScreen extends StatelessWidget {
             ? () {
                 audio.playTap();
                 game.navigateToStage(stage.id);
-                MainShell.mainShellKey.currentState?.switchToTab(1);
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const LearnScreen()),
+                );
               }
             : null,
         child: Row(
@@ -574,7 +576,7 @@ class _DailyChallengeCard extends StatelessWidget {
               ),
             ),
             const MascotWidget(
-              expression: MascotExpression.proud,
+              expression: MascotExpression.excited,
               size: 56,
             ),
           ],
@@ -587,7 +589,9 @@ class _DailyChallengeCard extends StatelessWidget {
       onTap: () {
         audio.playTap();
         game.navigateToStage(targetStage.id);
-        MainShell.mainShellKey.currentState?.switchToTab(1);
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const LearnScreen()),
+        );
       },
       child: Container(
         width: double.infinity,
@@ -687,7 +691,9 @@ class _ContinueButtonState extends State<_ContinueButton> {
       if (mounted) setState(() => _scale = 1.0);
     });
     game.loadLesson(targetLesson);
-    MainShell.mainShellKey.currentState?.switchToTab(1);
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => const LearnScreen()),
+    );
   }
 
   @override

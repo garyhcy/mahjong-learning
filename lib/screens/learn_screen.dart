@@ -131,7 +131,7 @@ class _LearnScreenState extends State<LearnScreen> {
     if (lower.contains('wow') || lower.contains('amazing') ||
         lower.contains('incredible') || lower.contains('unbelievable') ||
         lower.contains('fantastic')) {
-      return MascotExpression.surprised;
+      return MascotExpression.excited;
     }
     if (lower.contains('think') || lower.contains('consider') ||
         lower.contains('strategy') || lower.contains('analyze') ||
@@ -141,9 +141,9 @@ class _LearnScreenState extends State<LearnScreen> {
     if (lower.contains('proud') || lower.contains('achievement') ||
         lower.contains('unlocked') || lower.contains('congratulations') ||
         lower.contains('congrats')) {
-      return MascotExpression.proud;
+      return MascotExpression.content;
     }
-    return MascotExpression.idle;
+    return MascotExpression.happy;
   }
 
   @override

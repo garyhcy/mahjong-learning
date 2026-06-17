@@ -9,7 +9,10 @@ import 'providers/game_state.dart';
 import 'screens/auth_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/learn_screen.dart';
-import 'screens/profile_screen.dart';
+import 'screens/leaderboard_screen.dart';
+import 'screens/achievements_screen.dart';
+import 'screens/shop_screen.dart';
+import 'screens/more_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -141,8 +144,10 @@ class _MainShellState extends State<MainShell> {
 
   final _screens = const [
     HomeScreen(),
-    LearnScreen(),
-    ProfileScreen(),
+    LeaderboardScreen(),
+    AchievementsScreen(),
+    ShopScreen(),
+    MoreScreen(),
   ];
 
   void switchToTab(int index) {
@@ -187,8 +192,10 @@ class _MainShellState extends State<MainShell> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     _navItem(0, Icons.home_rounded, 'Home'),
-                    _navItem(1, Icons.school_rounded, 'Learn'),
-                    _navItem(2, Icons.person_rounded, 'Profile'),
+                    _navItem(1, Icons.leaderboard_rounded, 'Leaderboard'),
+                    _navItem(2, Icons.emoji_events_rounded, 'Achievements'),
+                    _navItem(3, Icons.store_rounded, 'Shop'),
+                    _navItem(4, Icons.more_horiz_rounded, 'More'),
                   ],
                 ),
               ),

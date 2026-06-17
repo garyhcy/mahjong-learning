@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-enum MascotExpression { idle, happy, surprised, thinking, proud, sad }
+enum MascotExpression { happy, wink, excited, thinking, sad, content }
 
 enum MascotSize { small, medium, large }
 
@@ -24,7 +24,7 @@ class MascotWidget extends StatefulWidget {
 
   const MascotWidget({
     super.key,
-    this.expression = MascotExpression.idle,
+    this.expression = MascotExpression.happy,
     this.size = 100.0,
   });
 
@@ -51,6 +51,8 @@ class _MascotWidgetState extends State<MascotWidget>
     super.dispose();
   }
 
+  String get _assetName => 'assets/images/mascot_${widget.expression.name}.png';
+
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -66,7 +68,7 @@ class _MascotWidgetState extends State<MascotWidget>
         width: widget.size,
         height: widget.size,
         child: Image.asset(
-          'assets/images/mascot_new.png',
+          _assetName,
           width: widget.size,
           height: widget.size,
           fit: BoxFit.contain,
@@ -129,19 +131,15 @@ class _MascotPainter extends CustomPainter {
     final eyeR = r * 0.12;
 
     switch (expression) {
-      case MascotExpression.idle:
-        canvas.drawCircle(
-            Offset(cx - r * 0.32, cy - r * 0.12), eyeR, eyeWhitePaint);
-        canvas.drawCircle(
-            Offset(cx + r * 0.32, cy - r * 0.12), eyeR, eyeWhitePaint);
-        _drawBlinkEyes(canvas, cx, cy, r, 0.65);
-        break;
-
       case MascotExpression.happy:
         _drawArchedEyes(canvas, cx, cy, r);
         break;
 
-      case MascotExpression.surprised:
+      case MascotExpression.wink:
+        _drawArchedEyes(canvas, cx, cy, r);
+        break;
+
+      case MascotExpression.excited:
         canvas.drawCircle(
             Offset(cx - r * 0.32, cy - r * 0.12), eyeR * 1.5, eyeWhitePaint);
         canvas.drawCircle(
@@ -195,15 +193,6 @@ class _MascotPainter extends CustomPainter {
               ..strokeWidth = 1.5);
         return;
 
-      case MascotExpression.proud:
-        canvas.drawCircle(
-            Offset(cx - r * 0.32, cy - r * 0.12), eyeR, eyeWhitePaint);
-        canvas.drawCircle(
-            Offset(cx + r * 0.32, cy - r * 0.12), eyeR, eyeWhitePaint);
-        _drawStar(canvas, Offset(cx - r * 0.32, cy - r * 0.12), eyeR * 0.7);
-        _drawStar(canvas, Offset(cx + r * 0.32, cy - r * 0.12), eyeR * 0.7);
-        break;
-
       case MascotExpression.sad:
         canvas.drawCircle(
             Offset(cx - r * 0.32, cy - r * 0.08), eyeR * 0.8, eyeWhitePaint);
@@ -223,9 +212,13 @@ class _MascotPainter extends CustomPainter {
               ..style = PaintingStyle.stroke
               ..strokeWidth = 1.8);
         return;
+
+      case MascotExpression.content:
+        _drawArchedEyes(canvas, cx, cy, r);
+        break;
     }
 
-    if (expression != MascotExpression.surprised &&
+    if (expression != MascotExpression.excited &&
         expression != MascotExpression.thinking &&
         expression != MascotExpression.sad) {
       final nosePaint = Paint()..color = const Color(0xFF333333);
@@ -248,25 +241,6 @@ class _MascotPainter extends CustomPainter {
     }
   }
 
-  void _drawBlinkEyes(
-      Canvas canvas, double cx, double cy, double r, double blinkAmount) {
-    final pupilPaint = Paint()..color = const Color(0xFF111111);
-    final pupilR = r * 0.06;
-    final leftEyePath = Path()
-      ..addOval(Rect.fromCenter(
-          center: Offset(cx - r * 0.32, cy - r * 0.12),
-          width: pupilR * 2,
-          height: pupilR * 0.5 * blinkAmount));
-    canvas.drawPath(leftEyePath, pupilPaint);
-
-    final rightEyePath = Path()
-      ..addOval(Rect.fromCenter(
-          center: Offset(cx + r * 0.32, cy - r * 0.12),
-          width: pupilR * 2,
-          height: pupilR * 0.5 * blinkAmount));
-    canvas.drawPath(rightEyePath, pupilPaint);
-  }
-
   void _drawArchedEyes(Canvas canvas, double cx, double cy, double r) {
     final paint = Paint()
       ..color = const Color(0xFF333333)
@@ -282,36 +256,6 @@ class _MascotPainter extends CustomPainter {
       ..quadraticBezierTo(
           cx + r * 0.32, cy - r * 0.22, cx + r * 0.42, cy - r * 0.08);
     canvas.drawPath(rightPath, paint);
-  }
-
-  void _drawStar(Canvas canvas, Offset center, double size) {
-    final paint = Paint()
-      ..color = const Color(0xFFE8B93E)
-      ..style = PaintingStyle.fill;
-    final path = Path();
-    final outerR = size;
-    final innerR = size * 0.4;
-    for (int i = 0; i < 5; i++) {
-      final angle = (i * 72 - 90) * pi / 180;
-      final nextAngle = ((i * 72 + 36) - 90) * pi / 180;
-      if (i == 0) {
-        path.moveTo(
-          center.dx + outerR * cos(angle),
-          center.dy + outerR * sin(angle),
-        );
-      } else {
-        path.lineTo(
-          center.dx + outerR * cos(angle),
-          center.dy + outerR * sin(angle),
-        );
-      }
-      path.lineTo(
-        center.dx + innerR * cos(nextAngle),
-        center.dy + innerR * sin(nextAngle),
-      );
-    }
-    path.close();
-    canvas.drawPath(path, paint);
   }
 
   @override
