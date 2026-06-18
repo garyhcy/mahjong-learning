@@ -21,7 +21,7 @@ class ProfileScreen extends StatelessWidget {
         title: Text('Profile',
             style: GoogleFonts.nunito(
                 fontWeight: FontWeight.w800,
-                color: const Color(0xFFD94040))),
+                color: const Color(0xFF4CAF50))),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -80,13 +80,13 @@ class ProfileScreen extends StatelessWidget {
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFFD94040).withAlpha(40),
+                  color: const Color(0xFF4CAF50).withAlpha(40),
                   blurRadius: 12,
                   spreadRadius: 2,
                 ),
               ],
               border:
-                  Border.all(color: const Color(0xFFD94040).withAlpha(50), width: 2),
+                  Border.all(color: const Color(0xFF4CAF50).withAlpha(50), width: 2),
             ),
             child: Center(
               child: Text(game.avatarEmoji,
@@ -119,14 +119,14 @@ class ProfileScreen extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFD94040).withAlpha(25),
+                  color: const Color(0xFF4CAF50).withAlpha(25),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(game.userLevel,
                     style: GoogleFonts.nunito(
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
-                        color: const Color(0xFFD94040))),
+                        color: const Color(0xFF4CAF50))),
               ),
             ],
           ),
@@ -196,7 +196,7 @@ class ProfileScreen extends StatelessWidget {
                     shape: BoxShape.circle,
                     border: selected
                         ? Border.all(
-                            color: const Color(0xFFD94040), width: 2)
+                            color: const Color(0xFF4CAF50), width: 2)
                         : null,
                   ),
                   child: Center(
@@ -311,7 +311,7 @@ class ProfileScreen extends StatelessWidget {
       children: [
         _statCard('🔥 Streak', '${game.streak} days', const Color(0xFFE8B93E)),
         const SizedBox(width: 10),
-        _statCard('⭐ XP', '${game.xp}', const Color(0xFFD94040)),
+        _statCard('⭐ XP', '${game.xp}', const Color(0xFF4CAF50)),
         const SizedBox(width: 10),
         _statCard(
             '📚 Lessons', '${game.completedLessons}', const Color(0xFF2E7D32)),

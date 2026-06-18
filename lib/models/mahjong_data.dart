@@ -122,7 +122,7 @@ final List<LearningStage> defaultStages = [
     title: 'The Basics',
     subtitle: 'Tiles, suits & table setup',
     icon: Icons.grid_view_rounded,
-    color: const Color(0xFFD94040),
+    color: const Color(0xFF4CAF50),
     lessonCount: 8,
     isUnlocked: true,
   ),
@@ -163,7 +163,7 @@ final List<LearningStage> defaultStages = [
     title: 'Guangdong Faan',
     subtitle: 'Complete fan scoring system',
     icon: Icons.stars_rounded,
-    color: const Color(0xFFD94040),
+    color: const Color(0xFF4CAF50),
     lessonCount: 6,
   ),
   LearningStage(

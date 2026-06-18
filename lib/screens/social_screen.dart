@@ -19,7 +19,7 @@ class SocialScreen extends StatelessWidget {
         title: Text('Community',
             style: GoogleFonts.nunito(
                 fontWeight: FontWeight.w800,
-                color: const Color(0xFFD94040))),
+                color: const Color(0xFF4CAF50))),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -140,7 +140,7 @@ class SocialScreen extends StatelessWidget {
                             valueColor: AlwaysStoppedAnimation<Color>(
                                 done
                                     ? const Color(0xFF2E7D32)
-                                    : const Color(0xFFD94040)),
+                                    : const Color(0xFF4CAF50)),
                           ),
                         ),
                       ],
@@ -208,7 +208,7 @@ class SocialScreen extends StatelessWidget {
       child: Row(
         children: [
           const Icon(Icons.share_rounded,
-              color: Color(0xFFD94040), size: 22),
+              color: Color(0xFF4CAF50), size: 22),
           const SizedBox(width: 12),
           Expanded(
             child: Text('Share Your Progress',
@@ -231,7 +231,7 @@ class SocialScreen extends StatelessWidget {
             icon: const Icon(Icons.copy_rounded, size: 16),
             label: const Text('Copy'),
             style: TextButton.styleFrom(
-              foregroundColor: const Color(0xFFD94040),
+              foregroundColor: const Color(0xFF4CAF50),
             ),
           ),
         ],
@@ -354,7 +354,7 @@ class SocialScreen extends StatelessWidget {
                       ],
                       border: Border.all(
                         color: isCurrentUser
-                            ? const Color(0xFFD94040).withAlpha(76)
+                            ? const Color(0xFF4CAF50).withAlpha(76)
                             : i < 3
                                 ? rankColor.withAlpha(76)
                                 : const Color(0xFFEEEEEE),
@@ -386,7 +386,7 @@ class SocialScreen extends StatelessWidget {
                                   ? FontWeight.w800
                                   : FontWeight.w600,
                               color: isCurrentUser
-                                  ? const Color(0xFFD94040)
+                                  ? const Color(0xFF4CAF50)
                                   : const Color(0xFF2D2D2D),
                             ),
                           ),
@@ -397,7 +397,7 @@ class SocialScreen extends StatelessWidget {
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
                             color: isCurrentUser
-                                ? const Color(0xFFD94040)
+                                ? const Color(0xFF4CAF50)
                                 : const Color(0xFF757575),
                           ),
                         ),

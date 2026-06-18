@@ -137,8 +137,8 @@ class TileOptionButton extends StatelessWidget {
       borderColor = const Color(0xFF2E7D32);
       bgColor = const Color(0xFF2E7D32).withAlpha(25);
     } else if (isWrong) {
-      borderColor = const Color(0xFFD94040);
-      bgColor = const Color(0xFFD94040).withAlpha(25);
+      borderColor = const Color(0xFF4CAF50);
+      bgColor = const Color(0xFF4CAF50).withAlpha(25);
     }
 
     return GestureDetector(

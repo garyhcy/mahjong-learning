@@ -27,7 +27,7 @@ class MahjongTile extends StatelessWidget {
 
   Color get _borderColor {
     if (isCorrect == true) return const Color(0xFF2E7D32);
-    if (isCorrect == false) return const Color(0xFFD94040);
+    if (isCorrect == false) return const Color(0xFF4CAF50);
     if (highlighted) return const Color(0xFFE8B93E);
     return const Color(0xFFE0D5C0);
   }
@@ -214,7 +214,7 @@ class _LearnScreenState extends State<LearnScreen> {
                   style: GoogleFonts.nunito(
                       fontSize: 26,
                       fontWeight: FontWeight.w800,
-                      color: const Color(0xFFD94040))),
+                      color: const Color(0xFF4CAF50))),
               const SizedBox(height: 12),
               Text(
                 'Learn board games step by step.\nI\'m your panda guide!',
@@ -241,7 +241,7 @@ class _LearnScreenState extends State<LearnScreen> {
         title: Text('Learn',
             style: GoogleFonts.nunito(
                 fontWeight: FontWeight.w800,
-                color: const Color(0xFFD94040))),
+                color: const Color(0xFF4CAF50))),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -292,7 +292,7 @@ class _LearnScreenState extends State<LearnScreen> {
               border: Border.all(
                 color: stage.isUnlocked && stage.completedLessons > 0 &&
                         stage.completedLessons < stage.lessonCount
-                    ? const Color(0xFFD94040)
+                    ? const Color(0xFF4CAF50)
                     : stage.isUnlocked
                         ? const Color(0xFFE0E0E0)
                         : const Color(0xFFEEEEEE),
@@ -428,14 +428,14 @@ class _LearnScreenState extends State<LearnScreen> {
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
                 color: isCurrent
-                    ? const Color(0xFFFFF0F0)
+                    ? const Color(0xFFE8F5E9)
                     : unlocked
                         ? Colors.white
                         : const Color(0xFFF5F5F5),
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
                   color: isCurrent
-                      ? const Color(0xFFD94040)
+                      ? const Color(0xFF4CAF50)
                       : const Color(0xFFEEEEEE),
                   width: isCurrent ? 2 : 1,
                 ),
@@ -450,13 +450,13 @@ class _LearnScreenState extends State<LearnScreen> {
                       color: completed
                           ? const Color(0xFF2E7D32)
                           : isCurrent
-                              ? const Color(0xFFD94040)
+                              ? const Color(0xFF4CAF50)
                               : unlocked
-                                  ? const Color(0xFFFFF0F0)
+                                  ? const Color(0xFFE8F5E9)
                                   : Colors.transparent,
                       border: !completed && !isCurrent && unlocked
                           ? Border.all(
-                              color: const Color(0xFFD94040), width: 2)
+                              color: const Color(0xFF4CAF50), width: 2)
                           : null,
                     ),
                     child: Center(
@@ -532,7 +532,7 @@ class _LearnScreenState extends State<LearnScreen> {
         : lesson.title;
 
     // Find stage color for dynamic background
-    Color stageColor = const Color(0xFFD94040);
+    Color stageColor = const Color(0xFF4CAF50);
     try {
       final stage = game.stages.firstWhere((s) => s.id == lesson.stageId);
       stageColor = stage.color;
@@ -552,7 +552,7 @@ class _LearnScreenState extends State<LearnScreen> {
         title: Text(titleText,
             style: GoogleFonts.nunito(
                 fontWeight: FontWeight.w800,
-                color: const Color(0xFFD94040))),
+                color: const Color(0xFF4CAF50))),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -644,7 +644,7 @@ class _LearnScreenState extends State<LearnScreen> {
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: isSpeaker
-                      ? const Color(0xFFD94040)
+                      ? const Color(0xFF4CAF50)
                       : const Color(0xFFE8B93E),
                 ),
               ),
@@ -781,7 +781,7 @@ class _LearnScreenState extends State<LearnScreen> {
                 style: GoogleFonts.nunito(
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
-                  color: const Color(0xFFD94040),
+                  color: const Color(0xFF4CAF50),
                 ),
               ),
               const Spacer(),
@@ -795,7 +795,7 @@ class _LearnScreenState extends State<LearnScreen> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: i <= game.currentQuestionIndex
-                          ? const Color(0xFFD94040)
+                          ? const Color(0xFF4CAF50)
                           : const Color(0xFFE0E0E0),
                     ),
                   ),
@@ -842,7 +842,7 @@ class _LearnScreenState extends State<LearnScreen> {
               borderColor = const Color(0xFF2E7D32);
             } else if (isSelected && _feedbackCorrect == false) {
               bgColor = const Color(0xFFFFEBEE);
-              borderColor = const Color(0xFFD94040);
+              borderColor = const Color(0xFF4CAF50);
             } else if (idx == q.correctIndex && _feedbackCorrect == false) {
               // Show correct answer when wrong
               bgColor = const Color(0xFFE8F5E9);
@@ -853,10 +853,10 @@ class _LearnScreenState extends State<LearnScreen> {
             }
           } else {
             bgColor = isSelected
-                ? const Color(0xFFFFF0F0)
+                ? const Color(0xFFE8F5E9)
                 : Colors.white;
             borderColor = isSelected
-                ? const Color(0xFFD94040)
+                ? const Color(0xFF4CAF50)
                 : const Color(0xFFE0E0E0);
           }
 
@@ -899,7 +899,7 @@ class _LearnScreenState extends State<LearnScreen> {
                   boxShadow: isSelected && !_feedbackActive
                       ? [
                           BoxShadow(
-                            color: const Color(0xFFD94040).withAlpha(20),
+                            color: const Color(0xFF4CAF50).withAlpha(20),
                             blurRadius: 6,
                             offset: const Offset(0, 2),
                           ),
@@ -918,7 +918,7 @@ class _LearnScreenState extends State<LearnScreen> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: isSelected
-                              ? const Color(0xFFD94040).withAlpha(40)
+                              ? const Color(0xFF4CAF50).withAlpha(40)
                               : const Color(0xFFE0E0E0),
                         ),
                       ),
@@ -932,11 +932,11 @@ class _LearnScreenState extends State<LearnScreen> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: isSelected
-                            ? const Color(0xFFD94040)
+                            ? const Color(0xFF4CAF50)
                             : Colors.transparent,
                         border: Border.all(
                           color: isSelected
-                              ? const Color(0xFFD94040)
+                              ? const Color(0xFF4CAF50)
                               : const Color(0xFFBDBDBD),
                           width: 2,
                         ),
@@ -964,7 +964,7 @@ class _LearnScreenState extends State<LearnScreen> {
                         isSelected &&
                         _feedbackCorrect == false)
                       const Icon(Icons.cancel_rounded,
-                          color: Color(0xFFD94040), size: 20),
+                          color: Color(0xFF4CAF50), size: 20),
                   ],
                 ),
                 ],
@@ -984,7 +984,7 @@ class _LearnScreenState extends State<LearnScreen> {
                 ? null
                 : () => _submitMultiChoice(game, q),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFD94040),
+              backgroundColor: const Color(0xFF4CAF50),
               disabledBackgroundColor: const Color(0xFFE0E0E0),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14)),
@@ -1022,7 +1022,7 @@ class _LearnScreenState extends State<LearnScreen> {
               borderColor = const Color(0xFF2E7D32);
             } else if (isSelected && _feedbackCorrect == false) {
               bgColor = const Color(0xFFFFEBEE);
-              borderColor = const Color(0xFFD94040);
+              borderColor = const Color(0xFF4CAF50);
             } else if (idx == q.correctIndex && _feedbackCorrect == false) {
               bgColor = const Color(0xFFE8F5E9);
               borderColor = const Color(0xFF2E7D32);
@@ -1031,9 +1031,9 @@ class _LearnScreenState extends State<LearnScreen> {
               borderColor = const Color(0xFFE0E0E0);
             }
           } else {
-            bgColor = isSelected ? const Color(0xFFFFF0F0) : Colors.white;
+            bgColor = isSelected ? const Color(0xFFE8F5E9) : Colors.white;
             borderColor =
-                isSelected ? const Color(0xFFD94040) : const Color(0xFFE0E0E0);
+                isSelected ? const Color(0xFF4CAF50) : const Color(0xFFE0E0E0);
           }
 
           return Padding(
@@ -1071,7 +1071,7 @@ class _LearnScreenState extends State<LearnScreen> {
                     if (_feedbackActive && isSelected &&
                         _feedbackCorrect == false)
                       const Icon(Icons.cancel_rounded,
-                          color: Color(0xFFD94040), size: 20),
+                          color: Color(0xFF4CAF50), size: 20),
                   ],
                 ),
               ),
@@ -1087,7 +1087,7 @@ class _LearnScreenState extends State<LearnScreen> {
                 ? null
                 : () => _submitMultiChoice(game, q),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFD94040),
+              backgroundColor: const Color(0xFF4CAF50),
               disabledBackgroundColor: const Color(0xFFE0E0E0),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14)),
@@ -1190,7 +1190,7 @@ class _LearnScreenState extends State<LearnScreen> {
                             width: 28,
                             height: 28,
                             decoration: BoxDecoration(
-                              color: const Color(0xFFD94040),
+                              color: const Color(0xFF4CAF50),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Center(
@@ -1227,7 +1227,7 @@ class _LearnScreenState extends State<LearnScreen> {
                 ? null
                 : () => _submitTileOrdering(game, q),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFD94040),
+              backgroundColor: const Color(0xFF4CAF50),
               disabledBackgroundColor: const Color(0xFFE0E0E0),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14)),
@@ -1263,7 +1263,7 @@ class _LearnScreenState extends State<LearnScreen> {
             border: Border.all(
               color: isCorrect
                   ? const Color(0xFF2E7D32)
-                  : const Color(0xFFD94040),
+                  : const Color(0xFF4CAF50),
               width: 2,
             ),
           ),
@@ -1276,7 +1276,7 @@ class _LearnScreenState extends State<LearnScreen> {
                 decoration: BoxDecoration(
                   color: isCorrect
                       ? const Color(0xFF2E7D32)
-                      : const Color(0xFFD94040),
+                      : const Color(0xFF4CAF50),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Center(
@@ -1312,7 +1312,7 @@ class _LearnScreenState extends State<LearnScreen> {
                 isCorrect ? Icons.check_circle_rounded : Icons.cancel_rounded,
                 color: isCorrect
                     ? const Color(0xFF2E7D32)
-                    : const Color(0xFFD94040),
+                    : const Color(0xFF4CAF50),
                 size: 22,
               ),
             ],
@@ -1448,7 +1448,7 @@ class _LearnScreenState extends State<LearnScreen> {
               fontSize: 26,
               fontWeight: FontWeight.w800,
               color: passed
-                  ? const Color(0xFFD94040)
+                  ? const Color(0xFF4CAF50)
                   : const Color(0xFFE8B93E),
             ),
           ),
@@ -1464,7 +1464,7 @@ class _LearnScreenState extends State<LearnScreen> {
                   const Color(0xFF2E7D32)),
               const SizedBox(width: 12),
               _buildStatCard('Wrong', '$wrong',
-                  wrong > 0 ? const Color(0xFFD94040) : const Color(0xFF9E9E9E)),
+                  wrong > 0 ? const Color(0xFF4CAF50) : const Color(0xFF9E9E9E)),
             ],
           ),
           const SizedBox(height: 20),
@@ -1554,7 +1554,7 @@ class _LearnScreenState extends State<LearnScreen> {
                   game.clearLesson();
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFD94040),
+                  backgroundColor: const Color(0xFF4CAF50),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14)),
                 ),
@@ -1575,8 +1575,8 @@ class _LearnScreenState extends State<LearnScreen> {
                   game.startWrongAnswerReview();
                 },
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: const Color(0xFFD94040),
-                  side: const BorderSide(color: Color(0xFFD94040)),
+                  foregroundColor: const Color(0xFF4CAF50),
+                  side: const BorderSide(color: Color(0xFF4CAF50)),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14)),
                 ),
@@ -1593,7 +1593,7 @@ class _LearnScreenState extends State<LearnScreen> {
               child: ElevatedButton(
                 onPressed: () => game.retryQuiz(),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFD94040),
+                  backgroundColor: const Color(0xFF4CAF50),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14)),
                 ),
@@ -1659,12 +1659,12 @@ class _LearnScreenState extends State<LearnScreen> {
                     style: GoogleFonts.nunito(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: const Color(0xFFD94040),
+                      color: const Color(0xFF4CAF50),
                     ),
                   ),
                   const SizedBox(width: 4),
                   const Icon(Icons.arrow_forward_rounded,
-                      size: 18, color: Color(0xFFD94040)),
+                      size: 18, color: Color(0xFF4CAF50)),
                 ],
               ),
             ),
@@ -1787,7 +1787,7 @@ class _LearnScreenState extends State<LearnScreen> {
               style: GoogleFonts.nunito(
                   fontSize: 24,
                   fontWeight: FontWeight.w800,
-                  color: const Color(0xFFD94040))),
+                  color: const Color(0xFF4CAF50))),
           const SizedBox(height: 8),
           Text(
             'Hearts refill daily, or go Premium for unlimited!',
@@ -1818,11 +1818,11 @@ class _LearnScreenState extends State<LearnScreen> {
                   style: GoogleFonts.nunito(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: const Color(0xFFD94040)),
+                      color: const Color(0xFF4CAF50)),
                 ),
                 const SizedBox(width: 4),
                 const Icon(Icons.arrow_forward_rounded,
-                    size: 18, color: Color(0xFFD94040)),
+                    size: 18, color: Color(0xFF4CAF50)),
               ],
             ),
           ),
@@ -1890,13 +1890,13 @@ class _PulseScoreCircleState extends State<_PulseScoreCircle>
           shape: BoxShape.circle,
           gradient: LinearGradient(
             colors: passed
-                ? [const Color(0xFFD94040), const Color(0xFFFF7043)]
+                ? [const Color(0xFF4CAF50), const Color(0xFF66BB6A)]
                 : [const Color(0xFFE8B93E), const Color(0xFFFFCA28)],
           ),
           boxShadow: [
             BoxShadow(
               color: (passed
-                      ? const Color(0xFFD94040)
+                      ? const Color(0xFF4CAF50)
                       : const Color(0xFFE8B93E))
                   .withAlpha(40),
               blurRadius: 16,

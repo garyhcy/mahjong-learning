@@ -1,3 +1,4 @@
+
 import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -8,10 +9,9 @@ import 'firebase_options.dart';
 import 'providers/game_state.dart';
 import 'screens/auth_screen.dart';
 import 'screens/home_screen.dart';
+import 'screens/community_screen.dart';
 import 'screens/learn_screen.dart';
-import 'screens/leaderboard_screen.dart';
 import 'screens/achievements_screen.dart';
-import 'screens/shop_screen.dart';
 import 'screens/more_screen.dart';
 
 Future<void> main() async {
@@ -46,8 +46,8 @@ class MahjongApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color(0xFFD94040),
-            primary: const Color(0xFFD94040),
+            seedColor: const Color(0xFF4CAF50),
+            primary: const Color(0xFF4CAF50),
             secondary: const Color(0xFFE8B93E),
             surface: const Color(0xFFFFF8F0),
           ),
@@ -56,14 +56,14 @@ class MahjongApp extends StatelessWidget {
             bodyColor: const Color(0xFF2D2D2D),
           ),
           appBarTheme: const AppBarTheme(
-            backgroundColor: Color(0xFFFFF8F0),
+            backgroundColor: Colors.white,
             elevation: 0,
             centerTitle: true,
             foregroundColor: Color(0xFF2D2D2D),
           ),
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFD94040),
+              backgroundColor: const Color(0xFF4CAF50),
               foregroundColor: Colors.white,
               padding:
                   const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
@@ -114,7 +114,7 @@ class _AuthGateState extends State<AuthGate> {
             backgroundColor: Color(0xFFFFF8F0),
             body: Center(
               child: CircularProgressIndicator(
-                color: Color(0xFFD94040),
+                color: Color(0xFF4CAF50),
               ),
             ),
           );
@@ -144,9 +144,9 @@ class _MainShellState extends State<MainShell> {
 
   final _screens = const [
     HomeScreen(),
-    LeaderboardScreen(),
+    CommunityScreen(),
+    LearnScreen(),
     AchievementsScreen(),
-    ShopScreen(),
     MoreScreen(),
   ];
 
@@ -191,11 +191,11 @@ class _MainShellState extends State<MainShell> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _navItem(0, Icons.home_rounded, 'Home'),
-                    _navItem(1, Icons.leaderboard_rounded, 'Leaderboard'),
-                    _navItem(2, Icons.emoji_events_rounded, 'Achievements'),
-                    _navItem(3, Icons.store_rounded, 'Shop'),
-                    _navItem(4, Icons.more_horiz_rounded, 'More'),
+                    _navItem(0, Icons.home_rounded, '首頁'),
+                    _navItem(1, Icons.people_rounded, '社區'),
+                    _navItem(2, Icons.school_rounded, '練習'),
+                    _navItem(3, Icons.emoji_events_rounded, '成就'),
+                    _navItem(4, Icons.more_horiz_rounded, '更多'),
                   ],
                 ),
               ),
@@ -228,7 +228,7 @@ class _MainShellState extends State<MainShell> {
             children: [
               Icon(icon,
                   color: active
-                      ? const Color(0xFFD94040)
+                      ? const Color(0xFF4CAF50)
                       : const Color(0xFFBDBDBD),
                   size: 24),
               const SizedBox(height: 2),
@@ -237,7 +237,7 @@ class _MainShellState extends State<MainShell> {
                     fontSize: 10,
                     fontWeight: active ? FontWeight.w700 : FontWeight.w500,
                     color: active
-                        ? const Color(0xFFD94040)
+                        ? const Color(0xFF4CAF50)
                         : const Color(0xFFBDBDBD),
                   )),
             ],

@@ -104,7 +104,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     style: GoogleFonts.nunito(
                       fontSize: 28,
                       fontWeight: FontWeight.w800,
-                      color: const Color(0xFFD94040),
+                      color: const Color(0xFF4CAF50),
                     ),
                   ),
                   const SizedBox(height: 6),
@@ -143,7 +143,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(14),
                         borderSide: const BorderSide(
-                            color: Color(0xFFD94040), width: 2),
+                            color: Color(0xFF4CAF50), width: 2),
                       ),
                       errorBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(14),
@@ -190,7 +190,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(14),
                         borderSide: const BorderSide(
-                            color: Color(0xFFD94040), width: 2),
+                            color: Color(0xFF4CAF50), width: 2),
                       ),
                       errorBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(14),
@@ -251,10 +251,10 @@ class _AuthScreenState extends State<AuthScreen> {
                     child: ElevatedButton(
                       onPressed: _isLoading ? null : _submit,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFD94040),
+                        backgroundColor: const Color(0xFF4CAF50),
                         foregroundColor: Colors.white,
                         disabledBackgroundColor:
-                            const Color(0xFFD94040).withAlpha(150),
+                            const Color(0xFF4CAF50).withAlpha(150),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
                         ),
@@ -306,7 +306,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           style: GoogleFonts.nunito(
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
-                            color: const Color(0xFFD94040),
+                            color: const Color(0xFF4CAF50),
                           ),
                         ),
                       ),

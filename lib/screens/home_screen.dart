@@ -74,7 +74,7 @@ class HomeScreen extends StatelessWidget {
                     width: 3,
                     height: 18,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFD94040),
+                      color: const Color(0xFF4CAF50),
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -144,7 +144,7 @@ class HomeScreen extends StatelessWidget {
                       shape: BoxShape.circle,
                       border: isInProgress
                           ? Border.all(
-                              color: const Color(0xFFD94040), width: 2)
+                              color: const Color(0xFF4CAF50), width: 2)
                           : null,
                     ),
                     child: Center(
@@ -203,7 +203,7 @@ class HomeScreen extends StatelessWidget {
                           : null,
                       border: Border.all(
                         color: isInProgress
-                            ? const Color(0xFFD94040)
+                            ? const Color(0xFF4CAF50)
                             : stage.isUnlocked
                                 ? stage.color.withAlpha(30)
                                 : const Color(0xFFE0E0E0),
@@ -307,14 +307,14 @@ class _HeroBanner extends StatelessWidget {
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFFB71C1C), Color(0xFFD94040), Color(0xFFC62828)],
+          colors: [Color(0xFF2E7D32), Color(0xFF4CAF50), Color(0xFF388E3C)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFD94040).withAlpha(80),
+            color: const Color(0xFF4CAF50).withAlpha(50),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -440,7 +440,7 @@ class _StatsRow extends StatelessWidget {
         Expanded(
           child: _StatCard(
             icon: Icons.stars_rounded,
-            iconColor: const Color(0xFFD94040),
+            iconColor: const Color(0xFF4CAF50),
             value: '${game.xp}',
             label: 'Total XP',
           ),
@@ -717,7 +717,7 @@ class _ContinueButtonState extends State<_ContinueButton> {
           icon: const Icon(Icons.play_arrow_rounded, size: 20),
           label: Text(label),
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFD94040),
+            backgroundColor: const Color(0xFF4CAF50),
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 16),
             textStyle: GoogleFonts.nunito(

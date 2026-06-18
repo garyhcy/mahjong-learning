@@ -65,7 +65,7 @@ const cursorStages = <CursorLearningStage>[
     title: 'The Basics',
     subtitle: 'Tiles, setup, and flow',
     icon: Icons.grid_view_rounded,
-    color: Color(0xFFD94040),
+    color: Color(0xFF4CAF50),
     lessonCount: 8,
   ),
   CursorLearningStage(
