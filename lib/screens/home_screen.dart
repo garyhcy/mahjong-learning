@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/game_state.dart';
-import '../models/mahjong_data.dart';
 import '../widgets/mascot_widget.dart';
-import '../services/audio_service.dart';
-import 'learn_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -14,784 +11,438 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final game = context.watch<GameState>();
     final totalLessons = game.stages.fold(0, (sum, s) => sum + s.lessonCount);
-    final progressFraction =
-        totalLessons > 0 ? game.completedLessons / totalLessons : 0.0;
-    final audio = AudioService();
-
-    String greetingMessage;
-    String greetingTitle;
-    if (game.completedLessons == 0) {
-      greetingTitle = 'Welcome to Ludi!';
-      greetingMessage = 'Start your mahjong journey today';
-    } else if (progressFraction < 0.3) {
-      greetingTitle = 'Keep it up!';
-      greetingMessage = 'You\'re making great progress';
-    } else if (progressFraction < 0.7) {
-      greetingTitle = 'Almost there!';
-      greetingMessage = 'Halfway to becoming a master';
-    } else if (progressFraction < 1.0) {
-      greetingTitle = 'So close!';
-      greetingMessage = 'Just a few more lessons to go';
-    } else {
-      greetingTitle = 'Amazing!';
-      greetingMessage = 'You are a Mahjong Master!';
-    }
+    final unitProgress = totalLessons > 0
+        ? (game.completedLessons / totalLessons * 7).round().clamp(0, 7)
+        : 3;
 
     return Scaffold(
+      backgroundColor: const Color(0xFFFFF8F0),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 12),
-
-              // ── Hero Banner ──
-              _HeroBanner(
-                title: greetingTitle,
-                subtitle: greetingMessage,
-                game: game,
-                totalLessons: totalLessons,
-              ),
-              const SizedBox(height: 20),
-
-              // ── Stats Cards Row ──
-              _StatsRow(game: game, totalLessons: totalLessons),
-              const SizedBox(height: 20),
-
-              // ── Continue Learning ──
-              _ContinueButton(game: game),
-              const SizedBox(height: 20),
-
-              // ── Daily Challenge ──
-              _DailyChallengeCard(game: game, audio: audio),
-              const SizedBox(height: 28),
-
-              // ── Learning Path Header ──
-              Row(
-                children: [
-                  Container(
-                    width: 3,
-                    height: 18,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF4CAF50),
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Text('Your Learning Path',
-                      style: GoogleFonts.nunito(
-                          fontSize: 20, fontWeight: FontWeight.w800)),
-                ],
-              ),
-              const SizedBox(height: 4),
-              Text('Tap a stage to jump to its lessons',
-                  style: GoogleFonts.nunito(
-                      fontSize: 13, color: const Color(0xFF757575))),
-              const SizedBox(height: 16),
-
-              // ── Stage Cards ──
-              ...game.stages.asMap().entries.map((entry) {
-                final i = entry.key;
-                final stage = entry.value;
-                final isLast = i == game.stages.length - 1;
-                final isStaggered = i % 2 == 1;
-                return Padding(
-                  padding: EdgeInsets.only(left: isStaggered ? 16.0 : 0),
-                  child:
-                      _buildStageCard(context, game, stage, isLast, audio),
-                );
-              }),
-              const SizedBox(height: 32),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildStageCard(BuildContext context, GameState game,
-      LearningStage stage, bool isLast, AudioService audio) {
-    final isCompleted = stage.progress >= 1.0;
-    final isInProgress = stage.progress > 0 && !isCompleted;
-
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: GestureDetector(
-        onTap: stage.isUnlocked
-            ? () {
-                audio.playTap();
-                game.navigateToStage(stage.id);
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const LearnScreen()),
-                );
-              }
-            : null,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
           children: [
-            SizedBox(
-              width: 40,
-              child: Column(
-                children: [
-                  Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: stage.isUnlocked
-                          ? stage.color
-                          : const Color(0xFFE0E0E0),
-                      shape: BoxShape.circle,
-                      border: isInProgress
-                          ? Border.all(
-                              color: const Color(0xFF4CAF50), width: 2)
-                          : null,
-                    ),
-                    child: Center(
-                      child: stage.isUnlocked
-                          ? Icon(stage.icon, color: Colors.white, size: 18)
-                          : Icon(Icons.lock_rounded,
-                              size: 16, color: const Color(0xFFBDBDBD)),
-                    ),
-                  ),
-                  if (!isLast)
-                    Container(
-                      width: 2,
-                      height: 60,
-                      color: stage.isUnlocked
-                          ? stage.color.withAlpha(76)
-                          : const Color(0xFFE0E0E0),
-                    ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Stack(
-                children: [
-                  Positioned(
-                    right: -16,
-                    bottom: -16,
-                    child: Icon(
-                      stage.icon,
-                      size: 80,
-                      color: (stage.isUnlocked
-                              ? stage.color
-                              : const Color(0xFFE0E0E0))
-                          .withAlpha(15),
-                    ),
-                  ),
-                  if (stage.isUnlocked && !isCompleted)
-                    _ShimmerOverlay(
-                      color: stage.color.withAlpha(12),
-                    ),
-                  Container(
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      color: stage.isUnlocked
-                          ? Colors.white
-                          : const Color(0xFFF5F5F5),
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: stage.isUnlocked
-                          ? [
-                              BoxShadow(
-                                color: Colors.black.withAlpha(8),
-                                blurRadius: 8,
-                                offset: const Offset(0, 2),
-                              ),
-                            ]
-                          : null,
-                      border: Border.all(
-                        color: isInProgress
-                            ? const Color(0xFF4CAF50)
-                            : stage.isUnlocked
-                                ? stage.color.withAlpha(30)
-                                : const Color(0xFFE0E0E0),
-                        width: isInProgress ? 2 : 1,
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(stage.title,
-                                  style: GoogleFonts.nunito(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w700,
-                                    color: stage.isUnlocked
-                                        ? const Color(0xFF2D2D2D)
-                                        : const Color(0xFFBDBDBD),
-                                  )),
-                            ),
-                            if (isCompleted)
-                              const Icon(Icons.check_circle_rounded,
-                                  color: Color(0xFF2E7D32), size: 20),
-                            if (!stage.isUnlocked)
-                              const Icon(Icons.lock_rounded,
-                                  size: 18, color: Color(0xFFBDBDBD)),
-                            if (stage.isUnlocked && !isCompleted)
-                              Icon(Icons.chevron_right_rounded,
-                                  size: 20, color: stage.color),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        Text(stage.subtitle,
-                            style: GoogleFonts.nunito(
-                              fontSize: 12,
-                              color: stage.isUnlocked
-                                  ? const Color(0xFF757575)
-                                  : const Color(0xFFBDBDBD),
-                            )),
-                        if (stage.isUnlocked &&
-                            stage.completedLessons > 0) ...[
-                          const SizedBox(height: 8),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(6),
-                                  child: LinearProgressIndicator(
-                                    value: stage.progress,
-                                    backgroundColor:
-                                        const Color(0xFFF5F5F5),
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                        stage.color),
-                                    minHeight: 6,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                '${stage.completedLessons}/${stage.lessonCount} · ${(stage.progress * 100).toInt()}%',
-                                style: GoogleFonts.nunito(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w600,
-                                    color: const Color(0xFF9E9E9E)),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            _buildTopBar(game),
+            _buildUnitBanner(game, unitProgress),
+            const SizedBox(height: 8),
+            Expanded(child: _buildLearningPath(game)),
           ],
         ),
       ),
     );
   }
-}
 
-class _HeroBanner extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final GameState game;
-  final int totalLessons;
-
-  const _HeroBanner({
-    required this.title,
-    required this.subtitle,
-    required this.game,
-    required this.totalLessons,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  // ─── 頂部狀態列 + 熊貓頭像 + 右側圖標 ───
+  Widget _buildTopBar(GameState game) {
     return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF2E7D32), Color(0xFF4CAF50), Color(0xFF388E3C)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF4CAF50).withAlpha(50),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+      color: Colors.white,
+      child: Row(
         children: [
-          Row(
-            children: [
-              const MascotWidget(
+          ClipOval(
+            child: Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.shade300, width: 1.5),
+                shape: BoxShape.circle,
+              ),
+              child: const MascotWidget(
                 expression: MascotExpression.happy,
-                size: 72.0,
+                size: 44,
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: GoogleFonts.nunito(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w800,
-                        height: 1.2,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      subtitle,
-                      style: GoogleFonts.nunito(
-                        color: Colors.white.withAlpha(200),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          // Progress bar
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Level ${game.userLevel}',
-                          style: GoogleFonts.nunito(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        Text(
-                          '${game.xp} / ${game.xpToNextLevel} XP',
-                          style: GoogleFonts.nunito(
-                            color: Colors.white.withAlpha(180),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(6),
-                      child: LinearProgressIndicator(
-                        value: game.xpToNextLevel > 0
-                            ? game.xp / game.xpToNextLevel
-                            : 0.0,
-                        backgroundColor: Colors.white.withAlpha(40),
-                        valueColor: const AlwaysStoppedAnimation<Color>(
-                            Color(0xFFE8B93E)),
-                        minHeight: 8,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 4),
-          Text(
-            '${game.completedLessons} / $totalLessons lessons completed',
-            style: GoogleFonts.nunito(
-              color: Colors.white.withAlpha(160),
-              fontSize: 11,
             ),
+          ),
+          const Spacer(),
+          _buildStatIcon(
+            icon: Icons.star_rounded,
+            value: '${game.userLevel}',
+            color: const Color(0xFFE8B93E),
+          ),
+          const SizedBox(width: 20),
+          _buildStatIcon(
+            icon: Icons.diamond_rounded,
+            value: '${game.xp}',
+            color: const Color(0xFF5B9BD5),
+          ),
+          const SizedBox(width: 20),
+          _buildStatIcon(
+            icon: Icons.favorite_rounded,
+            value: '${game.streak}',
+            color: const Color(0xFF4CAF50),
           ),
         ],
       ),
     );
   }
-}
 
-class _StatsRow extends StatelessWidget {
-  final GameState game;
-  final int totalLessons;
-
-  const _StatsRow({required this.game, required this.totalLessons});
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildStatIcon({
+    required IconData icon,
+    required String value,
+    required Color color,
+  }) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Expanded(
-          child: _StatCard(
-            icon: Icons.local_fire_department_rounded,
-            iconColor: const Color(0xFFE8B93E),
-            value: '${game.streak}',
-            label: 'Day Streak',
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: _StatCard(
-            icon: Icons.stars_rounded,
-            iconColor: const Color(0xFF4CAF50),
-            value: '${game.xp}',
-            label: 'Total XP',
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: _StatCard(
-            icon: Icons.menu_book_rounded,
-            iconColor: const Color(0xFF2E7D32),
-            value: '${game.completedLessons}/$totalLessons',
-            label: 'Lessons',
+        Icon(icon, color: color, size: 22),
+        const SizedBox(width: 4),
+        Text(
+          value,
+          style: GoogleFonts.nunito(
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            color: const Color(0xFF5D4037),
           ),
         ),
       ],
     );
   }
-}
 
-class _StatCard extends StatelessWidget {
-  final IconData icon;
-  final Color iconColor;
-  final String value;
-  final String label;
+  // ─── 綠色漸變橫幅 ───
+  Widget _buildUnitBanner(GameState game, int unitProgress) {
+    final stage = game.stages.isNotEmpty ? game.stages.first : null;
+    final title = stage?.title ?? '打招呼';
+    final subtitle = stage?.subtitle ?? '學會基本問候語';
 
-  const _StatCard({
-    required this.icon,
-    required this.iconColor,
-    required this.value,
-    required this.label,
-  });
-
-  @override
-  Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+      margin: const EdgeInsets.fromLTRB(16, 16, 16, 8),
       decoration: BoxDecoration(
-        color: Colors.white,
         borderRadius: BorderRadius.circular(16),
+        gradient: const LinearGradient(
+          colors: [Color(0xFF66BB6A), Color(0xFF43A047)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(6),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-        border: Border.all(color: const Color(0xFFF0F0F0)),
-      ),
-      child: Column(
-        children: [
-          Icon(icon, color: iconColor, size: 24),
-          const SizedBox(height: 8),
-          Text(
-            value,
-            style: GoogleFonts.nunito(
-              fontSize: 18,
-              fontWeight: FontWeight.w800,
-              color: const Color(0xFF2D2D2D),
-            ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            label,
-            style: GoogleFonts.nunito(
-              fontSize: 11,
-              fontWeight: FontWeight.w600,
-              color: const Color(0xFF9E9E9E),
-            ),
-            textAlign: TextAlign.center,
+            color: const Color(0xFF4CAF50).withAlpha(77),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
-    );
-  }
-}
-
-class _DailyChallengeCard extends StatelessWidget {
-  final GameState game;
-  final AudioService audio;
-
-  const _DailyChallengeCard({required this.game, required this.audio});
-
-  @override
-  Widget build(BuildContext context) {
-    final nextUncompleted = game.stages
-        .where((s) => s.isUnlocked && s.progress < 1.0)
-        .toList();
-
-    if (nextUncompleted.isEmpty && game.stages.every((s) => s.progress >= 1.0)) {
-      return Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [Color(0xFFE8B93E), Color(0xFFF9A825)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFFE8B93E).withAlpha(60),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
+      child: Padding(
+        padding: const EdgeInsets.all(18),
         child: Row(
           children: [
-            const Icon(Icons.emoji_events_rounded,
-                color: Colors.white, size: 36),
-            const SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const Text(
+                    '第1單元',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
                   Text(
-                    'All Stages Complete!',
+                    title,
                     style: GoogleFonts.nunito(
                       color: Colors.white,
-                      fontSize: 16,
+                      fontSize: 24,
                       fontWeight: FontWeight.w800,
                     ),
                   ),
+                  const SizedBox(height: 12),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '進度 $unitProgress / 7',
+                        style: GoogleFonts.nunito(
+                          color: Colors.white70,
+                          fontSize: 12,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: SizedBox(
+                          height: 8,
+                          child: Row(
+                            children: [
+                              Flexible(
+                                flex: unitProgress,
+                                child: Container(
+                                  color: const Color(0xFF2E7D32),
+                                ),
+                              ),
+                              Flexible(
+                                flex: 7 - unitProgress,
+                                child: Container(
+                                  color: Colors.white.withAlpha(77),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   const SizedBox(height: 4),
                   Text(
-                    'You are a true Mahjong Master!',
+                    subtitle,
                     style: GoogleFonts.nunito(
                       color: Colors.white.withAlpha(200),
-                      fontSize: 13,
+                      fontSize: 12,
                     ),
                   ),
                 ],
               ),
             ),
+            const SizedBox(width: 12),
             const MascotWidget(
-              expression: MascotExpression.excited,
-              size: 56,
+              expression: MascotExpression.wink,
+              size: 80,
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  // ─── 垂直節點學習路徑 ───
+  Widget _buildLearningPath(GameState game) {
+    final stages = game.stages;
+    if (stages.isEmpty) {
+      return const Center(
+        child: Text('尚無學習單元',
+            style: TextStyle(color: Colors.grey, fontSize: 16)),
       );
     }
 
-    final targetStage = nextUncompleted.first;
-    return GestureDetector(
-      onTap: () {
-        audio.playTap();
-        game.navigateToStage(targetStage.id);
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const LearnScreen()),
+    return ListView(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+      children: List.generate(stages.length, (i) {
+        final stage = stages[i];
+        final isCompleted = stage.progress >= 1.0;
+        final isLocked = !stage.isUnlocked;
+        final isInProgress = stage.isUnlocked && !isCompleted;
+        final isLast = i == stages.length - 1;
+
+        return _buildPathNode(
+          index: i + 1,
+          title: stage.title,
+          subtitle: stage.subtitle,
+          icon: isCompleted
+              ? Icons.star_rounded
+              : isLocked
+                  ? Icons.lock_rounded
+                  : Icons.play_circle_rounded,
+          iconColor: isCompleted
+              ? const Color(0xFFE8B93E)
+              : isLocked
+                  ? Colors.grey.shade400
+                  : stage.color ?? const Color(0xFF4CAF50),
+          isCompleted: isCompleted,
+          isLocked: isLocked,
+          isInProgress: isInProgress,
+          isLast: isLast,
+          progress: stage.progress,
+          stageColor: stage.color ?? const Color(0xFF4CAF50),
         );
-      },
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [Color(0xFFFFF8F0), Color(0xFFFFF0E0)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: const Color(0xFFE8B93E).withAlpha(100),
-            width: 1.5,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFFE8B93E).withAlpha(15),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color: const Color(0xFFE8B93E).withAlpha(30),
-                borderRadius: BorderRadius.circular(14),
-              ),
-              child: const Icon(
-                Icons.auto_awesome_rounded,
-                color: Color(0xFFE8B93E),
-                size: 24,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Daily Challenge',
-                    style: GoogleFonts.nunito(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w800,
-                      color: const Color(0xFF2D2D2D),
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Continue ${targetStage.title} — ${targetStage.subtitle}',
-                    style: GoogleFonts.nunito(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xFF757575),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const Icon(
-              Icons.arrow_forward_rounded,
-              color: Color(0xFFE8B93E),
-              size: 24,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ContinueButton extends StatefulWidget {
-  final GameState game;
-  const _ContinueButton({required this.game});
-
-  @override
-  State<_ContinueButton> createState() => _ContinueButtonState();
-}
-
-class _ContinueButtonState extends State<_ContinueButton> {
-  double _scale = 1.0;
-
-  void _onTap() {
-    final game = widget.game;
-    final hasProgress = game.lastLessonId != null &&
-        game.isLessonCompleted(game.lastLessonId!) == false;
-    final targetLesson = hasProgress
-        ? game.lastLessonId!
-        : (game.completedLessons == 0 ? '1-1' : game.lastLessonId ?? '1-1');
-
-    setState(() => _scale = 0.97);
-    Future.delayed(const Duration(milliseconds: 100), () {
-      if (mounted) setState(() => _scale = 1.0);
-    });
-    game.loadLesson(targetLesson);
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => const LearnScreen()),
+      }),
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final game = widget.game;
-    final hasProgress = game.lastLessonId != null &&
-        game.isLessonCompleted(game.lastLessonId!) == false;
-    final label = hasProgress
-        ? 'Continue Learning'
-        : (game.completedLessons == 0
-            ? 'Start First Lesson'
-            : 'Continue Learning');
-
+  Widget _buildPathNode({
+    required int index,
+    required String title,
+    required String subtitle,
+    required IconData icon,
+    required Color iconColor,
+    required bool isCompleted,
+    required bool isLocked,
+    required bool isInProgress,
+    required bool isLast,
+    required double progress,
+    required Color stageColor,
+  }) {
     return SizedBox(
-      width: double.infinity,
-      child: AnimatedScale(
-        scale: _scale,
-        duration: const Duration(milliseconds: 100),
-        child: ElevatedButton.icon(
-          onPressed: _onTap,
-          icon: const Icon(Icons.play_arrow_rounded, size: 20),
-          label: Text(label),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF4CAF50),
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            textStyle: GoogleFonts.nunito(
-                fontSize: 16, fontWeight: FontWeight.w700),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(14),
+      height: 100,
+      child: Row(
+        children: [
+          SizedBox(
+            width: 56,
+            child: Column(
+              children: [
+                Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: isCompleted
+                        ? Colors.white
+                        : isLocked
+                            ? const Color(0xFFF5F5F5)
+                            : const Color(0xFFE8F5E9),
+                    border: Border.all(
+                      color: isCompleted
+                          ? const Color(0xFF4CAF50)
+                          : isLocked
+                              ? Colors.grey.shade300
+                              : const Color(0xFF4CAF50),
+                      width: 2,
+                    ),
+                    boxShadow: isCompleted || isInProgress
+                        ? [
+                            BoxShadow(
+                              color: const Color(0xFF4CAF50).withAlpha(51),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
+                            ),
+                          ]
+                        : null,
+                  ),
+                  child: Icon(icon, color: iconColor, size: 24),
+                ),
+                if (!isLast)
+                  Expanded(
+                    child: CustomPaint(
+                      painter: _DashedLinePainter(
+                        color: isCompleted
+                            ? const Color(0xFF4CAF50).withAlpha(102)
+                            : Colors.grey.shade300,
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
-        ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: isCompleted
+                      ? const Color(0xFF4CAF50).withAlpha(77)
+                      : Colors.grey.shade200,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(8),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '$index. $title',
+                          style: GoogleFonts.nunito(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: isCompleted
+                                ? const Color(0xFF2E7D32)
+                                : isLocked
+                                    ? Colors.grey.shade500
+                                    : const Color(0xFF333333),
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          subtitle,
+                          style: GoogleFonts.nunito(
+                            fontSize: 12,
+                            color: Colors.grey.shade400,
+                          ),
+                        ),
+                        if (isInProgress) ...[
+                          const SizedBox(height: 6),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(3),
+                            child: SizedBox(
+                              height: 4,
+                              child: LinearProgressIndicator(
+                                value: progress,
+                                backgroundColor: Colors.grey.shade200,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    stageColor),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  if (isCompleted)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF4CAF50).withAlpha(26),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        '已完成',
+                        style: GoogleFonts.nunito(
+                          fontSize: 11,
+                          color: const Color(0xFF4CAF50),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  if (isLocked)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade100,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        '鎖定',
+                        style: GoogleFonts.nunito(
+                          fontSize: 11,
+                          color: Colors.grey.shade400,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
-class _ShimmerOverlay extends StatefulWidget {
+class _DashedLinePainter extends CustomPainter {
   final Color color;
-  const _ShimmerOverlay({required this.color});
+  _DashedLinePainter({required this.color});
 
   @override
-  State<_ShimmerOverlay> createState() => _ShimmerOverlayState();
-}
-
-class _ShimmerOverlayState extends State<_ShimmerOverlay>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 2000),
-    )..repeat();
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
+    const double dashWidth = 5;
+    const double dashSpace = 4;
+    double startY = 0;
+    while (startY < size.height) {
+      canvas.drawLine(
+        Offset(size.width / 2, startY),
+        Offset(size.width / 2, (startY + dashWidth).clamp(0, size.height)),
+        paint,
+      );
+      startY += dashWidth + dashSpace;
+    }
   }
 
   @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) {
-        return Positioned.fill(
-          child: ShaderMask(
-            blendMode: BlendMode.srcATop,
-            shaderCallback: (bounds) {
-              return LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-                  Colors.transparent,
-                  widget.color,
-                  Colors.transparent,
-                ],
-                stops: [
-                  _controller.value - 1,
-                  _controller.value,
-                  _controller.value,
-                ],
-              ).createShader(bounds);
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                color: widget.color.withAlpha(8),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

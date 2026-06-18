@@ -9,8 +9,7 @@ import 'firebase_options.dart';
 import 'providers/game_state.dart';
 import 'screens/auth_screen.dart';
 import 'screens/home_screen.dart';
-import 'screens/community_screen.dart';
-import 'screens/learn_screen.dart';
+import 'screens/shop_screen.dart';
 import 'screens/achievements_screen.dart';
 import 'screens/more_screen.dart';
 
@@ -104,7 +103,7 @@ class _AuthGateState extends State<AuthGate> {
 
   @override
   Widget build(BuildContext context) {
-    if (!firebaseAvailable) return const AuthScreen();
+    if (!firebaseAvailable) return const MainShell();
 
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
@@ -144,9 +143,9 @@ class _MainShellState extends State<MainShell> {
 
   final _screens = const [
     HomeScreen(),
-    CommunityScreen(),
-    LearnScreen(),
+    ShopScreen(),
     AchievementsScreen(),
+    SettingsScreen(),
     MoreScreen(),
   ];
 
@@ -244,6 +243,89 @@ class _MainShellState extends State<MainShell> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFFFF8F0),
+      appBar: AppBar(
+        title: Text('設置',
+            style: GoogleFonts.nunito(fontWeight: FontWeight.w700)),
+        backgroundColor: const Color(0xFF4CAF50),
+        foregroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          _buildSection('帳號設定', [
+            _buildTile(Icons.person_rounded, '個人資料', '修改頭像與暱稱'),
+            _buildTile(Icons.lock_rounded, '隱私設定', '管理個人資料可見性'),
+          ]),
+          const SizedBox(height: 16),
+          _buildSection('學習設定', [
+            _buildTile(Icons.volume_up_rounded, '音效', '開啟/關閉音效與背景音樂'),
+            _buildTile(Icons.notifications_rounded, '通知', '設定學習提醒時間'),
+            _buildTile(Icons.language_rounded, '語言', '繁體中文'),
+          ]),
+          const SizedBox(height: 16),
+          _buildSection('其他', [
+            _buildTile(Icons.info_rounded, '關於', '版本 1.0.0'),
+            _buildTile(Icons.help_rounded, '幫助中心', '常見問題與使用說明'),
+          ]),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSection(String title, List<Widget> tiles) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 4, bottom: 8),
+          child: Text(title,
+              style: GoogleFonts.nunito(
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                color: const Color(0xFF757575),
+              )),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(14),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withAlpha(6),
+                blurRadius: 6,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Column(children: tiles),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTile(IconData icon, String title, String subtitle) {
+    return ListTile(
+      leading: Icon(icon, color: const Color(0xFF4CAF50)),
+      title: Text(title,
+          style: GoogleFonts.nunito(fontWeight: FontWeight.w600)),
+      subtitle: Text(subtitle,
+          style: GoogleFonts.nunito(fontSize: 12, color: Colors.grey)),
+      trailing: const Icon(Icons.chevron_right_rounded,
+          color: Colors.grey),
+      onTap: () {},
     );
   }
 }
