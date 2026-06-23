@@ -23,48 +23,63 @@ class CommunityScreen extends StatelessWidget {
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20),
-              // Community mascot header
+              // --- Leaderboard Header ---
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(28),
+                padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
-                    colors: [Color(0xFF4CAF50), Color(0xFF66BB6A)],
+                    colors: [Color(0xFF5B9BD5), Color(0xFF3A7BD5)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                   borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF4CAF50).withAlpha(50),
+                      color: const Color(0xFF5B9BD5).withAlpha(60),
                       blurRadius: 16,
                       offset: const Offset(0, 6),
                     ),
                   ],
                 ),
-                child: Column(
+                child: Row(
                   children: [
                     const MascotWidget(
-                      expression: MascotExpression.excited,
-                      size: 100,
+                      expression: MascotExpression.happy,
+                      size: 72,
                     ),
-                    const SizedBox(height: 16),
-                    Text(
-                      '麻將社區',
-                      style: GoogleFonts.nunito(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      '與朋友一起學習，互相切磋',
-                      style: GoogleFonts.nunito(
-                        fontSize: 14,
-                        color: Colors.white.withAlpha(200),
+                    const SizedBox(width: 20),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '本週排行榜',
+                            style: GoogleFonts.nunito(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w800,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            '你的排名：第 12 名',
+                            style: GoogleFonts.nunito(
+                              fontSize: 14,
+                              color: Colors.white.withAlpha(200),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              _statChip('850 XP', Icons.bolt_rounded),
+                              const SizedBox(width: 12),
+                              _statChip('7 天', Icons.local_fire_department_rounded),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -72,45 +87,86 @@ class CommunityScreen extends StatelessWidget {
               ),
               const SizedBox(height: 24),
 
-              // Leaderboard section
-              _SectionHeader(
-                icon: Icons.leaderboard_rounded,
-                title: '排行榜',
-              ),
+              // --- Top 3 Podium ---
+              _sectionHeader('🏆 前三名'),
               const SizedBox(height: 12),
-              _LeaderboardCard(rank: 1, name: '麻將大師', xp: 2500),
-              _LeaderboardCard(rank: 2, name: '雀聖高手', xp: 2100),
-              _LeaderboardCard(rank: 3, name: '牌局達人', xp: 1800),
-              _LeaderboardCard(rank: 4, name: '初學新手', xp: 1200),
-              _LeaderboardCard(rank: 5, name: '勤奮學徒', xp: 800),
-
-              const SizedBox(height: 24),
-
-              // Friend activity section
-              _SectionHeader(
-                icon: Icons.groups_rounded,
-                title: '好友動態',
+              Row(
+                children: [
+                  Expanded(child: _podiumCard(2, '麻將達人', '2,340 XP', const Color(0xFF9E9E9E))),
+                  const SizedBox(width: 10),
+                  Expanded(child: _podiumCard(1, '雀神歸位', '3,120 XP', const Color(0xFFE8B93E))),
+                  const SizedBox(width: 10),
+                  Expanded(child: _podiumCard(3, '新手入門', '1,980 XP', const Color(0xFFCD7F32))),
+                ],
               ),
+              const SizedBox(height: 28),
+
+              // --- Full Leaderboard ---
+              _sectionHeader('全部排名'),
               const SizedBox(height: 12),
-              _ActivityCard(
-                avatar: '🐼',
-                name: '小明',
-                action: '完成了「基礎規則」課程',
-                time: '5 分鐘前',
+              _leaderboardItem(4, '雀友小王', '1,650 XP', false),
+              _leaderboardItem(5, '麻將新手', '1,420 XP', false),
+              _leaderboardItem(6, '廣東仔', '1,280 XP', false),
+              _leaderboardItem(7, '牌技精湛', '1,150 XP', false),
+              _leaderboardItem(8, '自摸高手', '1,020 XP', false),
+              _leaderboardItem(9, '十三么', '980 XP', false),
+              _leaderboardItem(10, '清一色', '910 XP', false),
+              _leaderboardItem(11, '大四喜', '880 XP', false),
+              Container(
+                margin: const EdgeInsets.only(bottom: 8),
+                child: Material(
+                  color: const Color(0xFFE8F5E9),
+                  borderRadius: BorderRadius.circular(14),
+                  child: InkWell(
+                    onTap: () {},
+                    borderRadius: BorderRadius.circular(14),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(color: const Color(0xFF4CAF50).withAlpha(40)),
+                      ),
+                      child: Row(
+                        children: [
+                          _rankBadge(12, const Color(0xFF4CAF50)),
+                          const SizedBox(width: 12),
+                          const MascotWidget(
+                            expression: MascotExpression.content,
+                            size: 32,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              '你 · Ludi 學員',
+                              style: GoogleFonts.nunito(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: const Color(0xFF2D2D2D),
+                              ),
+                            ),
+                          ),
+                          Text(
+                            '850 XP',
+                            style: GoogleFonts.nunito(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFF4CAF50),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ),
-              _ActivityCard(
-                avatar: '🀄',
-                name: '小華',
-                action: '達到 Level 8',
-                time: '30 分鐘前',
-              ),
-              _ActivityCard(
-                avatar: '🎯',
-                name: '阿強',
-                action: '解鎖了「進階策略」成就',
-                time: '2 小時前',
-              ),
+              const SizedBox(height: 28),
 
+              // --- Friends Section ---
+              _sectionHeader('好友動態'),
+              const SizedBox(height: 12),
+              _friendActivity('雀友小王', '完成了「碰牌技巧」課程', '10 分鐘前'),
+              _friendActivity('麻將新手', '連續學習第 5 天', '1 小時前'),
+              _friendActivity('廣東仔', '解鎖了「成就：滿分達人」', '3 小時前'),
               const SizedBox(height: 32),
             ],
           ),
@@ -118,29 +174,42 @@ class CommunityScreen extends StatelessWidget {
       ),
     );
   }
-}
 
-class _SectionHeader extends StatelessWidget {
-  final IconData icon;
-  final String title;
+  Widget _statChip(String text, IconData icon) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.white.withAlpha(30),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: Colors.white, size: 14),
+          const SizedBox(width: 4),
+          Text(text,
+              style: GoogleFonts.nunito(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              )),
+        ],
+      ),
+    );
+  }
 
-  const _SectionHeader({required this.icon, required this.title});
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _sectionHeader(String title) {
     return Row(
       children: [
         Container(
           width: 3,
           height: 18,
           decoration: BoxDecoration(
-            color: const Color(0xFF4CAF50),
+            color: const Color(0xFF5B9BD5),
             borderRadius: BorderRadius.circular(2),
           ),
         ),
         const SizedBox(width: 8),
-        Icon(icon, color: const Color(0xFF4CAF50), size: 20),
-        const SizedBox(width: 6),
         Text(
           title,
           style: GoogleFonts.nunito(
@@ -152,166 +221,196 @@ class _SectionHeader extends StatelessWidget {
       ],
     );
   }
-}
 
-class _LeaderboardCard extends StatelessWidget {
-  final int rank;
-  final String name;
-  final int xp;
+  Widget _podiumCard(int rank, String name, String xp, Color color) {
+    final heights = {1: 120.0, 2: 100.0, 3: 85.0};
+    final medals = {1: '🥇', 2: '🥈', 3: '🥉'};
 
-  const _LeaderboardCard({
-    required this.rank,
-    required this.name,
-    required this.xp,
-  });
+    return Column(
+      children: [
+        Text(medals[rank]!, style: const TextStyle(fontSize: 28)),
+        const SizedBox(height: 6),
+        Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: color.withAlpha(30),
+          ),
+          child: Center(
+            child: Text('$rank',
+                style: GoogleFonts.nunito(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                  color: color,
+                )),
+          ),
+        ),
+        const SizedBox(height: 6),
+        Container(
+          width: double.infinity,
+          height: heights[rank],
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(name,
+                  style: GoogleFonts.nunito(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis),
+              const SizedBox(height: 2),
+              Text(xp,
+                  style: GoogleFonts.nunito(
+                    fontSize: 10,
+                    color: Colors.white70,
+                  )),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 
-  @override
-  Widget build(BuildContext context) {
-    final rankColors = [
-      const Color(0xFFE8B93E),
-      const Color(0xFFBDBDBD),
-      const Color(0xFFCD7F32),
-    ];
-    final rankColor = rank <= 3 ? rankColors[rank - 1] : const Color(0xFF9E9E9E);
-
+  Widget _leaderboardItem(int rank, String name, String xp, bool isSelf) {
+    final bgColor = isSelf ? const Color(0xFFE8F5E9) : Colors.white;
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
+      child: Material(
+        color: bgColor,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFFF0F0F0)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha(4),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 32,
-            height: 32,
+        child: InkWell(
+          onTap: () {},
+          borderRadius: BorderRadius.circular(14),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             decoration: BoxDecoration(
-              color: rankColor.withAlpha(30),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: const Color(0xFFF0F0F0)),
             ),
-            child: Center(
-              child: Text(
-                '$rank',
-                style: GoogleFonts.nunito(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w800,
-                  color: rankColor,
+            child: Row(
+              children: [
+                _rankBadge(rank, const Color(0xFF757575)),
+                const SizedBox(width: 12),
+                Container(
+                  width: 32,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: const Color(0xFF4CAF50).withAlpha(20),
+                  ),
+                  child: Icon(Icons.person_rounded,
+                      color: const Color(0xFF4CAF50).withAlpha(150), size: 18),
                 ),
-              ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(name,
+                      style: GoogleFonts.nunito(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xFF2D2D2D),
+                      )),
+                ),
+                Text(xp,
+                    style: GoogleFonts.nunito(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF757575),
+                    )),
+              ],
             ),
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              name,
-              style: GoogleFonts.nunito(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFF2D2D2D),
-              ),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(
-              color: const Color(0xFFE8B93E).withAlpha(25),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Text(
-              '$xp XP',
-              style: GoogleFonts.nunito(
-                fontSize: 12,
-                fontWeight: FontWeight.w700,
-                color: const Color(0xFFE8B93E),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
-}
 
-class _ActivityCard extends StatelessWidget {
-  final String avatar;
-  final String name;
-  final String action;
-  final String time;
+  Widget _rankBadge(int rank, Color color) {
+    return Container(
+      width: 28,
+      height: 28,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: color.withAlpha(20),
+      ),
+      child: Center(
+        child: Text('$rank',
+            style: GoogleFonts.nunito(
+              fontSize: 13,
+              fontWeight: FontWeight.w800,
+              color: color,
+            )),
+      ),
+    );
+  }
 
-  const _ActivityCard({
-    required this.avatar,
-    required this.name,
-    required this.action,
-    required this.time,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _friendActivity(String name, String action, String time) {
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
+      child: Material(
         color: Colors.white,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFFF0F0F0)),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 40,
-            height: 40,
+        child: InkWell(
+          onTap: () {},
+          borderRadius: BorderRadius.circular(14),
+          child: Container(
+            padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: const Color(0xFFF5F5F5),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: const Color(0xFFF0F0F0)),
             ),
-            child: Center(
-              child: Text(avatar, style: const TextStyle(fontSize: 22)),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
               children: [
-                RichText(
-                  text: TextSpan(
-                    style: GoogleFonts.nunito(
-                      fontSize: 13,
-                      color: const Color(0xFF2D2D2D),
-                    ),
-                    children: [
-                      TextSpan(
-                        text: name,
-                        style: const TextStyle(fontWeight: FontWeight.w700),
-                      ),
-                      TextSpan(
-                        text: ' $action',
-                        style: const TextStyle(fontWeight: FontWeight.w500),
-                      ),
-                    ],
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: const Color(0xFF5B9BD5).withAlpha(20),
                   ),
+                  child: Icon(Icons.person_rounded,
+                      color: const Color(0xFF5B9BD5), size: 22),
                 ),
-                const SizedBox(height: 2),
-                Text(
-                  time,
-                  style: GoogleFonts.nunito(
-                    fontSize: 11,
-                    color: const Color(0xFFBDBDBD),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          style: GoogleFonts.nunito(
+                            fontSize: 13,
+                            color: const Color(0xFF2D2D2D),
+                          ),
+                          children: [
+                            TextSpan(
+                              text: name,
+                              style: const TextStyle(fontWeight: FontWeight.w700),
+                            ),
+                            TextSpan(text: ' $action'),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(time,
+                          style: GoogleFonts.nunito(
+                            fontSize: 11,
+                            color: const Color(0xFFBDBDBD),
+                          )),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
