@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/game_state.dart';
+import '../screens/learn_screen.dart';
 import '../widgets/mascot_widget.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -23,7 +24,7 @@ class HomeScreen extends StatelessWidget {
             _buildTopBar(game),
             _buildUnitBanner(game, unitProgress),
             const SizedBox(height: 8),
-            Expanded(child: _buildLearningPath(game)),
+            Expanded(child: _buildLearningPath(context, game)),
           ],
         ),
       ),
@@ -203,7 +204,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   // ─── 垂直節點學習路徑 ───
-  Widget _buildLearningPath(GameState game) {
+  Widget _buildLearningPath(BuildContext context, GameState game) {
     final stages = game.stages;
     if (stages.isEmpty) {
       return const Center(
@@ -221,7 +222,7 @@ class HomeScreen extends StatelessWidget {
         final isInProgress = stage.isUnlocked && !isCompleted;
         final isLast = i == stages.length - 1;
 
-        return _buildPathNode(
+        final node = _buildPathNode(
           index: i + 1,
           title: stage.title,
           subtitle: stage.subtitle,
@@ -241,6 +242,18 @@ class HomeScreen extends StatelessWidget {
           isLast: isLast,
           progress: stage.progress,
           stageColor: stage.color ?? const Color(0xFF4CAF50),
+        );
+
+        if (isLocked) return node;
+
+        return GestureDetector(
+          onTap: () {
+            game.navigateToStage(stage.id);
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const LearnScreen()),
+            );
+          },
+          child: node,
         );
       }),
     );
