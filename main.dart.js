@@ -90308,34 +90308,35 @@ aI(a,b){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e=new A.X0()
 e.MS(42)
 s=b.a
 r=b.b
-q=[new A.h(s*0.06,r*0.22),new A.h(s*0.88,r*0.2),new A.h(s*0.1,r*0.44),new A.h(s*0.86,r*0.46),new A.h(s*0.04,r*0.65),new A.h(s*0.91,r*0.68),new A.h(s*0.08,r*0.84),new A.h(s*0.87,r*0.86),new A.h(s*0.14,r*0.96),new A.h(s*0.82,r*0.97)]
-for(s=a.a,p=0;p<10;++p){o=q[p]
-n=0.7+e.Y2()*0.6
+q=r*0.97
+p=[new A.h(s*0.06,r*0.22),new A.h(s*0.88,r*0.2),new A.h(s*0.1,r*0.44),new A.h(s*0.86,r*0.46),new A.h(s*0.04,r*0.65),new A.h(s*0.91,r*0.68),new A.h(s*0.08,r*0.84),new A.h(s*0.87,r*0.86),new A.h(s*0.14,q),new A.h(s*0.82,q)]
+for(s=a.a,o=0;o<10;++o){n=p[o]
+m=1.4+e.Y2()*0.8
 r=e.Y2()
 $.a3()
-m=new A.jM(B.bN,B.bo,B.du,B.eq,B.c2)
-r=B.d.aL((0.13+r*0.08)*255)
-m.r=A.a5(r,B.jZ.n()>>>16&255,B.jZ.n()>>>8&255,B.jZ.n()&255).gt()
 l=new A.jM(B.bN,B.bo,B.du,B.eq,B.c2)
-l.r=A.a5(r,B.k2.n()>>>16&255,B.k2.n()>>>8&255,B.k2.n()&255).gt()
+r=B.d.aL((0.2+r*0.1)*255)
+l.r=A.a5(r,B.jZ.n()>>>16&255,B.jZ.n()>>>8&255,B.jZ.n()&255).gt()
 k=new A.jM(B.bN,B.bo,B.du,B.eq,B.c2)
-k.r=A.a5(r,B.n.n()>>>16&255,B.n.n()>>>8&255,B.n.n()&255).gt()
-j=20*n
-r=o.a
-i=o.b
-h=j*0.3
-g=A.lL(A.qR(new A.h(r,i+h),16*n,7*n),B.Pr)
-f=m.dt()
+k.r=A.a5(r,B.k2.n()>>>16&255,B.k2.n()>>>8&255,B.k2.n()&255).gt()
+j=new A.jM(B.bN,B.bo,B.du,B.eq,B.c2)
+j.r=A.a5(r,B.n.n()>>>16&255,B.n.n()>>>8&255,B.n.n()&255).gt()
+i=28*m
+r=n.a
+q=n.b
+h=i*0.3
+g=A.lL(A.qR(new A.h(r,q+h),22*m,9*m),B.Pr)
+f=l.dt()
 s.drawRRect(A.oK(g),f)
 f.delete()
+f=j.dt()
+s.drawCircle(r,q-i*0.15,i*0.75,f)
+f.delete()
 f=k.dt()
-s.drawCircle(r,i-j*0.15,j*0.75,f)
+s.drawCircle(r-h,q+i*0.05,i*0.7,f)
 f.delete()
-f=l.dt()
-s.drawCircle(r-h,i+j*0.05,j*0.7,f)
-f.delete()
-f=l.dt()
-s.drawCircle(r+j*0.35,i+j*0.1,j*0.65,f)
+f=k.dt()
+s.drawCircle(r+i*0.35,q+i*0.1,i*0.65,f)
 f.delete()}},
 e7(a){return!1}}
 A.nh.prototype={
