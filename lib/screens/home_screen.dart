@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -12,88 +11,71 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final game = context.watch<GameState>();
-    final totalLessons =
-        game.stages.fold(0, (sum, s) => sum + s.lessonCount);
+    final totalLessons = game.stages.fold(0, (sum, s) => sum + s.lessonCount);
     final unitProgress = totalLessons > 0
         ? (game.completedLessons / totalLessons * 7).round().clamp(0, 7)
         : 3;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F5F0),
+      backgroundColor: const Color(0xFFFFF8F0),
       body: SafeArea(
-        child: Stack(
+        child: Column(
           children: [
-            // ─── 背景裝飾小樹 ───
-            const _BackgroundTrees(),
-            Column(
-              children: [
-                _buildTopBar(game),
-                _buildUnitBanner(game, unitProgress),
-                const SizedBox(height: 12),
-                Expanded(child: _buildLearningPath(context, game)),
-              ],
-            ),
+            _buildTopBar(game),
+            _buildUnitBanner(game, unitProgress),
+            const SizedBox(height: 8),
+            Expanded(child: _buildLearningPath(context, game)),
           ],
         ),
       ),
     );
   }
 
-  // ─── 頂部狀態列 ───
+  // ─── 頂部狀態列 + 熊貓頭像 + 右側圖標 ───
   Widget _buildTopBar(GameState game) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+      color: Colors.white,
       child: Row(
         children: [
-          // 熊貓頭像
-          Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: const Color(0xFF4CAF50), width: 2.5),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFF4CAF50).withAlpha(40),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: const ClipOval(
-              child: MascotWidget(
+          ClipOval(
+            child: Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.shade300, width: 1.5),
+                shape: BoxShape.circle,
+              ),
+              child: const MascotWidget(
                 expression: MascotExpression.happy,
                 size: 44,
               ),
             ),
           ),
           const Spacer(),
-          // 火焰 - 連續天數
-          _buildStat(
-            icon: Icons.local_fire_department_rounded,
-            value: '${game.streak}',
-            color: const Color(0xFFFF7043),
+          _buildStatIcon(
+            icon: Icons.star_rounded,
+            value: '${game.userLevel}',
+            color: const Color(0xFFE8B93E),
           ),
-          const SizedBox(width: 18),
-          // 鑽石 - 積分
-          _buildStat(
+          const SizedBox(width: 20),
+          _buildStatIcon(
             icon: Icons.diamond_rounded,
             value: '${game.xp}',
-            color: const Color(0xFF00BCD4),
+            color: const Color(0xFF5B9BD5),
           ),
-          const SizedBox(width: 18),
-          // 愛心 - 生命
-          _buildStat(
+          const SizedBox(width: 20),
+          _buildStatIcon(
             icon: Icons.favorite_rounded,
-            value: '5',
-            color: const Color(0xFFEF5350),
+            value: '${game.streak}',
+            color: const Color(0xFF4CAF50),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildStat({
+  Widget _buildStatIcon({
     required IconData icon,
     required String value,
     required Color color,
@@ -101,14 +83,14 @@ class HomeScreen extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, color: color, size: 24),
+        Icon(icon, color: color, size: 22),
         const SizedBox(width: 4),
         Text(
           value,
           style: GoogleFonts.nunito(
-            fontSize: 16,
-            fontWeight: FontWeight.w800,
-            color: const Color(0xFF4A3520),
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            color: const Color(0xFF5D4037),
           ),
         ),
       ],
@@ -122,9 +104,9 @@ class HomeScreen extends StatelessWidget {
     final subtitle = stage?.subtitle ?? '學會基本問候語';
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
+      margin: const EdgeInsets.fromLTRB(16, 16, 16, 8),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         gradient: const LinearGradient(
           colors: [Color(0xFF66BB6A), Color(0xFF43A047)],
           begin: Alignment.topLeft,
@@ -132,152 +114,107 @@ class HomeScreen extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF4CAF50).withAlpha(70),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
+            color: const Color(0xFF4CAF50).withAlpha(77),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
-      child: Stack(
-        children: [
-          // 背景裝飾圓點
-          Positioned(
-            top: -10,
-            right: -10,
-            child: Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withAlpha(15),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: -20,
-            left: -20,
-            child: Container(
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withAlpha(10),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
+      child: Padding(
+        padding: const EdgeInsets.all(18),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    '第1單元',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    title,
+                    style: GoogleFonts.nunito(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withAlpha(30),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Text(
-                          '第1單元',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
                       Text(
-                        '$title 👋',
+                        '進度 $unitProgress / 7',
                         style: GoogleFonts.nunito(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w800,
-                          height: 1.1,
+                          color: Colors.white70,
+                          fontSize: 12,
                         ),
                       ),
-                      const SizedBox(height: 14),
-                      // 進度條：金黃色
-                      Text(
-                        '$unitProgress / 7',
-                        style: GoogleFonts.nunito(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 6),
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
+                        borderRadius: BorderRadius.circular(4),
                         child: SizedBox(
-                          height: 10,
+                          height: 8,
                           child: Row(
                             children: [
                               Flexible(
                                 flex: unitProgress,
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color(0xFFFFD54F),
-                                        Color(0xFFFFB300),
-                                      ],
-                                    ),
-                                  ),
+                                  color: const Color(0xFF2E7D32),
                                 ),
                               ),
                               Flexible(
                                 flex: 7 - unitProgress,
                                 child: Container(
-                                  color: Colors.white.withAlpha(50),
+                                  color: Colors.white.withAlpha(77),
                                 ),
                               ),
                             ],
                           ),
                         ),
                       ),
-                      const SizedBox(height: 6),
-                      Text(
-                        subtitle,
-                        style: GoogleFonts.nunito(
-                          color: Colors.white.withAlpha(190),
-                          fontSize: 13,
-                        ),
-                      ),
                     ],
                   ),
-                ),
-                const SizedBox(width: 16),
-                // 打招呼熊貓
-                const MascotWidget(
-                  expression: MascotExpression.wink,
-                  size: 85,
-                ),
-              ],
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    style: GoogleFonts.nunito(
+                      color: Colors.white.withAlpha(200),
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+            const SizedBox(width: 12),
+            const MascotWidget(
+              expression: MascotExpression.wink,
+              size: 80,
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  // ─── 學習路徑：簡潔節點設計 ───
+  // ─── 垂直節點學習路徑 ───
   Widget _buildLearningPath(BuildContext context, GameState game) {
     final stages = game.stages;
     if (stages.isEmpty) {
       return const Center(
-        child: Text(
-          '尚無學習單元',
-          style: TextStyle(color: Colors.grey, fontSize: 16),
-        ),
+        child: Text('尚無學習單元',
+            style: TextStyle(color: Colors.grey, fontSize: 16)),
       );
     }
 
     return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
       children: List.generate(stages.length, (i) {
         final stage = stages[i];
         final isCompleted = stage.progress >= 1.0;
@@ -285,103 +222,101 @@ class HomeScreen extends StatelessWidget {
         final isInProgress = stage.isUnlocked && !isCompleted;
         final isLast = i == stages.length - 1;
 
-        return _buildSimplePathNode(
-          context: context,
-          game: game,
-          stage: stage,
+        final node = _buildPathNode(
           index: i + 1,
+          title: stage.title,
+          subtitle: stage.subtitle,
+          icon: isCompleted
+              ? Icons.star_rounded
+              : isLocked
+                  ? Icons.lock_rounded
+                  : Icons.play_circle_rounded,
+          iconColor: isCompleted
+              ? const Color(0xFFE8B93E)
+              : isLocked
+                  ? Colors.grey.shade400
+                  : stage.color ?? const Color(0xFF4CAF50),
           isCompleted: isCompleted,
           isLocked: isLocked,
           isInProgress: isInProgress,
           isLast: isLast,
+          progress: stage.progress,
+          stageColor: stage.color ?? const Color(0xFF4CAF50),
+        );
+
+        if (isLocked) return node;
+
+        return GestureDetector(
+          onTap: () {
+            game.navigateToStage(stage.id);
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const LearnScreen()),
+            );
+          },
+          child: node,
         );
       }),
     );
   }
 
-  Widget _buildSimplePathNode({
-    required BuildContext context,
-    required GameState game,
-    required dynamic stage,
+  Widget _buildPathNode({
     required int index,
+    required String title,
+    required String subtitle,
+    required IconData icon,
+    required Color iconColor,
     required bool isCompleted,
     required bool isLocked,
     required bool isInProgress,
     required bool isLast,
+    required double progress,
+    required Color stageColor,
   }) {
-    // 節點圖標與顏色
-    final IconData nodeIcon;
-    final Color circleBg;
-    final Color circleBorder;
-    final Color iconColor;
-    final Color titleColor;
-    final String subtitleText;
-
-    if (isCompleted) {
-      nodeIcon = Icons.star_rounded;
-      circleBg = const Color(0xFFE8F5E9);
-      circleBorder = const Color(0xFF4CAF50);
-      iconColor = const Color(0xFFE8B93E);
-      titleColor = const Color(0xFF2E7D32);
-      subtitleText = '已完成';
-    } else if (isLocked) {
-      nodeIcon = Icons.lock_rounded;
-      circleBg = const Color(0xFFF5F5F5);
-      circleBorder = const Color(0xFFBDBDBD);
-      iconColor = const Color(0xFFBDBDBD);
-      titleColor = const Color(0xFFBDBDBD);
-      subtitleText = '鎖定';
-    } else {
-      // 進行中：寶箱圖標
-      nodeIcon = Icons.card_giftcard_rounded;
-      circleBg = const Color(0xFFFFF8E1);
-      circleBorder = const Color(0xFFFFB300);
-      iconColor = const Color(0xFFFF8F00);
-      titleColor = const Color(0xFFE65100);
-      subtitleText = '繼續學習';
-    }
-
-    // 連線顏色
-    final lineColor = isCompleted
-        ? const Color(0xFF4CAF50).withAlpha(80)
-        : const Color(0xFFE0E0E0);
-
-    final node = SizedBox(
-      height: 110,
+    return SizedBox(
+      height: 100,
       child: Row(
         children: [
-          // 左側：圓形圖標 + 下方連線
           SizedBox(
             width: 56,
             child: Column(
               children: [
-                // 圓形圖標
                 Container(
-                  width: 52,
-                  height: 52,
+                  width: 48,
+                  height: 48,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: circleBg,
-                    border: Border.all(color: circleBorder, width: 2.5),
-                    boxShadow: (isCompleted || isInProgress)
+                    color: isCompleted
+                        ? Colors.white
+                        : isLocked
+                            ? const Color(0xFFF5F5F5)
+                            : const Color(0xFFE8F5E9),
+                    border: Border.all(
+                      color: isCompleted
+                          ? const Color(0xFF4CAF50)
+                          : isLocked
+                              ? Colors.grey.shade300
+                              : const Color(0xFF4CAF50),
+                      width: 2,
+                    ),
+                    boxShadow: isCompleted || isInProgress
                         ? [
                             BoxShadow(
-                              color: circleBorder.withAlpha(50),
-                              blurRadius: 8,
+                              color: const Color(0xFF4CAF50).withAlpha(51),
+                              blurRadius: 6,
                               offset: const Offset(0, 2),
                             ),
                           ]
                         : null,
                   ),
-                  child: Icon(nodeIcon, color: iconColor, size: 28),
+                  child: Icon(icon, color: iconColor, size: 24),
                 ),
-                // 連線
                 if (!isLast)
                   Expanded(
-                    child: Center(
-                      child: Container(
-                        width: 3,
-                        color: lineColor,
+                    child: CustomPaint(
+                      painter: _DashedLinePainter(
+                        color: isCompleted
+                            ? const Color(0xFF4CAF50).withAlpha(102)
+                            : Colors.grey.shade300,
                       ),
                     ),
                   ),
@@ -389,33 +324,105 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 16),
-          // 右側：標題文字
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
+            child: Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: isCompleted
+                      ? const Color(0xFF4CAF50).withAlpha(77)
+                      : Colors.grey.shade200,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(8),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Row(
                 children: [
-                  Text(
-                    '$index. ${stage.title}',
-                    style: GoogleFonts.nunito(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w800,
-                      color: titleColor,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '$index. $title',
+                          style: GoogleFonts.nunito(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: isCompleted
+                                ? const Color(0xFF2E7D32)
+                                : isLocked
+                                    ? Colors.grey.shade500
+                                    : const Color(0xFF333333),
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          subtitle,
+                          style: GoogleFonts.nunito(
+                            fontSize: 12,
+                            color: Colors.grey.shade400,
+                          ),
+                        ),
+                        if (isInProgress) ...[
+                          const SizedBox(height: 6),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(3),
+                            child: SizedBox(
+                              height: 4,
+                              child: LinearProgressIndicator(
+                                value: progress,
+                                backgroundColor: Colors.grey.shade200,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    stageColor),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    subtitleText,
-                    style: GoogleFonts.nunito(
-                      fontSize: 13,
-                      color: isLocked
-                          ? const Color(0xFFBDBDBD)
-                          : const Color(0xFF8D6E63),
-                      fontWeight: FontWeight.w600,
+                  if (isCompleted)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF4CAF50).withAlpha(26),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        '已完成',
+                        style: GoogleFonts.nunito(
+                          fontSize: 11,
+                          color: const Color(0xFF4CAF50),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
-                  ),
+                  if (isLocked)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade100,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        '鎖定',
+                        style: GoogleFonts.nunito(
+                          fontSize: 11,
+                          color: Colors.grey.shade400,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -423,105 +430,30 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
     );
-
-    if (isLocked) return node;
-
-    return GestureDetector(
-      onTap: () {
-        game.navigateToStage(stage.id);
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const LearnScreen()),
-        );
-      },
-      child: node,
-    );
   }
 }
 
-// ─── 背景裝飾小樹 ───
-class _BackgroundTrees extends StatelessWidget {
-  const _BackgroundTrees();
+class _DashedLinePainter extends CustomPainter {
+  final Color color;
+  _DashedLinePainter({required this.color});
 
-  @override
-  Widget build(BuildContext context) {
-    return Positioned.fill(
-      child: IgnorePointer(
-        child: CustomPaint(
-          painter: _TreePainter(),
-        ),
-      ),
-    );
-  }
-}
-
-class _TreePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final rng = Random(42); // 固定種子，保持一致性
-
-    // 繪製多棵裝飾小樹，散佈在背景
-    final treePositions = [
-      Offset(size.width * 0.08, size.height * 0.18),
-      Offset(size.width * 0.85, size.height * 0.25),
-      Offset(size.width * 0.12, size.height * 0.48),
-      Offset(size.width * 0.88, size.height * 0.52),
-      Offset(size.width * 0.05, size.height * 0.72),
-      Offset(size.width * 0.90, size.height * 0.76),
-      Offset(size.width * 0.15, size.height * 0.88),
-      Offset(size.width * 0.82, size.height * 0.92),
-    ];
-
-    for (final pos in treePositions) {
-      final scale = 0.6 + rng.nextDouble() * 0.5;
-      final opacity = 0.08 + rng.nextDouble() * 0.06;
-      _drawTree(canvas, pos, scale, opacity, rng);
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
+    const double dashWidth = 5;
+    const double dashSpace = 4;
+    double startY = 0;
+    while (startY < size.height) {
+      canvas.drawLine(
+        Offset(size.width / 2, startY),
+        Offset(size.width / 2, (startY + dashWidth).clamp(0, size.height)),
+        paint,
+      );
+      startY += dashWidth + dashSpace;
     }
-  }
-
-  void _drawTree(
-      Canvas canvas, Offset pos, double scale, double opacity, Random rng) {
-    final trunkPaint = Paint()
-      ..color = const Color(0xFF8D6E63).withAlpha((opacity * 255).round())
-      ..style = PaintingStyle.fill;
-
-    final crownPaint = Paint()
-      ..color = const Color(0xFF81C784).withAlpha((opacity * 255).round())
-      ..style = PaintingStyle.fill;
-
-    final crownDarkPaint = Paint()
-      ..color = const Color(0xFF66BB6A).withAlpha((opacity * 255).round())
-      ..style = PaintingStyle.fill;
-
-    final trunkW = 6 * scale;
-    final trunkH = 14 * scale;
-    final crownR = 16 * scale;
-
-    // 樹幹
-    final trunkRect = RRect.fromRectAndRadius(
-      Rect.fromCenter(
-          center: Offset(pos.dx, pos.dy + crownR * 0.3),
-          width: trunkW,
-          height: trunkH),
-      const Radius.circular(3),
-    );
-    canvas.drawRRect(trunkRect, trunkPaint);
-
-    // 樹冠 - 三層圓形疊加
-    canvas.drawCircle(
-      Offset(pos.dx, pos.dy - crownR * 0.15),
-      crownR * 0.75,
-      crownDarkPaint,
-    );
-    canvas.drawCircle(
-      Offset(pos.dx - crownR * 0.3, pos.dy + crownR * 0.05),
-      crownR * 0.7,
-      crownPaint,
-    );
-    canvas.drawCircle(
-      Offset(pos.dx + crownR * 0.35, pos.dy + crownR * 0.1),
-      crownR * 0.65,
-      crownPaint,
-    );
   }
 
   @override
