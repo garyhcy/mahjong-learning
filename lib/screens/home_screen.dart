@@ -455,13 +455,13 @@ class _TreePainter extends CustomPainter {
       Offset(size.width * 0.91, size.height * 0.68),
       Offset(size.width * 0.08, size.height * 0.84),
       Offset(size.width * 0.87, size.height * 0.86),
-      Offset(size.width * 0.14, size.height * 0.96),
+      Offset(size.width * 0.14, size.height * 0.97),
       Offset(size.width * 0.82, size.height * 0.97),
     ];
 
     for (final pos in treePositions) {
-      final scale = 0.7 + rng.nextDouble() * 0.6;
-      final opacity = 0.13 + rng.nextDouble() * 0.08;
+      final scale = 1.4 + rng.nextDouble() * 0.8;
+      final opacity = 0.20 + rng.nextDouble() * 0.10;
       _drawTree(canvas, pos, scale, opacity, rng);
     }
   }
@@ -480,9 +480,9 @@ class _TreePainter extends CustomPainter {
       ..color = const Color(0xFF4CAF50).withAlpha((opacity * 255).round())
       ..style = PaintingStyle.fill;
 
-    final trunkW = 7 * scale;
-    final trunkH = 16 * scale;
-    final crownR = 20 * scale;
+    final trunkW = 9 * scale;
+    final trunkH = 22 * scale;
+    final crownR = 28 * scale;
 
     // 樹幹
     final trunkRect = RRect.fromRectAndRadius(
