@@ -170,21 +170,21 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            // 右側吉祥物 - 底部對齊，允許向上溢出
+            // 右側吉祥物 - 底部對齊，尺寸收細避免破圖
             Positioned(
-              right: 0,
+              right: 8,
               bottom: 0,
               child: MascotWidget(
                 expression: MascotExpression.wink,
-                size: 140,
+                size: 110,
               ),
             ),
-            // 左側文字區（放在吉祥物之上以確保不被遮擋）
+            // 左側文字區
             Positioned(
               left: 20,
               top: 0,
               bottom: 0,
-              right: 120,
+              right: 115,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -330,12 +330,16 @@ class HomeScreen extends StatelessWidget {
     final Color titleColor;
     final Widget nodeChild;
 
+    // 獎勵關卡：每隔3個普通關卡插入1個（index 3, 7, 11...即第4、8、12個）
+    final isBonusStage = (index % 4 == 0);
+
     if (isCompleted) {
+      // 已完成：皇冠
       circleBg = const Color(0xFF4CAF50);
       circleBorder = const Color(0xFF388E3C);
       shadowColor = const Color(0xFF4CAF50);
       titleColor = const Color(0xFF2E7D32);
-      nodeChild = const Icon(Icons.star_rounded,
+      nodeChild = const Icon(Icons.workspace_premium_rounded,
           color: Color(0xFFFFD54F), size: 36);
     } else if (isLocked) {
       circleBg = const Color(0xFFEEEEEE);
@@ -344,18 +348,26 @@ class HomeScreen extends StatelessWidget {
       titleColor = const Color(0xFFBDBDBD);
       nodeChild = const Icon(Icons.lock_rounded,
           color: Color(0xFFBDBDBD), size: 30);
-    } else {
-      // 進行中：寶箱圖片
+    } else if (isBonusStage) {
+      // 獎勵關卡（進行中）：寶箱
       circleBg = const Color(0xFFFFF8E1);
       circleBorder = const Color(0xFFFFB300);
       shadowColor = const Color(0xFFFFB300);
       titleColor = const Color(0xFFE65100);
       nodeChild = Image.asset(
         'assets/images/treasure_chest.png',
-        width: 46,
-        height: 46,
+        width: 54,
+        height: 54,
         fit: BoxFit.contain,
       );
+    } else {
+      // 當前普通關卡（進行中）：星號
+      circleBg = const Color(0xFF4CAF50);
+      circleBorder = const Color(0xFF2E7D32);
+      shadowColor = const Color(0xFF4CAF50);
+      titleColor = const Color(0xFF1B5E20);
+      nodeChild = const Icon(Icons.star_rounded,
+          color: Colors.white, size: 38);
     }
 
     final lineColor = isCompleted
