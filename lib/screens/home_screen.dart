@@ -341,6 +341,26 @@ class HomeScreen extends StatelessWidget {
       titleColor = const Color(0xFF2E7D32);
       nodeChild = const Icon(Icons.workspace_premium_rounded,
           color: Color(0xFFFFD54F), size: 36);
+    } else if (isLocked && isBonusStage) {
+      // 鎖定的獎勵關卡：灰色寶箱
+      circleBg = const Color(0xFFEEEEEE);
+      circleBorder = const Color(0xFFCECECE);
+      shadowColor = Colors.transparent;
+      titleColor = const Color(0xFFBDBDBD);
+      nodeChild = ColorFiltered(
+        colorFilter: const ColorFilter.matrix([
+          0.2126, 0.7152, 0.0722, 0, 0,
+          0.2126, 0.7152, 0.0722, 0, 0,
+          0.2126, 0.7152, 0.0722, 0, 0,
+          0,      0,      0,      1, 0,
+        ]),
+        child: Image.asset(
+          'assets/images/treasure_chest.png',
+          width: 54,
+          height: 54,
+          fit: BoxFit.contain,
+        ),
+      );
     } else if (isLocked) {
       circleBg = const Color(0xFFEEEEEE);
       circleBorder = const Color(0xFFCECECE);
