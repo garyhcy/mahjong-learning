@@ -45,25 +45,27 @@ class HomeScreen extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
       child: Row(
         children: [
-          // 熊貓頭像
+          // 熊貓頭像 - 使用專屬 avatar 圖片
           Container(
-            width: 44,
-            height: 44,
+            width: 46,
+            height: 46,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(color: const Color(0xFF4CAF50), width: 2.5),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF4CAF50).withAlpha(40),
+                  color: const Color(0xFF4CAF50).withAlpha(50),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
               ],
             ),
-            child: const ClipOval(
-              child: MascotWidget(
-                expression: MascotExpression.happy,
-                size: 44,
+            child: ClipOval(
+              child: Image.asset(
+                'assets/images/avatar.png',
+                width: 46,
+                height: 46,
+                fit: BoxFit.cover,
               ),
             ),
           ),
@@ -119,11 +121,11 @@ class HomeScreen extends StatelessWidget {
   Widget _buildUnitBanner(GameState game, int unitProgress) {
     final stage = game.stages.isNotEmpty ? game.stages.first : null;
     final title = stage?.title ?? '認識麻將';
-    final stageNum = 1;
+    const stageNum = 1;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
-      height: 120,
+      height: 130,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(22),
         gradient: const LinearGradient(
@@ -139,143 +141,139 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          // 背景光暈裝飾
-          Positioned(
-            top: -15,
-            right: 60,
-            child: Container(
-              width: 90,
-              height: 90,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withAlpha(18),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(22),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            // 背景光暈裝飾
+            Positioned(
+              top: -15,
+              right: 60,
+              child: Container(
+                width: 90,
+                height: 90,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withAlpha(18),
+                ),
               ),
             ),
-          ),
-          Positioned(
-            bottom: -20,
-            left: 30,
-            child: Container(
-              width: 70,
-              height: 70,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withAlpha(12),
+            Positioned(
+              bottom: -20,
+              left: 30,
+              child: Container(
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withAlpha(12),
+                ),
               ),
             ),
-          ),
-          // 內容
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 16, 16, 16),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // 左側文字區
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
+            // 右側吉祥物 - 底部對齊，允許向上溢出
+            Positioned(
+              right: 0,
+              bottom: 0,
+              child: MascotWidget(
+                expression: MascotExpression.wink,
+                size: 140,
+              ),
+            ),
+            // 左側文字區（放在吉祥物之上以確保不被遮擋）
+            Positioned(
+              left: 20,
+              top: 0,
+              bottom: 0,
+              right: 120,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // 單元標籤
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withAlpha(35),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      '第 $stageNum 單元',
+                      style: GoogleFonts.nunito(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  // 單元標題
+                  Text(
+                    title,
+                    style: GoogleFonts.nunito(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w900,
+                      height: 1.1,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 10),
+                  // 進度條
+                  Row(
                     children: [
-                      // 單元標籤
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 3),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withAlpha(35),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          '第 $stageNum 單元',
-                          style: GoogleFonts.nunito(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 0.5,
+                      Expanded(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(6),
+                          child: SizedBox(
+                            height: 8,
+                            child: Row(
+                              children: [
+                                if (unitProgress > 0)
+                                  Flexible(
+                                    flex: unitProgress,
+                                    child: Container(
+                                      decoration: const BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Color(0xFFFFD54F),
+                                            Color(0xFFFFB300),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                if (7 - unitProgress > 0)
+                                  Flexible(
+                                    flex: 7 - unitProgress,
+                                    child: Container(
+                                      color: Colors.white.withAlpha(45),
+                                    ),
+                                  ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 6),
-                      // 單元標題
+                      const SizedBox(width: 8),
                       Text(
-                        title,
+                        '$unitProgress / 7',
                         style: GoogleFonts.nunito(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.w900,
-                          height: 1.1,
+                          color: Colors.white.withAlpha(220),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 10),
-                      // 進度條
-                      Row(
-                        children: [
-                          Expanded(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(6),
-                              child: SizedBox(
-                                height: 8,
-                                child: Row(
-                                  children: [
-                                    if (unitProgress > 0)
-                                      Flexible(
-                                        flex: unitProgress,
-                                        child: Container(
-                                          decoration: const BoxDecoration(
-                                            gradient: LinearGradient(
-                                              colors: [
-                                                Color(0xFFFFD54F),
-                                                Color(0xFFFFB300),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    if (7 - unitProgress > 0)
-                                      Flexible(
-                                        flex: 7 - unitProgress,
-                                        child: Container(
-                                          color: Colors.white.withAlpha(45),
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            '$unitProgress / 7',
-                            style: GoogleFonts.nunito(
-                              color: Colors.white.withAlpha(220),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
                       ),
                     ],
                   ),
-                ),
-                // 右側熊貓
-                SizedBox(
-                  width: 90,
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: MascotWidget(
-                      expression: MascotExpression.wink,
-                      size: 95,
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -293,7 +291,7 @@ class HomeScreen extends StatelessWidget {
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.only(top: 16, bottom: 32),
+      padding: const EdgeInsets.only(top: 20, bottom: 40),
       itemCount: stages.length,
       itemBuilder: (context, i) {
         final stage = stages[i];
@@ -339,26 +337,30 @@ class HomeScreen extends StatelessWidget {
       shadowColor = const Color(0xFF4CAF50);
       titleColor = const Color(0xFF2E7D32);
       nodeChild = const Icon(Icons.star_rounded,
-          color: Color(0xFFFFD54F), size: 34);
+          color: Color(0xFFFFD54F), size: 36);
     } else if (isLocked) {
       circleBg = const Color(0xFFEEEEEE);
       circleBorder = const Color(0xFFCECECE);
       shadowColor = Colors.transparent;
       titleColor = const Color(0xFFBDBDBD);
       nodeChild = const Icon(Icons.lock_rounded,
-          color: Color(0xFFBDBDBD), size: 28);
+          color: Color(0xFFBDBDBD), size: 30);
     } else {
-      // 進行中：寶箱
+      // 進行中：寶箱圖片
       circleBg = const Color(0xFFFFF8E1);
       circleBorder = const Color(0xFFFFB300);
       shadowColor = const Color(0xFFFFB300);
       titleColor = const Color(0xFFE65100);
-      nodeChild = const Icon(Icons.card_giftcard_rounded,
-          color: Color(0xFFFF8F00), size: 32);
+      nodeChild = Image.asset(
+        'assets/images/treasure_chest.png',
+        width: 46,
+        height: 46,
+        fit: BoxFit.contain,
+      );
     }
 
     final lineColor = isCompleted
-        ? const Color(0xFF4CAF50).withAlpha(100)
+        ? const Color(0xFF4CAF50).withAlpha(120)
         : const Color(0xFFD0D0D0);
 
     return Column(
@@ -377,25 +379,25 @@ class HomeScreen extends StatelessWidget {
             children: [
               // 圓形節點
               Container(
-                width: 72,
-                height: 72,
+                width: 80,
+                height: 80,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: circleBg,
-                  border: Border.all(color: circleBorder, width: 3),
+                  border: Border.all(color: circleBorder, width: 3.5),
                   boxShadow: shadowColor != Colors.transparent
                       ? [
                           BoxShadow(
-                            color: shadowColor.withAlpha(70),
-                            blurRadius: 14,
-                            offset: const Offset(0, 4),
+                            color: shadowColor.withAlpha(80),
+                            blurRadius: 16,
+                            offset: const Offset(0, 5),
                           ),
                         ]
                       : null,
                 ),
                 child: Center(child: nodeChild),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
               // 課程名稱
               Text(
                 '$index. ${stage.title}',
@@ -409,12 +411,12 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
         ),
-        // 連線
+        // 連線（加長）
         if (!isLast)
           Container(
-            width: 3,
-            height: 28,
-            margin: const EdgeInsets.symmetric(vertical: 4),
+            width: 3.5,
+            height: 40,
+            margin: const EdgeInsets.symmetric(vertical: 6),
             decoration: BoxDecoration(
               color: lineColor,
               borderRadius: BorderRadius.circular(2),
@@ -446,22 +448,25 @@ class _TreePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final rng = Random(42);
 
+    // 左右兩側各5棵，均勻分佈在路徑兩旁
     final treePositions = [
-      Offset(size.width * 0.06, size.height * 0.22),
-      Offset(size.width * 0.88, size.height * 0.20),
-      Offset(size.width * 0.10, size.height * 0.44),
-      Offset(size.width * 0.86, size.height * 0.46),
-      Offset(size.width * 0.04, size.height * 0.65),
-      Offset(size.width * 0.91, size.height * 0.68),
-      Offset(size.width * 0.08, size.height * 0.84),
-      Offset(size.width * 0.87, size.height * 0.86),
-      Offset(size.width * 0.14, size.height * 0.97),
-      Offset(size.width * 0.82, size.height * 0.97),
+      // 左側
+      Offset(size.width * 0.05, size.height * 0.18),
+      Offset(size.width * 0.08, size.height * 0.38),
+      Offset(size.width * 0.04, size.height * 0.56),
+      Offset(size.width * 0.09, size.height * 0.74),
+      Offset(size.width * 0.06, size.height * 0.91),
+      // 右側
+      Offset(size.width * 0.92, size.height * 0.22),
+      Offset(size.width * 0.88, size.height * 0.42),
+      Offset(size.width * 0.93, size.height * 0.60),
+      Offset(size.width * 0.87, size.height * 0.78),
+      Offset(size.width * 0.91, size.height * 0.94),
     ];
 
     for (final pos in treePositions) {
-      final scale = 1.4 + rng.nextDouble() * 0.8;
-      final opacity = 0.20 + rng.nextDouble() * 0.10;
+      final scale = 1.5 + rng.nextDouble() * 0.8;
+      final opacity = 0.22 + rng.nextDouble() * 0.10;
       _drawTree(canvas, pos, scale, opacity, rng);
     }
   }
@@ -482,7 +487,7 @@ class _TreePainter extends CustomPainter {
 
     final trunkW = 9 * scale;
     final trunkH = 22 * scale;
-    final crownR = 28 * scale;
+    final crownR = 30 * scale;
 
     // 樹幹
     final trunkRect = RRect.fromRectAndRadius(
