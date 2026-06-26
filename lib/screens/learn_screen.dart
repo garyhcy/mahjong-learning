@@ -804,12 +804,14 @@ class _LearnScreenState extends State<LearnScreen> {
             ],
           ),
           const SizedBox(height: 20),
-          // Question
-          Text(q.question,
-              style: GoogleFonts.nunito(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFF2D2D2D))),
+          // Question (supports {{tile_id}} markers)
+          Text.rich(
+            TextSpan(children: _parseDialogueText(q.question)),
+            style: GoogleFonts.nunito(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                color: const Color(0xFF2D2D2D)),
+          ),
           const SizedBox(height: 20),
 
           // ── Render by question type ──
@@ -948,14 +950,16 @@ class _LearnScreenState extends State<LearnScreen> {
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: Text(option,
-                          style: GoogleFonts.nunito(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: _feedbackActive && !isSelected &&
-                                      idx != q.correctIndex
-                                  ? const Color(0xFFBDBDBD)
-                                  : const Color(0xFF2D2D2D))),
+                      child: Text.rich(
+                        TextSpan(children: _parseDialogueText(option)),
+                        style: GoogleFonts.nunito(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: _feedbackActive && !isSelected &&
+                                    idx != q.correctIndex
+                                ? const Color(0xFFBDBDBD)
+                                : const Color(0xFF2D2D2D)),
+                      ),
                     ),
                     if (_feedbackActive && idx == q.correctIndex)
                       const Icon(Icons.check_circle_rounded,

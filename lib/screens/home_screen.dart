@@ -86,7 +86,7 @@ class HomeScreen extends StatelessWidget {
           // 愛心 - 生命
           _buildStat(
             icon: Icons.favorite_rounded,
-            value: '5',
+            value: '${game.hearts}',
             color: const Color(0xFFEF5350),
           ),
         ],
@@ -118,9 +118,18 @@ class HomeScreen extends StatelessWidget {
 
   // ─── 綠色單元橫幅 ───
   Widget _buildUnitBanner(GameState game, int unitProgress) {
-    final stage = game.stages.isNotEmpty ? game.stages.first : null;
+    // 找出最早一個未完成的已解鎖 Stage 作為「當前單元」
+    final currentStageIndex = game.stages.indexWhere(
+      (s) => s.isUnlocked && s.progress < 1.0,
+    );
+    final stageIndex = currentStageIndex >= 0 ? currentStageIndex : 0;
+    final stage = game.stages.isNotEmpty ? game.stages[stageIndex] : null;
     final title = stage?.title ?? '認識麻將';
-    const stageNum = 1;
+    final stageNum = stageIndex + 1;
+    final stageProgress = stage != null && stage.lessonCount > 0
+        ? stage.completedLessons
+        : 0;
+    final stageTotal = stage?.lessonCount ?? 7;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -231,9 +240,9 @@ class HomeScreen extends StatelessWidget {
                             height: 8,
                             child: Row(
                               children: [
-                                if (unitProgress > 0)
+                                if (stageProgress > 0)
                                   Flexible(
-                                    flex: unitProgress,
+                                    flex: stageProgress,
                                     child: Container(
                                       decoration: const BoxDecoration(
                                         gradient: LinearGradient(
@@ -245,9 +254,9 @@ class HomeScreen extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                if (7 - unitProgress > 0)
+                                if (stageTotal - stageProgress > 0)
                                   Flexible(
-                                    flex: 7 - unitProgress,
+                                    flex: stageTotal - stageProgress,
                                     child: Container(
                                       color: Colors.white.withAlpha(45),
                                     ),
@@ -259,7 +268,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        '$unitProgress / 7',
+                        '$stageProgress / $stageTotal',
                         style: GoogleFonts.nunito(
                           color: Colors.white.withAlpha(220),
                           fontSize: 12,
@@ -333,8 +342,14 @@ class HomeScreen extends StatelessWidget {
     // 獎勵關卡：每隔3個普通關卡插入1個（index 3, 7, 11...即第4、8、12個）
     final isBonusStage = (index % 4 == 0);
 
+    // 判斷是否為「真正當前進行中」的第一個未完成已解鎖 Stage
+    final currentStageIndex = game.stages.indexWhere(
+      (s) => s.isUnlocked && s.progress < 1.0,
+    );
+    final isCurrentStage = (index - 1) == currentStageIndex;
+
     if (isCompleted) {
-      // 已完成：皇冠
+      // 100% 完成：皇冠
       circleBg = const Color(0xFF4CAF50);
       circleBorder = const Color(0xFF388E3C);
       shadowColor = const Color(0xFF4CAF50);
@@ -368,8 +383,8 @@ class HomeScreen extends StatelessWidget {
       titleColor = const Color(0xFFBDBDBD);
       nodeChild = const Icon(Icons.lock_rounded,
           color: Color(0xFFBDBDBD), size: 30);
-    } else if (isBonusStage) {
-      // 獎勵關卡（進行中）：寶箱
+    } else if (isBonusStage && isCurrentStage) {
+      // 當前獎勵關卡（進行中）：彩色寶箱
       circleBg = const Color(0xFFFFF8E1);
       circleBorder = const Color(0xFFFFB300);
       shadowColor = const Color(0xFFFFB300);
@@ -380,7 +395,7 @@ class HomeScreen extends StatelessWidget {
         height: 54,
         fit: BoxFit.contain,
       );
-    } else {
+    } else if (isCurrentStage) {
       // 當前普通關卡（進行中）：星號
       circleBg = const Color(0xFF4CAF50);
       circleBorder = const Color(0xFF2E7D32);
@@ -388,6 +403,34 @@ class HomeScreen extends StatelessWidget {
       titleColor = const Color(0xFF1B5E20);
       nodeChild = const Icon(Icons.star_rounded,
           color: Colors.white, size: 38);
+    } else if (isBonusStage) {
+      // 已解鎖但非當前的獎勵關卡：灰色寶箱（與鎖定一致）
+      circleBg = const Color(0xFFEEEEEE);
+      circleBorder = const Color(0xFFCECECE);
+      shadowColor = Colors.transparent;
+      titleColor = const Color(0xFFBDBDBD);
+      nodeChild = ColorFiltered(
+        colorFilter: const ColorFilter.matrix([
+          0.2126, 0.7152, 0.0722, 0, 0,
+          0.2126, 0.7152, 0.0722, 0, 0,
+          0.2126, 0.7152, 0.0722, 0, 0,
+          0,      0,      0,      1, 0,
+        ]),
+        child: Image.asset(
+          'assets/images/treasure_chest.png',
+          width: 54,
+          height: 54,
+          fit: BoxFit.contain,
+        ),
+      );
+    } else {
+      // 已解鎖但非當前的普通關卡：剔號
+      circleBg = const Color(0xFFE8F5E9);
+      circleBorder = const Color(0xFF81C784);
+      shadowColor = Colors.transparent;
+      titleColor = const Color(0xFF388E3C);
+      nodeChild = const Icon(Icons.check_rounded,
+          color: Color(0xFF4CAF50), size: 36);
     }
 
     final lineColor = isCompleted
