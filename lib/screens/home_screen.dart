@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -427,7 +426,7 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-// ─── 背景裝飾小樹 ───
+// ─── 背景圖片（含樹木的草地） ───
 class _BackgroundTrees extends StatelessWidget {
   const _BackgroundTrees();
 
@@ -435,88 +434,12 @@ class _BackgroundTrees extends StatelessWidget {
   Widget build(BuildContext context) {
     return Positioned.fill(
       child: IgnorePointer(
-        child: CustomPaint(
-          painter: _TreePainter(),
+        child: Image.asset(
+          'assets/images/background.png',
+          fit: BoxFit.cover,
+          alignment: Alignment.topCenter,
         ),
       ),
     );
   }
-}
-
-class _TreePainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final rng = Random(42);
-
-    // 左右兩側各5棵，均勻分佈在路徑兩旁
-    final treePositions = [
-      // 左側
-      Offset(size.width * 0.05, size.height * 0.18),
-      Offset(size.width * 0.08, size.height * 0.38),
-      Offset(size.width * 0.04, size.height * 0.56),
-      Offset(size.width * 0.09, size.height * 0.74),
-      Offset(size.width * 0.06, size.height * 0.91),
-      // 右側
-      Offset(size.width * 0.92, size.height * 0.22),
-      Offset(size.width * 0.88, size.height * 0.42),
-      Offset(size.width * 0.93, size.height * 0.60),
-      Offset(size.width * 0.87, size.height * 0.78),
-      Offset(size.width * 0.91, size.height * 0.94),
-    ];
-
-    for (final pos in treePositions) {
-      final scale = 1.5 + rng.nextDouble() * 0.8;
-      final opacity = 0.22 + rng.nextDouble() * 0.10;
-      _drawTree(canvas, pos, scale, opacity, rng);
-    }
-  }
-
-  void _drawTree(
-      Canvas canvas, Offset pos, double scale, double opacity, Random rng) {
-    final trunkPaint = Paint()
-      ..color = const Color(0xFF8D6E63).withAlpha((opacity * 255).round())
-      ..style = PaintingStyle.fill;
-
-    final crownPaint = Paint()
-      ..color = const Color(0xFF81C784).withAlpha((opacity * 255).round())
-      ..style = PaintingStyle.fill;
-
-    final crownDarkPaint = Paint()
-      ..color = const Color(0xFF4CAF50).withAlpha((opacity * 255).round())
-      ..style = PaintingStyle.fill;
-
-    final trunkW = 9 * scale;
-    final trunkH = 22 * scale;
-    final crownR = 30 * scale;
-
-    // 樹幹
-    final trunkRect = RRect.fromRectAndRadius(
-      Rect.fromCenter(
-          center: Offset(pos.dx, pos.dy + crownR * 0.3),
-          width: trunkW,
-          height: trunkH),
-      const Radius.circular(3),
-    );
-    canvas.drawRRect(trunkRect, trunkPaint);
-
-    // 樹冠 - 三層圓形疊加
-    canvas.drawCircle(
-      Offset(pos.dx, pos.dy - crownR * 0.15),
-      crownR * 0.75,
-      crownDarkPaint,
-    );
-    canvas.drawCircle(
-      Offset(pos.dx - crownR * 0.3, pos.dy + crownR * 0.05),
-      crownR * 0.7,
-      crownPaint,
-    );
-    canvas.drawCircle(
-      Offset(pos.dx + crownR * 0.35, pos.dy + crownR * 0.1),
-      crownR * 0.65,
-      crownPaint,
-    );
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
