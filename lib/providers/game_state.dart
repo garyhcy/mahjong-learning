@@ -776,6 +776,32 @@ class GameState extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Master mode: unlock all stages for testing
+  void activateMasterMode() {
+    _isPremium = true;
+    _hearts = maxHearts;
+    _lastHeartLossAt = null;
+    for (final stage in _stages) {
+      stage.isUnlocked = true;
+    }
+    _persist();
+    notifyListeners();
+  }
+
+  /// Reset master mode: lock stages back to normal progression
+  void deactivateMasterMode() {
+    _isPremium = false;
+    for (int i = 0; i < _stages.length; i++) {
+      if (i == 0) {
+        _stages[i].isUnlocked = true;
+      } else {
+        _stages[i].isUnlocked = _stages[i - 1].progress >= 0.7;
+      }
+    }
+    _persist();
+    notifyListeners();
+  }
+
   String? getNextLessonId() {
     if (_currentLessonId == null) return null;
 
