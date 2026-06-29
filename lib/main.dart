@@ -191,11 +191,11 @@ class _MainShellState extends State<MainShell> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _navItem(0, Icons.home_rounded, '首頁'),
-                    _navItem(1, Icons.people_rounded, '社區'),
-                    _navItem(2, Icons.school_rounded, '練習'),
-                    _navItem(3, Icons.emoji_events_rounded, '成就'),
-                    _navItem(4, Icons.more_horiz_rounded, '更多'),
+                    _navItem(0, Icons.home_rounded, 'Home'),
+                    _navItem(1, Icons.people_rounded, 'Community'),
+                    _navItem(2, Icons.school_rounded, 'Practice'),
+                    _navItem(3, Icons.emoji_events_rounded, 'Awards'),
+                    _navItem(4, Icons.more_horiz_rounded, 'More'),
                   ],
                 ),
               ),
