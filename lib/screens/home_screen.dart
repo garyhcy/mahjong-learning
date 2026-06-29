@@ -611,8 +611,9 @@ class _BackgroundTrees extends StatelessWidget {
       child: IgnorePointer(
         child: Image.asset(
           'assets/images/background.png',
-          fit: BoxFit.cover,
+          fit: BoxFit.fitWidth,
           alignment: Alignment.topCenter,
+          repeat: ImageRepeat.repeatY,
         ),
       ),
     );
