@@ -44,84 +44,85 @@ class _MoreScreenState extends State<MoreScreen> {
               ),
               const SizedBox(height: 20),
 
-              // Profile Card - tap 5 times to reveal master mode
-              GestureDetector(
-                onTap: () {
-                  _tapCount++;
-                  if (_tapCount >= 5 && !_masterUnlocked) {
-                    setState(() {
-                      _masterUnlocked = true;
-                    });
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Master Mode unlocked!'),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
-                  }
-                },
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF4CAF50), Color(0xFF66BB6A)],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0xFF4CAF50).withAlpha(40),
-                        blurRadius: 12,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
+              // Profile Card - tap 5 times on mascot to reveal master mode
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF4CAF50), Color(0xFF66BB6A)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
-                  child: Row(
-                    children: [
-                      const MascotWidget(
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF4CAF50).withAlpha(40),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        _tapCount++;
+                        if (_tapCount >= 5 && !_masterUnlocked) {
+                          setState(() {
+                            _masterUnlocked = true;
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Master Mode unlocked!'),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        }
+                      },
+                      child: const MascotWidget(
                         expression: MascotExpression.happy,
                         size: 56,
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              game.nickname.isNotEmpty
-                                  ? game.nickname
-                                  : 'Ludi Learner',
-                              style: GoogleFonts.nunito(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w800,
-                                color: Colors.white,
-                              ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            game.nickname,
+                            style: GoogleFonts.nunito(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w800,
+                              color: Colors.white,
                             ),
-                            const SizedBox(height: 2),
-                            Text(
-                              'Level ${game.userLevel} · ${game.xp} XP',
-                              style: GoogleFonts.nunito(
-                                fontSize: 13,
-                                color: Colors.white.withAlpha(200),
-                              ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            'Level ${game.userLevel} · ${game.xp} XP',
+                            style: GoogleFonts.nunito(
+                              fontSize: 13,
+                              color: Colors.white.withAlpha(200),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                      Container(
+                    ),
+                    GestureDetector(
+                      onTap: () => _showEditNameDialog(game),
+                      child: Container(
                         width: 36,
                         height: 36,
                         decoration: BoxDecoration(
                           color: Colors.white.withAlpha(40),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: const Icon(Icons.chevron_right_rounded,
-                            color: Colors.white, size: 22),
+                        child: const Icon(Icons.edit_rounded,
+                            color: Colors.white, size: 18),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 24),
@@ -233,9 +234,6 @@ class _MoreScreenState extends State<MoreScreen> {
               _settingsCard([
                 _settingsRow(Icons.schedule_rounded, 'Daily Reminder',
                     subtitle: '9:00 AM', onTap: () {}),
-                _settingsDivider(),
-                _settingsRow(Icons.speed_rounded, 'Difficulty',
-                    subtitle: 'Adaptive', onTap: () {}),
                 _settingsDivider(),
                 _settingsRow(Icons.restart_alt_rounded, 'Reset Progress',
                     isDestructive: true, onTap: () {
