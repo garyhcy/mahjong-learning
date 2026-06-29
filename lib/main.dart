@@ -11,7 +11,6 @@ import 'screens/auth_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/community_screen.dart';
 import 'screens/practice_screen.dart';
-import 'screens/achievements_screen.dart';
 import 'screens/more_screen.dart';
 
 Future<void> main() async {
@@ -146,7 +145,6 @@ class _MainShellState extends State<MainShell> {
     HomeScreen(),
     CommunityScreen(),
     PracticeScreen(),
-    AchievementsScreen(),
     MoreScreen(),
   ];
 
@@ -194,8 +192,7 @@ class _MainShellState extends State<MainShell> {
                     _navItem(0, Icons.home_rounded, 'Home'),
                     _navItem(1, Icons.people_rounded, 'Community'),
                     _navItem(2, Icons.school_rounded, 'Practice'),
-                    _navItem(3, Icons.emoji_events_rounded, 'Awards'),
-                    _navItem(4, Icons.more_horiz_rounded, 'More'),
+                    _navItem(3, Icons.more_horiz_rounded, 'More'),
                   ],
                 ),
               ),
