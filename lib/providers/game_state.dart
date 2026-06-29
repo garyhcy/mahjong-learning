@@ -36,7 +36,7 @@ const Map<String, AchievementDef> achievementDefs = {
       id: 'graduate',
       name: 'Graduate',
       emoji: '🏆',
-      desc: 'Complete all 36 lessons'),
+      desc: 'Complete all lessons'),
   '7day_streak': AchievementDef(
       id: '7day_streak',
       name: '7-Day Streak',
@@ -409,7 +409,7 @@ class GameState extends ChangeNotifier {
     if (completedLessons >= 10) {
       _unlockedAchievements.add('scholar');
     }
-    if (completedLessons >= 36) {
+    if (completedLessons >= allLessonsData.length) {
       _unlockedAchievements.add('graduate');
     }
     if (_streak >= 7) {
@@ -938,7 +938,7 @@ class GameState extends ChangeNotifier {
     await FirebaseService.saveProgress({
       'xp': _xp,
       'streak': _streak,
-      'currentStageId': _stages.isNotEmpty ? _stages[0].id : '1',
+      'currentStageId': _targetStageId ?? (_stages.isNotEmpty ? _stages[0].id : 'stage1'),
       'completedStages': stageMap,
       'completedLessons': completedLessons,
       'achievements': _unlockedAchievements.toList(),

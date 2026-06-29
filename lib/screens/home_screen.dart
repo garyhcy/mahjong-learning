@@ -207,7 +207,7 @@ class HomeScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      '第 $stageNum 單元',
+                      'Stage $stageNum',
                       style: GoogleFonts.nunito(
                         color: Colors.white,
                         fontSize: 12,
@@ -292,7 +292,7 @@ class HomeScreen extends StatelessWidget {
     if (stages.isEmpty) {
       return const Center(
         child: Text(
-          '尚無學習單元',
+          'No stages available',
           style: TextStyle(color: Colors.grey, fontSize: 16),
         ),
       );
