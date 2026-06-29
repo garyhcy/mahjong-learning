@@ -4,6 +4,23 @@ import 'package:provider/provider.dart';
 import '../providers/game_state.dart';
 import '../widgets/mascot_widget.dart';
 
+// League calculation (same as community_screen)
+String _getLeagueName(int xp) {
+  if (xp >= 4000) return 'Diamond League';
+  if (xp >= 2500) return 'Emerald League';
+  if (xp >= 1200) return 'Gold League';
+  if (xp >= 500) return 'Silver League';
+  return 'Bronze League';
+}
+
+String _getLeagueEmoji(int xp) {
+  if (xp >= 4000) return '👑';
+  if (xp >= 2500) return '💎';
+  if (xp >= 1200) return '🥇';
+  if (xp >= 500) return '🥈';
+  return '🥉';
+}
+
 class MoreScreen extends StatefulWidget {
   const MoreScreen({super.key});
 
@@ -18,7 +35,7 @@ class _MoreScreenState extends State<MoreScreen> {
   bool _notificationsEnabled = true;
   bool _soundEnabled = true;
   bool _hapticEnabled = true;
-  String _language = 'English';
+  MascotExpression _selectedExpression = MascotExpression.happy;
 
   @override
   Widget build(BuildContext context) {
@@ -80,8 +97,8 @@ class _MoreScreenState extends State<MoreScreen> {
                           );
                         }
                       },
-                      child: const MascotWidget(
-                        expression: MascotExpression.happy,
+                      child: MascotWidget(
+                        expression: _selectedExpression,
                         size: 56,
                       ),
                     ),
@@ -100,17 +117,17 @@ class _MoreScreenState extends State<MoreScreen> {
                           ),
                           const SizedBox(height: 2),
                           Text(
-                            'Level ${game.userLevel} · ${game.xp} XP',
+                            '${_getLeagueEmoji(game.xp)} ${_getLeagueName(game.xp)}',
                             style: GoogleFonts.nunito(
                               fontSize: 13,
-                              color: Colors.white.withAlpha(200),
+                              color: Colors.white.withAlpha(220),
                             ),
                           ),
                         ],
                       ),
                     ),
                     GestureDetector(
-                      onTap: () => _showEditNameDialog(game),
+                      onTap: () => _showAvatarSelector(),
                       child: Container(
                         width: 36,
                         height: 36,
@@ -118,7 +135,7 @@ class _MoreScreenState extends State<MoreScreen> {
                           color: Colors.white.withAlpha(40),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: const Icon(Icons.edit_rounded,
+                        child: const Icon(Icons.palette_rounded,
                             color: Colors.white, size: 18),
                       ),
                     ),
@@ -189,10 +206,6 @@ class _MoreScreenState extends State<MoreScreen> {
               _sectionTitle('Account'),
               const SizedBox(height: 8),
               _settingsCard([
-                _settingsRow(Icons.person_rounded, 'Edit Profile', onTap: () {
-                  _showEditNameDialog(game);
-                }),
-                _settingsDivider(),
                 _settingsRow(Icons.lock_rounded, 'Change Password',
                     onTap: () {}),
                 _settingsDivider(),
@@ -219,11 +232,6 @@ class _MoreScreenState extends State<MoreScreen> {
                 _settingsToggle(Icons.vibration_rounded, 'Haptic Feedback',
                     _hapticEnabled, (v) {
                   setState(() => _hapticEnabled = v);
-                }),
-                _settingsDivider(),
-                _settingsRow(Icons.language_rounded, 'Language',
-                    subtitle: _language, onTap: () {
-                  _showLanguageDialog();
                 }),
               ]),
               const SizedBox(height: 20),
@@ -504,27 +512,94 @@ class _MoreScreenState extends State<MoreScreen> {
     );
   }
 
-  void _showLanguageDialog() {
-    showDialog(
+  void _showAvatarSelector() {
+    final expressions = [
+      {'expr': MascotExpression.happy, 'label': 'Happy'},
+      {'expr': MascotExpression.thinking, 'label': 'Thinking'},
+      {'expr': MascotExpression.excited, 'label': 'Excited'},
+      {'expr': MascotExpression.content, 'label': 'Content'},
+      {'expr': MascotExpression.sad, 'label': 'Sad'},
+      {'expr': MascotExpression.wink, 'label': 'Wink'},
+    ];
+
+    showModalBottomSheet(
       context: context,
-      builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('Language',
-            style: GoogleFonts.nunito(fontWeight: FontWeight.w800)),
-        content: Column(
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => Container(
+        padding: const EdgeInsets.all(24),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+        child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: ['English', '繁體中文', '简体中文'].map((lang) {
-            return RadioListTile<String>(
-              title: Text(lang, style: GoogleFonts.nunito()),
-              value: lang,
-              groupValue: _language,
-              activeColor: const Color(0xFF4CAF50),
-              onChanged: (v) {
-                setState(() => _language = v!);
-                Navigator.pop(ctx);
+          children: [
+            Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: const Color(0xFFE0E0E0),
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text('Choose Your Mascot',
+                style: GoogleFonts.nunito(
+                    fontSize: 18, fontWeight: FontWeight.w800)),
+            const SizedBox(height: 20),
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                mainAxisSpacing: 16,
+                crossAxisSpacing: 16,
+                childAspectRatio: 0.85,
+              ),
+              itemCount: expressions.length,
+              itemBuilder: (context, index) {
+                final item = expressions[index];
+                final expr = item['expr'] as MascotExpression;
+                final label = item['label'] as String;
+                final isSelected = _selectedExpression == expr;
+                return GestureDetector(
+                  onTap: () {
+                    setState(() => _selectedExpression = expr);
+                    Navigator.pop(ctx);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? const Color(0xFF4CAF50).withAlpha(20)
+                          : const Color(0xFFF5F5F5),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: isSelected
+                            ? const Color(0xFF4CAF50)
+                            : Colors.transparent,
+                        width: 2,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        MascotWidget(expression: expr, size: 48),
+                        const SizedBox(height: 6),
+                        Text(label,
+                            style: GoogleFonts.nunito(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: isSelected
+                                    ? const Color(0xFF4CAF50)
+                                    : const Color(0xFF757575))),
+                      ],
+                    ),
+                  ),
+                );
               },
-            );
-          }).toList(),
+            ),
+            const SizedBox(height: 16),
+          ],
         ),
       ),
     );
