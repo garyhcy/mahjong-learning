@@ -206,6 +206,11 @@ class _MoreScreenState extends State<MoreScreen> {
               _sectionTitle('Account'),
               const SizedBox(height: 8),
               _settingsCard([
+                _settingsRow(Icons.badge_rounded, 'Player Name',
+                    subtitle: game.nickname, onTap: () {
+                  _showEditNameDialog(game);
+                }),
+                _settingsDivider(),
                 _settingsRow(Icons.lock_rounded, 'Change Password',
                     onTap: () {}),
                 _settingsDivider(),
