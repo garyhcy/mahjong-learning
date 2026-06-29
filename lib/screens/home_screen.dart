@@ -349,13 +349,17 @@ class HomeScreen extends StatelessWidget {
     final isCurrentStage = (index - 1) == currentStageIndex;
 
     if (isCompleted) {
-      // 100% 完成：皇冠
-      circleBg = const Color(0xFF4CAF50);
-      circleBorder = const Color(0xFF388E3C);
-      shadowColor = const Color(0xFF4CAF50);
+      // 100% 完成：皇冠圖片
+      circleBg = const Color(0xFFFFF8E1);
+      circleBorder = const Color(0xFFFFB300);
+      shadowColor = const Color(0xFFFFB300);
       titleColor = const Color(0xFF2E7D32);
-      nodeChild = const Icon(Icons.workspace_premium_rounded,
-          color: Color(0xFFFFD54F), size: 36);
+      nodeChild = Image.asset(
+        'assets/images/crown.png',
+        width: 48,
+        height: 48,
+        fit: BoxFit.contain,
+      );
     } else if (isLocked && isBonusStage) {
       // 鎖定的獎勵關卡：灰色寶箱
       circleBg = const Color(0xFFEEEEEE);
