@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/game_state.dart';
 import '../screens/learn_screen.dart';
+import '../services/audio_service.dart';
 import '../widgets/mascot_widget.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -22,7 +23,7 @@ class HomeScreen extends StatelessWidget {
       body: SafeArea(
         child: Stack(
           children: [
-            // ─── 背景裝飾小樹 ───
+            // ─── 背景裝飾 ───
             const _BackgroundTrees(),
             Column(
               children: [
@@ -44,7 +45,6 @@ class HomeScreen extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
       child: Row(
         children: [
-          // 熊貓頭像 - 使用專屬 avatar 圖片
           Container(
             width: 46,
             height: 46,
@@ -69,21 +69,18 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          // 火焰 - 連續天數
           _buildStat(
             icon: Icons.local_fire_department_rounded,
             value: '${game.streak}',
             color: const Color(0xFFFF7043),
           ),
           const SizedBox(width: 18),
-          // 鑽石 - 積分
           _buildStat(
             icon: Icons.diamond_rounded,
             value: '${game.xp}',
             color: const Color(0xFF00BCD4),
           ),
           const SizedBox(width: 18),
-          // 愛心 - 生命
           _buildStat(
             icon: Icons.favorite_rounded,
             value: '${game.hearts}',
@@ -118,13 +115,12 @@ class HomeScreen extends StatelessWidget {
 
   // ─── 綠色單元橫幅 ───
   Widget _buildUnitBanner(GameState game, int unitProgress) {
-    // 找出最早一個未完成的已解鎖 Stage 作為「當前單元」
     final currentStageIndex = game.stages.indexWhere(
       (s) => s.isUnlocked && s.progress < 1.0,
     );
     final stageIndex = currentStageIndex >= 0 ? currentStageIndex : 0;
     final stage = game.stages.isNotEmpty ? game.stages[stageIndex] : null;
-    final title = stage?.title ?? '認識麻將';
+    final title = stage?.title ?? 'Mahjong Basics';
     final stageNum = stageIndex + 1;
     final stageProgress = stage != null && stage.lessonCount > 0
         ? stage.completedLessons
@@ -154,7 +150,6 @@ class HomeScreen extends StatelessWidget {
         child: Stack(
           clipBehavior: Clip.none,
           children: [
-            // 背景光暈裝飾
             Positioned(
               top: -15,
               right: 60,
@@ -179,7 +174,6 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            // 右側吉祥物 - 底部對齊，尺寸收細避免破圖
             Positioned(
               right: 8,
               bottom: 0,
@@ -188,7 +182,6 @@ class HomeScreen extends StatelessWidget {
                 size: 110,
               ),
             ),
-            // 左側文字區
             Positioned(
               left: 20,
               top: 0,
@@ -198,7 +191,6 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // 單元標籤
                   Container(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10, vertical: 3),
@@ -217,7 +209,6 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 6),
-                  // 單元標題
                   Text(
                     title,
                     style: GoogleFonts.nunito(
@@ -230,7 +221,6 @@ class HomeScreen extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 10),
-                  // 進度條
                   Row(
                     children: [
                       Expanded(
@@ -286,7 +276,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // ─── 學習路徑：置中節點設計 ───
+  // ─── 學習路徑 ───
   Widget _buildLearningPath(BuildContext context, GameState game) {
     final stages = game.stages;
     if (stages.isEmpty) {
@@ -305,33 +295,128 @@ class HomeScreen extends StatelessWidget {
         final stage = stages[i];
         final isCompleted = stage.progress >= 1.0;
         final isLocked = !stage.isUnlocked;
-        final isInProgress = stage.isUnlocked && !isCompleted;
         final isLast = i == stages.length - 1;
 
-        return _buildCenteredPathNode(
-          context: context,
+        return _AnimatedPathNode(
           game: game,
           stage: stage,
           index: i + 1,
           isCompleted: isCompleted,
           isLocked: isLocked,
-          isInProgress: isInProgress,
           isLast: isLast,
         );
       },
     );
   }
+}
 
-  Widget _buildCenteredPathNode({
-    required BuildContext context,
-    required GameState game,
-    required dynamic stage,
-    required int index,
-    required bool isCompleted,
-    required bool isLocked,
-    required bool isInProgress,
-    required bool isLast,
-  }) {
+// ─── 帶動畫的路徑節點 ───
+class _AnimatedPathNode extends StatefulWidget {
+  final GameState game;
+  final dynamic stage;
+  final int index;
+  final bool isCompleted;
+  final bool isLocked;
+  final bool isLast;
+
+  const _AnimatedPathNode({
+    required this.game,
+    required this.stage,
+    required this.index,
+    required this.isCompleted,
+    required this.isLocked,
+    required this.isLast,
+  });
+
+  @override
+  State<_AnimatedPathNode> createState() => _AnimatedPathNodeState();
+}
+
+class _AnimatedPathNodeState extends State<_AnimatedPathNode>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _shakeAnimation;
+  final AudioService _audio = AudioService();
+  bool _isShaking = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 150),
+      vsync: this,
+    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.88).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+    _shakeAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.elasticIn),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _onTapDown(TapDownDetails _) {
+    if (!widget.isLocked) {
+      _controller.forward();
+    }
+  }
+
+  void _onTapUp(TapUpDetails _) {
+    if (!widget.isLocked) {
+      _controller.reverse();
+    }
+  }
+
+  void _onTapCancel() {
+    _controller.reverse();
+  }
+
+  void _onTap() {
+    if (widget.isLocked) {
+      // 鎖定節點：搖晃動畫
+      _audio.playTap();
+      setState(() => _isShaking = true);
+      _controller.forward().then((_) {
+        _controller.reverse().then((_) {
+          if (mounted) setState(() => _isShaking = false);
+        });
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Complete the previous stage to unlock this one!',
+            style: GoogleFonts.nunito(fontWeight: FontWeight.w600),
+          ),
+          duration: const Duration(seconds: 2),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: const Color(0xFF5D4037),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      );
+    } else {
+      // 可用節點：播放音效並導航
+      _audio.playTileClick();
+      _controller.forward().then((_) {
+        _controller.reverse().then((_) {
+          widget.game.navigateToStage(widget.stage.id);
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => const LearnScreen()),
+          );
+        });
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     // 節點樣式
     final Color circleBg;
     final Color circleBorder;
@@ -339,17 +424,14 @@ class HomeScreen extends StatelessWidget {
     final Color titleColor;
     final Widget nodeChild;
 
-    // 獎勵關卡：每隔3個普通關卡插入1個（index 3, 7, 11...即第4、8、12個）
-    final isBonusStage = (index % 4 == 0);
+    final isBonusStage = (widget.index % 4 == 0);
 
-    // 判斷是否為「真正當前進行中」的第一個未完成已解鎖 Stage
-    final currentStageIndex = game.stages.indexWhere(
+    final currentStageIndex = widget.game.stages.indexWhere(
       (s) => s.isUnlocked && s.progress < 1.0,
     );
-    final isCurrentStage = (index - 1) == currentStageIndex;
+    final isCurrentStage = (widget.index - 1) == currentStageIndex;
 
-    if (isCompleted) {
-      // 100% 完成：皇冠圖片
+    if (widget.isCompleted) {
       circleBg = const Color(0xFFFFF8E1);
       circleBorder = const Color(0xFFFFB300);
       shadowColor = const Color(0xFFFFB300);
@@ -360,8 +442,7 @@ class HomeScreen extends StatelessWidget {
         height: 48,
         fit: BoxFit.contain,
       );
-    } else if (isLocked && isBonusStage) {
-      // 鎖定的獎勵關卡：灰色寶箱
+    } else if (widget.isLocked && isBonusStage) {
       circleBg = const Color(0xFFEEEEEE);
       circleBorder = const Color(0xFFCECECE);
       shadowColor = Colors.transparent;
@@ -380,7 +461,7 @@ class HomeScreen extends StatelessWidget {
           fit: BoxFit.contain,
         ),
       );
-    } else if (isLocked) {
+    } else if (widget.isLocked) {
       circleBg = const Color(0xFFEEEEEE);
       circleBorder = const Color(0xFFCECECE);
       shadowColor = Colors.transparent;
@@ -388,7 +469,6 @@ class HomeScreen extends StatelessWidget {
       nodeChild = const Icon(Icons.lock_rounded,
           color: Color(0xFFBDBDBD), size: 30);
     } else if (isBonusStage && isCurrentStage) {
-      // 當前獎勵關卡（進行中）：彩色寶箱
       circleBg = const Color(0xFFFFF8E1);
       circleBorder = const Color(0xFFFFB300);
       shadowColor = const Color(0xFFFFB300);
@@ -400,7 +480,6 @@ class HomeScreen extends StatelessWidget {
         fit: BoxFit.contain,
       );
     } else if (isCurrentStage) {
-      // 當前普通關卡（進行中）：星號
       circleBg = const Color(0xFF4CAF50);
       circleBorder = const Color(0xFF2E7D32);
       shadowColor = const Color(0xFF4CAF50);
@@ -408,7 +487,6 @@ class HomeScreen extends StatelessWidget {
       nodeChild = const Icon(Icons.star_rounded,
           color: Colors.white, size: 38);
     } else if (isBonusStage) {
-      // 已解鎖但非當前的獎勵關卡：灰色寶箱（與鎖定一致）
       circleBg = const Color(0xFFEEEEEE);
       circleBorder = const Color(0xFFCECECE);
       shadowColor = Colors.transparent;
@@ -437,60 +515,78 @@ class HomeScreen extends StatelessWidget {
           color: Color(0xFF4CAF50), size: 36);
     }
 
-    final lineColor = isCompleted
+    final lineColor = widget.isCompleted
         ? const Color(0xFF4CAF50).withAlpha(120)
         : const Color(0xFFD0D0D0);
 
     return Column(
       children: [
-        // 節點圓圈
+        // 節點
         GestureDetector(
-          onTap: isLocked
-              ? null
-              : () {
-                  game.navigateToStage(stage.id);
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const LearnScreen()),
-                  );
-                },
-          child: Column(
-            children: [
-              // 圓形節點
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: circleBg,
-                  border: Border.all(color: circleBorder, width: 3.5),
-                  boxShadow: shadowColor != Colors.transparent
-                      ? [
-                          BoxShadow(
-                            color: shadowColor.withAlpha(80),
-                            blurRadius: 16,
-                            offset: const Offset(0, 5),
-                          ),
-                        ]
-                      : null,
+          onTapDown: _onTapDown,
+          onTapUp: _onTapUp,
+          onTapCancel: _onTapCancel,
+          onTap: _onTap,
+          child: AnimatedBuilder(
+            animation: _controller,
+            builder: (context, child) {
+              final double scale;
+              final double offsetX;
+              if (_isShaking) {
+                // 搖晃效果
+                scale = 1.0;
+                offsetX = _shakeAnimation.value * 6 *
+                    (_controller.value < 0.5 ? 1 : -1);
+              } else {
+                // 縮放效果
+                scale = _scaleAnimation.value;
+                offsetX = 0;
+              }
+              return Transform.translate(
+                offset: Offset(offsetX, 0),
+                child: Transform.scale(
+                  scale: scale,
+                  child: child,
                 ),
-                child: Center(child: nodeChild),
-              ),
-              const SizedBox(height: 10),
-              // 課程名稱
-              Text(
-                '$index. ${stage.title}',
-                style: GoogleFonts.nunito(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w800,
-                  color: titleColor,
+              );
+            },
+            child: Column(
+              children: [
+                Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: circleBg,
+                    border: Border.all(color: circleBorder, width: 3.5),
+                    boxShadow: shadowColor != Colors.transparent
+                        ? [
+                            BoxShadow(
+                              color: shadowColor.withAlpha(80),
+                              blurRadius: 16,
+                              offset: const Offset(0, 5),
+                            ),
+                          ]
+                        : null,
+                  ),
+                  child: Center(child: nodeChild),
                 ),
-                textAlign: TextAlign.center,
-              ),
-            ],
+                const SizedBox(height: 10),
+                Text(
+                  '${widget.index}. ${widget.stage.title}',
+                  style: GoogleFonts.nunito(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w800,
+                    color: titleColor,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           ),
         ),
-        // 連線（加長）
-        if (!isLast)
+        // 連線
+        if (!widget.isLast)
           Container(
             width: 3.5,
             height: 40,
@@ -505,7 +601,7 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-// ─── 背景圖片（含樹木的草地） ───
+// ─── 背景圖片 ───
 class _BackgroundTrees extends StatelessWidget {
   const _BackgroundTrees();
 
