@@ -705,15 +705,14 @@ class GameState extends ChangeNotifier {
   void retryQuiz() {
     if (_isPremium) {
       _hearts = maxHearts;
+      _lastHeartLossAt = null;
     } else {
       _applyDailyHeartRefill();
+      if (_hearts <= 0) {
+        notifyListeners();
+        return;
+      }
     }
-    if (!_isPremium && _hearts <= 0) {
-      notifyListeners();
-      return;
-    }
-    _hearts = maxHearts;
-    _lastHeartLossAt = null;
     _currentQuestionIndex = 0;
     _correctAnswers = 0;
     _quizFinished = false;
@@ -1082,6 +1081,8 @@ class GameState extends ChangeNotifier {
         lastLessonDate: _lastLessonDate,
         hasSeenOnboarding: _hasSeenOnboarding,
         lessonCompleted: lessonCompletedSnapshot,
+        nickname: _nickname,
+        avatarEmoji: _avatarEmoji,
       );
     }
 

@@ -56,6 +56,8 @@ class CloudSyncService {
         lastLessonDate: data['lastLessonDate'] as String?,
         hasSeenOnboarding: data['hasSeenOnboarding'] == true,
         lessonCompleted: lessons,
+        nickname: (data['nickname'] as String?) ?? 'Player',
+        avatarEmoji: (data['avatarEmoji'] as String?) ?? '🐼',
       );
     } catch (_) {
       return null;
@@ -72,6 +74,8 @@ class CloudSyncService {
     required String? lastLessonDate,
     required bool hasSeenOnboarding,
     required Map<String, bool> lessonCompleted,
+    String nickname = 'Player',
+    String avatarEmoji = '🐼',
   }) async {
     try {
       await FirebaseFirestore.instance
@@ -88,6 +92,8 @@ class CloudSyncService {
         'lastLessonDate': lastLessonDate,
         'hasSeenOnboarding': hasSeenOnboarding,
         'lessonCompleted': lessonCompleted,
+        'nickname': nickname,
+        'avatarEmoji': avatarEmoji,
         'updatedAt': FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
     } catch (_) {

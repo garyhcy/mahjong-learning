@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart' show kIsWeb, defaultTargetPlatform, TargetPlatform;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../services/firebase_service.dart';
@@ -60,6 +61,30 @@ class _AuthScreenState extends State<AuthScreen> {
       }
     }
   }
+
+  Future<void> _socialLogin(Future<void> Function() action) async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+    try {
+      await action();
+    } on FirebaseAuthException catch (e) {
+      setState(() => _errorMessage = _mapAuthError(e.code));
+    } catch (_) {
+      setState(() {
+        _errorMessage = 'Sign-in was cancelled or failed. Please try again.';
+      });
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _signInWithGoogle() =>
+      _socialLogin(() => FirebaseService.signInWithGoogle());
+
+  Future<void> _signInWithApple() =>
+      _socialLogin(() => FirebaseService.signInWithApple());
 
   String _mapAuthError(String code) {
     switch (code) {
@@ -279,6 +304,75 @@ class _AuthScreenState extends State<AuthScreen> {
                             ),
                     ),
                   ),
+                  const SizedBox(height: 20),
+
+                  // Divider with "or"
+                  Row(
+                    children: [
+                      const Expanded(child: Divider(color: Color(0xFFE0E0E0))),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Text('or',
+                            style: GoogleFonts.nunito(
+                                fontSize: 13, color: const Color(0xFF9E9E9E))),
+                      ),
+                      const Expanded(child: Divider(color: Color(0xFFE0E0E0))),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Google sign-in
+                  SizedBox(
+                    width: double.infinity,
+                    height: 52,
+                    child: OutlinedButton.icon(
+                      onPressed: _isLoading ? null : _signInWithGoogle,
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        side: const BorderSide(color: Color(0xFFE0E0E0)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                      ),
+                      icon: const Icon(Icons.g_mobiledata,
+                          size: 28, color: Color(0xFF4285F4)),
+                      label: Text('Continue with Google',
+                          style: GoogleFonts.nunito(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xFF2D2D2D),
+                          )),
+                    ),
+                  ),
+
+                  // Apple sign-in (iOS/macOS only)
+                  if (!kIsWeb &&
+                      (defaultTargetPlatform == TargetPlatform.iOS ||
+                          defaultTargetPlatform == TargetPlatform.macOS)) ...[
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 52,
+                      child: OutlinedButton.icon(
+                        onPressed: _isLoading ? null : _signInWithApple,
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          side: const BorderSide(color: Colors.black),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                        ),
+                        icon: const Icon(Icons.apple,
+                            size: 24, color: Colors.white),
+                        label: Text('Continue with Apple',
+                            style: GoogleFonts.nunito(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            )),
+                      ),
+                    ),
+                  ],
                   const SizedBox(height: 20),
 
                   // Toggle between Login / Sign Up

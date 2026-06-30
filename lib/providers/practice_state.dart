@@ -28,6 +28,7 @@ class PracticeState extends ChangeNotifier {
   int get speedBest => _speedBest;
   int get totalPractices => _totalPractices;
   bool get isLoaded => _isLoaded;
+  bool get isPremiumFlag => _isPremium;
 
   WeaknessReport get weaknessReport => analyzeWeaknesses(_results);
 

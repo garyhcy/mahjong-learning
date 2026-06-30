@@ -1,4 +1,3 @@
-
 import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -7,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'providers/game_state.dart';
+import 'services/purchases_service.dart';
 import 'screens/auth_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/community_screen.dart';
@@ -23,6 +23,7 @@ Future<void> main() async {
   } catch (_) {
     // Firebase optional in local/dev until config is added.
   }
+  await PurchasesService.init();
   final gameState = GameState();
   await gameState.loadFromStorage();
   runApp(MahjongApp(gameState: gameState));
@@ -94,9 +95,14 @@ class _AuthGateState extends State<AuthGate> {
   void initState() {
     super.initState();
     if (!firebaseAvailable) return;
+    final gameState = context.read<GameState>();
     FirebaseAuth.instance.authStateChanges().listen((user) {
       if (user != null) {
-        context.read<GameState>().loadCloudProgress();
+        gameState.loadCloudProgress();
+        PurchasesService.login(user.uid);
+        PurchasesService.syncToGameState(gameState);
+      } else {
+        PurchasesService.logout();
       }
     });
   }

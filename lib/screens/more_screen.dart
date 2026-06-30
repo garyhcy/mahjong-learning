@@ -1,8 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/game_state.dart';
 import '../widgets/mascot_widget.dart';
+import 'paywall_screen.dart';
 
 // League calculation (same as community_screen)
 String _getLeagueName(int xp) {
@@ -84,6 +86,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   children: [
                     GestureDetector(
                       onTap: () {
+                        if (!kDebugMode) return;
                         _tapCount++;
                         if (_tapCount >= 5 && !_masterUnlocked) {
                           setState(() {
@@ -286,7 +289,10 @@ class _MoreScreenState extends State<MoreScreen> {
                         textAlign: TextAlign.center),
                     const SizedBox(height: 14),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => const PaywallScreen()));
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         foregroundColor: const Color(0xFFE8B93E),

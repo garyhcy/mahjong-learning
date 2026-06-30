@@ -41,33 +41,31 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDB-Q9V3Xr52w7S3vlbR3zHvv5MHCaQwmw',
-    appId: '1:154204299071:web:264fda333bdf76fdcefd8a',
+    apiKey: 'AIzaSyCyJzXaKaBmldAzi4weOkJVK1y5FDhU-1M',
+    appId: '1:154204299071:android:b0e873016cb0b25ccefd8a',
     messagingSenderId: '154204299071',
     projectId: 'ludi-mahjong-46d78',
-    authDomain: 'ludi-mahjong-46d78.firebaseapp.com',
     storageBucket: 'ludi-mahjong-46d78.firebasestorage.app',
-    measurementId: 'G-CR8BKBHTSD',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDB-Q9V3Xr52w7S3vlbR3zHvv5MHCaQwmw',
-    appId: '1:154204299071:web:264fda333bdf76fdcefd8a',
+    apiKey: 'AIzaSyBlJ1QxWOdEOoCNx9EYC36teF9WYbavXFk',
+    appId: '1:154204299071:ios:545ff9fe210a302dcefd8a',
     messagingSenderId: '154204299071',
     projectId: 'ludi-mahjong-46d78',
-    authDomain: 'ludi-mahjong-46d78.firebaseapp.com',
     storageBucket: 'ludi-mahjong-46d78.firebasestorage.app',
-    measurementId: 'G-CR8BKBHTSD',
+    iosBundleId: 'com.ludi.teach',
+    iosClientId: '154204299071-i0uo9nuo2teupm4vgasr8h6nojocssq0.apps.googleusercontent.com',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDB-Q9V3Xr52w7S3vlbR3zHvv5MHCaQwmw',
-    appId: '1:154204299071:web:264fda333bdf76fdcefd8a',
+    apiKey: 'AIzaSyBlJ1QxWOdEOoCNx9EYC36teF9WYbavXFk',
+    appId: '1:154204299071:ios:545ff9fe210a302dcefd8a',
     messagingSenderId: '154204299071',
     projectId: 'ludi-mahjong-46d78',
-    authDomain: 'ludi-mahjong-46d78.firebaseapp.com',
     storageBucket: 'ludi-mahjong-46d78.firebasestorage.app',
-    measurementId: 'G-CR8BKBHTSD',
+    iosBundleId: 'com.ludi.teach',
+    iosClientId: '154204299071-i0uo9nuo2teupm4vgasr8h6nojocssq0.apps.googleusercontent.com',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(

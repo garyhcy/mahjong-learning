@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "154204299071",
+    "project_id": "ludi-mahjong-46d78",
+    "storage_bucket": "ludi-mahjong-46d78.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:154204299071:android:b0e873016cb0b25ccefd8a",
+        "android_client_info": {
+          "package_name": "com.ludi.teach"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "154204299071-jk1gqh1em1n5hdbk39oeb19t9dg59t87.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ludi.teach",
+            "certificate_hash": "0fdefe3b0b7d9a83185d6db0706cecbea5750629"
+          }
+        },
+        {
+          "client_id": "154204299071-05cafts31l42ivegofne2g4vsjf41uea.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyJzXaKaBmldAzi4weOkJVK1y5FDhU-1M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "154204299071-05cafts31l42ivegofne2g4vsjf41uea.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "154204299071-eqvlfr0skrv37ju772h3uor1l1fostr4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.Ludi.teach"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

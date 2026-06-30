@@ -34,6 +34,14 @@ class _PracticeContent extends StatelessWidget {
     final practiceState = context.watch<PracticeState>();
     final game = context.watch<GameState>();
 
+    // Keep PracticeState's premium flag in sync with GameState so that a
+    // subscription purchased mid-session immediately unlocks unlimited practice.
+    if (practiceState.isLoaded && practiceState.isPremiumFlag != game.isPremium) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        practiceState.updatePremium(game.isPremium);
+      });
+    }
+
     if (!practiceState.isLoaded) {
       return const Scaffold(
         backgroundColor: Color(0xFFF5F9F3),

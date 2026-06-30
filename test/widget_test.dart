@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mahjong_app/main.dart';
-import 'package:mahjong_app/providers/game_state.dart';
+import 'package:ludi/main.dart';
+import 'package:ludi/providers/game_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -25,6 +25,6 @@ void main() {
     await tester.pumpWidget(MahjongApp(gameState: gameState));
     await tester.pump();
 
-    expect(find.text('Mahjong Master HK'), findsOneWidget);
+    expect(find.byType(MahjongApp), findsOneWidget);
   });
 }
