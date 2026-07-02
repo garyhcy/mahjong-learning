@@ -61,7 +61,7 @@ class HomeScreen extends StatelessWidget {
             ),
             child: ClipOval(
               child: Image.asset(
-                'assets/images/avatar.png',
+                'assets/images/logo.png',
                 width: 46,
                 height: 46,
                 fit: BoxFit.cover,
