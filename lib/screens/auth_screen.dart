@@ -6,7 +6,12 @@ import '../services/firebase_service.dart';
 import '../widgets/mascot_widget.dart';
 
 class AuthScreen extends StatefulWidget {
-  const AuthScreen({super.key});
+  const AuthScreen({super.key, this.onDemoAuth});
+
+  /// Demo-mode sign-in callback (used when Firebase is unavailable, e.g. web
+  /// demo). When provided and Firebase is not available, a "Continue as Guest
+  /// (Demo)" button is shown instead of the email/social login form.
+  final Future<void> Function()? onDemoAuth;
 
   @override
   State<AuthScreen> createState() => _AuthScreenState();
@@ -107,6 +112,11 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Demo mode: Firebase unavailable (e.g. static web demo). Show a simple
+    // guest sign-in instead of the email/social form.
+    if (widget.onDemoAuth != null) {
+      return _buildDemoBody(context);
+    }
     return Scaffold(
       backgroundColor: const Color(0xFFFFF8F0),
       body: SafeArea(
@@ -408,6 +418,91 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                 ],
               ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDemoBody(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFFFF8F0),
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset('assets/images/topbar_logo.png', width: 120, height: 120),
+                const SizedBox(height: 20),
+                Text(
+                  'Ludi',
+                  style: GoogleFonts.nunito(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w800,
+                    color: const Color(0xFF4CAF50),
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  'Master the Game',
+                  style: GoogleFonts.nunito(
+                    fontSize: 14,
+                    color: const Color(0xFF9E9E9E),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Demo mode — full app available on mobile',
+                  style: GoogleFonts.nunito(
+                    fontSize: 12,
+                    color: const Color(0xFFBDBDBD),
+                  ),
+                ),
+                const SizedBox(height: 40),
+                SizedBox(
+                  width: double.infinity,
+                  height: 52,
+                  child: ElevatedButton(
+                    onPressed: _isLoading ? null : () async {
+                      setState(() => _isLoading = true);
+                      try {
+                        await widget.onDemoAuth!();
+                      } finally {
+                        if (mounted) setState(() => _isLoading = false);
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF4CAF50),
+                      foregroundColor: Colors.white,
+                      disabledBackgroundColor: const Color(0xFF4CAF50).withAlpha(150),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: _isLoading
+                        ? const SizedBox(
+                            width: 22,
+                            height: 22,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2.5,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            ),
+                          )
+                        : Text(
+                            'Continue as Guest',
+                            style: GoogleFonts.nunito(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

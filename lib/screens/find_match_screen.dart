@@ -9,11 +9,7 @@ import '../services/app_i18n.dart';
 import 'match_room_screen.dart';
 
 /// Find a Match (約戰) — entry flow.
-///
-/// Demo scope: language + day/time preferences and weekly quota are REAL and
-/// persisted. The opponent pool is generated locally around the player's
-/// Skill Rating. Picking an opponent opens a (simulated) chat room where the
-/// scheduling vote flow is fully interactive.
+/// Auto-matchmaking: no player list. System auto-forms a 4-player chat room.
 class FindMatchScreen extends StatefulWidget {
   const FindMatchScreen({super.key});
 
@@ -24,8 +20,6 @@ class FindMatchScreen extends StatefulWidget {
 class _FindMatchScreenState extends State<FindMatchScreen> {
   static const Color _green = Color(0xFF4CAF50);
   static const Color _bg = Color(0xFFF5F9F3);
-
-  List<MatchCandidate>? _pool;
   bool _searching = false;
 
   @override
@@ -57,12 +51,12 @@ class _FindMatchScreenState extends State<FindMatchScreen> {
             const SizedBox(height: 20),
             _timeSection(match),
             const SizedBox(height: 24),
-            _findButton(game, match, skill),
-            if (_pool != null) ...[
-              const SizedBox(height: 24),
-              _poolHeader(),
+            _findButton(match, skill),
+            const SizedBox(height: 28),
+            if (match.activeRooms.isNotEmpty) ...[
+              _roomsHeader(),
               const SizedBox(height: 12),
-              ..._pool!.map((c) => _candidateCard(c, match)),
+              ...match.activeRooms.map((r) => _roomCard(r, match)),
             ],
             const SizedBox(height: 24),
           ],
@@ -71,7 +65,6 @@ class _FindMatchScreenState extends State<FindMatchScreen> {
     );
   }
 
-  // ── Skill Snapshot ──
   Widget _skillSnapshot(GameState game) {
     final skill = game.skillRating;
     final tier = SkillRating(skill);
@@ -129,10 +122,6 @@ class _FindMatchScreenState extends State<FindMatchScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 4),
-                Text('Calculated from your progress & accuracy',
-                    style: GoogleFonts.nunito(
-                        fontSize: 11, color: Colors.white.withAlpha(200))),
               ],
             ),
           ),
@@ -141,25 +130,24 @@ class _FindMatchScreenState extends State<FindMatchScreen> {
     );
   }
 
-  // ── Weekly quota banner ──
   Widget _quotaBanner(MatchState match) {
     if (match.isPremium) {
-      return _infoChip('♾️  Pro: unlimited matches', const Color(0xFFFFF3E0),
+      return _chip('Pro: unlimited matches', const Color(0xFFFFF3E0),
           const Color(0xFFE65100));
     }
     if (!match.hasWeeklyOpportunity) {
-      return _infoChip(
-          '🔒  Weekly match used. Resets next week — or go Pro for unlimited.',
+      return _chip(
+          'Weekly match used. Resets next week — or go Pro for unlimited.',
           const Color(0xFFFFEBEE),
           const Color(0xFFC62828));
     }
-    return _infoChip(
-        '🎟️  1 free match this week · ${match.failedRemaining} scheduling tries left',
+    return _chip(
+        '1 free match this week · ${match.failedRemaining} scheduling tries left',
         const Color(0xFFE8F5E9),
         const Color(0xFF2E7D32));
   }
 
-  Widget _infoChip(String text, Color bg, Color fg) {
+  Widget _chip(String text, Color bg, Color fg) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -171,15 +159,14 @@ class _FindMatchScreenState extends State<FindMatchScreen> {
     );
   }
 
-  // ── Language ──
   Widget _languageSection(MatchState match) {
     final isEn = AppI18n.current == DisplayLang.en;
     return _section(
-      AppI18n.t('match_language'),
-      AppI18n.t('match_language_hint'),
+      'Match Language',
+      'Players are paired in your chosen language',
       Wrap(
         spacing: 10,
-        children: [AppLanguage.cantonese, AppLanguage.mandarin].map((lang) {
+        children: AppLanguage.values.map((lang) {
           final selected = match.language == lang;
           return ChoiceChip(
             label: Text(lang.displayLabel(isEn)),
@@ -200,15 +187,15 @@ class _FindMatchScreenState extends State<FindMatchScreen> {
     );
   }
 
-  // ── Days ──
   Widget _daySection(MatchState match) {
+    final days = [DayPref.noPreference, ...DayPref.values.where((d) => d != DayPref.noPreference)];
     return _section(
       'Preferred Days',
       'Pick the days you usually can play',
       Wrap(
         spacing: 8,
         runSpacing: 8,
-        children: DayPref.values.map((day) {
+        children: days.map((day) {
           final selected = match.days.contains(day);
           return FilterChip(
             label: Text(day.short),
@@ -230,60 +217,43 @@ class _FindMatchScreenState extends State<FindMatchScreen> {
     );
   }
 
-  // ── Times ──
   Widget _timeSection(MatchState match) {
+    final times = [TimeBand.noPreference, ...TimeBand.values.where((t) => t != TimeBand.noPreference)];
     return _section(
       'Preferred Time',
       'Optional — leave on "No preference" if flexible',
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SwitchListTile(
-            contentPadding: EdgeInsets.zero,
-            value: match.noTimePref,
-            activeColor: _green,
-            title: Text('No particular preference',
-                style: GoogleFonts.nunito(
-                    fontWeight: FontWeight.w700, fontSize: 14)),
-            onChanged: (v) => match.setNoTimePref(v),
-          ),
-          if (!match.noTimePref)
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: TimeBand.values.map((band) {
-                final selected = match.times.contains(band);
-                return FilterChip(
-                  label: Text('${band.label}  ·  ${band.range}'),
-                  selected: selected,
-                  onSelected: (_) => match.toggleTime(band),
-                  selectedColor: _green,
-                  checkmarkColor: Colors.white,
-                  labelStyle: GoogleFonts.nunito(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                      color:
-                          selected ? Colors.white : const Color(0xFF424242)),
-                  backgroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    side: const BorderSide(color: Color(0xFFE0E0E0)),
-                  ),
-                );
-              }).toList(),
+      Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: times.map((band) {
+          final selected = match.times.contains(band);
+          return FilterChip(
+            label: Text(band == TimeBand.noPreference ? 'No preference' : '${band.label}  ·  ${band.range}'),
+            selected: selected,
+            onSelected: (_) => match.toggleTime(band),
+            selectedColor: _green,
+            checkmarkColor: Colors.white,
+            labelStyle: GoogleFonts.nunito(
+                fontWeight: FontWeight.w600,
+                fontSize: 12,
+                color: selected ? Colors.white : const Color(0xFF424242)),
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+              side: const BorderSide(color: Color(0xFFE0E0E0)),
             ),
-        ],
+          );
+        }).toList(),
       ),
     );
   }
 
-  // ── Find button ──
-  Widget _findButton(GameState game, MatchState match, int skill) {
+  Widget _findButton(MatchState match, int skill) {
     final canSearch = match.hasWeeklyOpportunity && !_searching;
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: canSearch ? () => _runSearch(match, skill) : null,
+        onPressed: canSearch ? () => _autoMatch(match, skill) : null,
         style: ElevatedButton.styleFrom(
           backgroundColor: _green,
           disabledBackgroundColor: const Color(0xFFC8E6C9),
@@ -299,7 +269,7 @@ class _FindMatchScreenState extends State<FindMatchScreen> {
                 child: CircularProgressIndicator(
                     strokeWidth: 2.5, color: Colors.white))
             : Text(match.hasWeeklyOpportunity
-                ? 'Find Players Near Me'
+                ? 'Find a match'
                 : 'No matches left this week',
                 style: GoogleFonts.nunito(
                     fontSize: 16,
@@ -309,71 +279,94 @@ class _FindMatchScreenState extends State<FindMatchScreen> {
     );
   }
 
-  Future<void> _runSearch(MatchState match, int skill) async {
+  Future<void> _autoMatch(MatchState match, int skill) async {
     setState(() => _searching = true);
-    await Future.delayed(const Duration(milliseconds: 900));
+    await Future.delayed(const Duration(milliseconds: 1200));
     if (!mounted) return;
-    setState(() {
-      _pool = MatchDemoData.candidates(
-        targetSkill: skill,
-        language: match.language,
-      );
-      _searching = false;
-    });
+    // Auto-generate 3 opponents near the player's skill
+    final opponents = MatchDemoData.candidates(
+      targetSkill: skill,
+      language: match.language,
+      count: 3,
+    );
+    final roomId = 'room_${DateTime.now().millisecondsSinceEpoch}';
+    final room = MatchRoomData(
+      id: roomId,
+      title: 'Match ${opponents.map((o) => o.name).join(', ')}',
+      opponents: opponents,
+      createdAt: DateTime.now(),
+      deleteAt: DateTime.now().add(const Duration(hours: 24)),
+    );
+    await match.saveRoom(room.toJson());
+    setState(() => _searching = false);
+    if (!mounted) return;
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (_) => MatchRoomScreen(
+        roomId: roomId,
+        opponents: opponents,
+        roomData: room,
+      ),
+    ));
   }
 
-  Widget _poolHeader() {
-    return Text('Players near your skill',
+  Widget _roomsHeader() {
+    return Text('Your Match Rooms',
         style: GoogleFonts.nunito(
             fontSize: 16,
             fontWeight: FontWeight.w800,
             color: const Color(0xFF2D3A2E)));
   }
 
-  Widget _candidateCard(MatchCandidate c, MatchState match) {
-    final tier = SkillRating(c.skill);
+  Widget _roomCard(Map<String, dynamic> raw, MatchState match) {
+    final room = MatchRoomData.fromJson(raw);
+    final now = DateTime.now();
+    final left = room.deleteAt.difference(now);
+    final hrs = left.inHours;
+    final mins = left.inMinutes % 60;
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFEEEEEE)),
+        border: Border.all(
+            color: room.confirmed ? _green : const Color(0xFFEEEEEE)),
       ),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 24,
-            backgroundColor: const Color(0xFFF1F8E9),
-            child: Text(c.avatarEmoji, style: const TextStyle(fontSize: 22)),
-          ),
+          Icon(room.confirmed ? Icons.check_circle_rounded : Icons.chat_rounded,
+              color: room.confirmed ? _green : const Color(0xFF9AA89C),
+              size: 28),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Text(c.name,
-                        style: GoogleFonts.nunito(
-                            fontSize: 15, fontWeight: FontWeight.w800)),
-                    const SizedBox(width: 6),
-                    Text('${tier.tierEmoji} ${c.skill}',
-                        style: GoogleFonts.nunito(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xFF6B7A6E))),
-                  ],
-                ),
+                Text(room.title,
+                    style: GoogleFonts.nunito(
+                        fontSize: 14, fontWeight: FontWeight.w800),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis),
                 const SizedBox(height: 2),
-                Text('${c.city} · ${c.gamesPlayed} games · ${(c.reliability * 100).round()}% show-up',
+                Text(
+                    room.confirmed
+                        ? 'Confirmed · ${room.venueName ?? 'Venue'} · ${room.confirmedTime ?? ''}'
+                        : 'In progress · expires in ${hrs}h ${mins}m',
                     style: GoogleFonts.nunito(
                         fontSize: 11, color: const Color(0xFF9AA89C))),
               ],
             ),
           ),
           ElevatedButton(
-            onPressed: () => _openRoom(c, match),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => MatchRoomScreen(
+                  roomId: room.id,
+                  opponents: room.opponents,
+                  roomData: room,
+                ),
+              ));
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: _green,
               padding:
@@ -382,7 +375,7 @@ class _FindMatchScreenState extends State<FindMatchScreen> {
                   borderRadius: BorderRadius.circular(12)),
               elevation: 0,
             ),
-            child: Text('Invite',
+            child: Text(room.confirmed ? 'Open' : 'Continue',
                 style: GoogleFonts.nunito(
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
@@ -393,13 +386,6 @@ class _FindMatchScreenState extends State<FindMatchScreen> {
     );
   }
 
-  void _openRoom(MatchCandidate c, MatchState match) {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (_) => MatchRoomScreen(opponent: c),
-    ));
-  }
-
-  // ── Section wrapper ──
   Widget _section(String title, String subtitle, Widget child) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/game_state.dart';
 import '../providers/match_state.dart';
 import '../screens/find_match_screen.dart';
@@ -256,7 +257,7 @@ class CommunityScreen extends StatelessWidget {
               ),
               const SizedBox(height: 2),
               Text(
-                '${league.emoji} ${league.name}',
+                '${league.emoji} ${league.name}  ·  #LD${(game.xp + game.nickname.hashCode).abs() % 9999}  ·  Skill ${game.skillRating}',
                 style: GoogleFonts.nunito(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,

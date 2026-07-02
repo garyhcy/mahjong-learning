@@ -199,17 +199,40 @@ class MatchState extends ChangeNotifier {
         return <String, dynamic>{};
       }
     }).where((r) => r.isNotEmpty).toList();
-    // Purge rooms whose deletion time has passed
-    final now = DateTime.now().millisecondsSinceEpoch;
+    // Purge rooms whose deletion time has passed.
+    final now = DateTime.now();
     _activeRooms = _activeRooms.where((r) {
-      final deleteAt = (r['deleteAt'] as num?)?.toInt() ?? 0;
-      return deleteAt > now;
+      final raw = r['deleteAt'];
+      DateTime? dt;
+      if (raw is String) {
+        dt = DateTime.tryParse(raw);
+      } else if (raw is num) {
+        dt = DateTime.fromMillisecondsSinceEpoch(raw.toInt());
+      }
+      // Keep rooms with unparseable deleteAt to avoid accidental data loss.
+      if (dt == null) return true;
+      return dt.isAfter(now);
     }).toList();
     notifyListeners();
   }
 
   Future<void> saveRoom(Map<String, dynamic> room) async {
     _activeRooms.insert(0, room);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList(
+        _roomsKey, _activeRooms.map((r) => const JsonCodec().encode(r)).toList());
+    notifyListeners();
+  }
+
+  /// Update an existing room's fields (e.g. mark confirmed, extend deleteAt
+  /// to the booked day + 24h). No-op if the room id is not found.
+  Future<void> updateRoom(String id, Map<String, dynamic> patch) async {
+    final idx = _activeRooms.indexWhere((r) => r['id'] == id);
+    if (idx == -1) return;
+    _activeRooms[idx] = <String, dynamic>{
+      ..._activeRooms[idx],
+      ...patch,
+    };
     final prefs = await SharedPreferences.getInstance();
     await prefs.setStringList(
         _roomsKey, _activeRooms.map((r) => const JsonCodec().encode(r)).toList());

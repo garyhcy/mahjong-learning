@@ -19,9 +19,12 @@ import '../providers/match_state.dart';
 /// The opponent is a simple scripted bot that replies and votes so investors
 /// can see the full loop end-to-end without a real second device.
 class MatchRoomScreen extends StatefulWidget {
-  const MatchRoomScreen({super.key, required this.opponent});
+  const MatchRoomScreen({super.key, required this.opponents, this.existingRoom, this.roomId, this.roomData});
 
-  final MatchCandidate opponent;
+  final List<MatchCandidate> opponents;
+  final Map<String, dynamic>? existingRoom;
+  final String? roomId;
+  final MatchRoomData? roomData;
 
   @override
   State<MatchRoomScreen> createState() => _MatchRoomScreenState();
@@ -38,6 +41,7 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
   final List<MatchMessage> _messages = [];
   final List<ScheduleProposal> _proposals = [];
   final _scrollController = ScrollController();
+  final _textController = TextEditingController();
 
   late DateTime _expiresAt;
   Timer? _ticker;
@@ -49,7 +53,7 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
 
   bool _agreed = false;
   bool _confirmed = false;
-  ScheduleProposal? _agreedSlot;
+  DateTime? _agreedSlot;
 
   @override
   void initState() {
@@ -59,12 +63,12 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
       senderId: 'system',
       senderName: 'System',
       text:
-          'You matched with ${widget.opponent.name}! You have 12 hours to agree on a day & time. Propose a slot below.',
+          'You matched with ${widget.opponents[0].name}! You have 12 hours to agree on a day & time. Propose a slot below.',
       isSystem: true,
     ));
     _messages.add(MatchMessage(
-      senderId: widget.opponent.id,
-      senderName: widget.opponent.name,
+      senderId: widget.opponents[0].id,
+      senderName: widget.opponents[0].name,
       text: 'Hi! Looking forward to a game. When works for you?',
     ));
     _ticker = Timer.periodic(const Duration(seconds: 1), (_) {
@@ -79,6 +83,7 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
     _ticker?.cancel();
     _cooldownTicker?.cancel();
     _scrollController.dispose();
+    _textController.dispose();
     super.dispose();
   }
 
@@ -98,6 +103,14 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
     });
   }
 
+  String _fmtSlot(DateTime? dt) {
+    if (dt == null) return '';
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    final h = dt.hour.toString().padLeft(2, '0');
+    final m = dt.minute == 0 ? '00' : '30';
+    return '${months[dt.month-1]} ${dt.day}, $h:$m';
+  }
+
   String _fmt(Duration d) {
     final h = d.inHours;
     final m = d.inMinutes % 60;
@@ -105,6 +118,32 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
     if (h > 0) return '${h}h ${m}m';
     if (m > 0) return '${m}m ${s}s';
     return '${s}s';
+  }
+
+  // ── Send text message ──
+  void _sendText() {
+    final text = _textController.text.trim();
+    if (text.isEmpty) return;
+    setState(() {
+      _messages.add(MatchMessage(senderId: _meId, senderName: 'You', text: text));
+    });
+    _textController.clear();
+    _scrollToBottom();
+    // Bot reply
+    Future.delayed(const Duration(milliseconds: 1200), () {
+      if (!mounted) return;
+      final replies = ['Sounds good!', 'Got it 👍', 'Sure, let me check my schedule.', 'OK!', 'I am fine with that.'];
+      final reply = replies[DateTime.now().millisecond % replies.length];
+      final bot = widget.opponents.isNotEmpty ? widget.opponents.first : null;
+      setState(() {
+        _messages.add(MatchMessage(
+          senderId: bot?.id ?? 'bot1',
+          senderName: bot?.name ?? 'Opponent',
+          text: reply,
+        ));
+      });
+      _scrollToBottom();
+    });
   }
 
   void _scrollToBottom() {
@@ -129,28 +168,29 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (_) => _ProposeSheet(
-        onSubmit: (day, time) {
+        onSubmit: (slot) {
           Navigator.of(context).pop();
-          _addProposal(day, time);
+          _addProposal(slot);
         },
       ),
     );
   }
 
-  void _addProposal(DayPref day, TimeBand time) {
+  void _addProposal(DateTime slot) {
     final proposal = ScheduleProposal(
       id: 'p${_proposals.length}',
-      day: day,
-      time: time,
+      day: DayPref.values[slot.weekday % 7],
+      time: TimeBand.evening,
       proposedBy: _meId,
       votes: {_meId},
+      slotDateTime: slot,
     );
     setState(() {
       _proposals.add(proposal);
       _messages.add(MatchMessage(
         senderId: _meId,
         senderName: 'You',
-        text: 'Proposed: ${proposal.label}',
+        text: 'Proposed: ${_fmtSlot(proposal.slotDateTime)}',
       ));
     });
     _startCooldown();
@@ -158,25 +198,25 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
     // Opponent reacts after a short delay: votes yes ~60% of the time.
     Future.delayed(const Duration(milliseconds: 1400), () {
       if (!mounted) return;
-      final accepts = widget.opponent.reliability > 0.78 ||
+      final accepts = widget.opponents[0].reliability > 0.78 ||
           DateTime.now().millisecond % 10 < 6;
       if (accepts) {
         setState(() {
-          proposal.votes.add(widget.opponent.id);
+          proposal.votes.add(widget.opponents[0].id);
           _messages.add(MatchMessage(
-            senderId: widget.opponent.id,
-            senderName: widget.opponent.name,
-            text: 'That works for me! ✅ (${proposal.label})',
+            senderId: widget.opponents[0].id,
+            senderName: widget.opponents[0].name,
+            text: 'That works for me! ✅ (${_fmtSlot(proposal.slotDateTime)})',
           ));
           _agreed = true;
-          _agreedSlot = proposal;
+          _agreedSlot = proposal.slotDateTime;
         });
       } else {
         setState(() {
           _messages.add(MatchMessage(
-            senderId: widget.opponent.id,
-            senderName: widget.opponent.name,
-            text: 'Hmm, ${proposal.label} is tough for me. Another slot?',
+            senderId: widget.opponents[0].id,
+            senderName: widget.opponents[0].name,
+            text: 'Hmm, that time is tough for me. Another slot?',
           ));
         });
       }
@@ -192,9 +232,9 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
       } else {
         p.votes.add(_meId);
       }
-      if (p.votes.contains(_meId) && p.votes.contains(widget.opponent.id)) {
+      if (p.votes.contains(_meId) && p.votes.contains(widget.opponents[0].id)) {
         _agreed = true;
-        _agreedSlot = p;
+        _agreedSlot = p.slotDateTime;
       }
     });
   }
@@ -203,13 +243,22 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
   Future<void> _confirmReservation(Venue venue) async {
     final match = context.read<MatchState>();
     await match.recordConfirmedReservation();
+    final slot = _agreedSlot ?? DateTime.now();
+    final newDelete = slot.add(const Duration(hours: 24));
+    await match.updateRoom(widget.roomId ?? '', {
+      'confirmed': true,
+      'confirmedDay': slot.toIso8601String(),
+      'confirmedTime': _fmtSlot(slot),
+      'venueName': venue.name,
+      'deleteAt': newDelete.toIso8601String(),
+    });
     setState(() {
       _confirmed = true;
       _messages.add(MatchMessage(
         senderId: 'system',
         senderName: 'System',
         text:
-            'Reservation confirmed at ${venue.name} for ${_agreedSlot!.label}. See you there! 🀄',
+            'Reservation confirmed at ${venue.name} for ${_fmtSlot(slot)}. See you there! 🀄',
         isSystem: true,
       ));
     });
@@ -257,7 +306,7 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.opponent.name,
+            Text(widget.opponents[0].name,
                 style: GoogleFonts.nunito(
                     fontWeight: FontWeight.w800, fontSize: 16)),
             Text(
@@ -304,7 +353,7 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
             runSpacing: 8,
             children: _proposals.map((p) {
               final mine = p.votes.contains(_meId);
-              final theirs = p.votes.contains(widget.opponent.id);
+              final theirs = p.votes.contains(widget.opponents[0].id);
               final both = mine && theirs;
               return GestureDetector(
                 onTap: () => _toggleMyVote(p),
@@ -416,20 +465,54 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
       ),
       child: Column(
         children: [
-          SizedBox(
+          // ── Text chat input (#9) ──
+          if (!_confirmed) Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _textController,
+                  decoration: InputDecoration(
+                    hintText: 'Type a message...',
+                    hintStyle: GoogleFonts.nunito(fontSize: 14, color: const Color(0xFF9E9E9E)),
+                    filled: true,
+                    fillColor: const Color(0xFFF5F9F3),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                  style: GoogleFonts.nunito(fontSize: 14),
+                  onSubmitted: (_) => _sendText(),
+                ),
+              ),
+              const SizedBox(width: 8),
+              GestureDetector(
+                onTap: _sendText,
+                child: Container(
+                  width: 44, height: 44,
+                  decoration: const BoxDecoration(
+                    color: _green, shape: BoxShape.circle,
+                  ),
+                  child: const Icon(Icons.send_rounded, color: Colors.white, size: 20),
+                ),
+              ),
+            ],
+          ),
+          if (!_confirmed) const SizedBox(height: 10),
+          // ── Propose button ──
+          if (!_agreed && !_expired) SizedBox(
             width: double.infinity,
             child: ElevatedButton.icon(
               onPressed: disabled ? null : _openProposeSheet,
               icon: const Icon(Icons.event_rounded, size: 18),
-              label: Text(label,
-                  style: GoogleFonts.nunito(fontWeight: FontWeight.w800)),
+              label: Text(label, style: GoogleFonts.nunito(fontWeight: FontWeight.w800)),
               style: ElevatedButton.styleFrom(
                 backgroundColor: _green,
                 disabledBackgroundColor: const Color(0xFFC8E6C9),
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                 elevation: 0,
               ),
             ),
@@ -438,10 +521,7 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
             TextButton(
               onPressed: _reportFailed,
               child: Text("Can't agree? Report unsuccessful",
-                  style: GoogleFonts.nunito(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                      color: const Color(0xFF9AA89C))),
+                  style: GoogleFonts.nunito(fontSize: 12, fontWeight: FontWeight.w700, color: const Color(0xFF9AA89C))),
             ),
         ],
       ),
@@ -451,14 +531,16 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
   Widget _venuePicker() {
     final venues = MatchDemoData.venues();
     return Container(
-      constraints: const BoxConstraints(maxHeight: 280),
+      constraints: const BoxConstraints(maxHeight: 320),
       color: Colors.white,
       padding: const EdgeInsets.all(14),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('🎉 Agreed on ${_agreedSlot?.label}! Pick a venue',
+          Text(_agreedSlot != null
+              ? 'Agreed on ${_fmtSlot(_agreedSlot)}! Pick a venue'
+              : 'Pick a venue',
               style: GoogleFonts.nunito(
                   fontSize: 14,
                   fontWeight: FontWeight.w800,
@@ -467,12 +549,122 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
           Flexible(
             child: ListView(
               shrinkWrap: true,
-              children: venues.map((v) => _venueRow(v)).toList(),
+              children: [
+                ...venues.map((v) => _venueRow(v)),
+                // ── Other venue option ──
+                Container(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFF3E0),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: const Color(0xFFFFB74D)),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Choose your own venue',
+                                style: GoogleFonts.nunito(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w800,
+                                    color: const Color(0xFFE65100))),
+                            const SizedBox(height: 2),
+                            Text('Pick a place not on our list',
+                                style: GoogleFonts.nunito(
+                                    fontSize: 11,
+                                    color: const Color(0xFFBF360C))),
+                          ],
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: _showOtherVenueWarning,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFFF9800),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          elevation: 0,
+                        ),
+                        child: Text('Select',
+                            style: GoogleFonts.nunito(
+                                fontSize: 12, fontWeight: FontWeight.w700)),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  void _showOtherVenueWarning() {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            const Icon(Icons.warning_amber_rounded, color: Color(0xFFE65100), size: 28),
+            const SizedBox(width: 8),
+            Text('Heads up!',
+                style: GoogleFonts.nunito(fontWeight: FontWeight.w800)),
+          ],
+        ),
+        content: Text(
+          'Ludi cannot guarantee pricing transparency or on-site staff support for venues outside our partner network. You proceed at your own risk.\n\nAre you sure you want to continue?',
+          style: GoogleFonts.nunito(fontSize: 14, color: const Color(0xFF424242)),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text('Go back',
+                style: GoogleFonts.nunito(color: const Color(0xFF757575))),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              _confirmReservationCustom();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFFF9800),
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            ),
+            child: Text('I understand, proceed',
+                style: GoogleFonts.nunito(fontWeight: FontWeight.w700)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _confirmReservationCustom() async {
+    final match = context.read<MatchState>();
+    await match.recordConfirmedReservation();
+    final slot = _agreedSlot ?? DateTime.now();
+    final newDelete = slot.add(const Duration(hours: 24));
+    await match.updateRoom(widget.roomId ?? '', {
+      'confirmed': true,
+      'confirmedDay': slot.toIso8601String(),
+      'venueName': 'Custom venue',
+      'deleteAt': newDelete.toIso8601String(),
+    });
+    setState(() {
+      _confirmed = true;
+      _messages.add(MatchMessage(
+        senderId: 'system',
+        senderName: 'System',
+        text: 'Reservation confirmed at a custom venue for ${_fmtSlot(slot)}. See you there!',
+        isSystem: true,
+      ));
+    });
+    _scrollToBottom();
   }
 
   Widget _venueRow(Venue v) {
@@ -560,7 +752,7 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
                   fontWeight: FontWeight.w800,
                   color: const Color(0xFF2E7D32))),
           const SizedBox(height: 4),
-          Text('${_agreedSlot?.label} · See you at the table',
+          Text('${_fmtSlot(_agreedSlot)} · See you at the table',
               style: GoogleFonts.nunito(
                   fontSize: 12, color: const Color(0xFF6B7A6E))),
           const SizedBox(height: 12),
@@ -588,74 +780,88 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
 /// Bottom sheet to propose a day + time slot.
 class _ProposeSheet extends StatefulWidget {
   const _ProposeSheet({required this.onSubmit});
-  final void Function(DayPref day, TimeBand time) onSubmit;
-
+  final void Function(DateTime slot) onSubmit;
   @override
   State<_ProposeSheet> createState() => _ProposeSheetState();
 }
 
 class _ProposeSheetState extends State<_ProposeSheet> {
   static const Color _green = Color(0xFF4CAF50);
-  DayPref? _day;
-  TimeBand? _time;
+  DateTime? _selectedDate;
+  String? _selectedTime; // "HH:mm"
+  bool _showNextMonth = false;
+
+  static const _timeSlots = [
+    '08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30',
+    '12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30',
+    '16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30',
+    '20:00','20:30','21:00','21:30','22:00','22:30','23:00','23:30',
+  ];
+
+  Future<void> _pickDate() async {
+    final now = DateTime.now();
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: now,
+      firstDate: now,
+      lastDate: DateTime(now.year, now.month + 2, now.day),
+    );
+    if (picked != null) setState(() => _selectedDate = picked);
+  }
 
   @override
   Widget build(BuildContext context) {
+    final dateStr = _selectedDate == null
+        ? 'Tap to pick a date'
+        : '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}';
     return Padding(
       padding: EdgeInsets.only(
-        left: 20,
-        right: 20,
-        top: 20,
+        left: 20, right: 20, top: 20,
         bottom: MediaQuery.of(context).viewInsets.bottom + 20,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Propose a slot',
-              style: GoogleFonts.nunito(
-                  fontSize: 18, fontWeight: FontWeight.w800)),
+          Text('Propose a slot', style: GoogleFonts.nunito(fontSize: 18, fontWeight: FontWeight.w800)),
           const SizedBox(height: 16),
-          Text('Day',
-              style: GoogleFonts.nunito(
-                  fontSize: 13, fontWeight: FontWeight.w700)),
+          Text('Date', style: GoogleFonts.nunito(fontSize: 13, fontWeight: FontWeight.w700)),
           const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: DayPref.values.map((d) {
-              final sel = _day == d;
-              return ChoiceChip(
-                label: Text(d.short),
-                selected: sel,
-                onSelected: (_) => setState(() => _day = d),
-                selectedColor: _green,
-                labelStyle: GoogleFonts.nunito(
-                    fontWeight: FontWeight.w700,
-                    color: sel ? Colors.white : const Color(0xFF424242)),
-                backgroundColor: const Color(0xFFF5F5F5),
-              );
-            }).toList(),
+          GestureDetector(
+            onTap: _pickDate,
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF5F5F5),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: _selectedDate != null ? _green : const Color(0xFFE0E0E0)),
+              ),
+              child: Row(children: [
+                Icon(Icons.calendar_month_rounded, color: _selectedDate != null ? _green : const Color(0xFF9E9E9E)),
+                const SizedBox(width: 8),
+                Text(dateStr, style: GoogleFonts.nunito(fontSize: 14, fontWeight: FontWeight.w600)),
+              ]),
+            ),
           ),
           const SizedBox(height: 16),
-          Text('Time',
-              style: GoogleFonts.nunito(
-                  fontSize: 13, fontWeight: FontWeight.w700)),
+          Text('Time (30-min precision)', style: GoogleFonts.nunito(fontSize: 13, fontWeight: FontWeight.w700)),
           const SizedBox(height: 8),
           Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: TimeBand.values.map((t) {
-              final sel = _time == t;
-              return ChoiceChip(
-                label: Text(t.label),
-                selected: sel,
-                onSelected: (_) => setState(() => _time = t),
-                selectedColor: _green,
-                labelStyle: GoogleFonts.nunito(
-                    fontWeight: FontWeight.w700,
-                    color: sel ? Colors.white : const Color(0xFF424242)),
-                backgroundColor: const Color(0xFFF5F5F5),
+            spacing: 6, runSpacing: 6,
+            children: _timeSlots.map((t) {
+              final sel = _selectedTime == t;
+              return GestureDetector(
+                onTap: () => setState(() => _selectedTime = t),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: sel ? _green : const Color(0xFFF5F5F5),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: sel ? _green : Colors.transparent),
+                  ),
+                  child: Text(t, style: GoogleFonts.nunito(fontSize: 12, fontWeight: FontWeight.w700, color: sel ? Colors.white : const Color(0xFF424242))),
+                ),
               );
             }).toList(),
           ),
@@ -663,21 +869,16 @@ class _ProposeSheetState extends State<_ProposeSheet> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: (_day != null && _time != null)
-                  ? () => widget.onSubmit(_day!, _time!)
-                  : null,
+              onPressed: (_selectedDate != null && _selectedTime != null) ? () {
+                final parts = _selectedTime!.split(':');
+                widget.onSubmit(DateTime(_selectedDate!.year, _selectedDate!.month, _selectedDate!.day, int.parse(parts[0]), int.parse(parts[1])));
+              } : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor: _green,
-                disabledBackgroundColor: const Color(0xFFC8E6C9),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14)),
-                elevation: 0,
+                backgroundColor: _green, disabledBackgroundColor: const Color(0xFFC8E6C9),
+                foregroundColor: Colors.white, padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)), elevation: 0,
               ),
-              child: Text('Send Proposal',
-                  style: GoogleFonts.nunito(
-                      fontSize: 15, fontWeight: FontWeight.w800)),
+              child: Text('Send Proposal', style: GoogleFonts.nunito(fontSize: 15, fontWeight: FontWeight.w800)),
             ),
           ),
         ],

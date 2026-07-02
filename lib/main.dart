@@ -132,34 +132,78 @@ class _AuthGateState extends State<AuthGate> {
   }
 }
 
-class _AuthFlow extends StatelessWidget {
+class _AuthFlow extends StatefulWidget {
   const _AuthFlow();
+  @override
+  State<_AuthFlow> createState() => _AuthFlowState();
+}
+
+class _AuthFlowState extends State<_AuthFlow> {
+  bool? _localAuthed;
+  bool _checked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkLocal();
+  }
+
+  Future<void> _checkLocal() async {
+    if (firebaseAvailable) {
+      if (mounted) setState(() => _checked = true);
+      return;
+    }
+    final p = await SharedPreferences.getInstance();
+    if (mounted) {
+      setState(() {
+        _localAuthed = p.getBool('local_demo_authed') ?? false;
+        _checked = true;
+      });
+    }
+  }
+
+  Future<void> _demoSignIn() async {
+    final p = await SharedPreferences.getInstance();
+    await p.setBool('local_demo_authed', true);
+    if (mounted) setState(() => _localAuthed = true);
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (!firebaseAvailable) return const MainShell();
+    if (!_checked) {
+      return const Scaffold(
+        backgroundColor: Color(0xFFFFF8F0),
+        body: Center(
+          child: CircularProgressIndicator(color: Color(0xFF4CAF50)),
+        ),
+      );
+    }
 
-    return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold(
-            backgroundColor: Color(0xFFFFF8F0),
-            body: Center(
-              child: CircularProgressIndicator(
-                color: Color(0xFF4CAF50),
+    if (firebaseAvailable) {
+      return StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Scaffold(
+              backgroundColor: Color(0xFFFFF8F0),
+              body: Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFF4CAF50),
+                ),
               ),
-            ),
-          );
-        }
+            );
+          }
+          if (snapshot.hasData && snapshot.data != null) {
+            return const MainShell();
+          }
+          return const AuthScreen();
+        },
+      );
+    }
 
-        if (snapshot.hasData && snapshot.data != null) {
-          return const MainShell();
-        }
-
-        return const AuthScreen();
-      },
-    );
+    // Demo mode (Firebase unavailable): local-only auth gate.
+    if (_localAuthed == true) return const MainShell();
+    return AuthScreen(onDemoAuth: _demoSignIn);
   }
 }
 
@@ -181,6 +225,9 @@ class _LanguageGateState extends State<_LanguageGate> {
     final p = await SharedPreferences.getInstance();
     if (mounted) setState(() => _hasChosen = p.getString('app_display_lang') != null);
   }
+  void _onLanguageSelected() {
+    setState(() => _hasChosen = true);
+  }
   @override
   Widget build(BuildContext context) {
     if (_hasChosen == null) {
@@ -189,13 +236,21 @@ class _LanguageGateState extends State<_LanguageGate> {
         body: Center(child: CircularProgressIndicator(color: Color(0xFF4CAF50))),
       );
     }
-    if (!_hasChosen!) return const _LanguageSelectScreen();
+    if (!_hasChosen!) return _LanguageSelectScreen(onSelected: _onLanguageSelected);
     return widget.child;
   }
 }
 
 class _LanguageSelectScreen extends StatelessWidget {
-  const _LanguageSelectScreen();
+  const _LanguageSelectScreen({required this.onSelected});
+  final VoidCallback onSelected;
+
+  Future<void> _pick(BuildContext context, DisplayLang lang) async {
+    final p = await SharedPreferences.getInstance();
+    await p.setString('app_display_lang', lang == DisplayLang.zh ? 'zh' : 'en');
+    AppI18n.set(lang);
+    onSelected();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -208,7 +263,8 @@ class _LanguageSelectScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Icon(Icons.emoji_events_rounded, size: 80, color: Color(0xFF4CAF50)),
+              // Logo
+              Image.asset('assets/images/topbar_logo.png', width: 120, height: 120),
               const SizedBox(height: 16),
               Text('Choose your language',
                   textAlign: TextAlign.center,
@@ -224,11 +280,7 @@ class _LanguageSelectScreen extends StatelessWidget {
               const SizedBox(height: 32),
               // ── 中文 ──
               ElevatedButton(
-                onPressed: () async {
-                  final p = await SharedPreferences.getInstance();
-                  await p.setString('app_display_lang', 'zh');
-                  AppI18n.set(DisplayLang.zh);
-                },
+                onPressed: () => _pick(context, DisplayLang.zh),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: const Color(0xFF2D2D2D),
@@ -246,11 +298,7 @@ class _LanguageSelectScreen extends StatelessWidget {
               const SizedBox(height: 12),
               // ── English ──
               ElevatedButton(
-                onPressed: () async {
-                  final p = await SharedPreferences.getInstance();
-                  await p.setString('app_display_lang', 'en');
-                  AppI18n.set(DisplayLang.en);
-                },
+                onPressed: () => _pick(context, DisplayLang.en),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: const Color(0xFF2D2D2D),

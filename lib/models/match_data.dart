@@ -112,11 +112,13 @@ extension DayPrefInfo on DayPref {
 }
 
 /// Rough time-of-day band. Players pick preferred bands, or "no preference".
-enum TimeBand { morning, afternoon, evening, lateNight }
+enum TimeBand { noPreference, morning, afternoon, evening, lateNight }
 
 extension TimeBandInfo on TimeBand {
   String get label {
     switch (this) {
+      case TimeBand.noPreference:
+        return 'No preference';
       case TimeBand.morning:
         return 'Morning';
       case TimeBand.afternoon:
@@ -130,6 +132,8 @@ extension TimeBandInfo on TimeBand {
 
   String get range {
     switch (this) {
+      case TimeBand.noPreference:
+        return '';
       case TimeBand.morning:
         return '08:00 – 12:00';
       case TimeBand.afternoon:
@@ -256,6 +260,7 @@ class ScheduleProposal {
   final TimeBand time;
   final String proposedBy;
   final Set<String> votes; // voter ids
+  final DateTime? slotDateTime; // exact date+time (30-min precision)
 
   ScheduleProposal({
     required this.id,
@@ -263,9 +268,74 @@ class ScheduleProposal {
     required this.time,
     required this.proposedBy,
     Set<String>? votes,
+    this.slotDateTime,
   }) : votes = votes ?? {};
 
   String get label => '${day.short} · ${time.label}';
+}
+
+
+/// A persisted match room for the active-rooms list.
+class MatchRoomData {
+  final String id;
+  final String title;
+  final List<MatchCandidate> opponents;
+  final DateTime createdAt;
+  final DateTime? confirmedAt;
+  final DateTime? confirmedDay;
+  final String? confirmedTime;
+  final String? venueName;
+  final DateTime deleteAt;
+  final bool confirmed;
+
+  MatchRoomData({
+    required this.id,
+    required this.title,
+    required this.opponents,
+    required this.createdAt,
+    this.confirmedAt,
+    this.confirmedDay,
+    this.confirmedTime,
+    this.venueName,
+    required this.deleteAt,
+    this.confirmed = false,
+  });
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'title': title,
+    'opponents': opponents.map((o) => {'id': o.id, 'name': o.name, 'avatarEmoji': o.avatarEmoji, 'skill': o.skill}).toList(),
+    'createdAt': createdAt.toIso8601String(),
+    'confirmedAt': confirmedAt?.toIso8601String(),
+    'confirmedDay': confirmedDay?.toIso8601String(),
+    'confirmedTime': confirmedTime,
+    'venueName': venueName,
+    'deleteAt': deleteAt.toIso8601String(),
+    'confirmed': confirmed,
+  };
+
+  factory MatchRoomData.fromJson(Map<String, dynamic> j) {
+    final opps = (j['opponents'] as List? ?? []).map((o) => MatchCandidate(
+      id: o['id'] ?? '',
+      name: o['name'] ?? 'Player',
+      avatarEmoji: o['avatarEmoji'] ?? '🐼',
+      skill: (o['skill'] as num?)?.toInt() ?? 50,
+      city: '', languages: [], days: [], times: [],
+      gamesPlayed: 0, reliability: 0.8,
+    )).toList();
+    return MatchRoomData(
+      id: j['id'] ?? '',
+      title: j['title'] ?? 'Match Room',
+      opponents: opps,
+      createdAt: DateTime.tryParse(j['createdAt'] ?? '') ?? DateTime.now(),
+      confirmedAt: j['confirmedAt'] != null ? DateTime.tryParse(j['confirmedAt']) : null,
+      confirmedDay: j['confirmedDay'] != null ? DateTime.tryParse(j['confirmedDay']) : null,
+      confirmedTime: j['confirmedTime'],
+      venueName: j['venueName'],
+      deleteAt: DateTime.tryParse(j['deleteAt'] ?? '') ?? DateTime.now().add(Duration(days: 1)),
+      confirmed: j['confirmed'] == true,
+    );
+  }
 }
 
 /// Random helpers to generate believable demo candidates/venues.

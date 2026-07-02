@@ -226,9 +226,6 @@ class _MoreScreenState extends State<MoreScreen> {
                 _settingsDivider(),
                 _settingsRow(Icons.email_rounded, 'Email',
                     subtitle: FirebaseAuth.instance.currentUser?.email ?? 'Not signed in'),
-                _settingsDivider(),
-                _settingsRow(Icons.delete_forever_rounded, 'Delete Account',
-                    isDestructive: true, onTap: _showDeleteAccountDialog),
               ]),
               const SizedBox(height: 20),
 
@@ -381,6 +378,15 @@ class _MoreScreenState extends State<MoreScreen> {
                           fontSize: 15, fontWeight: FontWeight.w700)),
                 ),
               ),
+              const SizedBox(height: 20),
+
+              // Delete Account — placed at the very bottom, isolated (Apple requires it)
+              _sectionTitle('Account Management'),
+              const SizedBox(height: 8),
+              _settingsCard([
+                _settingsRow(Icons.delete_forever_rounded, 'Delete Account',
+                    isDestructive: true, onTap: _showDeleteAccountDialog),
+              ]),
               const SizedBox(height: 100),
             ],
           ),
@@ -684,14 +690,20 @@ class _MoreScreenState extends State<MoreScreen> {
                   children: [
                     _langOption('中文', !isZh ? false : true, () async {
                       AppI18n.set(DisplayLang.zh);
-                      
+                      final p = await SharedPreferences.getInstance();
+                      await p.setString('app_display_lang', 'zh');
+                      if (!context.mounted) return;
                       context.read<AppI18n>().renotify();
+                      setSheetState(() {});
                     }),
                     const SizedBox(width: 12),
                     _langOption('English', isZh ? false : true, () async {
                       AppI18n.set(DisplayLang.en);
-                      
+                      final p = await SharedPreferences.getInstance();
+                      await p.setString('app_display_lang', 'en');
+                      if (!context.mounted) return;
                       context.read<AppI18n>().renotify();
+                      setSheetState(() {});
                     }),
                   ],
                 ),
@@ -708,7 +720,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   ),
                   const SizedBox(height: 12),
                   Row(
-                    children: [AppLanguage.cantonese, AppLanguage.mandarin].map((lang) {
+                    children: [AppLanguage.cantonese, AppLanguage.mandarin, AppLanguage.english].map((lang) {
                       final isSelected = match.language == lang;
                       return Expanded(
                         child: Padding(
