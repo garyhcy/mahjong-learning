@@ -6,6 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'providers/game_state.dart';
+import 'providers/match_state.dart';
+import 'models/match_data.dart';
 import 'services/purchases_service.dart';
 import 'screens/auth_screen.dart';
 import 'screens/home_screen.dart';
@@ -26,20 +28,26 @@ Future<void> main() async {
   await PurchasesService.init();
   final gameState = GameState();
   await gameState.loadFromStorage();
-  runApp(MahjongApp(gameState: gameState));
+  final matchState = MatchState();
+  await matchState.load();
+  runApp(MahjongApp(gameState: gameState, matchState: matchState));
 }
 
 bool firebaseAvailable = false;
 
 class MahjongApp extends StatelessWidget {
-  const MahjongApp({super.key, required this.gameState});
+  const MahjongApp({super.key, required this.gameState, required this.matchState});
 
   final GameState gameState;
+  final MatchState matchState;
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: gameState,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: gameState),
+        ChangeNotifierProvider.value(value: matchState),
+      ],
       child: MaterialApp(
         title: 'Ludi',
         debugShowCheckedModeBanner: false,
@@ -109,7 +117,7 @@ class _AuthGateState extends State<AuthGate> {
 
   @override
   Widget build(BuildContext context) {
-    if (!firebaseAvailable) return const MainShell();
+    if (!firebaseAvailable) return const _LanguageGate(child: MainShell());
 
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
@@ -126,11 +134,88 @@ class _AuthGateState extends State<AuthGate> {
         }
 
         if (snapshot.hasData && snapshot.data != null) {
-          return const MainShell();
+          return const _LanguageGate(child: MainShell());
         }
 
         return const AuthScreen();
       },
+    );
+  }
+}
+
+class _LanguageGate extends StatelessWidget {
+  const _LanguageGate({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final match = context.watch<MatchState>();
+    if (!match.isLoaded) {
+      return const Scaffold(
+        backgroundColor: Color(0xFFFFF8F0),
+        body: Center(
+          child: CircularProgressIndicator(color: Color(0xFF4CAF50)),
+        ),
+      );
+    }
+    if (!match.languageChosen) {
+      return const _LanguageSelectScreen();
+    }
+    return child;
+  }
+}
+
+class _LanguageSelectScreen extends StatelessWidget {
+  const _LanguageSelectScreen();
+
+  @override
+  Widget build(BuildContext context) {
+    final match = context.read<MatchState>();
+    return Scaffold(
+      backgroundColor: const Color(0xFFFFF8F0),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text('Choose your language',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.nunito(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w800,
+                      color: const Color(0xFF2D2D2D))),
+              const SizedBox(height: 8),
+              Text('Used across the app and to match you with players.',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.nunito(
+                      fontSize: 14, color: const Color(0xFF757575))),
+              const SizedBox(height: 32),
+              ...AppLanguage.values.map((lang) => Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: ElevatedButton(
+                      onPressed: () => match.setLanguage(lang),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: const Color(0xFF2D2D2D),
+                        elevation: 0,
+                        padding: const EdgeInsets.symmetric(vertical: 18),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                          side: const BorderSide(color: Color(0xFF4CAF50)),
+                        ),
+                      ),
+                      child: Text(lang.label,
+                          style: GoogleFonts.nunito(
+                              fontSize: 18, fontWeight: FontWeight.w700)),
+                    ),
+                  )),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -162,6 +247,10 @@ class _MainShellState extends State<MainShell> {
 
   @override
   Widget build(BuildContext context) {
+    final isPremium = context.read<GameState>().isPremium;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<MatchState>().updatePremium(isPremium);
+    });
     return Scaffold(
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 300),

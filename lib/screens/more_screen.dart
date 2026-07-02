@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/game_state.dart';
+import '../providers/match_state.dart';
+import '../models/match_data.dart';
 import '../widgets/mascot_widget.dart';
 import 'paywall_screen.dart';
 
@@ -241,6 +243,10 @@ class _MoreScreenState extends State<MoreScreen> {
                     _hapticEnabled, (v) {
                   setState(() => _hapticEnabled = v);
                 }),
+                _settingsDivider(),
+                _settingsRow(Icons.language_rounded, 'Language',
+                    subtitle: context.watch<MatchState>().language.label,
+                    onTap: _showLanguageSheet),
               ]),
               const SizedBox(height: 20),
 
@@ -597,6 +603,87 @@ class _MoreScreenState extends State<MoreScreen> {
                         MascotWidget(expression: expr, size: 48),
                         const SizedBox(height: 6),
                         Text(label,
+                            style: GoogleFonts.nunito(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: isSelected
+                                    ? const Color(0xFF4CAF50)
+                                    : const Color(0xFF757575))),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showLanguageSheet() {
+    final match = context.read<MatchState>();
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => Container(
+        padding: const EdgeInsets.all(24),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: const Color(0xFFE0E0E0),
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text('Choose Language',
+                style: GoogleFonts.nunito(
+                    fontSize: 18, fontWeight: FontWeight.w800)),
+            const SizedBox(height: 20),
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                mainAxisSpacing: 16,
+                crossAxisSpacing: 16,
+                childAspectRatio: 0.85,
+              ),
+              itemCount: AppLanguage.values.length,
+              itemBuilder: (context, index) {
+                final option = AppLanguage.values[index];
+                final isSelected = match.language.label == option.label;
+                return GestureDetector(
+                  onTap: () {
+                    match.setLanguage(option);
+                    Navigator.pop(ctx);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? const Color(0xFF4CAF50).withAlpha(20)
+                          : const Color(0xFFF5F5F5),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: isSelected
+                            ? const Color(0xFF4CAF50)
+                            : Colors.transparent,
+                        width: 2,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(option.label,
                             style: GoogleFonts.nunito(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w600,

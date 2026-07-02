@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/game_state.dart';
+import '../providers/match_state.dart';
+import '../screens/find_match_screen.dart';
 import '../widgets/mascot_widget.dart';
 
 // ─── League Helper ───
@@ -897,11 +899,11 @@ class CommunityScreen extends StatelessWidget {
                   color: const Color(0xFFFFF3E0),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Text('Coming Soon',
+                child: Text('Beta',
                     style: GoogleFonts.nunito(
                         fontSize: 10,
                         fontWeight: FontWeight.w700,
-                        color: const Color(0xFFE65100))),
+                        color: const Color(0xFF4CAF50))),
               ),
             ],
           ),
@@ -933,7 +935,13 @@ class CommunityScreen extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: null,
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const FindMatchScreen(),
+                  ),
+                );
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF4CAF50),
                 disabledBackgroundColor: const Color(0xFFE0E0E0),
@@ -942,11 +950,11 @@ class CommunityScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(14)),
                 elevation: 0,
               ),
-              child: Text('Notify Me When Available',
+              child: Text('Find a Match',
                   style: GoogleFonts.nunito(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
-                      color: const Color(0xFF757575))),
+                      color: Colors.white)),
             ),
           ),
         ],

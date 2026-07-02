@@ -257,6 +257,37 @@ class GameState extends ChangeNotifier {
     return 3000;
   }
 
+  /// Skill Rating (MMR), 0–100. Used for Find a Match pairing.
+  /// Blends lesson-completion progress, learning accuracy, and momentum.
+  /// Independent from XP-based League (which rewards activity, not skill).
+  int get skillRating {
+    final totalLessons = allLessonsData.length;
+    final progress =
+        totalLessons == 0 ? 0.0 : (completedLessons / totalLessons);
+
+    // Accuracy proxy: penalize accumulated wrong answers relative to attempts.
+    final attempts = completedLessons + _wrongAnswers.length;
+    final accuracy =
+        attempts == 0 ? 0.6 : (completedLessons / attempts).clamp(0.0, 1.0);
+
+    // Momentum: consecutive-correct streak, capped.
+    final momentum = (_consecutiveCorrect.clamp(0, 10)) / 10.0;
+
+    // Weighted blend → 0..100.
+    final raw = progress * 60 + accuracy * 30 + momentum * 10;
+    return raw.round().clamp(0, 100);
+  }
+
+  /// Skill tier label derived from [skillRating]. Shown to players as a goal.
+  String get skillTier {
+    final r = skillRating;
+    if (r < 20) return 'Sparrow';
+    if (r < 40) return 'Apprentice';
+    if (r < 60) return 'Tactician';
+    if (r < 80) return 'Sharp';
+    return 'Master';
+  }
+
   // ── Persistence ──
 
   Future<void> loadFromStorage() async {
