@@ -1,3 +1,4 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,6 +10,8 @@ import 'providers/game_state.dart';
 import 'providers/match_state.dart';
 import 'models/match_data.dart';
 import 'services/purchases_service.dart';
+import 'services/app_i18n.dart';
+import 'widgets/mascot_widget.dart';
 import 'screens/auth_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/community_screen.dart';
@@ -26,20 +29,27 @@ Future<void> main() async {
     // Firebase optional in local/dev until config is added.
   }
   await PurchasesService.init();
+  // Load display language preference
+  final sp = await SharedPreferences.getInstance();
+  final langKey = sp.getString('app_display_lang') ?? 'en';
+  AppI18n.set(langKey == 'zh' ? DisplayLang.zh : DisplayLang.en);
   final gameState = GameState();
   await gameState.loadFromStorage();
   final matchState = MatchState();
   await matchState.load();
-  runApp(MahjongApp(gameState: gameState, matchState: matchState));
+  await matchState.loadRooms();
+  final i18n = AppI18n();
+  runApp(MahjongApp(gameState: gameState, matchState: matchState, i18n: i18n));
 }
 
 bool firebaseAvailable = false;
 
 class MahjongApp extends StatelessWidget {
-  const MahjongApp({super.key, required this.gameState, required this.matchState});
+  const MahjongApp({super.key, required this.gameState, required this.matchState, required this.i18n});
 
   final GameState gameState;
   final MatchState matchState;
+  final AppI18n i18n;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +57,7 @@ class MahjongApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(value: gameState),
         ChangeNotifierProvider.value(value: matchState),
+        ChangeNotifierProvider.value(value: i18n),
       ],
       child: MaterialApp(
         title: 'Ludi',
@@ -117,7 +128,16 @@ class _AuthGateState extends State<AuthGate> {
 
   @override
   Widget build(BuildContext context) {
-    if (!firebaseAvailable) return const _LanguageGate(child: MainShell());
+    return const _LanguageGate(child: _AuthFlow());
+  }
+}
+
+class _AuthFlow extends StatelessWidget {
+  const _AuthFlow();
+
+  @override
+  Widget build(BuildContext context) {
+    if (!firebaseAvailable) return const MainShell();
 
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
@@ -134,7 +154,7 @@ class _AuthGateState extends State<AuthGate> {
         }
 
         if (snapshot.hasData && snapshot.data != null) {
-          return const _LanguageGate(child: MainShell());
+          return const MainShell();
         }
 
         return const AuthScreen();
@@ -143,26 +163,34 @@ class _AuthGateState extends State<AuthGate> {
   }
 }
 
-class _LanguageGate extends StatelessWidget {
+class _LanguageGate extends StatefulWidget {
   const _LanguageGate({required this.child});
-
   final Widget child;
+  @override
+  State<_LanguageGate> createState() => _LanguageGateState();
+}
 
+class _LanguageGateState extends State<_LanguageGate> {
+  bool? _hasChosen;
+  @override
+  void initState() {
+    super.initState();
+    _checkChosen();
+  }
+  Future<void> _checkChosen() async {
+    final p = await SharedPreferences.getInstance();
+    if (mounted) setState(() => _hasChosen = p.getString('app_display_lang') != null);
+  }
   @override
   Widget build(BuildContext context) {
-    final match = context.watch<MatchState>();
-    if (!match.isLoaded) {
+    if (_hasChosen == null) {
       return const Scaffold(
         backgroundColor: Color(0xFFFFF8F0),
-        body: Center(
-          child: CircularProgressIndicator(color: Color(0xFF4CAF50)),
-        ),
+        body: Center(child: CircularProgressIndicator(color: Color(0xFF4CAF50))),
       );
     }
-    if (!match.languageChosen) {
-      return const _LanguageSelectScreen();
-    }
-    return child;
+    if (!_hasChosen!) return const _LanguageSelectScreen();
+    return widget.child;
   }
 }
 
@@ -171,7 +199,6 @@ class _LanguageSelectScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final match = context.read<MatchState>();
     return Scaffold(
       backgroundColor: const Color(0xFFFFF8F0),
       body: SafeArea(
@@ -181,6 +208,8 @@ class _LanguageSelectScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              const Icon(Icons.emoji_events_rounded, size: 80, color: Color(0xFF4CAF50)),
+              const SizedBox(height: 16),
               Text('Choose your language',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.nunito(
@@ -188,30 +217,54 @@ class _LanguageSelectScreen extends StatelessWidget {
                       fontWeight: FontWeight.w800,
                       color: const Color(0xFF2D2D2D))),
               const SizedBox(height: 8),
-              Text('Used across the app and to match you with players.',
+              Text('You can change this later in Settings',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.nunito(
                       fontSize: 14, color: const Color(0xFF757575))),
               const SizedBox(height: 32),
-              ...AppLanguage.values.map((lang) => Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: ElevatedButton(
-                      onPressed: () => match.setLanguage(lang),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: const Color(0xFF2D2D2D),
-                        elevation: 0,
-                        padding: const EdgeInsets.symmetric(vertical: 18),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14),
-                          side: const BorderSide(color: Color(0xFF4CAF50)),
-                        ),
-                      ),
-                      child: Text(lang.label,
-                          style: GoogleFonts.nunito(
-                              fontSize: 18, fontWeight: FontWeight.w700)),
-                    ),
-                  )),
+              // ── 中文 ──
+              ElevatedButton(
+                onPressed: () async {
+                  final p = await SharedPreferences.getInstance();
+                  await p.setString('app_display_lang', 'zh');
+                  AppI18n.set(DisplayLang.zh);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: const Color(0xFF2D2D2D),
+                  elevation: 0,
+                  padding: const EdgeInsets.symmetric(vertical: 18),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    side: const BorderSide(color: Color(0xFF4CAF50)),
+                  ),
+                ),
+                child: Text('中文',
+                    style: GoogleFonts.nunito(
+                        fontSize: 20, fontWeight: FontWeight.w700)),
+              ),
+              const SizedBox(height: 12),
+              // ── English ──
+              ElevatedButton(
+                onPressed: () async {
+                  final p = await SharedPreferences.getInstance();
+                  await p.setString('app_display_lang', 'en');
+                  AppI18n.set(DisplayLang.en);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: const Color(0xFF2D2D2D),
+                  elevation: 0,
+                  padding: const EdgeInsets.symmetric(vertical: 18),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    side: const BorderSide(color: Color(0xFF4CAF50)),
+                  ),
+                ),
+                child: Text('English',
+                    style: GoogleFonts.nunito(
+                        fontSize: 20, fontWeight: FontWeight.w700)),
+              ),
             ],
           ),
         ),

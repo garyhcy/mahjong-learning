@@ -1071,6 +1071,44 @@ class GameState extends ChangeNotifier {
     _cloudSyncTimer?.cancel();
   }
 
+  /// Reset all local progress (used by Delete Account flow).
+  Future<void> resetProgress() async {
+    _xp = 0;
+    _streak = 0;
+    _hearts = 3;
+    _isPremium = false;
+    _lastHeartLossAt = null;
+    _lastLessonDate = null;
+    _hasSeenOnboarding = false;
+    _lessonCompleted.clear();
+    _lastLessonId = null;
+    _nickname = 'Player';
+    _avatarEmoji = '🐼';
+    _unlockedAchievements.clear();
+    _dailyTasks.clear();
+    _lastActiveDate = '';
+    _consecutiveCorrect = 0;
+    _dailyXpEarned = 0;
+    _wrongAnswers.clear();
+    _isReviewMode = false;
+    _reviewQuestions = [];
+    _reviewResults.clear();
+    _reviewCorrectCount = 0;
+    _currentQuestionIndex = 0;
+    _correctAnswers = 0;
+    _quizFinished = false;
+    _showFailure = false;
+    _dialogue = [];
+    _dialogueIndex = 0;
+    _currentLessonId = null;
+    _currentQuestions = [];
+    _targetStageId = null;
+    _syncStageProgress();
+    _updateStageUnlocks();
+    await _persist();
+    notifyListeners();
+  }
+
   // ── Persist override ──
 
   Future<void> _persist() async {

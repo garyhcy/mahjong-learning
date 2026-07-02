@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../models/match_data.dart';
 import '../providers/game_state.dart';
 import '../providers/match_state.dart';
+import '../services/app_i18n.dart';
 import 'match_room_screen.dart';
 
 /// Find a Match (約戰) — entry flow.
@@ -172,17 +173,18 @@ class _FindMatchScreenState extends State<FindMatchScreen> {
 
   // ── Language ──
   Widget _languageSection(MatchState match) {
+    final isEn = AppI18n.current == DisplayLang.en;
     return _section(
-      'Match Language',
-      'Players are paired in your chosen language',
+      AppI18n.t('match_language'),
+      AppI18n.t('match_language_hint'),
       Wrap(
         spacing: 10,
-        children: AppLanguage.values.map((lang) {
+        children: [AppLanguage.cantonese, AppLanguage.mandarin].map((lang) {
           final selected = match.language == lang;
           return ChoiceChip(
-            label: Text(lang.label),
+            label: Text(lang.displayLabel(isEn)),
             selected: selected,
-            onSelected: (_) => match.setLanguage(lang),
+            onSelected: (_) => match.setLanguage(lang, markChosen: false),
             selectedColor: _green,
             labelStyle: GoogleFonts.nunito(
                 fontWeight: FontWeight.w700,

@@ -5,6 +5,7 @@ import '../providers/game_state.dart';
 import '../providers/practice_state.dart';
 import 'practice/tile_recognition_screen.dart';
 import 'practice/tile_matching_screen.dart';
+import 'learn_screen.dart';
 import 'practice/sequence_sorting_screen.dart';
 import 'practice/rules_quiz_screen.dart';
 import 'practice/speed_challenge_screen.dart';
@@ -99,6 +100,23 @@ class _PracticeContent extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
                   child: _WeaknessCard(practiceState: practiceState),
+                ),
+              ),
+
+            // Wrong-answer review practice (from GameState)
+            if (game.wrongAnswerCount > 0)
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
+                  child: _WrongAnswerPracticeCard(
+                    count: game.wrongAnswerCount,
+                    onTap: () {
+                      game.startWrongAnswerReview();
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => const LearnScreen(),
+                      ));
+                    },
+                  ),
                 ),
               ),
 
@@ -741,6 +759,65 @@ class _RecentActivityList extends StatelessWidget {
             ],
           );
         }).toList(),
+      ),
+    );
+  }
+}
+
+
+// ── Wrong Answer Practice Card ──
+class _WrongAnswerPracticeCard extends StatelessWidget {
+  final int count;
+  final VoidCallback onTap;
+
+  const _WrongAnswerPracticeCard({required this.count, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: const Color(0xFFFFEBEE),
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: const Color(0xFFEF9A9A)),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: const Color(0xFFE53935).withAlpha(20),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Icon(Icons.error_outline,
+                  color: Color(0xFFC62828), size: 24),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Review Your Mistakes',
+                      style: GoogleFonts.nunito(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w800,
+                          color: const Color(0xFFC62828))),
+                  const SizedBox(height: 2),
+                  Text(
+                      '$count wrong answer${count > 1 ? "s" : ""} to review — master them now',
+                      style: GoogleFonts.nunito(
+                          fontSize: 12,
+                          color: const Color(0xFFE57373))),
+                ],
+              ),
+            ),
+            const Icon(Icons.chevron_right_rounded,
+                color: Color(0xFFC62828), size: 24),
+          ],
+        ),
       ),
     );
   }

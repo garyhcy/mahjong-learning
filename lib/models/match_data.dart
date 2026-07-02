@@ -25,7 +25,7 @@ extension AppLanguageInfo on AppLanguage {
     }
   }
 
-  /// Label shown in the UI (kept in each language's own script).
+  /// Label shown in the UI. For first-launch grouping, use [groupLabel].
   String get label {
     switch (this) {
       case AppLanguage.cantonese:
@@ -37,7 +37,7 @@ extension AppLanguageInfo on AppLanguage {
     }
   }
 
-  /// English descriptor for mixed contexts.
+  /// English descriptor — shown when app language is English.
   String get englishName {
     switch (this) {
       case AppLanguage.cantonese:
@@ -47,6 +47,28 @@ extension AppLanguageInfo on AppLanguage {
       case AppLanguage.english:
         return 'English';
     }
+  }
+
+  /// First-launch group label: "中文" for cantonese/mandarin, "English" for english.
+  String get groupLabel {
+    switch (this) {
+      case AppLanguage.cantonese:
+      case AppLanguage.mandarin:
+        return '中文';
+      case AppLanguage.english:
+        return 'English';
+    }
+  }
+
+  /// Whether this is a Chinese variant.
+  bool get isChinese =>
+      this == AppLanguage.cantonese || this == AppLanguage.mandarin;
+
+  /// Display label that adapts to the current app language.
+  /// If [appIsEnglish] is true, show English names; otherwise show native script.
+  String displayLabel(bool appIsEnglish) {
+    if (this == AppLanguage.english) return 'English';
+    return appIsEnglish ? englishName : label;
   }
 
   static AppLanguage fromKey(String? key) {
@@ -64,11 +86,13 @@ extension AppLanguageInfo on AppLanguage {
 }
 
 /// Day-of-week availability preference (no specific time required).
-enum DayPref { mon, tue, wed, thu, fri, sat, sun }
+enum DayPref { noPreference, mon, tue, wed, thu, fri, sat, sun }
 
 extension DayPrefInfo on DayPref {
   String get short {
     switch (this) {
+      case DayPref.noPreference:
+        return 'Any';
       case DayPref.mon:
         return 'Mon';
       case DayPref.tue:
@@ -284,6 +308,19 @@ class MatchDemoData {
     list.sort((a, b) =>
         (a.skill - targetSkill).abs().compareTo((b.skill - targetSkill).abs()));
     return list;
+  }
+
+  /// Generate a 4-player room around target skill + language.
+  /// Returns 3 opponents (the player is the 4th).
+  static List<MatchCandidate> roomOpponents({
+    required int targetSkill,
+    required AppLanguage language,
+  }) {
+    return candidates(
+      targetSkill: targetSkill,
+      language: language,
+      count: 3,
+    );
   }
 
   static List<Venue> venues() => const [

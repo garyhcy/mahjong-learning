@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -6,7 +7,10 @@ import '../providers/game_state.dart';
 import '../providers/match_state.dart';
 import '../models/match_data.dart';
 import '../widgets/mascot_widget.dart';
+import '../services/app_i18n.dart';
+import '../services/audio_service.dart';
 import 'paywall_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // League calculation (same as community_screen)
 String _getLeagueName(int xp) {
@@ -39,6 +43,7 @@ class _MoreScreenState extends State<MoreScreen> {
   bool _notificationsEnabled = true;
   bool _soundEnabled = true;
   bool _hapticEnabled = true;
+  bool _bgmEnabled = false;
   MascotExpression _selectedExpression = MascotExpression.happy;
 
   @override
@@ -217,10 +222,13 @@ class _MoreScreenState extends State<MoreScreen> {
                 }),
                 _settingsDivider(),
                 _settingsRow(Icons.lock_rounded, 'Change Password',
-                    onTap: () {}),
+                    onTap: _showChangePasswordDialog),
                 _settingsDivider(),
                 _settingsRow(Icons.email_rounded, 'Email',
-                    subtitle: 'user@example.com'),
+                    subtitle: FirebaseAuth.instance.currentUser?.email ?? 'Not signed in'),
+                _settingsDivider(),
+                _settingsRow(Icons.delete_forever_rounded, 'Delete Account',
+                    isDestructive: true, onTap: _showDeleteAccountDialog),
               ]),
               const SizedBox(height: 20),
 
@@ -236,16 +244,35 @@ class _MoreScreenState extends State<MoreScreen> {
                 _settingsToggle(
                     Icons.volume_up_rounded, 'Sound Effects', _soundEnabled,
                     (v) {
-                  setState(() => _soundEnabled = v);
+                  setState(() {
+                    _soundEnabled = v;
+                    AudioService().setSfxEnabled(v);
+                  });
+                }),
+                _settingsDivider(),
+                _settingsToggle(
+                    Icons.music_note_rounded, 'Background Music', _bgmEnabled,
+                    (v) {
+                  setState(() {
+                    _bgmEnabled = v;
+                    if (v) {
+                      AudioService().startBgm();
+                    } else {
+                      AudioService().stopBgm();
+                    }
+                  });
                 }),
                 _settingsDivider(),
                 _settingsToggle(Icons.vibration_rounded, 'Haptic Feedback',
                     _hapticEnabled, (v) {
-                  setState(() => _hapticEnabled = v);
+                  setState(() {
+                    _hapticEnabled = v;
+                    AudioService().setHapticEnabled(v);
+                  });
                 }),
                 _settingsDivider(),
                 _settingsRow(Icons.language_rounded, 'Language',
-                    subtitle: context.watch<MatchState>().language.label,
+                    subtitle: AppI18n.current == DisplayLang.zh ? '中文' : 'English',
                     onTap: _showLanguageSheet),
               ]),
               const SizedBox(height: 20),
@@ -627,78 +654,327 @@ class _MoreScreenState extends State<MoreScreen> {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (ctx) => Container(
-        padding: const EdgeInsets.all(24),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setSheetState) {
+          final isZh = AppI18n.current == DisplayLang.zh;
+          return Container(
+            padding: const EdgeInsets.all(24),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE0E0E0),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(AppI18n.t('more.language'),
+                    style: GoogleFonts.nunito(
+                        fontSize: 18, fontWeight: FontWeight.w800)),
+                const SizedBox(height: 20),
+                // ── App language: only 中文 / English ──
+                Row(
+                  children: [
+                    _langOption('中文', !isZh ? false : true, () async {
+                      AppI18n.set(DisplayLang.zh);
+                      
+                      context.read<AppI18n>().renotify();
+                    }),
+                    const SizedBox(width: 12),
+                    _langOption('English', isZh ? false : true, () async {
+                      AppI18n.set(DisplayLang.en);
+                      
+                      context.read<AppI18n>().renotify();
+                    }),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                // ── Match language sub-selection: only shown if app is 中文 ──
+                if (isZh) ...[
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('約戰語言',
+                        style: GoogleFonts.nunito(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xFF757575))),
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [AppLanguage.cantonese, AppLanguage.mandarin].map((lang) {
+                      final isSelected = match.language == lang;
+                      return Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 6),
+                          child: GestureDetector(
+                            onTap: () {
+                              match.setLanguage(lang, markChosen: false);
+                              setSheetState(() {});
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              decoration: BoxDecoration(
+                                color: isSelected ? const Color(0xFF4CAF50).withAlpha(20) : const Color(0xFFF5F5F5),
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: isSelected ? const Color(0xFF4CAF50) : Colors.transparent,
+                                  width: 2,
+                                ),
+                              ),
+                              child: Text(lang.label,
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.nunito(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: isSelected ? const Color(0xFF4CAF50) : const Color(0xFF757575))),
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _langOption(String label, bool selected, VoidCallback onTap) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          decoration: BoxDecoration(
+            color: selected ? const Color(0xFF4CAF50).withAlpha(20) : const Color(0xFFF5F5F5),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: selected ? const Color(0xFF4CAF50) : Colors.transparent,
+              width: 2,
+            ),
+          ),
+          child: Text(label,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.nunito(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: selected ? const Color(0xFF4CAF50) : const Color(0xFF757575))),
         ),
-        child: Column(
+      ),
+    );
+  }
+
+
+  void _showChangePasswordDialog() {
+    final currentController = TextEditingController();
+    final newController = TextEditingController();
+    final confirmController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Text('Change Password',
+            style: GoogleFonts.nunito(fontWeight: FontWeight.w800)),
+        content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: const Color(0xFFE0E0E0),
-                borderRadius: BorderRadius.circular(2),
+            TextField(
+              controller: currentController,
+              obscureText: true,
+              decoration: InputDecoration(
+                labelText: 'Current Password',
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
               ),
             ),
-            const SizedBox(height: 16),
-            Text('Choose Language',
-                style: GoogleFonts.nunito(
-                    fontSize: 18, fontWeight: FontWeight.w800)),
-            const SizedBox(height: 20),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                mainAxisSpacing: 16,
-                crossAxisSpacing: 16,
-                childAspectRatio: 0.85,
+            const SizedBox(height: 12),
+            TextField(
+              controller: newController,
+              obscureText: true,
+              decoration: InputDecoration(
+                labelText: 'New Password',
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
               ),
-              itemCount: AppLanguage.values.length,
-              itemBuilder: (context, index) {
-                final option = AppLanguage.values[index];
-                final isSelected = match.language.label == option.label;
-                return GestureDetector(
-                  onTap: () {
-                    match.setLanguage(option);
-                    Navigator.pop(ctx);
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? const Color(0xFF4CAF50).withAlpha(20)
-                          : const Color(0xFFF5F5F5),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: isSelected
-                            ? const Color(0xFF4CAF50)
-                            : Colors.transparent,
-                        width: 2,
-                      ),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(option.label,
-                            style: GoogleFonts.nunito(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
-                                color: isSelected
-                                    ? const Color(0xFF4CAF50)
-                                    : const Color(0xFF757575))),
-                      ],
-                    ),
-                  ),
-                );
-              },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
+            TextField(
+              controller: confirmController,
+              obscureText: true,
+              decoration: InputDecoration(
+                labelText: 'Confirm New Password',
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+            ),
           ],
         ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text('Cancel',
+                style: GoogleFonts.nunito(color: const Color(0xFF757575))),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              if (newController.text != confirmController.text) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Passwords do not match')),
+                );
+                return;
+              }
+              if (newController.text.length < 6) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Password must be at least 6 characters')),
+                );
+                return;
+              }
+              try {
+                final user = FirebaseAuth.instance.currentUser;
+                if (user != null && user.email != null) {
+                  final cred = EmailAuthProvider.credential(
+                    email: user.email!,
+                    password: currentController.text,
+                  );
+                  await user.reauthenticateWithCredential(cred);
+                  await user.updatePassword(newController.text);
+                  if (ctx.mounted) Navigator.pop(ctx);
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Password updated successfully')),
+                    );
+                  }
+                }
+              } on FirebaseAuthException catch (e) {
+                String msg = 'Failed to change password.';
+                if (e.code == 'wrong-password') msg = 'Current password is incorrect.';
+                if (e.code == 'requires-recent-login') msg = 'Please sign out and sign in again, then retry.';
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+              } catch (_) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Failed to change password.')),
+                );
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF4CAF50),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            ),
+            child: Text('Update',
+                style: GoogleFonts.nunito(color: Colors.white, fontWeight: FontWeight.w700)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showDeleteAccountDialog() {
+    int step = 0;
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setState) {
+          final messages = [
+            'Are you sure you want to delete your account? This will permanently remove all your progress, XP, achievements, and match history.',
+            'This action CANNOT be undone. All your data will be lost forever. Do you really want to continue?',
+            'Last chance. Type DELETE to confirm account deletion.',
+          ];
+          if (step < 2) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              title: Text(step == 0 ? 'Delete Account' : 'Final Warning',
+                  style: GoogleFonts.nunito(fontWeight: FontWeight.w800, color: const Color(0xFFD32F2F))),
+              content: Text(messages[step],
+                  style: GoogleFonts.nunito(color: const Color(0xFF616161))),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(ctx),
+                  child: Text('Cancel',
+                      style: GoogleFonts.nunito(color: const Color(0xFF4CAF50), fontWeight: FontWeight.w700)),
+                ),
+                ElevatedButton(
+                  onPressed: () => setState(() => step++),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFD32F2F),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  ),
+                  child: Text('Continue',
+                      style: GoogleFonts.nunito(color: Colors.white, fontWeight: FontWeight.w700)),
+                ),
+              ],
+            );
+          }
+          // Step 2: type DELETE
+          final confirmController = TextEditingController();
+          return AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            title: Text('Type DELETE to Confirm',
+                style: GoogleFonts.nunito(fontWeight: FontWeight.w800, color: const Color(0xFFD32F2F))),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(messages[2], style: GoogleFonts.nunito(color: const Color(0xFF616161))),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: confirmController,
+                  decoration: InputDecoration(
+                    hintText: 'DELETE',
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: Color(0xFFD32F2F), width: 2),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: Text('Cancel',
+                    style: GoogleFonts.nunito(color: const Color(0xFF4CAF50), fontWeight: FontWeight.w700)),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  if (confirmController.text.trim().toUpperCase() != 'DELETE') return;
+                  try {
+                    final user = FirebaseAuth.instance.currentUser;
+                    if (user != null) await user.delete();
+                    if (ctx.mounted) Navigator.pop(ctx);
+                    // Reset local state
+                    final game = context.read<GameState>();
+                    game.loadFromStorage(); // reload fresh state after account deletion
+                  } on FirebaseAuthException catch (e) {
+                    String msg = 'Failed to delete account.';
+                    if (e.code == 'requires-recent-login') {
+                      msg = 'Please sign out and sign in again, then retry.';
+                    }
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+                  } catch (_) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Failed to delete account.')),
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFD32F2F),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+                child: Text('Delete Forever',
+                    style: GoogleFonts.nunito(color: Colors.white, fontWeight: FontWeight.w700)),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -720,7 +996,11 @@ class _MoreScreenState extends State<MoreScreen> {
                 style: GoogleFonts.nunito(color: const Color(0xFF757575))),
           ),
           ElevatedButton(
-            onPressed: () => Navigator.pop(ctx),
+            onPressed: () {
+              Navigator.pop(ctx);
+              final game = context.read<GameState>();
+              game.resetProgress();
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFE53935),
               shape: RoundedRectangleBorder(

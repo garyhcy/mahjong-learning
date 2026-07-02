@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -178,6 +179,48 @@ class MatchState extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_confirmedKey, false);
     await prefs.setInt(_failedKey, 0);
+    notifyListeners();
+  }
+
+  // ── Active match rooms (persisted locally) ──
+  static const String _roomsKey = 'match_active_rooms';
+
+  List<Map<String, dynamic>> _activeRooms = [];
+  List<Map<String, dynamic>> get activeRooms => _activeRooms;
+
+  Future<void> loadRooms() async {
+    final prefs = await SharedPreferences.getInstance();
+    final raw = prefs.getStringList(_roomsKey) ?? [];
+    _activeRooms = raw.map((r) {
+      try {
+        return Map<String, dynamic>.from(
+            const JsonCodec().decode(r) as Map);
+      } catch (_) {
+        return <String, dynamic>{};
+      }
+    }).where((r) => r.isNotEmpty).toList();
+    // Purge rooms whose deletion time has passed
+    final now = DateTime.now().millisecondsSinceEpoch;
+    _activeRooms = _activeRooms.where((r) {
+      final deleteAt = (r['deleteAt'] as num?)?.toInt() ?? 0;
+      return deleteAt > now;
+    }).toList();
+    notifyListeners();
+  }
+
+  Future<void> saveRoom(Map<String, dynamic> room) async {
+    _activeRooms.insert(0, room);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList(
+        _roomsKey, _activeRooms.map((r) => const JsonCodec().encode(r)).toList());
+    notifyListeners();
+  }
+
+  Future<void> removeRoom(String roomId) async {
+    _activeRooms.removeWhere((r) => r['id'] == roomId);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList(
+        _roomsKey, _activeRooms.map((r) => const JsonCodec().encode(r)).toList());
     notifyListeners();
   }
 }

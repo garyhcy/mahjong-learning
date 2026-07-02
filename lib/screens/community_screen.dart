@@ -46,6 +46,8 @@ class _LeaderboardEntry {
   final int xp;
   final int streak;
   final bool isCurrentUser;
+  final String playerId;
+  final int skillRating;
 
   const _LeaderboardEntry({
     required this.rank,
@@ -54,20 +56,22 @@ class _LeaderboardEntry {
     required this.xp,
     this.streak = 0,
     this.isCurrentUser = false,
+    this.playerId = '',
+    this.skillRating = 0,
   });
 }
 
 const List<_LeaderboardEntry> _fakeLeaderboard = [
-  _LeaderboardEntry(rank: 1, name: 'Jason', avatar: '🐉', xp: 3120, streak: 14),
-  _LeaderboardEntry(rank: 2, name: 'Emily', avatar: '🐱', xp: 2340, streak: 9),
-  _LeaderboardEntry(rank: 3, name: 'David', avatar: '🎯', xp: 1980, streak: 7),
-  _LeaderboardEntry(rank: 4, name: 'Michelle', avatar: '🌸', xp: 1650, streak: 5),
-  _LeaderboardEntry(rank: 5, name: 'Sarah', avatar: '🦊', xp: 1420, streak: 3),
-  _LeaderboardEntry(rank: 6, name: 'Kevin', avatar: '🎮', xp: 1280, streak: 4),
-  _LeaderboardEntry(rank: 7, name: 'Amy', avatar: '🌺', xp: 1100, streak: 2),
-  _LeaderboardEntry(rank: 8, name: 'Tom', avatar: '🦁', xp: 980, streak: 6),
-  _LeaderboardEntry(rank: 9, name: 'Lisa', avatar: '🐼', xp: 870, streak: 1),
-  _LeaderboardEntry(rank: 10, name: 'Chris', avatar: '🎲', xp: 750, streak: 3),
+  _LeaderboardEntry(rank: 1, name: 'Jason', avatar: '🐉', xp: 3120, streak: 14, playerId: '#LD001', skillRating: 88),
+  _LeaderboardEntry(rank: 2, name: 'Emily', avatar: '🐱', xp: 2340, streak: 9, playerId: '#LD002', skillRating: 72),
+  _LeaderboardEntry(rank: 3, name: 'David', avatar: '🎯', xp: 1980, streak: 7, playerId: '#LD003', skillRating: 65),
+  _LeaderboardEntry(rank: 4, name: 'Michelle', avatar: '🌸', xp: 1650, streak: 5, playerId: '#LD004', skillRating: 55),
+  _LeaderboardEntry(rank: 5, name: 'Sarah', avatar: '🦊', xp: 1420, streak: 3, playerId: '#LD005', skillRating: 48),
+  _LeaderboardEntry(rank: 6, name: 'Kevin', avatar: '🎮', xp: 1280, streak: 4, playerId: '#LD006', skillRating: 40),
+  _LeaderboardEntry(rank: 7, name: 'Amy', avatar: '🌺', xp: 1100, streak: 2, playerId: '#LD007', skillRating: 25),
+  _LeaderboardEntry(rank: 8, name: 'Tom', avatar: '🦝', xp: 950, streak: 1, playerId: '#LD008', skillRating: 20),
+  _LeaderboardEntry(rank: 9, name: 'Lisa', avatar: '🦜', xp: 800, streak: 3, playerId: '#LD009', skillRating: 15),
+  _LeaderboardEntry(rank: 10, name: 'Ben', avatar: '🦝', xp: 650, streak: 0, playerId: '#LD010', skillRating: 10),
 ];
 
 // ─── Achievement display model (expanded to 24) ───
@@ -725,6 +729,21 @@ class CommunityScreen extends StatelessWidget {
 
   void _showAddFriendDialog(BuildContext context) {
     final controller = TextEditingController();
+    final playerId = controller.text.trim();
+    final foundPlayer = _fakeLeaderboard.firstWhere(
+      (entry) => entry.playerId == playerId,
+      orElse: () => _LeaderboardEntry(
+        rank: -1,
+        name: 'Unknown',
+        avatar: '🤔',
+        xp: 0,
+        streak: 0,
+        isCurrentUser: false,
+        playerId: '',
+        skillRating: 0,
+      ),
+    );
+
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -753,6 +772,14 @@ class CommunityScreen extends StatelessWidget {
                 ),
               ),
             ),
+            if (foundPlayer.rank != -1)
+              Text('Found: ${foundPlayer.name}',
+                  style: GoogleFonts.nunito(
+                      fontSize: 13, color: const Color(0xFF4CAF50))),
+            if (foundPlayer.rank == -1)
+              Text('Player not found.',
+                  style: GoogleFonts.nunito(
+                      fontSize: 13, color: const Color(0xFFE53935))),
           ],
         ),
         actions: [
@@ -827,11 +854,50 @@ class CommunityScreen extends StatelessWidget {
           ),
           const SizedBox(width: 12),
           Expanded(
-            child: Text(entry.name,
-                style: GoogleFonts.nunito(
-                    fontSize: 14,
-                    fontWeight: isUser ? FontWeight.w800 : FontWeight.w600,
-                    color: const Color(0xFF2D2D2D))),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(entry.name,
+                        style: GoogleFonts.nunito(
+                            fontSize: 14,
+                            fontWeight: isUser ? FontWeight.w800 : FontWeight.w600,
+                            color: const Color(0xFF2D2D2D))),
+                    if (entry.playerId.isNotEmpty) ...[
+                      const SizedBox(width: 6),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF5F5F5),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text('#${entry.playerId}',
+                            style: GoogleFonts.nunito(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600,
+                                color: const Color(0xFF9E9E9E))),
+                      ),
+                    ],
+                  ],
+                ),
+                const SizedBox(height: 2),
+                Row(
+                  children: [
+                    Text('${entry.skillRating}',
+                        style: GoogleFonts.nunito(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xFF6B7A6E))),
+                    const SizedBox(width: 4),
+                    Text('Skill',
+                        style: GoogleFonts.nunito(
+                            fontSize: 10,
+                            color: const Color(0xFF9AA89C))),
+                  ],
+                ),
+              ],
+            ),
           ),
           Text('${entry.xp} XP',
               style: GoogleFonts.nunito(
