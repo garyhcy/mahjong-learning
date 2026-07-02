@@ -210,3 +210,36 @@ lib/
 - App UI 全英文，勿中文化。
 - 漸進式交付：先配置檔 → 再狀態邏輯 → 最後 UI，確保每步可編譯。
 - 改動先在 local / main 完成並驗證編譯，未經確認不擅自 push（目前慣例：等 Gary 確認）。
+- **🚨 部署鐵律：改了 lib/ 代碼但沒 commit + `flutter build web` + 推 gh-pages，等於沒做。Gary 看的是 https://garyhcy.github.io/mahjong-learning/ 的 Web Demo，不是本地源碼。每次改完 UI/邏輯都要重新部署 gh-pages，否則 Gary 會認為「沒改、欺騙、浪費 Token」。**
+
+---
+
+## 13. 部署流程（gh-pages Web Demo）
+
+```bash
+export PATH="$PATH:/opt/flutter/bin"
+cd /home/workspace/Ludi/mahjong-learning
+flutter build web --no-tree-shake-icons          # ~40s
+# 部署（保留 gh-pages 歷史）：
+TMP=$(mktemp -d) && cd "$TMP" \
+  && git clone --branch gh-pages --depth 1 https://github.com/garyhcy/mahjong-learning.git . \
+  && find . -maxdepth 1 ! -name .git ! -name . -exec rm -rf {} + \
+  && cp -r /home/workspace/Ludi/mahjong-learning/build/web/. . \
+  && git add -A && git commit -m "deploy: <version>" && git push origin gh-pages \
+  && cd / && rm -rf "$TMP"
+```
+- `gh auth setup-git` 已執行，git push https 自動帶 token。
+- GitHub Pages 上線通常 1-2 分鐘；可用 `agent-browser open https://garyhcy.github.io/mahjong-learning/` 驗證。
+
+---
+
+## 14. 本次修正紀錄（2026-07-02 v3）
+
+| # | 項目 | 修正 |
+|---|------|------|
+| 1 | 語言選擇頁 logo | 改用 `assets/images/topbar_logo.png`（原 chat 上傳的 `_TopBar_256px`） |
+| 2 | 按完語言沒轉登入頁 | `_AuthFlow` 改 StatefulWidget；Firebase 不可用時顯示 AuthScreen（demo/guest mode，`Continue as Guest` 按鈕），存 `local_demo_authed` |
+| 3-13 | Find a Match / Skill Rating / playerId / auto-matchmaking / chat 輸入欄 / propose slot 月曆(30min) / 自選場地警告 / Match Rooms 列表 | 代碼上個 session 已改，但**從未 commit / build / 部署**，本次一併部署 |
+| 12 根因 | 完成預訂後找不到 Chat Room | (a) `MatchRoomData.toJson()` 存 ISO 字串但 `loadRooms()` 用 `as num?` 解析→崩→room 被清空，改為 DateTime.parse 兼容；(b) confirm 時 `updateRoom` 把 deleteAt 改為預約當天 +24h（原本是建立+24h） |
+| 14 | Delete Account 位置 | 從 Account section 移到頁面最底（Account Management section，Log Out 之後） |
+| 15 | 改語言不能選中文 | more_screen `_langOption` callback 原本沒存 SharedPreferences，補上 `app_display_lang`；約戰語言子選項補 English |
