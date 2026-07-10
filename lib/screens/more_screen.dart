@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/game_state.dart';
-import '../providers/match_state.dart';
-import '../models/match_data.dart';
 import '../widgets/mascot_widget.dart';
 import '../services/app_i18n.dart';
 import '../services/audio_service.dart';
@@ -670,109 +668,83 @@ class _MoreScreenState extends State<MoreScreen> {
   }
 
   void _showLanguageSheet() {
-    final match = context.read<MatchState>();
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (ctx) => StatefulBuilder(
-        builder: (ctx, setSheetState) {
-          final isZh = AppI18n.current == DisplayLang.zh;
-          return Container(
-            padding: const EdgeInsets.all(24),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 40,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE0E0E0),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Text(AppI18n.t('more.language'),
-                    style: GoogleFonts.nunito(
-                        fontSize: 18, fontWeight: FontWeight.w800)),
-                const SizedBox(height: 20),
-                // ── App language: only 中文 / English ──
-                Row(
-                  children: [
-                    _langOption('中文', !isZh ? false : true, () async {
-                      AppI18n.set(DisplayLang.zh);
-                      final p = await SharedPreferences.getInstance();
-                      await p.setString('app_display_lang', 'zh');
-                      if (!context.mounted) return;
-                      context.read<AppI18n>().renotify();
-                      setSheetState(() {});
-                    }),
-                    const SizedBox(width: 12),
-                    _langOption('English', isZh ? false : true, () async {
-                      AppI18n.set(DisplayLang.en);
-                      final p = await SharedPreferences.getInstance();
-                      await p.setString('app_display_lang', 'en');
-                      if (!context.mounted) return;
-                      context.read<AppI18n>().renotify();
-                      setSheetState(() {});
-                    }),
-                  ],
-                ),
-                const SizedBox(height: 24),
-                // ── Match language sub-selection: only shown if app is 中文 ──
-                if (isZh) ...[
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('約戰語言',
-                        style: GoogleFonts.nunito(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xFF757575))),
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [AppLanguage.cantonese, AppLanguage.mandarin, AppLanguage.english].map((lang) {
-                      final isSelected = match.language == lang;
-                      return Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 6),
-                          child: GestureDetector(
-                            onTap: () {
-                              match.setLanguage(lang, markChosen: false);
-                              setSheetState(() {});
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              decoration: BoxDecoration(
-                                color: isSelected ? const Color(0xFF4CAF50).withAlpha(20) : const Color(0xFFF5F5F5),
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: isSelected ? const Color(0xFF4CAF50) : Colors.transparent,
-                                  width: 2,
-                                ),
-                              ),
-                              child: Text(lang.label,
-                                  textAlign: TextAlign.center,
-                                  style: GoogleFonts.nunito(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      color: isSelected ? const Color(0xFF4CAF50) : const Color(0xFF757575))),
-                            ),
-                          ),
-                        ),
-                      );
-                    }).toList(),
+      builder: (ctx) {
+        DisplayLang pendingLang = AppI18n.current; // 暫存選擇，確認後才套用
+        return StatefulBuilder(
+          builder: (ctx, setSheetState) {
+            return Container(
+              padding: const EdgeInsets.all(24),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFE0E0E0),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
                   ),
                   const SizedBox(height: 16),
+                  Text(AppI18n.t('more.language'),
+                      style: GoogleFonts.nunito(
+                          fontSize: 18, fontWeight: FontWeight.w800)),
+                  const SizedBox(height: 20),
+                  // ── App language: only 中文 / English (暫存，確認後套用) ──
+                  Row(
+                    children: [
+                      _langOption('中文', pendingLang == DisplayLang.zh, () {
+                        pendingLang = DisplayLang.zh;
+                        setSheetState(() {});
+                      }),
+                      const SizedBox(width: 12),
+                      _langOption('English', pendingLang == DisplayLang.en, () {
+                        pendingLang = DisplayLang.en;
+                        setSheetState(() {});
+                      }),
+                    ],
+                  ),
+                  const SizedBox(height: 28),
+                  // ── Done 按鈕：套用暫存的語言選擇 ──
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        AppI18n.set(pendingLang);
+                        final p = await SharedPreferences.getInstance();
+                        await p.setString(
+                            'app_display_lang',
+                            pendingLang == DisplayLang.zh ? 'zh' : 'en');
+                        if (!ctx.mounted) return;
+                        ctx.read<AppI18n>().renotify();
+                        Navigator.pop(ctx);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF4CAF50),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16)),
+                      ),
+                      child: Text(
+                          pendingLang == DisplayLang.zh ? '完成' : 'Done',
+                          style: GoogleFonts.nunito(
+                              fontWeight: FontWeight.w800, fontSize: 16)),
+                    ),
+                  ),
                 ],
-              ],
-            ),
-          );
-        },
-      ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 
