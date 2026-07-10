@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart' show firebaseAvailable;
+import '../services/app_i18n.dart';
 import '../services/firebase_service.dart';
 import '../services/otp_service.dart';
 import '../widgets/mascot_widget.dart';
@@ -63,7 +64,7 @@ class _AuthScreenState extends State<AuthScreen> {
           final storedPw = sp.getString('demo_account_password');
           if (storedEmail != email || storedPw != password) {
             setState(() {
-              _errorMessage = 'Invalid email or password.';
+              _errorMessage = AppI18n.t('auth.invalidCredentials');
             });
             return;
           }
@@ -94,7 +95,7 @@ class _AuthScreenState extends State<AuthScreen> {
       });
     } catch (_) {
       setState(() {
-        _errorMessage = 'An unexpected error occurred. Please try again.';
+        _errorMessage = AppI18n.t('auth.unexpected');
       });
     } finally {
       if (mounted) {
@@ -114,7 +115,7 @@ class _AuthScreenState extends State<AuthScreen> {
       setState(() => _errorMessage = _mapAuthError(e.code));
     } catch (_) {
       setState(() {
-        _errorMessage = 'Sign-in was cancelled or failed. Please try again.';
+        _errorMessage = AppI18n.t('auth.socialFailed');
       });
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -130,19 +131,19 @@ class _AuthScreenState extends State<AuthScreen> {
   String _mapAuthError(String code) {
     switch (code) {
       case 'user-not-found':
-        return 'No account found with this email.';
+        return AppI18n.t('auth.noAccountFound');
       case 'wrong-password':
-        return 'Incorrect password. Please try again.';
+        return AppI18n.t('auth.wrongPassword');
       case 'invalid-email':
-        return 'Please enter a valid email address.';
+        return AppI18n.t('auth.validEmailFull');
       case 'user-disabled':
-        return 'This account has been disabled.';
+        return AppI18n.t('auth.accountDisabled');
       case 'email-already-in-use':
-        return 'An account with this email already exists.';
+        return AppI18n.t('auth.emailInUse');
       case 'weak-password':
-        return 'Password should be at least 6 characters.';
+        return AppI18n.t('auth.weakPassword');
       default:
-        return 'Authentication failed. Please try again.';
+        return AppI18n.t('auth.authFailed');
     }
   }
 
@@ -179,22 +180,20 @@ class _AuthScreenState extends State<AuthScreen> {
         setState(() {
           switch (result) {
             case OtpResult.expired:
-              _errorMessage = 'OTP expired. Please request a new one.';
+              _errorMessage = AppI18n.t('otp.expired');
               break;
             case OtpResult.tooManyAttempts:
-              _errorMessage = 'Too many wrong attempts. Please resend OTP.';
+              _errorMessage = AppI18n.t('otp.tooManyAttempts');
               break;
             default:
-              _errorMessage = 'Incorrect OTP. Please try again.';
+              _errorMessage = AppI18n.t('otp.incorrect');
           }
         });
       }
     } catch (_) {
       setState(() {
-        _errorMessage = 'Verification failed. Please try again.';
+        _errorMessage = AppI18n.t('otp.failed');
       });
-    } finally {
-      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -217,7 +216,7 @@ class _AuthScreenState extends State<AuthScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('A new OTP has been sent to $_pendingEmail.'),
+            content: Text(AppI18n.t('otp.resent').replaceAll('{email}', _pendingEmail ?? '')),
             behavior: SnackBarBehavior.floating,
             duration: const Duration(seconds: 3),
           ),
@@ -225,10 +224,8 @@ class _AuthScreenState extends State<AuthScreen> {
       }
     } catch (_) {
       setState(() {
-        _errorMessage = 'Failed to resend OTP. Please try again.';
+        _errorMessage = AppI18n.t('otp.resendFailed');
       });
-    } finally {
-      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -267,7 +264,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    'Ludi',
+                    AppI18n.t('auth.appName'),
                     style: GoogleFonts.nunito(
                       fontSize: 28,
                       fontWeight: FontWeight.w800,
@@ -276,7 +273,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    'Master the Game',
+                    AppI18n.t('auth.tagline'),
                     style: GoogleFonts.nunito(
                       fontSize: 14,
                       color: const Color(0xFF9E9E9E),
@@ -338,14 +335,14 @@ class _AuthScreenState extends State<AuthScreen> {
       controller: _emailController,
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
-      decoration: _inputDecoration('Email', 'you@example.com',
+      decoration: _inputDecoration(AppI18n.t('auth.email'), AppI18n.t('auth.emailHint'),
           const Icon(Icons.email_outlined, size: 20)),
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
-          return 'Please enter your email';
+          return AppI18n.t('auth.enterEmail');
         }
         if (!value.contains('@')) {
-          return 'Please enter a valid email';
+          return AppI18n.t('auth.validEmail');
         }
         return null;
       },
@@ -358,14 +355,14 @@ class _AuthScreenState extends State<AuthScreen> {
       obscureText: true,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (_) => _submit(),
-      decoration: _inputDecoration('Password', null,
+      decoration: _inputDecoration(AppI18n.t('auth.password'), null,
           const Icon(Icons.lock_outlined, size: 20)),
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
-          return 'Please enter your password';
+          return AppI18n.t('auth.enterPassword');
         }
         if (value.length < 6) {
-          return 'Password must be at least 6 characters';
+          return AppI18n.t('auth.weakPassword');
         }
         return null;
       },
@@ -395,7 +392,7 @@ class _AuthScreenState extends State<AuthScreen> {
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
         borderSide: const BorderSide(color: Color(0xFFEF5350)),
-      ),
+        ),
       labelStyle: GoogleFonts.nunito(color: const Color(0xFF9E9E9E)),
     );
   }
@@ -452,7 +449,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
               )
             : Text(
-                _isLogin ? 'Sign In' : 'Create Account',
+                AppI18n.t(_isLogin ? 'auth.signIn' : 'auth.createAccount'),
                 style: GoogleFonts.nunito(
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
@@ -468,7 +465,7 @@ class _AuthScreenState extends State<AuthScreen> {
         const Expanded(child: Divider(color: Color(0xFFE0E0E0))),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Text('or',
+          child: Text(AppI18n.t('auth.or'),
               style: GoogleFonts.nunito(
                   fontSize: 13, color: const Color(0xFF9E9E9E))),
         ),
@@ -491,7 +488,7 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
         ),
         icon: const Icon(Icons.g_mobiledata, size: 28, color: Color(0xFF4285F4)),
-        label: Text('Continue with Google',
+        label: Text(AppI18n.t('auth.continueWithGoogle'),
             style: GoogleFonts.nunito(
               fontSize: 15,
               fontWeight: FontWeight.w600,
@@ -515,7 +512,7 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
         ),
         icon: const Icon(Icons.apple, size: 24, color: Colors.white),
-        label: Text('Continue with Apple',
+        label: Text(AppI18n.t('auth.continueWithApple'),
             style: GoogleFonts.nunito(
               fontSize: 15,
               fontWeight: FontWeight.w600,
@@ -546,7 +543,7 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
         ),
         icon: const Icon(Icons.person_outline, size: 22, color: Color(0xFF757575)),
-        label: Text('Continue as Guest',
+        label: Text(AppI18n.t('auth.continueAsGuest'),
             style: GoogleFonts.nunito(
               fontSize: 15,
               fontWeight: FontWeight.w600,
@@ -561,7 +558,7 @@ class _AuthScreenState extends State<AuthScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          _isLogin ? "Don't have an account?" : 'Already have an account?',
+          AppI18n.t(_isLogin ? 'auth.noAccount' : 'auth.haveAccount'),
           style: GoogleFonts.nunito(
             fontSize: 13,
             color: const Color(0xFF757575),
@@ -575,7 +572,7 @@ class _AuthScreenState extends State<AuthScreen> {
             });
           },
           child: Text(
-            _isLogin ? 'Sign Up' : 'Sign In',
+            AppI18n.t(_isLogin ? 'auth.signUp' : 'auth.signIn'),
             style: GoogleFonts.nunito(
               fontSize: 13,
               fontWeight: FontWeight.w700,
@@ -669,7 +666,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
               ),
               const SizedBox(height: 24),
               Text(
-                'Enter Verification Code',
+                AppI18n.t('otp.title'),
                 textAlign: TextAlign.center,
                 style: GoogleFonts.nunito(
                   fontSize: 24,
@@ -679,7 +676,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
               ),
               const SizedBox(height: 10),
               Text(
-                'We sent a 6-digit code to\n${widget.email}',
+                AppI18n.t('otp.sentTo').replaceAll('{email}', widget.email),
                 textAlign: TextAlign.center,
                 style: GoogleFonts.nunito(
                   fontSize: 14,
@@ -706,7 +703,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           color: Color(0xFF4CAF50), size: 18),
                       const SizedBox(width: 8),
                       Text(
-                        'Demo OTP: ${widget.demoOtpHint}',
+                        AppI18n.t('otp.demoHint').replaceAll('{code}', widget.demoOtpHint ?? ''),
                         style: GoogleFonts.nunito(
                           fontSize: 15,
                           fontWeight: FontWeight.w700,
@@ -782,7 +779,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           ),
                         )
                       : Text(
-                          'Verify',
+                          AppI18n.t('otp.verify'),
                           style: GoogleFonts.nunito(
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
@@ -795,7 +792,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Didn't receive the code? ",
+                    AppI18n.t('otp.didntReceive'),
                     style: GoogleFonts.nunito(
                       fontSize: 13,
                       color: const Color(0xFF757575),
@@ -804,7 +801,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   TextButton(
                     onPressed: widget.isLoading ? null : widget.onResend,
                     child: Text(
-                      'Resend',
+                      AppI18n.t('otp.resend'),
                       style: GoogleFonts.nunito(
                         fontSize: 13,
                         fontWeight: FontWeight.w700,

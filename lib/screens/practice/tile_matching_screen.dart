@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../models/practice_data.dart';
 import '../../providers/practice_state.dart';
+import '../../services/audio_service.dart';
 
 class TileMatchingScreen extends StatefulWidget {
   const TileMatchingScreen({super.key});
@@ -15,6 +16,7 @@ class TileMatchingScreen extends StatefulWidget {
 class _TileMatchingScreenState extends State<TileMatchingScreen> {
   static const int totalQuestions = 8;
   final _random = Random();
+  final AudioService _audio = AudioService();
 
   int _currentQuestion = 0;
   int _correctCount = 0;
@@ -79,6 +81,7 @@ class _TileMatchingScreenState extends State<TileMatchingScreen> {
 
   void _toggleSelection(int index) {
     if (_showResult) return;
+    _audio.playTileClick();
     setState(() {
       if (_selectedIndices.contains(index)) {
         _selectedIndices.remove(index);
@@ -104,9 +107,11 @@ class _TileMatchingScreenState extends State<TileMatchingScreen> {
 
       if (_answeredCorrectly) {
         _correctCount++;
+        _audio.playCorrect();
       } else {
         _wrongTiles.add(_targetTile);
         _wrongCategories.add(_targetCategory.name);
+        _audio.playWrong();
       }
     });
 

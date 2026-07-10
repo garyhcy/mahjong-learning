@@ -79,7 +79,7 @@ class _MoreScreenState extends State<MoreScreen> {
               const SizedBox(height: 8),
               // Title
               Text(
-                'Settings',
+                AppI18n.t('settings.title'),
                 style: GoogleFonts.nunito(
                   fontSize: 28,
                   fontWeight: FontWeight.w800,
@@ -118,9 +118,9 @@ class _MoreScreenState extends State<MoreScreen> {
                             _masterUnlocked = true;
                           });
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Master Mode unlocked!'),
-                              duration: Duration(seconds: 2),
+                            SnackBar(
+                              content: Text(AppI18n.t('settings.masterModeUnlocked')),
+                              duration: const Duration(seconds: 2),
                             ),
                           );
                         }
@@ -199,12 +199,12 @@ class _MoreScreenState extends State<MoreScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Master Mode',
+                              Text(AppI18n.t('settings.masterMode'),
                                   style: GoogleFonts.nunito(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w700,
                                       color: const Color(0xFF2D2D2D))),
-                              Text('Unlock all stages, infinite hearts',
+                              Text(AppI18n.t('settings.masterModeDesc'),
                                   style: GoogleFonts.nunito(
                                       fontSize: 11,
                                       color: const Color(0xFF9E9E9E))),
@@ -231,33 +231,33 @@ class _MoreScreenState extends State<MoreScreen> {
               ],
 
               // Account section
-              _sectionTitle('Account'),
+              _sectionTitle(AppI18n.t('settings.account')),
               const SizedBox(height: 8),
               _settingsCard([
-                _settingsRow(Icons.badge_rounded, 'Player Name',
+                _settingsRow(Icons.badge_rounded, AppI18n.t('settings.playerName'),
                     subtitle: game.nickname, onTap: () {
                   _showEditNameDialog(game);
                 }),
                 _settingsDivider(),
-                _settingsRow(Icons.lock_rounded, 'Change Password',
+                _settingsRow(Icons.lock_rounded, AppI18n.t('settings.changePassword'),
                     onTap: _showChangePasswordDialog),
                 _settingsDivider(),
-                _settingsRow(Icons.email_rounded, 'Email',
-                    subtitle: FirebaseAuth.instance.currentUser?.email ?? 'Not signed in'),
+                _settingsRow(Icons.email_rounded, AppI18n.t('settings.email'),
+                    subtitle: FirebaseAuth.instance.currentUser?.email ?? AppI18n.t('settings.notSignedIn')),
               ]),
               const SizedBox(height: 20),
 
               // Preferences section
-              _sectionTitle('Preferences'),
+              _sectionTitle(AppI18n.t('settings.preferences')),
               const SizedBox(height: 8),
               _settingsCard([
-                _settingsToggle(Icons.notifications_rounded, 'Notifications',
+                _settingsToggle(Icons.notifications_rounded, AppI18n.t('settings.notifications'),
                     _notificationsEnabled, (v) {
                   setState(() => _notificationsEnabled = v);
                 }),
                 _settingsDivider(),
                 _settingsToggle(
-                    Icons.volume_up_rounded, 'Sound Effects', _soundEnabled,
+                    Icons.volume_up_rounded, AppI18n.t('settings.soundEffects'), _soundEnabled,
                     (v) {
                   setState(() {
                     _soundEnabled = v;
@@ -266,7 +266,7 @@ class _MoreScreenState extends State<MoreScreen> {
                 }),
                 _settingsDivider(),
                 _settingsToggle(
-                    Icons.music_note_rounded, 'Background Music', _bgmEnabled,
+                    Icons.music_note_rounded, AppI18n.t('settings.bgm'), _bgmEnabled,
                     (v) {
                   setState(() {
                     _bgmEnabled = v;
@@ -274,7 +274,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   });
                 }),
                 _settingsDivider(),
-                _settingsToggle(Icons.vibration_rounded, 'Haptic Feedback',
+                _settingsToggle(Icons.vibration_rounded, AppI18n.t('settings.hapticFeedback'),
                     _hapticEnabled, (v) {
                   setState(() {
                     _hapticEnabled = v;
@@ -282,20 +282,20 @@ class _MoreScreenState extends State<MoreScreen> {
                   });
                 }),
                 _settingsDivider(),
-                _settingsRow(Icons.language_rounded, 'Language',
+                _settingsRow(Icons.language_rounded, AppI18n.t('settings.language'),
                     subtitle: AppI18n.current == DisplayLang.zh ? '中文' : 'English',
                     onTap: _showLanguageSheet),
               ]),
               const SizedBox(height: 20),
 
               // Learning section
-              _sectionTitle('Learning'),
+              _sectionTitle(AppI18n.t('settings.learning')),
               const SizedBox(height: 8),
               _settingsCard([
-                _settingsRow(Icons.schedule_rounded, 'Daily Reminder',
+                _settingsRow(Icons.schedule_rounded, AppI18n.t('settings.dailyReminder'),
                     subtitle: '9:00 AM', onTap: () {}),
                 _settingsDivider(),
-                _settingsRow(Icons.restart_alt_rounded, 'Reset Progress',
+                _settingsRow(Icons.restart_alt_rounded, AppI18n.t('settings.resetProgress'),
                     isDestructive: true, onTap: () {
                   _showResetDialog();
                 }),
@@ -303,7 +303,7 @@ class _MoreScreenState extends State<MoreScreen> {
               const SizedBox(height: 20),
 
               // Subscription
-              _sectionTitle('Subscription'),
+              _sectionTitle(AppI18n.t('settings.subscription')),
               const SizedBox(height: 8),
               Container(
                 width: double.infinity,
@@ -319,14 +319,14 @@ class _MoreScreenState extends State<MoreScreen> {
                     const Icon(Icons.workspace_premium_rounded,
                         color: Colors.white, size: 36),
                     const SizedBox(height: 10),
-                    Text('Upgrade to Pro',
+                    Text(AppI18n.t('settings.upgradeToPro'),
                         style: GoogleFonts.nunito(
                             fontSize: 18,
                             fontWeight: FontWeight.w800,
                             color: Colors.white)),
                     const SizedBox(height: 6),
                     Text(
-                        'Unlimited lives, practice, matches, and exclusive avatar frames',
+                        AppI18n.t('settings.upgradeDesc'),
                         style: GoogleFonts.nunito(
                             fontSize: 13,
                             color: Colors.white.withAlpha(210)),
@@ -345,7 +345,7 @@ class _MoreScreenState extends State<MoreScreen> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 32, vertical: 12),
                       ),
-                      child: Text('View Plans',
+                      child: Text(AppI18n.t('settings.viewPlans'),
                           style:
                               GoogleFonts.nunito(fontWeight: FontWeight.w700)),
                     ),
@@ -355,22 +355,22 @@ class _MoreScreenState extends State<MoreScreen> {
               const SizedBox(height: 20),
 
               // About section
-              _sectionTitle('About'),
+              _sectionTitle(AppI18n.t('settings.about')),
               const SizedBox(height: 8),
               _settingsCard([
-                _settingsRow(Icons.info_rounded, 'Version',
+                _settingsRow(Icons.info_rounded, AppI18n.t('settings.version'),
                     subtitle: '1.0.0 (Beta)'),
                 _settingsDivider(),
-                _settingsRow(Icons.description_rounded, 'Terms of Service',
+                _settingsRow(Icons.description_rounded, AppI18n.t('settings.termsOfService'),
                     onTap: () {}),
                 _settingsDivider(),
-                _settingsRow(Icons.privacy_tip_rounded, 'Privacy Policy',
+                _settingsRow(Icons.privacy_tip_rounded, AppI18n.t('settings.privacyPolicy'),
                     onTap: () {}),
                 _settingsDivider(),
-                _settingsRow(Icons.help_rounded, 'Help & Support',
+                _settingsRow(Icons.help_rounded, AppI18n.t('settings.helpSupport'),
                     onTap: () {}),
                 _settingsDivider(),
-                _settingsRow(Icons.feedback_rounded, 'Send Feedback',
+                _settingsRow(Icons.feedback_rounded, AppI18n.t('settings.sendFeedback'),
                     onTap: () {}),
               ]),
               const SizedBox(height: 20),
@@ -387,18 +387,18 @@ class _MoreScreenState extends State<MoreScreen> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14)),
                   ),
-                  child: Text('Log Out',
+                  child: Text(AppI18n.t('settings.signOut'),
                       style: GoogleFonts.nunito(
                           fontSize: 15, fontWeight: FontWeight.w700)),
                 ),
               ),
               const SizedBox(height: 20),
 
-              // Delete Account — placed at the very bottom, isolated (Apple requires it)
-              _sectionTitle('Account Management'),
+              // Delete Account - placed at the very bottom, isolated (Apple requires it)
+              _sectionTitle(AppI18n.t('settings.accountManagement')),
               const SizedBox(height: 8),
               _settingsCard([
-                _settingsRow(Icons.delete_forever_rounded, 'Delete Account',
+                _settingsRow(Icons.delete_forever_rounded, AppI18n.t('settings.deleteAccount'),
                     isDestructive: true, onTap: _showDeleteAccountDialog),
               ]),
               const SizedBox(height: 100),
@@ -533,13 +533,13 @@ class _MoreScreenState extends State<MoreScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('Edit Nickname',
+        title: Text(AppI18n.t('settings.editNickname'),
             style: GoogleFonts.nunito(fontWeight: FontWeight.w800)),
         content: TextField(
           controller: controller,
           maxLength: 16,
           decoration: InputDecoration(
-            hintText: 'Enter nickname',
+            hintText: AppI18n.t('settings.enterNickname'),
             hintStyle: GoogleFonts.nunito(color: const Color(0xFF9E9E9E)),
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12)),
@@ -552,7 +552,7 @@ class _MoreScreenState extends State<MoreScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: Text('Cancel',
+            child: Text(AppI18n.t('common.cancel'),
                 style: GoogleFonts.nunito(color: const Color(0xFF757575))),
           ),
           ElevatedButton(
@@ -567,7 +567,7 @@ class _MoreScreenState extends State<MoreScreen> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
             ),
-            child: Text('Save',
+            child: Text(AppI18n.t('common.save'),
                 style: GoogleFonts.nunito(
                     color: Colors.white, fontWeight: FontWeight.w700)),
           ),
@@ -578,12 +578,12 @@ class _MoreScreenState extends State<MoreScreen> {
 
   void _showAvatarSelector() {
     final expressions = [
-      {'expr': MascotExpression.happy, 'label': 'Happy'},
-      {'expr': MascotExpression.thinking, 'label': 'Thinking'},
-      {'expr': MascotExpression.excited, 'label': 'Excited'},
-      {'expr': MascotExpression.content, 'label': 'Content'},
-      {'expr': MascotExpression.sad, 'label': 'Sad'},
-      {'expr': MascotExpression.wink, 'label': 'Wink'},
+      {'expr': MascotExpression.happy, 'label': AppI18n.t('mascot.happy')},
+      {'expr': MascotExpression.thinking, 'label': AppI18n.t('mascot.thinking')},
+      {'expr': MascotExpression.excited, 'label': AppI18n.t('mascot.excited')},
+      {'expr': MascotExpression.content, 'label': AppI18n.t('mascot.content')},
+      {'expr': MascotExpression.sad, 'label': AppI18n.t('mascot.sad')},
+      {'expr': MascotExpression.wink, 'label': AppI18n.t('mascot.wink')},
     ];
 
     showModalBottomSheet(
@@ -607,7 +607,7 @@ class _MoreScreenState extends State<MoreScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            Text('Choose Your Mascot',
+            Text(AppI18n.t('settings.chooseMascot'),
                 style: GoogleFonts.nunito(
                     fontSize: 18, fontWeight: FontWeight.w800)),
             const SizedBox(height: 20),
@@ -810,7 +810,7 @@ class _MoreScreenState extends State<MoreScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('Change Password',
+        title: Text(AppI18n.t('settings.changePassword'),
             style: GoogleFonts.nunito(fontWeight: FontWeight.w800)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -819,7 +819,7 @@ class _MoreScreenState extends State<MoreScreen> {
               controller: currentController,
               obscureText: true,
               decoration: InputDecoration(
-                labelText: 'Current Password',
+                labelText: AppI18n.t('settings.currentPassword'),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
               ),
             ),
@@ -828,7 +828,7 @@ class _MoreScreenState extends State<MoreScreen> {
               controller: newController,
               obscureText: true,
               decoration: InputDecoration(
-                labelText: 'New Password',
+                labelText: AppI18n.t('settings.newPassword'),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
               ),
             ),
@@ -837,7 +837,7 @@ class _MoreScreenState extends State<MoreScreen> {
               controller: confirmController,
               obscureText: true,
               decoration: InputDecoration(
-                labelText: 'Confirm New Password',
+                labelText: AppI18n.t('settings.confirmPassword'),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
               ),
             ),
@@ -846,20 +846,20 @@ class _MoreScreenState extends State<MoreScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: Text('Cancel',
+            child: Text(AppI18n.t('common.cancel'),
                 style: GoogleFonts.nunito(color: const Color(0xFF757575))),
           ),
           ElevatedButton(
             onPressed: () async {
               if (newController.text != confirmController.text) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Passwords do not match')),
+                  SnackBar(content: Text(AppI18n.t('settings.passwordsNoMatch'))),
                 );
                 return;
               }
               if (newController.text.length < 6) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Password must be at least 6 characters')),
+                  SnackBar(content: Text(AppI18n.t('auth.weakPassword'))),
                 );
                 return;
               }
@@ -875,18 +875,18 @@ class _MoreScreenState extends State<MoreScreen> {
                   if (ctx.mounted) Navigator.pop(ctx);
                   if (mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Password updated successfully')),
+                      SnackBar(content: Text(AppI18n.t('settings.passwordUpdated'))),
                     );
                   }
                 }
               } on FirebaseAuthException catch (e) {
-                String msg = 'Failed to change password.';
-                if (e.code == 'wrong-password') msg = 'Current password is incorrect.';
-                if (e.code == 'requires-recent-login') msg = 'Please sign out and sign in again, then retry.';
+                String msg = AppI18n.t('settings.passwordChangeFailed');
+                if (e.code == 'wrong-password') msg = AppI18n.t('settings.currentPasswordWrong');
+                if (e.code == 'requires-recent-login') msg = AppI18n.t('settings.reloginRequired');
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
               } catch (_) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Failed to change password.')),
+                  SnackBar(content: Text(AppI18n.t('settings.passwordChangeFailed'))),
                 );
               }
             },
@@ -894,7 +894,7 @@ class _MoreScreenState extends State<MoreScreen> {
               backgroundColor: const Color(0xFF4CAF50),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             ),
-            child: Text('Update',
+            child: Text(AppI18n.t('common.update'),
                 style: GoogleFonts.nunito(color: Colors.white, fontWeight: FontWeight.w700)),
           ),
         ],
@@ -910,21 +910,21 @@ class _MoreScreenState extends State<MoreScreen> {
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setState) {
           final messages = [
-            'Are you sure you want to delete your account? This will permanently remove all your progress, XP, achievements, and match history.',
-            'This action CANNOT be undone. All your data will be lost forever. Do you really want to continue?',
-            'Last chance. Type DELETE to confirm account deletion.',
+            AppI18n.t('delete.warning1'),
+            AppI18n.t('delete.warning2'),
+            AppI18n.t('delete.typeDeletePrompt'),
           ];
           if (step < 2) {
             return AlertDialog(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-              title: Text(step == 0 ? 'Delete Account' : 'Final Warning',
+              title: Text(step == 0 ? AppI18n.t('delete.title') : AppI18n.t('delete.finalWarning'),
                   style: GoogleFonts.nunito(fontWeight: FontWeight.w800, color: const Color(0xFFD32F2F))),
               content: Text(messages[step],
                   style: GoogleFonts.nunito(color: const Color(0xFF616161))),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(ctx),
-                  child: Text('Cancel',
+                  child: Text(AppI18n.t('common.cancel'),
                       style: GoogleFonts.nunito(color: const Color(0xFF4CAF50), fontWeight: FontWeight.w700)),
                 ),
                 ElevatedButton(
@@ -933,7 +933,7 @@ class _MoreScreenState extends State<MoreScreen> {
                     backgroundColor: const Color(0xFFD32F2F),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
-                  child: Text('Continue',
+                  child: Text(AppI18n.t('common.continue'),
                       style: GoogleFonts.nunito(color: Colors.white, fontWeight: FontWeight.w700)),
                 ),
               ],
@@ -943,7 +943,7 @@ class _MoreScreenState extends State<MoreScreen> {
           final confirmController = TextEditingController();
           return AlertDialog(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            title: Text('Type DELETE to Confirm',
+            title: Text(AppI18n.t('delete.typeDeleteTitle'),
                 style: GoogleFonts.nunito(fontWeight: FontWeight.w800, color: const Color(0xFFD32F2F))),
             content: Column(
               mainAxisSize: MainAxisSize.min,
@@ -966,7 +966,7 @@ class _MoreScreenState extends State<MoreScreen> {
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(ctx),
-                child: Text('Cancel',
+                child: Text(AppI18n.t('common.cancel'),
                     style: GoogleFonts.nunito(color: const Color(0xFF4CAF50), fontWeight: FontWeight.w700)),
               ),
               ElevatedButton(
@@ -980,14 +980,14 @@ class _MoreScreenState extends State<MoreScreen> {
                     final game = context.read<GameState>();
                     game.loadFromStorage(); // reload fresh state after account deletion
                   } on FirebaseAuthException catch (e) {
-                    String msg = 'Failed to delete account.';
+                    String msg = AppI18n.t('delete.failed');
                     if (e.code == 'requires-recent-login') {
-                      msg = 'Please sign out and sign in again, then retry.';
+                      msg = AppI18n.t('settings.reloginRequired');
                     }
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
                   } catch (_) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Failed to delete account.')),
+                      SnackBar(content: Text(AppI18n.t('delete.failed'))),
                     );
                   }
                 },
@@ -995,7 +995,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   backgroundColor: const Color(0xFFD32F2F),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 ),
-                child: Text('Delete Forever',
+                child: Text(AppI18n.t('delete.confirm'),
                     style: GoogleFonts.nunito(color: Colors.white, fontWeight: FontWeight.w700)),
               ),
             ],
@@ -1010,15 +1010,15 @@ class _MoreScreenState extends State<MoreScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('Reset Progress',
+        title: Text(AppI18n.t('settings.resetProgress'),
             style: GoogleFonts.nunito(fontWeight: FontWeight.w800)),
         content: Text(
-            'Are you sure you want to reset all your learning progress? This action cannot be undone.',
+            AppI18n.t('settings.resetConfirm'),
             style: GoogleFonts.nunito(color: const Color(0xFF757575))),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: Text('Cancel',
+            child: Text(AppI18n.t('common.cancel'),
                 style: GoogleFonts.nunito(color: const Color(0xFF757575))),
           ),
           ElevatedButton(
@@ -1032,7 +1032,7 @@ class _MoreScreenState extends State<MoreScreen> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
             ),
-            child: Text('Reset',
+            child: Text(AppI18n.t('common.reset'),
                 style: GoogleFonts.nunito(
                     color: Colors.white, fontWeight: FontWeight.w700)),
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../widgets/mascot_widget.dart';
+import '../services/app_i18n.dart';
 
 class AchievementsScreen extends StatelessWidget {
   const AchievementsScreen({super.key});
@@ -12,7 +13,7 @@ class AchievementsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
-          '成就',
+          AppI18n.t('community.achievements'),
           style: GoogleFonts.nunito(
             fontWeight: FontWeight.w800,
             color: const Color(0xFF2D2D2D),
@@ -56,7 +57,7 @@ class AchievementsScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '成就進度',
+                            AppI18n.t('community.achievementProgress'),
                             style: GoogleFonts.nunito(
                               fontSize: 20,
                               fontWeight: FontWeight.w800,
@@ -65,7 +66,7 @@ class AchievementsScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            '已解鎖 8 / 24 個成就',
+                            AppI18n.t('community.unlockedCount').replaceAll('{unlocked}', '8').replaceAll('{total}', '24'),
                             style: GoogleFonts.nunito(
                               fontSize: 14,
                               color: Colors.white.withAlpha(200),
@@ -104,7 +105,7 @@ class AchievementsScreen extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    '已解鎖成就',
+                    AppI18n.t('community.unlocked'),
                     style: GoogleFonts.nunito(
                       fontSize: 18,
                       fontWeight: FontWeight.w800,
@@ -123,50 +124,50 @@ class AchievementsScreen extends StatelessWidget {
                   _AchievementBadge(
                     icon: Icons.school_rounded,
                     color: const Color(0xFF4CAF50),
-                    title: '初學者',
-                    subtitle: '完成第一個課程',
+                    title: AppI18n.t('achievement.first_lesson.title'),
+                    subtitle: AppI18n.t('achievement.first_lesson.subtitle'),
                   ),
                   _AchievementBadge(
                     icon: Icons.local_fire_department_rounded,
                     color: const Color(0xFFE8B93E),
-                    title: '連續七天',
-                    subtitle: '連續學習 7 天',
+                    title: AppI18n.t('achievement.streak_7.title'),
+                    subtitle: AppI18n.t('achievement.streak_7.subtitle'),
                   ),
                   _AchievementBadge(
                     icon: Icons.stars_rounded,
                     color: const Color(0xFFE8B93E),
-                    title: '滿分達人',
-                    subtitle: '測驗獲得滿分',
+                    title: AppI18n.t('achievement.perfect_quiz.title'),
+                    subtitle: AppI18n.t('achievement.perfect_quiz.subtitle'),
                   ),
                   _AchievementBadge(
                     icon: Icons.auto_awesome_rounded,
                     color: const Color(0xFF4CAF50),
-                    title: '基礎精通',
-                    subtitle: '完成基礎規則全部課程',
+                    title: AppI18n.t('achievement.first_stage.title'),
+                    subtitle: AppI18n.t('achievement.first_stage.subtitle'),
                   ),
                   _AchievementBadge(
                     icon: Icons.psychology_rounded,
                     color: const Color(0xFF9C27B0),
-                    title: '策略家',
-                    subtitle: '完成進階策略課程',
+                    title: AppI18n.t('achievement.explorer.title'),
+                    subtitle: AppI18n.t('achievement.explorer.subtitle'),
                   ),
                   _AchievementBadge(
                     icon: Icons.speed_rounded,
                     color: const Color(0xFF2196F3),
-                    title: '快速答題',
-                    subtitle: '5 秒內答對題目',
+                    title: AppI18n.t('achievement.quick_learner.title'),
+                    subtitle: AppI18n.t('achievement.quick_learner.subtitle'),
                   ),
                   _AchievementBadge(
                     icon: Icons.emoji_events_rounded,
                     color: const Color(0xFFE8B93E),
-                    title: 'Level 5',
-                    subtitle: '達到等級 5',
+                    title: AppI18n.t('achievement.gold_league.title'),
+                    subtitle: AppI18n.t('achievement.gold_league.subtitle'),
                   ),
                   _AchievementBadge(
                     icon: Icons.menu_book_rounded,
                     color: const Color(0xFF4CAF50),
-                    title: '勤奮好學',
-                    subtitle: '完成 20 堂課',
+                    title: AppI18n.t('achievement.twenty_lessons.title'),
+                    subtitle: AppI18n.t('achievement.twenty_lessons.subtitle'),
                   ),
                 ],
               ),
@@ -186,7 +187,7 @@ class AchievementsScreen extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    '尚未解鎖',
+                    AppI18n.t('community.locked'),
                     style: GoogleFonts.nunito(
                       fontSize: 18,
                       fontWeight: FontWeight.w800,
@@ -204,7 +205,7 @@ class AchievementsScreen extends StatelessWidget {
                     icon: Icons.lock_rounded,
                     color: const Color(0xFFE0E0E0),
                     title: '???',
-                    subtitle: '繼續學習來解鎖',
+                    subtitle: AppI18n.t('community.keepLearningToUnlock'),
                   );
                 }),
               ),

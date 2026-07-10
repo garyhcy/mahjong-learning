@@ -269,14 +269,14 @@ class _LanguageSelectScreen extends StatelessWidget {
               // Logo
               Image.asset('assets/images/topbar_logo.png', width: 120, height: 120),
               const SizedBox(height: 16),
-              Text('Choose your language',
+              Text(AppI18n.t('lang.title'),
                   textAlign: TextAlign.center,
                   style: GoogleFonts.nunito(
                       fontSize: 24,
                       fontWeight: FontWeight.w800,
                       color: const Color(0xFF2D2D2D))),
               const SizedBox(height: 8),
-              Text('You can change this later in Settings',
+              Text(AppI18n.t('lang.changeLater'),
                   textAlign: TextAlign.center,
                   style: GoogleFonts.nunito(
                       fontSize: 14, color: const Color(0xFF757575))),
@@ -397,10 +397,10 @@ class _MainShellState extends State<MainShell> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _navItem(0, Icons.home_rounded, 'Home'),
-                    _navItem(1, Icons.people_rounded, 'Community'),
-                    _navItem(2, Icons.school_rounded, 'Practice'),
-                    _navItem(3, Icons.more_horiz_rounded, 'More'),
+                    _navItem(0, Icons.home_rounded, AppI18n.t('nav.home')),
+                    _navItem(1, Icons.people_rounded, AppI18n.t('nav.community')),
+                    _navItem(2, Icons.school_rounded, AppI18n.t('nav.practice')),
+                    _navItem(3, Icons.more_horiz_rounded, AppI18n.t('nav.more')),
                   ],
                 ),
               ),

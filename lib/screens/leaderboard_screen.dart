@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../widgets/mascot_widget.dart';
+import '../services/app_i18n.dart';
 
 class LeaderboardScreen extends StatelessWidget {
   const LeaderboardScreen({super.key});
@@ -10,7 +11,7 @@ class LeaderboardScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFF1A1A2E),
       appBar: AppBar(
-        title: Text('Leaderboard', style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
+        title: Text(AppI18n.t('community.leaderboard'), style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
         backgroundColor: const Color(0xFF16213E),
         foregroundColor: Colors.white,
       ),
@@ -20,9 +21,9 @@ class LeaderboardScreen extends StatelessWidget {
           children: [
             const MascotWidget(expression: MascotExpression.excited, size: 120),
             const SizedBox(height: 20),
-            Text('Coming Soon!', style: GoogleFonts.poppins(fontSize: 24, color: Colors.white70)),
+            Text(AppI18n.t('common.comingSoon'), style: GoogleFonts.poppins(fontSize: 24, color: Colors.white70)),
             const SizedBox(height: 8),
-            Text('Compete with friends and climb the ranks', style: GoogleFonts.poppins(fontSize: 14, color: Colors.white38)),
+            Text(AppI18n.t('community.competeDesc'), style: GoogleFonts.poppins(fontSize: 14, color: Colors.white38)),
           ],
         ),
       ),

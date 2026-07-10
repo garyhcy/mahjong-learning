@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/game_state.dart';
 import '../screens/learn_screen.dart';
 import '../services/audio_service.dart';
+import '../services/app_i18n.dart';
 import '../widgets/mascot_widget.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -120,7 +121,7 @@ class HomeScreen extends StatelessWidget {
     );
     final stageIndex = currentStageIndex >= 0 ? currentStageIndex : 0;
     final stage = game.stages.isNotEmpty ? game.stages[stageIndex] : null;
-    final title = stage?.title ?? 'Mahjong Basics';
+    final title = stage?.title ?? AppI18n.t('home.mahjongBasics');
     final stageNum = stageIndex + 1;
     final stageProgress = stage != null && stage.lessonCount > 0
         ? stage.completedLessons
@@ -199,7 +200,7 @@ class HomeScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      'Stage $stageNum',
+                      '${AppI18n.t('home.stage')} $stageNum',
                       style: GoogleFonts.nunito(
                         color: Colors.white,
                         fontSize: 12,
@@ -280,9 +281,9 @@ class HomeScreen extends StatelessWidget {
   Widget _buildLearningPath(BuildContext context, GameState game) {
     final stages = game.stages;
     if (stages.isEmpty) {
-      return const Center(
+      return Center(
         child: Text(
-          'No stages available',
+          AppI18n.t('home.noStages'),
           style: TextStyle(color: Colors.grey, fontSize: 16),
         ),
       );
@@ -390,7 +391,7 @@ class _AnimatedPathNodeState extends State<_AnimatedPathNode>
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'Complete the previous stage to unlock this one!',
+            AppI18n.t('home.lockedStage'),
             style: GoogleFonts.nunito(fontWeight: FontWeight.w600),
           ),
           duration: const Duration(seconds: 2),

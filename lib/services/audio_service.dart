@@ -66,13 +66,13 @@ class AudioService {
     } catch (_) {}
   }
 
-  Future<void> playTap() => _play('audio/tap.wav');
-  Future<void> playClick() => _play('audio/tap.wav');
+  Future<void> playTap() => _play('audio/click.mp3');
+  Future<void> playClick() => _play('audio/click.mp3');
   Future<void> playCorrect() => _play('audio/correct.wav');
   Future<void> playWrong() => _play('audio/wrong.wav');
   Future<void> playAchievement() => _play('audio/achievement.wav');
   Future<void> playStageComplete() => _play('audio/stage_complete.wav');
-  Future<void> playTileClick() => _play('audio/tile_click.wav');
+  Future<void> playTileClick() => _play('audio/click.mp3');
 
   // ── BGM (#18/#19) ──
   Future<void> startBgm() async {
@@ -82,7 +82,7 @@ class AudioService {
       _bgmPlayer = AudioPlayer();
       await _bgmPlayer!.setReleaseMode(ReleaseMode.loop);
       await _bgmPlayer!.setVolume(0.15);
-      await _bgmPlayer!.play(AssetSource('audio/bgm.wav'));
+      await _bgmPlayer!.play(AssetSource('audio/bgm.mp3'));
     } catch (_) {
       _bgmPlayer = null;
     }

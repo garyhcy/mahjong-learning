@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/game_state.dart';
 import '../services/firebase_service.dart';
+import '../services/app_i18n.dart';
 
 class SocialScreen extends StatelessWidget {
   const SocialScreen({super.key});
@@ -16,7 +17,7 @@ class SocialScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Community',
+        title: Text(AppI18n.t('nav.community'),
             style: GoogleFonts.nunito(
                 fontWeight: FontWeight.w800,
                 color: const Color(0xFF4CAF50))),
@@ -49,7 +50,7 @@ class SocialScreen extends StatelessWidget {
       {
         'id': 'complete_lesson',
         'icon': Icons.menu_book_rounded,
-        'name': 'Complete 1 Lesson',
+        'name': AppI18n.t('social.taskCompleteLesson'),
         'target': 1,
         'reward': 5,
         'progress': game.lessonCompletedToday > 0 ? 1 : 0,
@@ -59,7 +60,7 @@ class SocialScreen extends StatelessWidget {
       {
         'id': 'streak_3',
         'icon': Icons.checklist_rounded,
-        'name': '3 Correct in a Row',
+        'name': AppI18n.t('social.taskStreak3'),
         'target': 3,
         'reward': 10,
         'progress': game.consecutiveCorrect,
@@ -69,7 +70,7 @@ class SocialScreen extends StatelessWidget {
       {
         'id': 'earn_50xp',
         'icon': Icons.stars_rounded,
-        'name': 'Earn 50 XP',
+        'name': AppI18n.t('social.taskEarn50xp'),
         'target': 50,
         'reward': 15,
         'progress': game.dailyXpEarned,
@@ -94,13 +95,13 @@ class SocialScreen extends StatelessWidget {
               const Icon(Icons.emoji_events_rounded,
                   color: Color(0xFFE8B93E), size: 22),
               const SizedBox(width: 8),
-              Text('Daily Tasks',
+              Text(AppI18n.t('social.dailyTasks'),
                   style: GoogleFonts.nunito(
                       fontSize: 17, fontWeight: FontWeight.w800)),
             ],
           ),
           const SizedBox(height: 4),
-          Text('Complete tasks to earn bonus XP',
+          Text(AppI18n.t('social.dailyTasksDesc'),
               style: GoogleFonts.nunito(
                   fontSize: 12, color: const Color(0xFF757575))),
           const SizedBox(height: 14),
@@ -194,8 +195,10 @@ class SocialScreen extends StatelessWidget {
     }
 
     final message =
-        "I'm learning board games on Ludi! "
-        "Stage: $currentStage, XP: ${game.xp}, Streak: ${game.streak} days!";
+        AppI18n.t('social.shareMessage')
+            .replaceAll('{stage}', currentStage)
+            .replaceAll('{xp}', '${game.xp}')
+            .replaceAll('{streak}', '${game.streak}');
 
     return Container(
       width: double.infinity,
@@ -211,7 +214,7 @@ class SocialScreen extends StatelessWidget {
               color: Color(0xFF4CAF50), size: 22),
           const SizedBox(width: 12),
           Expanded(
-            child: Text('Share Your Progress',
+            child: Text(AppI18n.t('social.shareProgress'),
                 style: GoogleFonts.nunito(
                     fontSize: 14, fontWeight: FontWeight.w700)),
           ),
@@ -221,7 +224,7 @@ class SocialScreen extends StatelessWidget {
               HapticFeedback.lightImpact();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Copied to clipboard!',
+                  content: Text(AppI18n.t('social.copied'),
                       style: GoogleFonts.nunito()),
                   duration: const Duration(seconds: 2),
                   behavior: SnackBarBehavior.floating,
@@ -229,7 +232,7 @@ class SocialScreen extends StatelessWidget {
               );
             },
             icon: const Icon(Icons.copy_rounded, size: 16),
-            label: const Text('Copy'),
+            label: Text(AppI18n.t('social.copy')),
             style: TextButton.styleFrom(
               foregroundColor: const Color(0xFF4CAF50),
             ),
@@ -249,7 +252,7 @@ class SocialScreen extends StatelessWidget {
             const Icon(Icons.leaderboard_rounded,
                 color: Color(0xFFE8B93E), size: 22),
             const SizedBox(width: 8),
-            Text('Leaderboard',
+            Text(AppI18n.t('social.leaderboard'),
                 style: GoogleFonts.nunito(
                     fontSize: 17, fontWeight: FontWeight.w800)),
           ],
@@ -272,7 +275,7 @@ class SocialScreen extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    'Leaderboard unavailable. Please check your connection.',
+                    AppI18n.t('social.leaderboardUnavailable'),
                     textAlign: TextAlign.center,
                     style: GoogleFonts.nunito(
                         fontSize: 13, color: const Color(0xFF9E9E9E)),
@@ -291,7 +294,7 @@ class SocialScreen extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    'No players yet. Be the first!',
+                    AppI18n.t('social.noPlayersYet'),
                     textAlign: TextAlign.center,
                     style: GoogleFonts.nunito(
                         fontSize: 13, color: const Color(0xFF9E9E9E)),
@@ -320,7 +323,7 @@ class SocialScreen extends StatelessWidget {
                 final isCurrentUser = uid == currentUid;
 
                 // Display name: nickname > email prefix > "Player"
-                String displayName = 'Player';
+                String displayName = AppI18n.t('social.player');
                 if (nickname.isNotEmpty) {
                   displayName = nickname;
                 } else if (email.isNotEmpty) {
@@ -328,7 +331,7 @@ class SocialScreen extends StatelessWidget {
                 }
                 final prefix =
                     avatarEmoji.isNotEmpty ? '$avatarEmoji ' : '';
-                final fullName = '$prefix$displayName${isCurrentUser ? ' (You)' : ''}';
+                final fullName = '$prefix$displayName${isCurrentUser ? ' (${AppI18n.t('social.you')})' : ''}';
 
                 final rankColor =
                     i < 3 ? rankColors[i] : const Color(0xFF757575);
@@ -419,7 +422,7 @@ class SocialScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(
-            'Multiplayer matches are under development. Stay tuned!',
+            AppI18n.t('social.matchesComingSoon'),
             textAlign: TextAlign.center,
             style: GoogleFonts.nunito(
               fontSize: 13,

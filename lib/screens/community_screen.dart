@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/game_state.dart';
 import '../providers/match_state.dart';
 import '../screens/find_match_screen.dart';
+import '../services/app_i18n.dart';
 import '../widgets/mascot_widget.dart';
 
 // ─── League Helper ───
@@ -25,11 +26,11 @@ class _LeagueTier {
 }
 
 const List<_LeagueTier> _leagueTiers = [
-  _LeagueTier(name: 'Bronze League', emoji: '🥉', minXp: 0, maxXp: 500, color: Color(0xFFCD7F32)),
-  _LeagueTier(name: 'Silver League', emoji: '🥈', minXp: 500, maxXp: 1200, color: Color(0xFFC0C0C0)),
-  _LeagueTier(name: 'Gold League', emoji: '🥇', minXp: 1200, maxXp: 2500, color: Color(0xFFFFD700)),
-  _LeagueTier(name: 'Emerald League', emoji: '💎', minXp: 2500, maxXp: 4000, color: Color(0xFF4CAF50)),
-  _LeagueTier(name: 'Diamond League', emoji: '👑', minXp: 4000, maxXp: 6000, color: Color(0xFF7C4DFF)),
+  _LeagueTier(name: 'league.bronze', emoji: '🥉', minXp: 0, maxXp: 500, color: Color(0xFFCD7F32)),
+  _LeagueTier(name: 'league.silver', emoji: '🥈', minXp: 500, maxXp: 1200, color: Color(0xFFC0C0C0)),
+  _LeagueTier(name: 'league.gold', emoji: '🥇', minXp: 1200, maxXp: 2500, color: Color(0xFFFFD700)),
+  _LeagueTier(name: 'league.emerald', emoji: '💎', minXp: 2500, maxXp: 4000, color: Color(0xFF4CAF50)),
+  _LeagueTier(name: 'league.diamond', emoji: '👑', minXp: 4000, maxXp: 6000, color: Color(0xFF7C4DFF)),
 ];
 
 _LeagueTier _getLeague(int xp) {
@@ -94,31 +95,31 @@ class _AchievementDisplay {
 
 const List<_AchievementDisplay> _allAchievements = [
   // Unlocked (10)
-  _AchievementDisplay(id: 'first_lesson', emoji: '🎓', title: 'Beginner', subtitle: 'Complete 1 lesson'),
-  _AchievementDisplay(id: 'early_bird', emoji: '🐦', title: 'Early Bird', subtitle: 'Study before 8am'),
-  _AchievementDisplay(id: 'streak_3', emoji: '🔥', title: '3-Day Streak', subtitle: 'Study 3 days in a row'),
-  _AchievementDisplay(id: 'streak_7', emoji: '💪', title: '7-Day Streak', subtitle: 'Study 7 days in a row'),
-  _AchievementDisplay(id: 'perfect_quiz', emoji: '💯', title: 'Perfect Score', subtitle: '100% on a quiz'),
-  _AchievementDisplay(id: 'five_lessons', emoji: '📚', title: 'Bookworm', subtitle: 'Complete 5 lessons'),
-  _AchievementDisplay(id: 'first_stage', emoji: '🏅', title: 'Stage Clear', subtitle: 'Complete Stage 1'),
-  _AchievementDisplay(id: 'quick_learner', emoji: '⚡', title: 'Quick Learner', subtitle: 'Finish lesson in 2 min'),
-  _AchievementDisplay(id: 'comeback', emoji: '🔄', title: 'Comeback', subtitle: 'Return after 3 days'),
-  _AchievementDisplay(id: 'night_owl', emoji: '🦉', title: 'Night Owl', subtitle: 'Study after 11pm'),
+  _AchievementDisplay(id: 'first_lesson', emoji: '🎓', title: 'achievement.first_lesson.title', subtitle: 'achievement.first_lesson.subtitle'),
+  _AchievementDisplay(id: 'early_bird', emoji: '🐦', title: 'achievement.early_bird.title', subtitle: 'achievement.early_bird.subtitle'),
+  _AchievementDisplay(id: 'streak_3', emoji: '🔥', title: 'achievement.streak_3.title', subtitle: 'achievement.streak_3.subtitle'),
+  _AchievementDisplay(id: 'streak_7', emoji: '💪', title: 'achievement.streak_7.title', subtitle: 'achievement.streak_7.subtitle'),
+  _AchievementDisplay(id: 'perfect_quiz', emoji: '💯', title: 'achievement.perfect_quiz.title', subtitle: 'achievement.perfect_quiz.subtitle'),
+  _AchievementDisplay(id: 'five_lessons', emoji: '📚', title: 'achievement.five_lessons.title', subtitle: 'achievement.five_lessons.subtitle'),
+  _AchievementDisplay(id: 'first_stage', emoji: '🏅', title: 'achievement.first_stage.title', subtitle: 'achievement.first_stage.subtitle'),
+  _AchievementDisplay(id: 'quick_learner', emoji: '⚡', title: 'achievement.quick_learner.title', subtitle: 'achievement.quick_learner.subtitle'),
+  _AchievementDisplay(id: 'comeback', emoji: '🔄', title: 'achievement.comeback.title', subtitle: 'achievement.comeback.subtitle'),
+  _AchievementDisplay(id: 'night_owl', emoji: '🦉', title: 'achievement.night_owl.title', subtitle: 'achievement.night_owl.subtitle'),
   // Locked (14)
-  _AchievementDisplay(id: 'streak_14', emoji: '🌟', title: '14-Day Streak', subtitle: 'Study 14 days', unlocked: false),
-  _AchievementDisplay(id: 'streak_30', emoji: '🏆', title: '30-Day Streak', subtitle: 'Study 30 days', unlocked: false),
-  _AchievementDisplay(id: 'ten_lessons', emoji: '📖', title: 'Scholar', subtitle: 'Complete 10 lessons', unlocked: false),
-  _AchievementDisplay(id: 'twenty_lessons', emoji: '🎯', title: 'Dedicated', subtitle: 'Complete 20 lessons', unlocked: false),
-  _AchievementDisplay(id: 'all_stages', emoji: '👑', title: 'Master', subtitle: 'Complete all stages', unlocked: false),
-  _AchievementDisplay(id: 'social_3', emoji: '🤝', title: 'Social', subtitle: 'Add 3 friends', unlocked: false),
-  _AchievementDisplay(id: 'social_10', emoji: '🎉', title: 'Popular', subtitle: 'Add 10 friends', unlocked: false),
-  _AchievementDisplay(id: 'first_match', emoji: '🀄', title: 'First Match', subtitle: 'Play 1 offline match', unlocked: false),
-  _AchievementDisplay(id: 'match_5', emoji: '🎲', title: 'Regular', subtitle: 'Play 5 offline matches', unlocked: false),
-  _AchievementDisplay(id: 'match_win', emoji: '🏅', title: 'Winner', subtitle: 'Win an offline match', unlocked: false),
-  _AchievementDisplay(id: 'speed_demon', emoji: '💨', title: 'Speed Demon', subtitle: 'Finish quiz in 30s', unlocked: false),
-  _AchievementDisplay(id: 'explorer', emoji: '🗺️', title: 'Explorer', subtitle: 'Try all lesson types', unlocked: false),
-  _AchievementDisplay(id: 'gold_league', emoji: '🥇', title: 'Gold Member', subtitle: 'Reach Gold League', unlocked: false),
-  _AchievementDisplay(id: 'diamond_league', emoji: '💎', title: 'Diamond', subtitle: 'Reach Diamond League', unlocked: false),
+  _AchievementDisplay(id: 'streak_14', emoji: '🌟', title: 'achievement.streak_14.title', subtitle: 'achievement.streak_14.subtitle', unlocked: false),
+  _AchievementDisplay(id: 'streak_30', emoji: '🏆', title: 'achievement.streak_30.title', subtitle: 'achievement.streak_30.subtitle', unlocked: false),
+  _AchievementDisplay(id: 'ten_lessons', emoji: '📖', title: 'achievement.ten_lessons.title', subtitle: 'achievement.ten_lessons.subtitle', unlocked: false),
+  _AchievementDisplay(id: 'twenty_lessons', emoji: '🎯', title: 'achievement.twenty_lessons.title', subtitle: 'achievement.twenty_lessons.subtitle', unlocked: false),
+  _AchievementDisplay(id: 'all_stages', emoji: '👑', title: 'achievement.all_stages.title', subtitle: 'achievement.all_stages.subtitle', unlocked: false),
+  _AchievementDisplay(id: 'social_3', emoji: '🤝', title: 'achievement.social_3.title', subtitle: 'achievement.social_3.subtitle', unlocked: false),
+  _AchievementDisplay(id: 'social_10', emoji: '🎉', title: 'achievement.social_10.title', subtitle: 'achievement.social_10.subtitle', unlocked: false),
+  _AchievementDisplay(id: 'first_match', emoji: '🀄', title: 'achievement.first_match.title', subtitle: 'achievement.first_match.subtitle', unlocked: false),
+  _AchievementDisplay(id: 'match_5', emoji: '🎲', title: 'achievement.match_5.title', subtitle: 'achievement.match_5.subtitle', unlocked: false),
+  _AchievementDisplay(id: 'match_win', emoji: '🏅', title: 'achievement.match_win.title', subtitle: 'achievement.match_win.subtitle', unlocked: false),
+  _AchievementDisplay(id: 'speed_demon', emoji: '💨', title: 'achievement.speed_demon.title', subtitle: 'achievement.speed_demon.subtitle', unlocked: false),
+  _AchievementDisplay(id: 'explorer', emoji: '🗺️', title: 'achievement.explorer.title', subtitle: 'achievement.explorer.subtitle', unlocked: false),
+  _AchievementDisplay(id: 'gold_league', emoji: '🥇', title: 'achievement.gold_league.title', subtitle: 'achievement.gold_league.subtitle', unlocked: false),
+  _AchievementDisplay(id: 'diamond_league', emoji: '💎', title: 'achievement.diamond_league.title', subtitle: 'achievement.diamond_league.subtitle', unlocked: false),
 ];
 
 // ─── Mascot/Avatar options ───
@@ -257,7 +258,7 @@ class CommunityScreen extends StatelessWidget {
               ),
               const SizedBox(height: 2),
               Text(
-                '${league.emoji} ${league.name}  ·  #LD${(game.xp + game.nickname.hashCode).abs() % 9999}  ·  Skill ${game.skillRating}',
+                '${league.emoji} ${AppI18n.t(league.name)}  ·  #LD${(game.xp + game.nickname.hashCode).abs() % 9999}  ·  ${AppI18n.t('community.skill')} ${game.skillRating}',
                 style: GoogleFonts.nunito(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
@@ -303,13 +304,13 @@ class CommunityScreen extends StatelessWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('Edit Nickname',
+        title: Text(AppI18n.t('settings.editNickname'),
             style: GoogleFonts.nunito(fontWeight: FontWeight.w800)),
         content: TextField(
           controller: controller,
           maxLength: 16,
           decoration: InputDecoration(
-            hintText: 'Enter nickname',
+            hintText: AppI18n.t('settings.enterNickname'),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
@@ -321,7 +322,7 @@ class CommunityScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: Text('Cancel',
+            child: Text(AppI18n.t('common.cancel'),
                 style: GoogleFonts.nunito(color: const Color(0xFF757575))),
           ),
           ElevatedButton(
@@ -337,7 +338,7 @@ class CommunityScreen extends StatelessWidget {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
             ),
-            child: Text('Save',
+            child: Text(AppI18n.t('common.save'),
                 style: GoogleFonts.nunito(
                     color: Colors.white, fontWeight: FontWeight.w700)),
           ),
@@ -399,7 +400,7 @@ class CommunityScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        league.name,
+                        AppI18n.t(league.name),
                         style: GoogleFonts.nunito(
                           fontSize: 15,
                           fontWeight: FontWeight.w700,
@@ -407,7 +408,7 @@ class CommunityScreen extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Rank #$rank',
+                        AppI18n.t('community.rank') + '$rank',
                         style: GoogleFonts.nunito(
                           fontSize: 13,
                           color: const Color(0xFF757575),
@@ -480,11 +481,11 @@ class CommunityScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _statItem('⚡', 'Total XP', '$xp'),
+          _statItem('⚡', AppI18n.t('community.totalXp'), '$xp'),
           _statDivider(),
-          _statItem('🔥', 'Streak', '$streak Days'),
+          _statItem('🔥', AppI18n.t('community.streak'), '$streak ${AppI18n.t("community.days")}'),
           _statDivider(),
-          _statItem('✅', 'Completed', '$completedCount'),
+          _statItem('✅', AppI18n.t('community.completed'), '$completedCount'),
         ],
       ),
     );
@@ -522,7 +523,7 @@ class CommunityScreen extends StatelessWidget {
       children: [
         Row(
           children: [
-            Text('Achievements',
+            Text(AppI18n.t('community.achievements'),
                 style: GoogleFonts.nunito(
                     fontSize: 17,
                     fontWeight: FontWeight.w800,
@@ -549,7 +550,7 @@ class CommunityScreen extends StatelessWidget {
               },
               child: Row(
                 children: [
-                  Text('View All',
+                  Text(AppI18n.t('community.viewAll'),
                       style: GoogleFonts.nunito(
                           fontSize: 13,
                           fontWeight: FontWeight.w600,
@@ -609,13 +610,13 @@ class CommunityScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        Text(achievement.title,
+        Text(AppI18n.t(achievement.title),
             style: GoogleFonts.nunito(
                 fontSize: 11,
                 fontWeight: FontWeight.w700,
                 color: const Color(0xFF2D2D2D)),
             textAlign: TextAlign.center),
-        Text(achievement.subtitle,
+        Text(AppI18n.t(achievement.subtitle),
             style: GoogleFonts.nunito(
                 fontSize: 10, color: const Color(0xFF9E9E9E)),
             textAlign: TextAlign.center),
@@ -639,7 +640,7 @@ class CommunityScreen extends StatelessWidget {
       children: [
         Row(
           children: [
-            Text('Friend Leaderboard',
+            Text(AppI18n.t('community.friendLeaderboard'),
                 style: GoogleFonts.nunito(
                     fontSize: 17,
                     fontWeight: FontWeight.w800,
@@ -662,7 +663,7 @@ class CommunityScreen extends StatelessWidget {
                     const Icon(Icons.person_add_rounded,
                         size: 14, color: Color(0xFF4CAF50)),
                     const SizedBox(width: 4),
-                    Text('Add',
+                    Text(AppI18n.t('community.addAll'),
                         style: GoogleFonts.nunito(
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
@@ -683,7 +684,7 @@ class CommunityScreen extends StatelessWidget {
               },
               child: Row(
                 children: [
-                  Text('View All',
+                  Text(AppI18n.t('community.viewAll'),
                       style: GoogleFonts.nunito(
                           fontSize: 13,
                           fontWeight: FontWeight.w600,
@@ -749,19 +750,19 @@ class CommunityScreen extends StatelessWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('Add Friend',
+        title: Text(AppI18n.t('community.addFriend'),
             style: GoogleFonts.nunito(fontWeight: FontWeight.w800)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Enter your friend\'s username or invite code to connect.',
+            Text(AppI18n.t('community.addFriendDescFull'),
                 style: GoogleFonts.nunito(
                     fontSize: 13, color: const Color(0xFF757575))),
             const SizedBox(height: 16),
             TextField(
               controller: controller,
               decoration: InputDecoration(
-                hintText: 'Username or invite code',
+                hintText: AppI18n.t('community.usernameOrInvite'),
                 prefixIcon: const Icon(Icons.search_rounded,
                     color: Color(0xFF9E9E9E)),
                 border: OutlineInputBorder(
@@ -774,11 +775,11 @@ class CommunityScreen extends StatelessWidget {
               ),
             ),
             if (foundPlayer.rank != -1)
-              Text('Found: ${foundPlayer.name}',
+              Text('${AppI18n.t('community.found')}: ${foundPlayer.name}',
                   style: GoogleFonts.nunito(
                       fontSize: 13, color: const Color(0xFF4CAF50))),
             if (foundPlayer.rank == -1)
-              Text('Player not found.',
+              Text(AppI18n.t('community.playerNotFoundShort'),
                   style: GoogleFonts.nunito(
                       fontSize: 13, color: const Color(0xFFE53935))),
           ],
@@ -786,7 +787,7 @@ class CommunityScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: Text('Cancel',
+            child: Text(AppI18n.t('common.cancel'),
                 style: GoogleFonts.nunito(color: const Color(0xFF757575))),
           ),
           ElevatedButton.icon(
@@ -794,7 +795,7 @@ class CommunityScreen extends StatelessWidget {
               Navigator.pop(ctx);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Friend request sent!',
+                  content: Text(AppI18n.t('community.friendRequestSent'),
                       style: GoogleFonts.nunito()),
                   backgroundColor: const Color(0xFF4CAF50),
                   behavior: SnackBarBehavior.floating,
@@ -804,7 +805,7 @@ class CommunityScreen extends StatelessWidget {
               );
             },
             icon: const Icon(Icons.send_rounded, size: 16),
-            label: Text('Send',
+            label: Text(AppI18n.t('community.send'),
                 style: GoogleFonts.nunito(fontWeight: FontWeight.w700)),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF4CAF50),
@@ -891,7 +892,7 @@ class CommunityScreen extends StatelessWidget {
                             fontWeight: FontWeight.w700,
                             color: const Color(0xFF6B7A6E))),
                     const SizedBox(width: 4),
-                    Text('Skill',
+                    Text(AppI18n.t('community.skill'),
                         style: GoogleFonts.nunito(
                             fontSize: 10,
                             color: const Color(0xFF9AA89C))),
@@ -948,12 +949,12 @@ class CommunityScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Find a Match',
+                    Text(AppI18n.t('community.findMatch'),
                         style: GoogleFonts.nunito(
                             fontSize: 16,
                             fontWeight: FontWeight.w800,
                             color: const Color(0xFF2D2D2D))),
-                    Text('Play offline with matched players',
+                    Text(AppI18n.t('community.playOffline'),
                         style: GoogleFonts.nunito(
                             fontSize: 12, color: const Color(0xFF757575))),
                   ],
@@ -985,16 +986,16 @@ class CommunityScreen extends StatelessWidget {
             child: Column(
               children: [
                 _matchFeatureRow(
-                    Icons.psychology_rounded, 'Matched by your skill level'),
+                    Icons.psychology_rounded, AppI18n.t('community.matchedBySkill')),
                 const SizedBox(height: 10),
                 _matchFeatureRow(
-                    Icons.language_rounded, 'Language-based pairing'),
+                    Icons.language_rounded, AppI18n.t('community.languagePairing')),
                 const SizedBox(height: 10),
                 _matchFeatureRow(Icons.storefront_rounded,
-                    'Verified venues with transparent pricing'),
+                    AppI18n.t('community.verifiedVenues')),
                 const SizedBox(height: 10),
                 _matchFeatureRow(Icons.support_agent_rounded,
-                    'On-site staff for rules assistance'),
+                    AppI18n.t('community.onSiteStaff')),
               ],
             ),
           ),
@@ -1078,7 +1079,7 @@ class _AvatarSelectionPageState extends State<_AvatarSelectionPage> {
           icon: const Icon(Icons.arrow_back_rounded, color: Color(0xFF2D2D2D)),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('Choose Avatar',
+        title: Text(AppI18n.t('community.chooseAvatar'),
             style: GoogleFonts.nunito(
                 fontWeight: FontWeight.w800, color: const Color(0xFF2D2D2D))),
       ),
@@ -1111,7 +1112,7 @@ class _AvatarSelectionPageState extends State<_AvatarSelectionPage> {
             ),
             const SizedBox(height: 24),
             // Free avatars
-            Text('Mascot Expressions',
+            Text(AppI18n.t('community.mascotExpressions'),
                 style: GoogleFonts.nunito(
                     fontSize: 16,
                     fontWeight: FontWeight.w800,
@@ -1133,7 +1134,7 @@ class _AvatarSelectionPageState extends State<_AvatarSelectionPage> {
             // Pro frames
             Row(
               children: [
-                Text('Pro Frames',
+                Text(AppI18n.t('community.proFrames'),
                     style: GoogleFonts.nunito(
                         fontSize: 16,
                         fontWeight: FontWeight.w800,
@@ -1176,7 +1177,7 @@ class _AvatarSelectionPageState extends State<_AvatarSelectionPage> {
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Avatar updated!',
+                      content: Text(AppI18n.t('community.avatarUpdated'),
                           style: GoogleFonts.nunito()),
                       backgroundColor: const Color(0xFF4CAF50),
                       behavior: SnackBarBehavior.floating,
@@ -1192,7 +1193,7 @@ class _AvatarSelectionPageState extends State<_AvatarSelectionPage> {
                       borderRadius: BorderRadius.circular(14)),
                   elevation: 0,
                 ),
-                child: Text('Save Avatar',
+                child: Text(AppI18n.t('community.saveAvatar'),
                     style: GoogleFonts.nunito(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
@@ -1214,7 +1215,7 @@ class _AvatarSelectionPageState extends State<_AvatarSelectionPage> {
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Upgrade to Pro to unlock this frame!',
+              content: Text(AppI18n.t('community.upgradeToUnlock'),
                   style: GoogleFonts.nunito()),
               backgroundColor: const Color(0xFFE65100),
               behavior: SnackBarBehavior.floating,
@@ -1308,7 +1309,7 @@ class _LeagueDetailPage extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_rounded, color: Color(0xFF2D2D2D)),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('League Progress',
+        title: Text(AppI18n.t('community.leagueProgress'),
             style: GoogleFonts.nunito(
                 fontWeight: FontWeight.w800, color: const Color(0xFF2D2D2D))),
       ),
@@ -1336,13 +1337,13 @@ class _LeagueDetailPage extends StatelessWidget {
                   Text(currentLeague.emoji,
                       style: const TextStyle(fontSize: 48)),
                   const SizedBox(height: 12),
-                  Text(currentLeague.name,
+                  Text(AppI18n.t(currentLeague.name),
                       style: GoogleFonts.nunito(
                           fontSize: 22,
                           fontWeight: FontWeight.w800,
                           color: Colors.white)),
                   const SizedBox(height: 4),
-                  Text('Keep learning to advance!',
+                  Text(AppI18n.t('community.keepLearning'),
                       style: GoogleFonts.nunito(
                           fontSize: 14, color: Colors.white.withAlpha(200))),
                   const SizedBox(height: 20),
@@ -1399,7 +1400,7 @@ class _LeagueDetailPage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(league.name,
+                          Text(AppI18n.t(league.name),
                               style: GoogleFonts.nunito(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w700,
@@ -1464,7 +1465,7 @@ class _AllAchievementsPage extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_rounded, color: Color(0xFF2D2D2D)),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('All Achievements',
+        title: Text(AppI18n.t('community.allAchievements'),
             style: GoogleFonts.nunito(
                 fontWeight: FontWeight.w800, color: const Color(0xFF2D2D2D))),
       ),
@@ -1496,13 +1497,13 @@ class _AllAchievementsPage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Achievement Progress',
+                        Text(AppI18n.t('community.achievementProgress'),
                             style: GoogleFonts.nunito(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w800,
                                 color: Colors.white)),
                         const SizedBox(height: 4),
-                        Text('$unlockedCount / $total unlocked',
+                        Text(AppI18n.t('community.unlockedCount').replaceAll('{unlocked}', '$unlockedCount').replaceAll('{total}', '$total'),
                             style: GoogleFonts.nunito(
                                 fontSize: 13,
                                 color: Colors.white.withAlpha(200))),
@@ -1524,8 +1525,7 @@ class _AllAchievementsPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
-            // Unlocked
-            Text('Unlocked ($unlockedCount)',
+            Text(AppI18n.t('community.unlocked') + ' ($unlockedCount)',
                 style: GoogleFonts.nunito(
                     fontSize: 16,
                     fontWeight: FontWeight.w800,
@@ -1540,8 +1540,7 @@ class _AllAchievementsPage extends StatelessWidget {
                   .toList(),
             ),
             const SizedBox(height: 24),
-            // Locked
-            Text('Locked (${total - unlockedCount})',
+            Text(AppI18n.t('community.locked') + ' (${total - unlockedCount})',
                 style: GoogleFonts.nunito(
                     fontSize: 16,
                     fontWeight: FontWeight.w800,
@@ -1589,7 +1588,7 @@ class _AllAchievementsPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 6),
-          Text(a.title,
+          Text(AppI18n.t(a.title),
               style: GoogleFonts.nunito(
                   fontSize: 10,
                   fontWeight: FontWeight.w700,
@@ -1599,7 +1598,7 @@ class _AllAchievementsPage extends StatelessWidget {
               textAlign: TextAlign.center,
               maxLines: 1,
               overflow: TextOverflow.ellipsis),
-          Text(a.subtitle,
+          Text(AppI18n.t(a.subtitle),
               style: GoogleFonts.nunito(
                   fontSize: 9, color: const Color(0xFF9E9E9E)),
               textAlign: TextAlign.center,
@@ -1699,13 +1698,13 @@ class _AllLeaderboardPage extends StatelessWidget {
   void _showAddFriendSnack(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Share your invite code: LUDI-${nickname.toUpperCase().substring(0, 3)}',
+        content: Text(AppI18n.t('community.shareInviteCode').replaceAll('{code}', 'LUDI-${nickname.toUpperCase().substring(0, 3)}'),
             style: GoogleFonts.nunito()),
         backgroundColor: const Color(0xFF4CAF50),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         action: SnackBarAction(
-          label: 'Copy',
+          label: AppI18n.t('community.copy'),
           textColor: Colors.white,
           onPressed: () {},
         ),
@@ -1815,7 +1814,7 @@ class _AllLeaderboardPage extends StatelessWidget {
                         fontWeight: isUser ? FontWeight.w800 : FontWeight.w600,
                         color: const Color(0xFF2D2D2D))),
                 if (entry.streak > 0)
-                  Text('🔥 ${entry.streak} day streak',
+                  Text('🔥 ${entry.streak} ${AppI18n.t('community.dayStreak')}',
                       style: GoogleFonts.nunito(
                           fontSize: 10, color: const Color(0xFF9E9E9E))),
               ],
@@ -1871,37 +1870,37 @@ class _SettingsPageState extends State<_SettingsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Account section
-            _sectionTitle('Account'),
+            _sectionTitle(AppI18n.t('settings.account')),
             _settingsCard([
-              _settingsRow(Icons.person_rounded, 'Edit Profile', onTap: () {
+              _settingsRow(Icons.person_rounded, AppI18n.t('community.editProfile'), onTap: () {
                 Navigator.pop(context);
               }),
               _settingsDivider(),
-              _settingsRow(Icons.lock_rounded, 'Change Password', onTap: () {}),
+              _settingsRow(Icons.lock_rounded, AppI18n.t('settings.changePassword'), onTap: () {}),
               _settingsDivider(),
-              _settingsRow(Icons.email_rounded, 'Email', subtitle: 'user@example.com'),
+              _settingsRow(Icons.email_rounded, AppI18n.t('settings.email'), subtitle: 'user@example.com'),
             ]),
             const SizedBox(height: 20),
 
             // Preferences section
-            _sectionTitle('Preferences'),
+            _sectionTitle(AppI18n.t('settings.preferences')),
             _settingsCard([
-              _settingsToggle(Icons.notifications_rounded, 'Notifications',
+              _settingsToggle(Icons.notifications_rounded, AppI18n.t('settings.notifications'),
                   _notificationsEnabled, (v) {
                 setState(() => _notificationsEnabled = v);
               }),
               _settingsDivider(),
-              _settingsToggle(Icons.volume_up_rounded, 'Sound Effects',
+              _settingsToggle(Icons.volume_up_rounded, AppI18n.t('settings.soundEffects'),
                   _soundEnabled, (v) {
                 setState(() => _soundEnabled = v);
               }),
               _settingsDivider(),
-              _settingsToggle(Icons.vibration_rounded, 'Haptic Feedback',
+              _settingsToggle(Icons.vibration_rounded, AppI18n.t('settings.hapticFeedback'),
                   _hapticEnabled, (v) {
                 setState(() => _hapticEnabled = v);
               }),
               _settingsDivider(),
-              _settingsRow(Icons.language_rounded, 'Language',
+              _settingsRow(Icons.language_rounded, AppI18n.t('settings.language'),
                   subtitle: _language, onTap: () {
                 _showLanguageDialog();
               }),
@@ -1909,15 +1908,15 @@ class _SettingsPageState extends State<_SettingsPage> {
             const SizedBox(height: 20),
 
             // Learning section
-            _sectionTitle('Learning'),
+            _sectionTitle(AppI18n.t('settings.learning')),
             _settingsCard([
-              _settingsRow(Icons.schedule_rounded, 'Daily Reminder',
+              _settingsRow(Icons.schedule_rounded, AppI18n.t('settings.dailyReminder'),
                   subtitle: '9:00 AM', onTap: () {}),
               _settingsDivider(),
-              _settingsRow(Icons.speed_rounded, 'Difficulty',
-                  subtitle: 'Adaptive', onTap: () {}),
+              _settingsRow(Icons.speed_rounded, AppI18n.t('community.difficulty'),
+                  subtitle: AppI18n.t('community.adaptive'), onTap: () {}),
               _settingsDivider(),
-              _settingsRow(Icons.restart_alt_rounded, 'Reset Progress',
+              _settingsRow(Icons.restart_alt_rounded, AppI18n.t('settings.resetProgress'),
                   isDestructive: true, onTap: () {
                 _showResetDialog();
               }),
@@ -1925,23 +1924,23 @@ class _SettingsPageState extends State<_SettingsPage> {
             const SizedBox(height: 20),
 
             // About section
-            _sectionTitle('About'),
+            _sectionTitle(AppI18n.t('settings.about')),
             _settingsCard([
-              _settingsRow(Icons.info_rounded, 'Version',
+              _settingsRow(Icons.info_rounded, AppI18n.t('settings.version'),
                   subtitle: '1.0.0 (Beta)'),
               _settingsDivider(),
-              _settingsRow(Icons.description_rounded, 'Terms of Service',
+              _settingsRow(Icons.description_rounded, AppI18n.t('settings.termsOfService'),
                   onTap: () {}),
               _settingsDivider(),
-              _settingsRow(Icons.privacy_tip_rounded, 'Privacy Policy',
+              _settingsRow(Icons.privacy_tip_rounded, AppI18n.t('settings.privacyPolicy'),
                   onTap: () {}),
               _settingsDivider(),
-              _settingsRow(Icons.help_rounded, 'Help & Support', onTap: () {}),
+              _settingsRow(Icons.help_rounded, AppI18n.t('settings.helpSupport'), onTap: () {}),
             ]),
             const SizedBox(height: 20),
 
             // Subscription
-            _sectionTitle('Subscription'),
+            _sectionTitle(AppI18n.t('settings.subscription')),
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(20),
@@ -1953,14 +1952,14 @@ class _SettingsPageState extends State<_SettingsPage> {
               ),
               child: Column(
                 children: [
-                  Text('Upgrade to Pro',
+                  Text(AppI18n.t('settings.upgradeToPro'),
                       style: GoogleFonts.nunito(
                           fontSize: 18,
                           fontWeight: FontWeight.w800,
                           color: Colors.white)),
                   const SizedBox(height: 8),
                   Text(
-                      'Unlimited lives, matches, and exclusive avatar frames',
+                      AppI18n.t('community.upgradeDesc'),
                       style: GoogleFonts.nunito(
                           fontSize: 13, color: Colors.white.withAlpha(200)),
                       textAlign: TextAlign.center),
@@ -1975,7 +1974,7 @@ class _SettingsPageState extends State<_SettingsPage> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 32, vertical: 12),
                     ),
-                    child: Text('View Plans',
+                    child: Text(AppI18n.t('settings.viewPlans'),
                         style: GoogleFonts.nunito(fontWeight: FontWeight.w700)),
                   ),
                 ],
@@ -1995,7 +1994,7 @@ class _SettingsPageState extends State<_SettingsPage> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14)),
                 ),
-                child: Text('Log Out',
+                child: Text(AppI18n.t('settings.logOut'),
                     style: GoogleFonts.nunito(
                         fontSize: 15, fontWeight: FontWeight.w700)),
               ),
@@ -2113,7 +2112,7 @@ class _SettingsPageState extends State<_SettingsPage> {
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('Language',
+        title: Text(AppI18n.t('settings.language'),
             style: GoogleFonts.nunito(fontWeight: FontWeight.w800)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -2139,15 +2138,15 @@ class _SettingsPageState extends State<_SettingsPage> {
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('Reset Progress',
+        title: Text(AppI18n.t('settings.resetProgress'),
             style: GoogleFonts.nunito(fontWeight: FontWeight.w800)),
         content: Text(
-            'Are you sure you want to reset all your learning progress? This action cannot be undone.',
+            AppI18n.t('settings.resetConfirm'),
             style: GoogleFonts.nunito(color: const Color(0xFF757575))),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: Text('Cancel',
+            child: Text(AppI18n.t('common.cancel'),
                 style: GoogleFonts.nunito(color: const Color(0xFF757575))),
           ),
           ElevatedButton(
@@ -2157,7 +2156,7 @@ class _SettingsPageState extends State<_SettingsPage> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
             ),
-            child: Text('Reset',
+            child: Text(AppI18n.t('common.reset'),
                 style: GoogleFonts.nunito(
                     color: Colors.white, fontWeight: FontWeight.w700)),
           ),

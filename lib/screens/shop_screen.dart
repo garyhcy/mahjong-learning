@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../widgets/mascot_widget.dart';
+import '../services/app_i18n.dart';
 
 class ShopScreen extends StatelessWidget {
   const ShopScreen({super.key});
@@ -10,7 +11,7 @@ class ShopScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFFFF8F0),
       appBar: AppBar(
-        title: Text('商店',
+        title: Text(AppI18n.t('shop.title'),
             style: GoogleFonts.nunito(fontWeight: FontWeight.w700)),
         backgroundColor: const Color(0xFF4CAF50),
         foregroundColor: Colors.white,
@@ -38,33 +39,33 @@ class ShopScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          _buildSectionTitle('熱門商品'),
+          _buildSectionTitle(AppI18n.t('shop.popular')),
           const SizedBox(height: 12),
           _buildShopItem(
             icon: Icons.auto_awesome,
-            title: '經驗加倍券',
-            description: '獲得 2 倍經驗值，持續 30 分鐘',
+            title: AppI18n.t('shop.xpBooster'),
+            description: AppI18n.t('shop.xpBoosterDesc'),
             price: '50',
             color: const Color(0xFFE8B93E),
           ),
           const SizedBox(height: 10),
           _buildShopItem(
             icon: Icons.favorite_rounded,
-            title: '愛心補充包',
-            description: '立即補充 3 顆愛心',
+            title: AppI18n.t('shop.heartPack'),
+            description: AppI18n.t('shop.heartPackDesc'),
             price: '30',
             color: const Color(0xFF4CAF50),
           ),
           const SizedBox(height: 10),
           _buildShopItem(
             icon: Icons.lock_open_rounded,
-            title: '解鎖券',
-            description: '直接解鎖一個單元',
+            title: AppI18n.t('shop.unlockTicket'),
+            description: AppI18n.t('shop.unlockTicketDesc'),
             price: '100',
             color: const Color(0xFF5B9BD5),
           ),
           const SizedBox(height: 24),
-          _buildSectionTitle('限時優惠'),
+          _buildSectionTitle(AppI18n.t('shop.limitedOffer')),
           const SizedBox(height: 12),
           Container(
             padding: const EdgeInsets.all(20),
@@ -91,14 +92,14 @@ class ShopScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('新手禮包',
+                      Text(AppI18n.t('shop.starterPack'),
                           style: GoogleFonts.nunito(
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.w800,
                           )),
                       const SizedBox(height: 4),
-                      Text('含愛心x5 + 經驗加倍x2 + 鑽石x200',
+                      Text(AppI18n.t('shop.starterPackDesc'),
                           style: GoogleFonts.nunito(
                             color: Colors.white70,
                             fontSize: 13,
@@ -113,7 +114,7 @@ class ShopScreen extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Text('NT\$150',
+                  child: Text(AppI18n.t('shop.starterPackPrice'),
                       style: GoogleFonts.nunito(
                         color: const Color(0xFF4CAF50),
                         fontSize: 16,
@@ -124,20 +125,20 @@ class ShopScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-          _buildSectionTitle('造型與主題'),
+          _buildSectionTitle(AppI18n.t('shop.themes')),
           const SizedBox(height: 12),
           _buildShopItem(
             icon: Icons.palette_rounded,
-            title: '熊貓慶祝主題',
-            description: '解鎖慶祝動畫與彩帶特效',
+            title: AppI18n.t('shop.pandaTheme'),
+            description: AppI18n.t('shop.pandaThemeDesc'),
             price: '200',
             color: const Color(0xFFE8B93E),
           ),
           const SizedBox(height: 10),
           _buildShopItem(
             icon: Icons.music_note_rounded,
-            title: '新增背景音樂',
-            description: '解鎖 5 首新的背景音樂',
+            title: AppI18n.t('shop.newBgm'),
+            description: AppI18n.t('shop.newBgmDesc'),
             price: '80',
             color: const Color(0xFF4CAF50),
           ),

@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../models/practice_data.dart';
 import '../../providers/practice_state.dart';
+import '../../services/audio_service.dart';
 
 class SequenceSortingScreen extends StatefulWidget {
   const SequenceSortingScreen({super.key});
@@ -15,6 +16,7 @@ class SequenceSortingScreen extends StatefulWidget {
 class _SequenceSortingScreenState extends State<SequenceSortingScreen> {
   static const int totalQuestions = 10;
   final _random = Random();
+  final AudioService _audio = AudioService();
 
   int _currentQuestion = 0;
   int _correctCount = 0;
@@ -54,6 +56,7 @@ class _SequenceSortingScreenState extends State<SequenceSortingScreen> {
   void _selectTile(String tile) {
     if (_showResult) return;
     if (_userOrder.contains(tile)) return;
+    _audio.playTileClick();
     setState(() {
       _userOrder.add(tile);
       if (_userOrder.length == _correctOrder.length) {
@@ -64,6 +67,7 @@ class _SequenceSortingScreenState extends State<SequenceSortingScreen> {
 
   void _undoLast() {
     if (_userOrder.isEmpty || _showResult) return;
+    _audio.playTileClick();
     setState(() {
       _userOrder.removeLast();
     });
@@ -75,10 +79,12 @@ class _SequenceSortingScreenState extends State<SequenceSortingScreen> {
       _answeredCorrectly = _listEquals(_userOrder, _correctOrder);
       if (_answeredCorrectly) {
         _correctCount++;
+        _audio.playCorrect();
       } else {
         _wrongTiles.addAll(_correctOrder);
         final cat = getTileCategory(_correctOrder.first);
         _wrongCategories.add(cat.name);
+        _audio.playWrong();
       }
     });
 

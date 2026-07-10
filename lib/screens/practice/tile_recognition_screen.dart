@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../models/practice_data.dart';
 import '../../providers/practice_state.dart';
+import '../../services/audio_service.dart';
 
 class TileRecognitionScreen extends StatefulWidget {
   const TileRecognitionScreen({super.key});
@@ -16,6 +17,7 @@ class _TileRecognitionScreenState extends State<TileRecognitionScreen>
     with SingleTickerProviderStateMixin {
   static const int totalQuestions = 12;
   final _random = Random();
+  final AudioService _audio = AudioService();
 
   int _currentQuestion = 0;
   int _correctCount = 0;
@@ -80,6 +82,7 @@ class _TileRecognitionScreenState extends State<TileRecognitionScreen>
 
   void _selectOption(int index) {
     if (_showResult) return;
+    _audio.playTileClick();
     setState(() {
       _selectedIndex = index;
       _showResult = true;
@@ -87,9 +90,11 @@ class _TileRecognitionScreenState extends State<TileRecognitionScreen>
       final correctName = tileNames[_currentTile] ?? _currentTile;
       if (_options[index] == correctName) {
         _correctCount++;
+        _audio.playCorrect();
       } else {
         _wrongTiles.add(_currentTile);
         _wrongCategories.add(getTileCategory(_currentTile).name);
+        _audio.playWrong();
       }
     });
 

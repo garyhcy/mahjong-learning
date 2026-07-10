@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/game_state.dart';
 import '../providers/practice_state.dart';
+import '../services/app_i18n.dart';
 import 'practice/tile_recognition_screen.dart';
 import 'practice/tile_matching_screen.dart';
 import 'learn_screen.dart';
@@ -63,7 +64,7 @@ class _PracticeContent extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Practice',
+                      AppI18n.t('practice.title'),
                       style: GoogleFonts.nunito(
                         fontSize: 28,
                         fontWeight: FontWeight.w800,
@@ -72,7 +73,7 @@ class _PracticeContent extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Sharpen your Mahjong skills',
+                      AppI18n.t('practice.subtitle'),
                       style: GoogleFonts.nunito(
                         fontSize: 14,
                         color: const Color(0xFF9E9E9E),
@@ -125,7 +126,7 @@ class _PracticeContent extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(24, 24, 24, 12),
                 child: Text(
-                  'Practice Modes',
+                  AppI18n.t('practice.modes'),
                   style: GoogleFonts.nunito(
                     fontSize: 18,
                     fontWeight: FontWeight.w800,
@@ -142,8 +143,8 @@ class _PracticeContent extends StatelessWidget {
                 child: Column(
                   children: [
                     _PracticeModeCard(
-                      title: 'Tile Recognition',
-                      subtitle: 'Identify tiles by their appearance',
+                      title: AppI18n.t('practice.tileRecognition'),
+                      subtitle: AppI18n.t('practice.tileRecognitionDesc'),
                       icon: Icons.visibility_rounded,
                       color: const Color(0xFF4CAF50),
                       accuracy: practiceState.getAccuracy('recognition'),
@@ -156,8 +157,8 @@ class _PracticeContent extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     _PracticeModeCard(
-                      title: 'Tile Matching',
-                      subtitle: 'Find tiles from the same suit',
+                      title: AppI18n.t('practice.tileMatching'),
+                      subtitle: AppI18n.t('practice.tileMatchingDesc'),
                       icon: Icons.category_rounded,
                       color: const Color(0xFF5B9BD5),
                       accuracy: practiceState.getAccuracy('matching'),
@@ -170,8 +171,8 @@ class _PracticeContent extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     _PracticeModeCard(
-                      title: 'Sequence Sorting',
-                      subtitle: 'Arrange tiles in correct order',
+                      title: AppI18n.t('practice.sequenceSorting'),
+                      subtitle: AppI18n.t('practice.sequenceSortingDesc'),
                       icon: Icons.sort_rounded,
                       color: const Color(0xFFE8B93E),
                       accuracy: practiceState.getAccuracy('sorting'),
@@ -184,8 +185,8 @@ class _PracticeContent extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     _PracticeModeCard(
-                      title: 'Rules Quiz',
-                      subtitle: 'Test your knowledge of Mahjong rules',
+                      title: AppI18n.t('practice.rulesQuiz'),
+                      subtitle: AppI18n.t('practice.rulesQuizDesc'),
                       icon: Icons.quiz_rounded,
                       color: const Color(0xFF9C27B0),
                       accuracy: practiceState.getAccuracy('rules'),
@@ -198,8 +199,8 @@ class _PracticeContent extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     _PracticeModeCard(
-                      title: 'Speed Challenge',
-                      subtitle: '60s to identify as many tiles as possible',
+                      title: AppI18n.t('practice.speedChallenge'),
+                      subtitle: AppI18n.t('practice.speedChallengeDesc'),
                       icon: Icons.bolt_rounded,
                       color: const Color(0xFFFF6B35),
                       accuracy: null,
@@ -222,7 +223,7 @@ class _PracticeContent extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(24, 24, 24, 12),
                   child: Text(
-                    'Recent Activity',
+                    AppI18n.t('practice.recentActivity'),
                     style: GoogleFonts.nunito(
                       fontSize: 18,
                       fontWeight: FontWeight.w800,
@@ -285,7 +286,7 @@ class _PracticeContent extends StatelessWidget {
             const Icon(Icons.lock_rounded, color: Color(0xFFE8B93E), size: 24),
             const SizedBox(width: 8),
             Text(
-              'Daily Limit Reached',
+              AppI18n.t('practice.dailyLimitReached'),
               style: GoogleFonts.nunito(
                 fontWeight: FontWeight.w800,
                 fontSize: 18,
@@ -294,7 +295,8 @@ class _PracticeContent extends StatelessWidget {
           ],
         ),
         content: Text(
-          'You\'ve used all 3 free practice sessions today. Upgrade to Pro for unlimited practice!',
+          AppI18n.t('practice.dailyLimitDesc').replaceAll(
+              '{n}', PracticeState.freeAttemptsPerDay.toString()),
           style:
               GoogleFonts.nunito(fontSize: 14, color: const Color(0xFF757575)),
         ),
@@ -302,7 +304,7 @@ class _PracticeContent extends StatelessWidget {
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              'Maybe Later',
+              AppI18n.t('practice.maybeLater'),
               style: GoogleFonts.nunito(color: const Color(0xFF9E9E9E)),
             ),
           ),
@@ -315,7 +317,7 @@ class _PracticeContent extends StatelessWidget {
               ),
             ),
             child: Text(
-              'Upgrade to Pro',
+              AppI18n.t('settings.upgradeToPro'),
               style: GoogleFonts.nunito(
                 fontWeight: FontWeight.w700,
                 color: Colors.white,
@@ -372,7 +374,9 @@ class _DailyAttemptsCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  isPremium ? 'Unlimited Practice' : 'Daily Practice',
+                  isPremium
+                      ? AppI18n.t('practice.unlimitedPractice')
+                      : AppI18n.t('practice.dailyPractice'),
                   style: GoogleFonts.nunito(
                     fontSize: 16,
                     fontWeight: FontWeight.w800,
@@ -381,8 +385,11 @@ class _DailyAttemptsCard extends StatelessWidget {
                 ),
                 Text(
                   isPremium
-                      ? 'Pro members enjoy unlimited sessions'
-                      : '$attemptsRemaining of ${PracticeState.freeAttemptsPerDay} sessions remaining today',
+                      ? AppI18n.t('practice.proUnlimitedDesc')
+                      : AppI18n.t('practice.sessionsRemaining')
+                          .replaceAll('{remaining}', attemptsRemaining.toString())
+                          .replaceAll(
+                              '{total}', PracticeState.freeAttemptsPerDay.toString()),
                   style: GoogleFonts.nunito(
                     fontSize: 13,
                     color: Colors.white.withAlpha(200),
@@ -437,7 +444,7 @@ class _WeaknessCard extends StatelessWidget {
                   color: Color(0xFFE65100), size: 20),
               const SizedBox(width: 8),
               Text(
-                'Recommended for You',
+                AppI18n.t('practice.recommended'),
                 style: GoogleFonts.nunito(
                   fontSize: 14,
                   fontWeight: FontWeight.w800,
@@ -451,7 +458,7 @@ class _WeaknessCard extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  'Weak tiles: ',
+                  AppI18n.t('practice.weakTiles'),
                   style: GoogleFonts.nunito(
                     fontSize: 13,
                     color: const Color(0xFF795548),
@@ -479,7 +486,8 @@ class _WeaknessCard extends StatelessWidget {
           if (report.weakestCategories.isNotEmpty) ...[
             const SizedBox(height: 4),
             Text(
-              'Focus on: ${report.weakestCategories.take(2).join(", ")}',
+              AppI18n.t('practice.focusOn').replaceAll(
+                  '{categories}', report.weakestCategories.take(2).join(', ')),
               style: GoogleFonts.nunito(
                 fontSize: 13,
                 color: const Color(0xFF795548),
@@ -629,15 +637,15 @@ class _RecentActivityList extends StatelessWidget {
   String _drillLabel(String type) {
     switch (type) {
       case 'recognition':
-        return 'Tile Recognition';
+        return AppI18n.t('practice.tileRecognition');
       case 'matching':
-        return 'Tile Matching';
+        return AppI18n.t('practice.tileMatching');
       case 'sorting':
-        return 'Sequence Sorting';
+        return AppI18n.t('practice.sequenceSorting');
       case 'rules':
-        return 'Rules Quiz';
+        return AppI18n.t('practice.rulesQuiz');
       case 'speed':
-        return 'Speed Challenge';
+        return AppI18n.t('practice.speedChallenge');
       default:
         return type;
     }
@@ -679,10 +687,15 @@ class _RecentActivityList extends StatelessWidget {
 
   String _timeAgo(DateTime dt) {
     final diff = DateTime.now().difference(dt);
-    if (diff.inMinutes < 1) return 'Just now';
-    if (diff.inMinutes < 60) return '${diff.inMinutes}m ago';
-    if (diff.inHours < 24) return '${diff.inHours}h ago';
-    return '${diff.inDays}d ago';
+    if (diff.inMinutes < 1) return AppI18n.t('practice.justNow');
+    if (diff.inMinutes < 60)
+      return AppI18n.t('practice.minutesAgo')
+          .replaceAll('{n}', diff.inMinutes.toString());
+    if (diff.inHours < 24)
+      return AppI18n.t('practice.hoursAgo')
+          .replaceAll('{n}', diff.inHours.toString());
+    return AppI18n.t('practice.daysAgo')
+        .replaceAll('{n}', diff.inDays.toString());
   }
 
   @override
@@ -743,7 +756,8 @@ class _RecentActivityList extends StatelessWidget {
                     ),
                     Text(
                       r.drillType == 'speed'
-                          ? '${r.correctAnswers} tiles'
+                          ? AppI18n.t('practice.tilesCount')
+                              .replaceAll('{count}', r.correctAnswers.toString())
                           : '$percentage%',
                       style: GoogleFonts.nunito(
                         fontSize: 14,
@@ -800,14 +814,15 @@ class _WrongAnswerPracticeCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Review Your Mistakes',
+                  Text(AppI18n.t('practice.reviewMistakes'),
                       style: GoogleFonts.nunito(
                           fontSize: 15,
                           fontWeight: FontWeight.w800,
                           color: const Color(0xFFC62828))),
                   const SizedBox(height: 2),
                   Text(
-                      '$count wrong answer${count > 1 ? "s" : ""} to review — master them now',
+                      AppI18n.t('practice.reviewMistakesDesc')
+                          .replaceAll('{count}', count.toString()),
                       style: GoogleFonts.nunito(
                           fontSize: 12,
                           color: const Color(0xFFE57373))),

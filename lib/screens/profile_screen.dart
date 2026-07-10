@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/game_state.dart';
+import '../services/app_i18n.dart';
 import '../services/firebase_service.dart';
 import 'learn_screen.dart';
 
@@ -18,7 +19,7 @@ class ProfileScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile',
+        title: Text(AppI18n.t('profile.title'),
             style: GoogleFonts.nunito(
                 fontWeight: FontWeight.w800,
                 color: const Color(0xFF4CAF50))),
@@ -140,18 +141,18 @@ class ProfileScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text('Nickname',
+        title: Text(AppI18n.t('profile.nickname'),
             style: GoogleFonts.nunito(fontWeight: FontWeight.w800)),
         content: TextField(
           controller: controller,
           maxLength: 16,
-          decoration: const InputDecoration(hintText: 'Enter nickname'),
+          decoration: InputDecoration(hintText: AppI18n.t('settings.enterNickname')),
           autofocus: true,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel'),
+            child: Text(AppI18n.t('room.cancel')),
           ),
           TextButton(
             onPressed: () {
@@ -161,7 +162,7 @@ class ProfileScreen extends StatelessWidget {
               }
               Navigator.pop(ctx);
             },
-            child: const Text('Save'),
+            child: Text(AppI18n.t('profile.save')),
           ),
         ],
       ),
@@ -172,7 +173,7 @@ class ProfileScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text('Choose Avatar',
+        title: Text(AppI18n.t('profile.chooseAvatar'),
             style: GoogleFonts.nunito(fontWeight: FontWeight.w800)),
         content: SizedBox(
           width: 240,
@@ -211,7 +212,7 @@ class ProfileScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Done'),
+            child: Text(AppI18n.t('room.done')),
           ),
         ],
       ),
@@ -272,7 +273,7 @@ class ProfileScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Wrong Answer Review',
+                    AppI18n.t('profile.wrongAnswerReview'),
                     style: GoogleFonts.nunito(
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
@@ -284,8 +285,8 @@ class ProfileScreen extends StatelessWidget {
                   const SizedBox(height: 2),
                   Text(
                     count > 0
-                        ? '$count wrong answer${count > 1 ? 's' : ''} to review'
-                        : 'No wrong answers yet',
+                        ? AppI18n.t('profile.wrongAnswersToReview').replaceAll('{count}', '$count')
+                        : AppI18n.t('profile.noWrongAnswers'),
                     style: GoogleFonts.nunito(
                       fontSize: 12,
                       color: count > 0
@@ -309,12 +310,11 @@ class ProfileScreen extends StatelessWidget {
   Widget _buildStatCards(GameState game) {
     return Row(
       children: [
-        _statCard('🔥 Streak', '${game.streak} days', const Color(0xFFE8B93E)),
+        _statCard('🔥 ${AppI18n.t('profile.streak')}', '${game.streak} ${AppI18n.t('profile.days')}', const Color(0xFFE8B93E)),
         const SizedBox(width: 10),
-        _statCard('⭐ XP', '${game.xp}', const Color(0xFF4CAF50)),
+        _statCard('⭐ ${AppI18n.t('profile.xp')}', '${game.xp}', const Color(0xFF4CAF50)),
         const SizedBox(width: 10),
-        _statCard(
-            '📚 Lessons', '${game.completedLessons}', const Color(0xFF2E7D32)),
+        _statCard('📚 ${AppI18n.t('profile.lessons')}', '${game.completedLessons}', const Color(0xFF2E7D32)),
       ],
     );
   }
@@ -361,7 +361,7 @@ class ProfileScreen extends StatelessWidget {
             const Icon(Icons.emoji_events_rounded,
                 color: Color(0xFFE8B93E), size: 20),
             const SizedBox(width: 6),
-            Text('Achievements',
+            Text(AppI18n.t('profile.achievements'),
                 style: GoogleFonts.nunito(
                     fontSize: 17, fontWeight: FontWeight.w800)),
             const SizedBox(width: 8),
@@ -455,7 +455,7 @@ class ProfileScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Stage Progress',
+        Text(AppI18n.t('profile.stageProgress'),
             style: GoogleFonts.nunito(
                 fontSize: 17, fontWeight: FontWeight.w800)),
         const SizedBox(height: 10),
@@ -533,14 +533,14 @@ class ProfileScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Premium Mode',
+                Text(AppI18n.t('profile.premiumMode'),
                     style: GoogleFonts.nunito(
                         fontSize: 15, fontWeight: FontWeight.w700)),
                 const SizedBox(height: 2),
                 Text(
                     game.isPremium
-                        ? 'Unlimited hearts enabled'
-                        : 'Unlock unlimited hearts & ad-free',
+                        ? AppI18n.t('profile.unlimitedHeartsEnabled')
+                        : AppI18n.t('profile.unlockUnlimitedHearts'),
                     style: GoogleFonts.nunito(
                         fontSize: 11, color: const Color(0xFF757575))),
               ],
@@ -568,7 +568,7 @@ class ProfileScreen extends StatelessWidget {
           }
         },
         icon: const Icon(Icons.logout_rounded, size: 18),
-        label: Text('Sign Out',
+        label: Text(AppI18n.t('settings.signOut'),
             style: GoogleFonts.nunito(fontWeight: FontWeight.w600)),
         style: OutlinedButton.styleFrom(
           foregroundColor: const Color(0xFF757575),
@@ -585,7 +585,7 @@ class ProfileScreen extends StatelessWidget {
   // ═══ About ═══
   Widget _buildAbout() {
     return Text(
-      'Ludi v2.0.0 · Your guide to mastering board games',
+      AppI18n.t('profile.about').replaceAll('{version}', 'v2.0.0'),
       textAlign: TextAlign.center,
       style: GoogleFonts.nunito(
           fontSize: 11, color: const Color(0xFFBDBDBD)),

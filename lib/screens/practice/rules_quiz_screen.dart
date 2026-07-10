@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../models/practice_data.dart';
 import '../../providers/practice_state.dart';
+import '../../services/audio_service.dart';
 
 class RulesQuizScreen extends StatefulWidget {
   const RulesQuizScreen({super.key});
@@ -15,6 +16,7 @@ class RulesQuizScreen extends StatefulWidget {
 class _RulesQuizScreenState extends State<RulesQuizScreen> {
   static const int totalQuestions = 10;
   final _random = Random();
+  final AudioService _audio = AudioService();
 
   late List<RulesQuestion> _questions;
   int _currentQuestion = 0;
@@ -36,14 +38,17 @@ class _RulesQuizScreenState extends State<RulesQuizScreen> {
 
   void _selectOption(int index) {
     if (_showResult) return;
+    _audio.playTileClick();
     setState(() {
       _selectedIndex = index;
       _showResult = true;
 
       if (index == _questions[_currentQuestion].correctIndex) {
         _correctCount++;
+        _audio.playCorrect();
       } else {
         _wrongCategories.add('rules');
+        _audio.playWrong();
       }
     });
 

@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../models/practice_data.dart';
 import '../../providers/practice_state.dart';
+import '../../services/audio_service.dart';
 
 class SpeedChallengeScreen extends StatefulWidget {
   const SpeedChallengeScreen({super.key});
@@ -16,6 +17,7 @@ class SpeedChallengeScreen extends StatefulWidget {
 class _SpeedChallengeScreenState extends State<SpeedChallengeScreen> {
   static const int totalSeconds = 60;
   final _random = Random();
+  final AudioService _audio = AudioService();
 
   int _timeLeft = totalSeconds;
   int _score = 0;
@@ -75,6 +77,7 @@ class _SpeedChallengeScreenState extends State<SpeedChallengeScreen> {
 
   void _selectOption(int index) {
     if (_showFeedback || _isFinished) return;
+    _audio.playTileClick();
 
     final correctName = tileNames[_currentTile] ?? _currentTile;
     final isCorrect = _options[index] == correctName;
@@ -85,8 +88,10 @@ class _SpeedChallengeScreenState extends State<SpeedChallengeScreen> {
       _lastCorrect = isCorrect;
       if (isCorrect) {
         _score++;
+        _audio.playCorrect();
       } else {
         _wrongTiles.add(_currentTile);
+        _audio.playWrong();
       }
     });
 

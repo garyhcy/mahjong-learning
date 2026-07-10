@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../models/match_data.dart';
 import '../providers/game_state.dart';
 import '../providers/match_state.dart';
+import '../services/app_i18n.dart';
 
 /// Match chat room (simulated). Demo scope:
 /// - 12-hour scheduling window (live countdown).
@@ -61,15 +62,14 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
     _expiresAt = DateTime.now().add(_window);
     _messages.add(MatchMessage(
       senderId: 'system',
-      senderName: 'System',
-      text:
-          'You matched with ${widget.opponents[0].name}! You have 12 hours to agree on a day & time. Propose a slot below.',
+      senderName: AppI18n.t('room.system'),
+      text: AppI18n.t('room.matchedWith').replaceAll('{name}', widget.opponents[0].name),
       isSystem: true,
     ));
     _messages.add(MatchMessage(
       senderId: widget.opponents[0].id,
       senderName: widget.opponents[0].name,
-      text: 'Hi! Looking forward to a game. When works for you?',
+      text: AppI18n.t('room.botGreeting'),
     ));
     _ticker = Timer.periodic(const Duration(seconds: 1), (_) {
       if (!mounted) return;
@@ -125,20 +125,26 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
     final text = _textController.text.trim();
     if (text.isEmpty) return;
     setState(() {
-      _messages.add(MatchMessage(senderId: _meId, senderName: 'You', text: text));
+      _messages.add(MatchMessage(senderId: _meId, senderName: AppI18n.t('room.you'), text: text));
     });
     _textController.clear();
     _scrollToBottom();
     // Bot reply
     Future.delayed(const Duration(milliseconds: 1200), () {
       if (!mounted) return;
-      final replies = ['Sounds good!', 'Got it 👍', 'Sure, let me check my schedule.', 'OK!', 'I am fine with that.'];
+      final replies = [
+        AppI18n.t('room.botReply1'),
+        AppI18n.t('room.botReply2'),
+        AppI18n.t('room.botReply3'),
+        AppI18n.t('room.botReply4'),
+        AppI18n.t('room.botReply5'),
+      ];
       final reply = replies[DateTime.now().millisecond % replies.length];
       final bot = widget.opponents.isNotEmpty ? widget.opponents.first : null;
       setState(() {
         _messages.add(MatchMessage(
           senderId: bot?.id ?? 'bot1',
-          senderName: bot?.name ?? 'Opponent',
+          senderName: bot?.name ?? AppI18n.t('room.opponent'),
           text: reply,
         ));
       });
@@ -189,8 +195,8 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
       _proposals.add(proposal);
       _messages.add(MatchMessage(
         senderId: _meId,
-        senderName: 'You',
-        text: 'Proposed: ${_fmtSlot(proposal.slotDateTime)}',
+        senderName: AppI18n.t('room.you'),
+        text: AppI18n.t('room.proposedPrefix').replaceAll('{slot}', _fmtSlot(proposal.slotDateTime)),
       ));
     });
     _startCooldown();
@@ -206,7 +212,7 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
           _messages.add(MatchMessage(
             senderId: widget.opponents[0].id,
             senderName: widget.opponents[0].name,
-            text: 'That works for me! ✅ (${_fmtSlot(proposal.slotDateTime)})',
+            text: AppI18n.t('room.acceptReply').replaceAll('{slot}', _fmtSlot(proposal.slotDateTime)),
           ));
           _agreed = true;
           _agreedSlot = proposal.slotDateTime;
@@ -216,7 +222,7 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
           _messages.add(MatchMessage(
             senderId: widget.opponents[0].id,
             senderName: widget.opponents[0].name,
-            text: 'Hmm, that time is tough for me. Another slot?',
+            text: AppI18n.t('room.rejectReply'),
           ));
         });
       }
@@ -256,9 +262,10 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
       _confirmed = true;
       _messages.add(MatchMessage(
         senderId: 'system',
-        senderName: 'System',
-        text:
-            'Reservation confirmed at ${venue.name} for ${_fmtSlot(slot)}. See you there! 🀄',
+        senderName: AppI18n.t('room.system'),
+        text: AppI18n.t('room.reservationAtVenue')
+            .replaceAll('{venue}', venue.name)
+            .replaceAll('{slot}', _fmtSlot(slot)),
         isSystem: true,
       ));
     });
@@ -274,12 +281,12 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text('Scheduling unsuccessful',
+        title: Text(AppI18n.t('room.schedulingUnsuccessful'),
             style: GoogleFonts.nunito(fontWeight: FontWeight.w800)),
         content: Text(
           used
-              ? 'That was your 3rd unsuccessful try this week. Your free weekly match is now used up — it resets next week, or go Pro for unlimited matches.'
-              : 'No worries. You have ${match.failedRemaining} scheduling tries left this week.',
+              ? AppI18n.t('room.failUsedUp')
+              : AppI18n.t('room.failRemainingTries').replaceAll('{n}', match.failedRemaining.toString()),
           style: GoogleFonts.nunito(),
         ),
         actions: [
@@ -288,7 +295,7 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
               Navigator.of(context).pop();
               Navigator.of(context).pop();
             },
-            child: const Text('OK'),
+            child: Text(AppI18n.t('room.ok')),
           ),
         ],
       ),
@@ -311,8 +318,8 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
                     fontWeight: FontWeight.w800, fontSize: 16)),
             Text(
                 _expired
-                    ? 'Window expired'
-                    : 'Closes in ${_fmt(_remaining)}',
+                    ? AppI18n.t('room.windowExpired')
+                    : '${AppI18n.t('room.closesIn')} ${_fmt(_remaining)}',
                 style: GoogleFonts.nunito(
                     fontSize: 11,
                     color: _expired
@@ -342,7 +349,7 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Proposed slots — tap to vote',
+          Text(AppI18n.t('room.proposedSlots'),
               style: GoogleFonts.nunito(
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
@@ -447,13 +454,13 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
     final disabled = _onCooldown || _expired || _agreed;
     String label;
     if (_expired) {
-      label = 'Window expired';
+      label = AppI18n.t('room.windowExpired');
     } else if (_agreed) {
-      label = 'Slot agreed — pick a venue below';
+      label = AppI18n.t('room.slotAgreed');
     } else if (_onCooldown) {
-      label = 'Propose again in ${_fmt(_cooldownLeft)}';
+      label = '${AppI18n.t('room.proposeAgain')} ${_fmt(_cooldownLeft)}';
     } else {
-      label = 'Propose a Day & Time';
+      label = AppI18n.t('room.proposeSlot');
     }
     return Container(
       padding: const EdgeInsets.all(12),
@@ -472,7 +479,7 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
                 child: TextField(
                   controller: _textController,
                   decoration: InputDecoration(
-                    hintText: 'Type a message...',
+                    hintText: AppI18n.t('room.typeMessage'),
                     hintStyle: GoogleFonts.nunito(fontSize: 14, color: const Color(0xFF9E9E9E)),
                     filled: true,
                     fillColor: const Color(0xFFF5F9F3),
@@ -520,7 +527,7 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
           if (!_agreed && !_expired)
             TextButton(
               onPressed: _reportFailed,
-              child: Text("Can't agree? Report unsuccessful",
+              child: Text(AppI18n.t('room.cantAgree'),
                   style: GoogleFonts.nunito(fontSize: 12, fontWeight: FontWeight.w700, color: const Color(0xFF9AA89C))),
             ),
         ],
@@ -539,8 +546,8 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(_agreedSlot != null
-              ? 'Agreed on ${_fmtSlot(_agreedSlot)}! Pick a venue'
-              : 'Pick a venue',
+              ? AppI18n.t('room.agreedOnSlot').replaceAll('{slot}', _fmtSlot(_agreedSlot))
+              : AppI18n.t('room.pickVenue'),
               style: GoogleFonts.nunito(
                   fontSize: 14,
                   fontWeight: FontWeight.w800,
@@ -566,13 +573,13 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Choose your own venue',
+                            Text(AppI18n.t('room.customVenue'),
                                 style: GoogleFonts.nunito(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w800,
                                     color: const Color(0xFFE65100))),
                             const SizedBox(height: 2),
-                            Text('Pick a place not on our list',
+                            Text(AppI18n.t('room.customVenueSubtitle'),
                                 style: GoogleFonts.nunito(
                                     fontSize: 11,
                                     color: const Color(0xFFBF360C))),
@@ -588,7 +595,7 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                           elevation: 0,
                         ),
-                        child: Text('Select',
+                        child: Text(AppI18n.t('room.select'),
                             style: GoogleFonts.nunito(
                                 fontSize: 12, fontWeight: FontWeight.w700)),
                       ),
@@ -613,7 +620,7 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
           children: [
             const Icon(Icons.warning_amber_rounded, color: Color(0xFFE65100), size: 28),
             const SizedBox(width: 8),
-            Text('Heads up!',
+            Text(AppI18n.t('room.headsUp'),
                 style: GoogleFonts.nunito(fontWeight: FontWeight.w800)),
           ],
         ),
@@ -622,14 +629,14 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Ludi cannot guarantee pricing transparency or on-site staff support for venues outside our partner network. You proceed at your own risk.\n\nEnter the venue name to continue:',
+              AppI18n.t('room.customVenueFullWarning'),
               style: GoogleFonts.nunito(fontSize: 14, color: const Color(0xFF424242)),
             ),
             const SizedBox(height: 12),
             TextField(
               controller: venueController,
               decoration: InputDecoration(
-                hintText: 'e.g. Mahjong World Mong Kok',
+                hintText: AppI18n.t('room.venueNameHint'),
                 hintStyle: GoogleFonts.nunito(fontSize: 13, color: const Color(0xFF9E9E9E)),
                 filled: true,
                 fillColor: const Color(0xFFF5F5F5),
@@ -646,21 +653,21 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: Text('Go back',
+            child: Text(AppI18n.t('room.goBack'),
                 style: GoogleFonts.nunito(color: const Color(0xFF757575))),
           ),
           ElevatedButton(
             onPressed: () {
               final name = venueController.text.trim();
               Navigator.pop(ctx);
-              _confirmReservationCustom(name.isNotEmpty ? name : 'Custom venue');
+              _confirmReservationCustom(name.isNotEmpty ? name : AppI18n.t('room.customVenueDefault'));
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFFF9800),
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             ),
-            child: Text('I understand, proceed',
+            child: Text(AppI18n.t('room.iUnderstandProceed'),
                 style: GoogleFonts.nunito(fontWeight: FontWeight.w700)),
           ),
         ],
@@ -683,8 +690,8 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
       _confirmed = true;
       _messages.add(MatchMessage(
         senderId: 'system',
-        senderName: 'System',
-        text: 'Reservation confirmed at $venueName for ${_fmtSlot(slot)}. See you there!',
+        senderName: AppI18n.t('room.system'),
+        text: AppI18n.t('room.reservationAtVenue').replaceAll('{venue}', venueName).replaceAll('{slot}', _fmtSlot(slot)),
         isSystem: true,
       ));
     });
@@ -717,8 +724,8 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
                 const SizedBox(height: 2),
                 Row(
                   children: [
-                    if (v.hasStaff) _tag('On-site staff'),
-                    if (v.transparentPricing) _tag('Transparent pricing'),
+                    if (v.hasStaff) _tag(AppI18n.t('room.onsiteStaff')),
+                    if (v.transparentPricing) _tag(AppI18n.t('room.transparentPricing')),
                   ],
                 ),
               ],
@@ -735,7 +742,7 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
                   borderRadius: BorderRadius.circular(10)),
               elevation: 0,
             ),
-            child: Text('Book',
+            child: Text(AppI18n.t('room.book'),
                 style: GoogleFonts.nunito(
                     fontSize: 12, fontWeight: FontWeight.w700)),
           ),
@@ -770,13 +777,13 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
           const Icon(Icons.check_circle_rounded,
               color: _green, size: 32),
           const SizedBox(height: 8),
-          Text('Reservation confirmed!',
+          Text(AppI18n.t('room.reservationConfirmed'),
               style: GoogleFonts.nunito(
                   fontSize: 16,
                   fontWeight: FontWeight.w800,
                   color: const Color(0xFF2E7D32))),
           const SizedBox(height: 4),
-          Text('${_fmtSlot(_agreedSlot)} · See you at the table',
+          Text('${_fmtSlot(_agreedSlot)} · ${AppI18n.t('room.seeYouAtTable')}',
               style: GoogleFonts.nunito(
                   fontSize: 12, color: const Color(0xFF6B7A6E))),
           const SizedBox(height: 12),
@@ -790,7 +797,7 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12)),
               ),
-              child: Text('Done',
+              child: Text(AppI18n.t('room.done'),
                   style: GoogleFonts.nunito(
                       fontWeight: FontWeight.w800, color: _green)),
             ),
@@ -836,7 +843,7 @@ class _ProposeSheetState extends State<_ProposeSheet> {
   @override
   Widget build(BuildContext context) {
     final dateStr = _selectedDate == null
-        ? 'Tap to pick a date'
+        ? AppI18n.t('room.tapToPickDate')
         : '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}';
     return Padding(
       padding: EdgeInsets.only(
@@ -847,9 +854,9 @@ class _ProposeSheetState extends State<_ProposeSheet> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Propose a slot', style: GoogleFonts.nunito(fontSize: 18, fontWeight: FontWeight.w800)),
+          Text(AppI18n.t('room.proposeSlotTitle'), style: GoogleFonts.nunito(fontSize: 18, fontWeight: FontWeight.w800)),
           const SizedBox(height: 16),
-          Text('Date', style: GoogleFonts.nunito(fontSize: 13, fontWeight: FontWeight.w700)),
+          Text(AppI18n.t('room.dateLabel'), style: GoogleFonts.nunito(fontSize: 13, fontWeight: FontWeight.w700)),
           const SizedBox(height: 8),
           GestureDetector(
             onTap: _pickDate,
@@ -869,7 +876,7 @@ class _ProposeSheetState extends State<_ProposeSheet> {
             ),
           ),
           const SizedBox(height: 16),
-          Text('Time (30-min precision)', style: GoogleFonts.nunito(fontSize: 13, fontWeight: FontWeight.w700)),
+          Text(AppI18n.t('room.timeLabel'), style: GoogleFonts.nunito(fontSize: 13, fontWeight: FontWeight.w700)),
           const SizedBox(height: 8),
           Wrap(
             spacing: 6, runSpacing: 6,
@@ -902,7 +909,7 @@ class _ProposeSheetState extends State<_ProposeSheet> {
                 foregroundColor: Colors.white, padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)), elevation: 0,
               ),
-              child: Text('Send Proposal', style: GoogleFonts.nunito(fontSize: 15, fontWeight: FontWeight.w800)),
+              child: Text(AppI18n.t('room.sendProposal'), style: GoogleFonts.nunito(fontSize: 15, fontWeight: FontWeight.w800)),
             ),
           ),
         ],
