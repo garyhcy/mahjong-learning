@@ -11,6 +11,7 @@ import 'providers/match_state.dart';
 import 'models/match_data.dart';
 import 'services/purchases_service.dart';
 import 'services/app_i18n.dart';
+import 'services/audio_service.dart';
 import 'widgets/mascot_widget.dart';
 import 'screens/auth_screen.dart';
 import 'screens/home_screen.dart';
@@ -29,6 +30,8 @@ Future<void> main() async {
     // Firebase optional in local/dev until config is added.
   }
   await PurchasesService.init();
+  // Load audio preferences
+  await AudioService().init();
   // Load display language preference
   final sp = await SharedPreferences.getInstance();
   final langKey = sp.getString('app_display_lang') ?? 'en';
@@ -340,6 +343,15 @@ class _MainShellState extends State<MainShell> {
     MoreScreen(),
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    // Start BGM when entering the main app (if enabled)
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AudioService().startBgm();
+    });
+  }
+
   void switchToTab(int index) {
     if (mounted && index != _currentIndex) {
       setState(() => _currentIndex = index);
@@ -402,7 +414,10 @@ class _MainShellState extends State<MainShell> {
   Widget _navItem(int index, IconData icon, String label) {
     final active = _currentIndex == index;
     return GestureDetector(
-      onTap: () => setState(() => _currentIndex = index),
+      onTap: () {
+        AudioService().playClick();
+        setState(() => _currentIndex = index);
+      },
       behavior: HitTestBehavior.opaque,
       child: TweenAnimationBuilder<double>(
         tween: Tween(begin: 0.0, end: active ? -2.0 : 0.0),

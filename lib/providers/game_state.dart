@@ -164,6 +164,7 @@ class GameState extends ChangeNotifier {
   String? _currentLessonId;
   final Map<String, bool> _lessonCompleted = {};
   List<QuizQuestion> _currentQuestions = [];
+  DateTime? _lessonStartAt;
 
   String? _targetStageId;
   bool _cloudEnabled = false;
@@ -243,6 +244,12 @@ class GameState extends ChangeNotifier {
     } catch (_) {
       return null;
     }
+  }
+
+  /// Elapsed time of current lesson (seconds), for completion screen.
+  int get lessonElapsedSeconds {
+    if (_lessonStartAt == null) return 0;
+    return DateTime.now().difference(_lessonStartAt!).inSeconds;
   }
 
   String get userLevel {
@@ -498,6 +505,7 @@ class GameState extends ChangeNotifier {
     _reviewResults.clear();
     _reviewCorrectCount = 0;
     _hearts = maxHearts;
+    _lessonStartAt = DateTime.now();
     _persist();
     notifyListeners();
   }

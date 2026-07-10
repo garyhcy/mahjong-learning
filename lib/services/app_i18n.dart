@@ -169,6 +169,18 @@ const Map<String, Map<String, String>> _strings = {
   'practice.weaknessReview': {'en': 'Review: Wrong Answers', 'zh': '複習：錯題'},
   'practice.reviewComplete': {'en': 'Review Complete!', 'zh': '複習完成！'},
 
+  // ── Lesson Complete ──
+  'lessonComplete.title': {'en': 'Great! You completed this unit!', 'zh': '太棒了！你完成了這個單元！'},
+  'lessonComplete.keepTrying': {'en': 'Keep practicing!', 'zh': '繼續努力！'},
+  'lessonComplete.xp': {'en': 'XP Earned', 'zh': '獲得經驗'},
+  'lessonComplete.stars': {'en': 'Stars', 'zh': '星級'},
+  'lessonComplete.time': {'en': 'Time', 'zh': '用時'},
+  'lessonComplete.continueLearning': {'en': 'Continue Learning', 'zh': '繼續學習'},
+  'lessonComplete.continue': {'en': 'Continue Learning', 'zh': '繼續學習'},
+  'lessonComplete.backToMap': {'en': 'Back to Lesson Map', 'zh': '返回單元地圖'},
+  'lessonComplete.retry': {'en': 'Retry Quiz', 'zh': '重試測驗'},
+  'lessonComplete.reviewWrong': {'en': 'Review Wrong Answers', 'zh': '複習錯題'},
+
   // ── Paywall ──
   'paywall.title': {'en': 'Ludi Pro', 'zh': 'Ludi Pro'},
   'paywall.unlockEverything': {'en': 'Unlock Everything', 'zh': '解鎖全部功能'},

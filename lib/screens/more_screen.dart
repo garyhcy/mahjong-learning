@@ -43,8 +43,26 @@ class _MoreScreenState extends State<MoreScreen> {
   bool _notificationsEnabled = true;
   bool _soundEnabled = true;
   bool _hapticEnabled = true;
-  bool _bgmEnabled = false;
+  bool _bgmEnabled = true;
   MascotExpression _selectedExpression = MascotExpression.happy;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAudioPrefs();
+  }
+
+  Future<void> _loadAudioPrefs() async {
+    final audio = AudioService();
+    await audio.init();
+    if (mounted) {
+      setState(() {
+        _soundEnabled = audio.sfxEnabled;
+        _hapticEnabled = audio.hapticEnabled;
+        _bgmEnabled = audio.bgmEnabled;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -252,11 +270,7 @@ class _MoreScreenState extends State<MoreScreen> {
                     (v) {
                   setState(() {
                     _bgmEnabled = v;
-                    if (v) {
-                      AudioService().startBgm();
-                    } else {
-                      AudioService().stopBgm();
-                    }
+                    AudioService().setBgmEnabled(v);
                   });
                 }),
                 _settingsDivider(),

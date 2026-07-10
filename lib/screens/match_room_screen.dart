@@ -580,7 +580,7 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: _showOtherVenueWarning,
+                        onPressed: () => _showOtherVenueWarning(),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFFF9800),
                           foregroundColor: Colors.white,
@@ -604,6 +604,7 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
   }
 
   void _showOtherVenueWarning() {
+    final venueController = TextEditingController();
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -616,9 +617,31 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
                 style: GoogleFonts.nunito(fontWeight: FontWeight.w800)),
           ],
         ),
-        content: Text(
-          'Ludi cannot guarantee pricing transparency or on-site staff support for venues outside our partner network. You proceed at your own risk.\n\nAre you sure you want to continue?',
-          style: GoogleFonts.nunito(fontSize: 14, color: const Color(0xFF424242)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Ludi cannot guarantee pricing transparency or on-site staff support for venues outside our partner network. You proceed at your own risk.\n\nEnter the venue name to continue:',
+              style: GoogleFonts.nunito(fontSize: 14, color: const Color(0xFF424242)),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: venueController,
+              decoration: InputDecoration(
+                hintText: 'e.g. Mahjong World Mong Kok',
+                hintStyle: GoogleFonts.nunito(fontSize: 13, color: const Color(0xFF9E9E9E)),
+                filled: true,
+                fillColor: const Color(0xFFF5F5F5),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+              style: GoogleFonts.nunito(fontSize: 14),
+            ),
+          ],
         ),
         actions: [
           TextButton(
@@ -628,8 +651,9 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
           ),
           ElevatedButton(
             onPressed: () {
+              final name = venueController.text.trim();
               Navigator.pop(ctx);
-              _confirmReservationCustom();
+              _confirmReservationCustom(name.isNotEmpty ? name : 'Custom venue');
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFFF9800),
@@ -644,7 +668,7 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
     );
   }
 
-  Future<void> _confirmReservationCustom() async {
+  Future<void> _confirmReservationCustom(String venueName) async {
     final match = context.read<MatchState>();
     await match.recordConfirmedReservation();
     final slot = _agreedSlot ?? DateTime.now();
@@ -652,7 +676,7 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
     await match.updateRoom(widget.roomId ?? '', {
       'confirmed': true,
       'confirmedDay': slot.toIso8601String(),
-      'venueName': 'Custom venue',
+      'venueName': venueName,
       'deleteAt': newDelete.toIso8601String(),
     });
     setState(() {
@@ -660,7 +684,7 @@ class _MatchRoomScreenState extends State<MatchRoomScreen> {
       _messages.add(MatchMessage(
         senderId: 'system',
         senderName: 'System',
-        text: 'Reservation confirmed at a custom venue for ${_fmtSlot(slot)}. See you there!',
+        text: 'Reservation confirmed at $venueName for ${_fmtSlot(slot)}. See you there!',
         isSystem: true,
       ));
     });

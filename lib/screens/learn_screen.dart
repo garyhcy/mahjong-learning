@@ -7,6 +7,7 @@ import '../providers/game_state.dart';
 import '../models/mahjong_data.dart';
 import '../widgets/mascot_widget.dart';
 import '../services/audio_service.dart';
+import '../services/app_i18n.dart';
 
 /// ── MahjongTile widget ──
 class MahjongTile extends StatelessWidget {
@@ -549,10 +550,21 @@ class _LearnScreenState extends State<LearnScreen> {
             game.clearLesson();
           },
         ),
-        title: Text(titleText,
-            style: GoogleFonts.nunito(
-                fontWeight: FontWeight.w800,
-                color: const Color(0xFF4CAF50))),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: Text(titleText,
+                  style: GoogleFonts.nunito(
+                      fontWeight: FontWeight.w800,
+                      color: const Color(0xFF4CAF50)),
+                  overflow: TextOverflow.ellipsis),
+            ),
+            const SizedBox(width: 12),
+            // Hearts indicator (hidden in review mode)
+            if (!game.isReviewMode) _buildHeartsIndicator(game),
+          ],
+        ),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -577,6 +589,62 @@ class _LearnScreenState extends State<LearnScreen> {
                           : _buildQuizArea(game),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  // ── Hearts indicator for lesson AppBar ──
+  Widget _buildHeartsIndicator(GameState game) {
+    final hearts = game.hearts;
+    final maxHearts = game.maxHearts;
+    final isPremium = game.isPremium;
+
+    if (isPremium) {
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          color: const Color(0xFFFFF3E0),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.favorite_rounded,
+                color: Color(0xFFE65100), size: 16),
+            const SizedBox(width: 4),
+            Text('∞',
+                style: GoogleFonts.nunito(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w800,
+                    color: const Color(0xFFE65100))),
+          ],
+        ),
+      );
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: hearts <= 1
+            ? const Color(0xFFFFEBEE)
+            : const Color(0xFFFFF0F0),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: List.generate(
+          maxHearts,
+          (i) => Padding(
+            padding: EdgeInsets.only(left: i > 0 ? 2 : 0),
+            child: Icon(
+              i < hearts ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+              size: 16,
+              color: i < hearts
+                  ? const Color(0xFFE53935)
+                  : const Color(0xFFBDBDBD),
+            ),
+          ),
         ),
       ),
     );
@@ -1429,6 +1497,265 @@ class _LearnScreenState extends State<LearnScreen> {
         : 0;
     final passed = correct >= totalQuestions / 2;
 
+    // ── Celebration screen for passed normal-mode lessons ──
+    if (passed && !game.isReviewMode) {
+      return _buildCelebrationView(game, correct, totalQuestions, accuracy);
+    }
+
+    // ── Review mode or not-passed: keep the classic result screen ──
+    return _buildClassicResultView(game, correct, wrong, totalQuestions, accuracy, passed);
+  }
+
+  // ═══ Celebration View (matches the design mockup) ═══
+  Widget _buildCelebrationView(GameState game, int correct, int total, int accuracy) {
+    final elapsed = game.lessonElapsedSeconds;
+    final mins = (elapsed ~/ 60).toString().padLeft(2, '0');
+    final secs = (elapsed % 60).toString().padLeft(2, '0');
+    final timeStr = '$mins:$secs';
+
+    // Stars based on accuracy
+    int stars = 1;
+    if (accuracy >= 90) stars = 3;
+    else if (accuracy >= 70) stars = 2;
+
+    return Stack(
+      children: [
+        // Green gradient background
+        Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xFF66BB6A),
+                Color(0xFF4CAF50),
+                Color(0xFF388E3C),
+              ],
+            ),
+          ),
+        ),
+        // Confetti decorations
+        ..._buildConfetti(),
+        // Content
+        SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 20),
+                      // Panda mascot celebrating
+                      TweenAnimationBuilder<double>(
+                        tween: Tween(begin: 0.8, end: 1.0),
+                        duration: const Duration(milliseconds: 600),
+                        curve: Curves.elasticOut,
+                        builder: (context, scale, child) {
+                          return Transform.scale(scale: scale, child: child);
+                        },
+                        child: const MascotWidget(
+                          expression: MascotExpression.excited,
+                          size: 140,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      // Title
+                      Text(
+                        AppI18n.t('lessonComplete.title'),
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.nunito(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white,
+                          height: 1.3,
+                        ),
+                      ),
+                      const SizedBox(height: 28),
+                      // Stats card
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withAlpha(30),
+                              blurRadius: 16,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            // XP
+                            _celebrationStatRow(
+                              Icons.bolt_rounded,
+                              '+20 XP',
+                              const Color(0xFFE8B93E),
+                            ),
+                            const SizedBox(height: 16),
+                            // Stars
+                            _celebrationStarsRow(stars),
+                            const SizedBox(height: 16),
+                            // Time
+                            _celebrationStatRow(
+                              Icons.timer_rounded,
+                              timeStr,
+                              const Color(0xFF42A5F5),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 36),
+                      // Continue Learning button
+                      SizedBox(
+                        width: double.infinity,
+                        height: 52,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            _audio.playStageComplete();
+                            setState(() {
+                              _selectedOptions.clear();
+                              _shuffledOrderingTiles = [];
+                              _orderingSubmitted = false;
+                            });
+                            final nextId = game.getNextLessonId();
+                            if (nextId != null) {
+                              game.loadLesson(nextId);
+                            } else {
+                              game.clearLesson();
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: const Color(0xFF2E7D32),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            elevation: 0,
+                          ),
+                          child: Text(
+                            AppI18n.t('lessonComplete.continue'),
+                            style: GoogleFonts.nunito(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      // Back to Lesson Map button
+                      SizedBox(
+                        width: double.infinity,
+                        height: 52,
+                        child: OutlinedButton(
+                          onPressed: () {
+                            _audio.playTap();
+                            setState(() {
+                              _selectedOptions.clear();
+                              _shuffledOrderingTiles = [];
+                              _orderingSubmitted = false;
+                            });
+                            game.clearLesson();
+                          },
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            side: const BorderSide(color: Colors.white, width: 2),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          child: Text(
+                            AppI18n.t('lessonComplete.backToMap'),
+                            style: GoogleFonts.nunito(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _celebrationStatRow(IconData icon, String value, Color color) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon, color: color, size: 24),
+        const SizedBox(width: 8),
+        Text(
+          value,
+          style: GoogleFonts.nunito(
+            fontSize: 22,
+            fontWeight: FontWeight.w800,
+            color: const Color(0xFF2D2D2D),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _celebrationStarsRow(int stars) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(3, (i) {
+        final filled = i < stars;
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 6),
+          child: Icon(
+            filled ? Icons.star_rounded : Icons.star_outline_rounded,
+            color: filled ? const Color(0xFFE8B93E) : const Color(0xFFE0E0E0),
+            size: 36,
+          ),
+        );
+      }),
+    );
+  }
+
+  List<Widget> _buildConfetti() {
+    final rng = Random();
+    final colors = [
+      const Color(0xFFFFD54F),
+      const Color(0xFFFFCA28),
+      const Color(0xFFFFFFFF),
+      const Color(0xFFA5D6A7),
+      const Color(0xFFFFAB91),
+    ];
+    return List.generate(20, (i) {
+      final left = rng.nextDouble() * 100;
+      final top = rng.nextDouble() * 60;
+      final size = 6.0 + rng.nextDouble() * 8;
+      final color = colors[i % colors.length];
+      final isCircle = i % 3 == 0;
+      return Positioned(
+        left: left,
+        top: top,
+        child: Container(
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            color: color.withAlpha(120),
+            shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
+            borderRadius: isCircle ? null : BorderRadius.circular(2),
+          ),
+        ),
+      );
+    });
+  }
+
+  // ═══ Classic Result View (for review mode or not-passed) ═══
+  Widget _buildClassicResultView(GameState game, int correct, int wrong, int totalQuestions, int accuracy, bool passed) {
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Column(
@@ -1518,8 +1845,6 @@ class _LearnScreenState extends State<LearnScreen> {
                   ...List.generate(
                     wrong > 3 ? 3 : wrong,
                     (i) {
-                      // Find wrong questions from the current quiz
-                      // In normal mode we track via feedback; show recent wrong answers
                       final waList = game.wrongAnswers;
                       if (i < waList.length) {
                         final wa = waList[waList.length - 1 - i];
@@ -1590,7 +1915,7 @@ class _LearnScreenState extends State<LearnScreen> {
               ),
             ),
           ] else ...[
-            // Normal mode buttons
+            // Normal mode buttons (not passed)
             SizedBox(
               width: double.infinity,
               height: 48,
