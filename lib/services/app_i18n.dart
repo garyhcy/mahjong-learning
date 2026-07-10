@@ -486,7 +486,7 @@ const Map<String, Map<String, String>> _strings = {
   'shop.popular': {'en': 'Popular Items', 'zh': '熱門商品'},
   'shop.starterPack': {'en': 'Starter Pack', 'zh': '新手禮包'},
   'shop.starterPackDesc': {'en': '5 hearts + 2 XP boosters + 200 gems', 'zh': '含愛心x5 + 經驗加倍x2 + 鑽石x200'},
-  'shop.starterPackPrice': {'en': 'HK$150', 'zh': 'HK$150'},
+  'shop.starterPackPrice': {'en': 'HK\$150', 'zh': 'HK\$150'},
   'shop.themes': {'en': 'Themes & Cosmetics', 'zh': '造型與主題'},
   'shop.title': {'en': 'Shop', 'zh': '商店'},
   'shop.unlockTicket': {'en': 'Unlock Ticket', 'zh': '解鎖券'},
