@@ -1,4 +1,6 @@
 import 'dart:convert';
+import '../i18n/content_strings.dart';
+import '../services/app_i18n.dart';
 
 /// All tile codes used in practice
 const List<String> allTileCodes = [
@@ -110,6 +112,21 @@ class RulesQuestion {
     required this.correctIndex,
     required this.explanation,
   });
+
+  /// Returns a copy with localized text at position [index] in rulesQuestions.
+  RulesQuestion localized(int index) {
+    if (AppI18n.current != DisplayLang.zh) return this;
+    final prefix = 'rules.$index';
+    return RulesQuestion(
+      question: contentStringsZh['$prefix.question'] ?? question,
+      options: [
+        for (int j = 0; j < options.length; j++)
+          contentStringsZh['$prefix.option_${j + 1}'] ?? options[j]
+      ],
+      correctIndex: correctIndex,
+      explanation: contentStringsZh['$prefix.explanation'] ?? explanation,
+    );
+  }
 }
 
 const List<RulesQuestion> rulesQuestions = [

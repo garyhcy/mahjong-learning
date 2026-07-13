@@ -31,7 +31,7 @@ class _RulesQuizScreenState extends State<RulesQuizScreen> {
   void initState() {
     super.initState();
     // Shuffle and pick questions
-    final allQ = List<RulesQuestion>.from(rulesQuestions);
+    final allQ = [for (int i = 0; i < rulesQuestions.length; i++) rulesQuestions[i].localized(i)];
     allQ.shuffle(_random);
     _questions = allQ.take(totalQuestions).toList();
   }
@@ -326,7 +326,7 @@ class _RulesQuizScreenState extends State<RulesQuizScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       setState(() {
-                        final allQ = List<RulesQuestion>.from(rulesQuestions);
+                        final allQ = [for (int i = 0; i < rulesQuestions.length; i++) rulesQuestions[i].localized(i)];
                         allQ.shuffle(_random);
                         _questions = allQ.take(totalQuestions).toList();
                         _currentQuestion = 0;

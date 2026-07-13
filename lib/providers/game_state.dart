@@ -495,9 +495,9 @@ class GameState extends ChangeNotifier {
     );
     _currentLessonId = lesson.id;
     _lastLessonId = lesson.id;
-    _dialogue = List.from(lesson.dialogues);
+    _dialogue = List.from(lesson.localizedDialogues);
     _dialogueIndex = 0;
-    _currentQuestions = List.from(lesson.questions);
+    _currentQuestions = List.from(lesson.localizedQuestions);
     _quizFinished = false;
     _showFailure = false;
     _isReviewMode = false;
@@ -902,8 +902,8 @@ class GameState extends ChangeNotifier {
         (l) => l.id == wa.lessonId,
         orElse: () => allLessonsData.first,
       );
-      if (wa.questionIndex >= 0 && wa.questionIndex < lesson.questions.length) {
-        final q = lesson.questions[wa.questionIndex];
+      if (wa.questionIndex >= 0 && wa.questionIndex < lesson.localizedQuestions.length) {
+        final q = lesson.localizedQuestions[wa.questionIndex];
         if (!_reviewQuestions.contains(q)) {
           _reviewQuestions.add(q);
         }

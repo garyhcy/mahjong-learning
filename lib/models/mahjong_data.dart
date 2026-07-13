@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../i18n/content_strings.dart';
+import '../services/app_i18n.dart';
 
 // Learning Stage
 class LearningStage {
@@ -24,6 +26,9 @@ class LearningStage {
 
   double get progress =>
       lessonCount > 0 ? completedLessons / lessonCount : 0;
+
+  String get localizedTitle => trContent('stage.$id.title', title);
+  String get localizedSubtitle => trContent('stage.$id.subtitle', subtitle);
 }
 
 // Dialogue message
@@ -34,6 +39,14 @@ class DialogueMessage {
   final List<String>? tileIds;
 
   DialogueMessage({required this.speaker, required this.text, this.widget, this.tileIds});
+
+  /// Returns a copy with localized text for [lessonId] at position [index].
+  DialogueMessage localized(String lessonId, int index) {
+    if (AppI18n.current != DisplayLang.zh) return this;
+    final zh = contentStringsZh['dialogue.$lessonId.d$index.text'];
+    if (zh == null) return this;
+    return DialogueMessage(speaker: speaker, text: zh, widget: widget, tileIds: tileIds);
+  }
 }
 
 // Fan type definition
@@ -76,6 +89,19 @@ class Lesson {
     required this.dialogues,
     required this.questions,
   });
+
+  String get localizedTitle => trContent('lesson.$id.title', title);
+  String get localizedSubtitle => trContent('lesson.$id.subtitle', subtitle);
+
+  /// Dialogues with localized text based on current language.
+  List<DialogueMessage> get localizedDialogues => [
+    for (int i = 0; i < dialogues.length; i++) dialogues[i].localized(id, i)
+  ];
+
+  /// Questions with localized text based on current language.
+  List<QuizQuestion> get localizedQuestions => [
+    for (int i = 0; i < questions.length; i++) questions[i].localized(id, i)
+  ];
 }
 
 // Quiz question
@@ -95,6 +121,23 @@ class QuizQuestion {
     this.type = QuizType.multiChoice,
     this.tiles,
   });
+
+  /// Returns a copy with localized text for [lessonId] at position [index].
+  QuizQuestion localized(String lessonId, int index) {
+    if (AppI18n.current != DisplayLang.zh) return this;
+    final prefix = 'quiz.$lessonId.q$index';
+    return QuizQuestion(
+      question: contentStringsZh['$prefix.question'] ?? question,
+      options: [
+        for (int j = 0; j < options.length; j++)
+          contentStringsZh['$prefix.option_${j + 1}'] ?? options[j]
+      ],
+      correctIndex: correctIndex,
+      explanation: contentStringsZh['$prefix.explanation'] ?? explanation,
+      type: type,
+      tiles: tiles,
+    );
+  }
 }
 
 enum QuizType { multiChoice, tileSelection, tileOrdering }

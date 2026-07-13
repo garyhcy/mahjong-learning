@@ -327,7 +327,7 @@ class _LearnScreenState extends State<LearnScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(stage.title,
+                      Text(stage.localizedTitle,
                           style: GoogleFonts.nunito(
                             fontSize: 15,
                             fontWeight: FontWeight.w700,
@@ -336,7 +336,7 @@ class _LearnScreenState extends State<LearnScreen> {
                                 : const Color(0xFFBDBDBD),
                           )),
                       const SizedBox(height: 2),
-                      Text(stage.subtitle,
+                      Text(stage.localizedSubtitle,
                           style: GoogleFonts.nunito(
                               fontSize: 12,
                               color: stage.isUnlocked
@@ -403,7 +403,7 @@ class _LearnScreenState extends State<LearnScreen> {
               Icon(Icons.arrow_back_ios_rounded,
                   size: 16, color: stage.color),
               const SizedBox(width: 4),
-              Text(stage.title,
+              Text(stage.localizedTitle,
                   style: GoogleFonts.nunito(
                     fontSize: 18,
                     fontWeight: FontWeight.w800,
@@ -483,7 +483,7 @@ class _LearnScreenState extends State<LearnScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          lesson.title,
+                          lesson.localizedTitle,
                           style: GoogleFonts.nunito(
                             fontSize: 14,
                             fontWeight:
@@ -530,7 +530,7 @@ class _LearnScreenState extends State<LearnScreen> {
 
     final titleText = game.isReviewMode
         ? 'Review: Wrong Answers'
-        : lesson.title;
+        : lesson.localizedTitle;
 
     // Find stage color for dynamic background
     Color stageColor = const Color(0xFF4CAF50);
@@ -2044,7 +2044,7 @@ class _LearnScreenState extends State<LearnScreen> {
       return const SizedBox.shrink();
     }
 
-    final q = lesson.questions[wa.questionIndex];
+    final q = lesson.localizedQuestions[wa.questionIndex];
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
