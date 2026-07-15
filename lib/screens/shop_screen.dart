@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../widgets/mascot_widget.dart';
 import '../services/app_i18n.dart';
 
 class ShopScreen extends StatelessWidget {

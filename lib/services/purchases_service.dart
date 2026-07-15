@@ -6,17 +6,14 @@ import '../providers/game_state.dart';
 /// Wraps RevenueCat (purchases_flutter) for the Ludi Pro subscription.
 ///
 /// Setup notes:
-/// - Android public SDK key is configured below.
-/// - iOS public SDK key is pending (Apple account still provisioning the
-///   In-App Purchase Key). Fill [_iosApiKey] once available, then purchases
-///   will work on iOS without further code changes.
+/// - Android and iOS public SDK keys are configured below.
 /// - The RevenueCat entitlement that unlocks Pro is identified by [entitlementId].
 class PurchasesService {
   PurchasesService._();
 
-  /// RevenueCat public SDK keys (NOT secret — safe to ship in the app).
+  /// RevenueCat public SDK keys (NOT secret - safe to ship in the app).
   static const String _androidApiKey = 'goog_KEaZIOSRNWEEpcHcKWjGHhSujDX';
-  static const String _iosApiKey = ''; // TODO: fill in once Apple key is ready.
+  static const String _iosApiKey = 'appl_gnyvMLaYQbAlxQFlhKugGjlovMM';
 
   /// The entitlement identifier configured in the RevenueCat dashboard.
   /// Granting this entitlement unlocks all Pro features.

@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../models/match_data.dart';
-import '../providers/game_state.dart';
 import '../providers/match_state.dart';
 import '../services/app_i18n.dart';
 
@@ -820,7 +819,6 @@ class _ProposeSheetState extends State<_ProposeSheet> {
   static const Color _green = Color(0xFF4CAF50);
   DateTime? _selectedDate;
   String? _selectedTime; // "HH:mm"
-  bool _showNextMonth = false;
 
   static const _timeSlots = [
     '08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30',

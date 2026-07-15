@@ -84,7 +84,6 @@ class FirebaseService {
     if (user == null) return;
     await _firestore.collection('users').doc(user.uid).set({
       ...data,
-      'email': user.email,
       'updatedAt': FieldValue.serverTimestamp(),
     }, SetOptions(merge: true));
   }

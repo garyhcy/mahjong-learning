@@ -97,7 +97,8 @@ keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -sto
 | 項目 | 值 |
 |------|-----|
 | Android Public SDK Key | `goog_KEaZIOSRNWEEpcHcKWjGHhSujDX`（已填入 `lib/services/purchases_service.dart`） |
-| iOS Public SDK Key | **待補** — Apple 帳號處理中 |
+| iOS Public SDK Key | `appl_gnyvMLaYQbAlxQFlhKugGjlovMM`（已填入 `lib/services/purchases_service.dart`） |
+| App Store Connect API Key | Team Key（.p8 + Issuer ID + Key ID）已上傳至 RevenueCat App settings |
 | Entitlement ID（代碼判斷 Pro） | `pro` |
 | Offering / Packages | 在 RevenueCat 後台建月費 / 年費 package |
 
@@ -192,8 +193,7 @@ lib/
 
 | 優先 | 項目 | 阻塞原因 |
 |------|------|---------|
-| 🔴 | RevenueCat iOS SDK Key + 訂閱商品 | Apple 帳號處理中 |
-| 🔴 | App Store Connect 建 In-App Purchase + 簽 Paid Apps Agreement | Apple 帳號處理中 |
+| ✅ | App Store Connect 建 In-App Purchase + 簽 Paid Apps Agreement | 已完成（Gary 2026-07-14 確認） |
 | 🔴 | Google Play 建 App + 訂閱商品（`ludi_pro_monthly` HK$48 / `ludi_pro_yearly` HK$298） | Play 帳戶驗證審批中 |
 | 🟡 | Apple Developer 後台開啟「Sign in with Apple」capability（帳號啟用後） | Apple 帳號處理中 |
 | 🟡 | 在 App 內加入帳號刪除功能（Apple 強制要求） | 待開發 |

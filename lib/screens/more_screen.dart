@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -946,7 +947,11 @@ class _MoreScreenState extends State<MoreScreen> {
                   if (confirmController.text.trim().toUpperCase() != 'DELETE') return;
                   try {
                     final user = FirebaseAuth.instance.currentUser;
-                    if (user != null) await user.delete();
+                    if (user != null) {
+                      // Delete Firestore user document first, then Auth account
+                      await FirebaseFirestore.instance.collection('users').doc(user.uid).delete();
+                      await user.delete();
+                    }
                     if (ctx.mounted) Navigator.pop(ctx);
                     // Reset local state
                     final game = context.read<GameState>();

@@ -9,7 +9,17 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == uid;
     }
 
-    // User-scoped app data
+    // Top-level user document: owner read/write
+    match /users/{uid} {
+      allow read, write: if isOwner(uid);
+    }
+
+    // Users collection: signed-in users can list (leaderboard)
+    match /users {
+      allow list: if isSignedIn();
+    }
+
+    // User-scoped app data (subcollection)
     match /users/{uid}/app/{docId} {
       allow read, write: if isOwner(uid);
     }

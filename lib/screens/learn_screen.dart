@@ -1074,7 +1074,7 @@ class _LearnScreenState extends State<LearnScreen> {
 
   // ── Tile Selection Area ──
   Widget _buildTileSelectionArea(GameState game, QuizQuestion q) {
-    final tiles = q.tiles ?? [];
+    // q.tiles unused in this builder
     final options = q.options;
 
     return Column(
