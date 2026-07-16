@@ -7,13 +7,13 @@ workflows:
       flutter: stable
       xcode: latest
       cocoapods: default
+      groups:
+        - app_store_credentials
       vars:
         BUNDLE_ID: com.ludi.teach
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.ludi.teach
-    integrations:
-      app_store_connect: "Ludi App Store"
     scripts:
       - name: Flutter dependencies
         script: |
@@ -25,5 +25,7 @@ workflows:
       - build/ios/ipa/*.ipa
     publishing:
       app_store_connect:
-        auth: integration
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+        key_identifier: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        private_key: $APP_STORE_CONNECT_PRIVATE_KEY
         submit_to_testflight: true
