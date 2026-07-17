@@ -22,7 +22,18 @@ workflows:
         script: xcode-project use-profiles
       - name: Build IPA
         script: |
+          set -e
           flutter build ipa --release
+      - name: List build artifacts
+        script: |
+          echo "=== build/ios directory structure ==="
+          find build/ios -type f 2>/dev/null || echo "build/ios not found"
+          echo ""
+          echo "=== all .ipa files in workspace ==="
+          find . -name "*.ipa" 2>/dev/null || echo "no .ipa found anywhere"
+          echo ""
+          echo "=== build/ios/ipa contents ==="
+          ls -la build/ios/ipa/ 2>/dev/null || echo "build/ios/ipa/ does not exist"
     artifacts:
       - build/ios/ipa/*.ipa
     publishing:

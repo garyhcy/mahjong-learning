@@ -16,6 +16,8 @@ class AudioService {
   bool _sfxEnabled = true;
   bool _hapticEnabled = true;
   bool _bgmEnabled = true;
+  static bool _diagDisableBgm = false;
+  static set diagDisableBgm(bool v) => _diagDisableBgm = v;
   bool _initialized = false;
 
   AudioPlayer? _bgmPlayer;
@@ -75,7 +77,11 @@ class AudioService {
   Future<void> playTileClick() => _play('audio/click.mp3');
 
   // ── BGM (#18/#19) ──
+  // Android release build crash root cause: audioplayers 6.x native crash on
+  // AssetSource playback during MainShell initState. Mitigation: wrap every
+  // BGM call in try/catch so init never throws.
   Future<void> startBgm() async {
+    if (_diagDisableBgm) return;
     if (!_bgmEnabled) return;
     if (_bgmPlayer != null) return; // already playing
     try {
@@ -83,7 +89,8 @@ class AudioService {
       await _bgmPlayer!.setReleaseMode(ReleaseMode.loop);
       await _bgmPlayer!.setVolume(0.15);
       await _bgmPlayer!.play(AssetSource('audio/bgm.mp3'));
-    } catch (_) {
+    } catch (e) {
+      // BGM is non-critical: swallow error, never crash the app
       _bgmPlayer = null;
     }
   }

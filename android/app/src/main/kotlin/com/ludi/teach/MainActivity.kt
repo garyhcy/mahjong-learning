@@ -1,4 +1,4 @@
-package com.marvis.mahjong_app
+package com.ludi.teach
 
 import io.flutter.embedding.android.FlutterActivity
 

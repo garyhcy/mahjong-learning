@@ -344,9 +344,10 @@ class _MainShellState extends State<MainShell> {
   @override
   void initState() {
     super.initState();
-    // Start BGM when entering the main app (if enabled)
+    // Start BGM when entering the main app (if enabled).
+    // Wrapped in .catchError so a BGM failure can never crash MainShell.
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      AudioService().startBgm();
+      AudioService().startBgm().catchError((_) {});
     });
   }
 

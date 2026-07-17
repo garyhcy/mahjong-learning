@@ -43,3 +43,15 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Release signing
+**/key.properties
+**/*.keystore
+**/*.jks
+
+# Temporary diagnostic / backup files
+*.bak
+*_original.*
+lib/main_diag*.dart
+lib/main_firebase_only.dart
+lib/main_test.dart
