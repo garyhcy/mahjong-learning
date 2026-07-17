@@ -11,6 +11,9 @@ workflows:
       cocoapods: default
       vars:
         BUNDLE_ID: com.ludi.teach
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.ludi.teach
     scripts:
       - name: Flutter dependencies
         script: |
