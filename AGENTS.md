@@ -240,6 +240,20 @@ lib/
 | ⚪ | Community Feed 改為真實數據 | 後端待開發 |
 | ⚪ | Find a Match 約戰配對引擎（Cloud Functions + 場地 DB） | 後端待開發 |
 
+### 11.1 Codemagic 簽名設定確認（2026-07-20 Gary 多次確認，避免重複討論）
+
+| 項目 | 值 |
+| --- | --- |
+| Codemagic dashboard 上的 profile reference name | `Ludi Distribution` |
+| Profile UUID | `bdf586ef-f1a7-4e2b-8a34-700d15036abc`（仍有效） |
+| Profile 類型 | App Store distribution |
+| Profile 含 capabilities | Push Notifications + Sign in with Apple（所有 version 都含） |
+| Certificate 名稱 | `Ludi_codemagic`（Codemagic 持有 private key） |
+| Codemagic dashboard 上 com.ludi.teach 的 App Store profile 數量 | 只有 1 個（UUID 正確） |
+| App Store Connect build 位置 | TestFlight > Builds（已無 Activity tab） |
+
+> ⚠️ 以上皆已由 Gary 多次確認，不需要再重複驗證。下一步只缺「驗證 Codemagic build 真的上傳成功 + TestFlight build 處理完成」，詳見 CHANGELOG2.md「驗證 Codemagic Build 真的成功」區塊。
+
 ---
 
 ## 12. 與 Gary 的偏好
