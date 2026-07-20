@@ -234,7 +234,7 @@ class GameState extends ChangeNotifier {
 
   String? get playerId => _playerId;
   String get region => _region;
-  List<String> get friends => List.unmodifiable(_friends);
+  List<String> get friends => List.unmodifiable(_friends);  String? get currentUid => FirebaseService.currentUser?.uid ?? _cloudUid;
   // ── Wrong answer getters ──
   List<WrongAnswer> get wrongAnswers => List.unmodifiable(_wrongAnswers);
   int get wrongAnswerCount => _wrongAnswers.length;

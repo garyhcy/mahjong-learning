@@ -60,7 +60,6 @@ class ProgressStorage {
   static const _consecutiveCorrectKey = 'progress_consecutive_correct';
   static const _dailyXpEarnedKey = 'progress_daily_xp_earned';
   static const _wrongAnswersKey = 'progress_wrong_answers';
-  static const _playerIdKey = 'progress_player_id';
 
   Future<SavedProgress> load() async {
     final prefs = await SharedPreferences.getInstance();
@@ -160,8 +159,8 @@ class ProgressStorage {
     await prefs.setInt(_dailyXpEarnedKey, dailyXpEarned);
     await prefs.setStringList(_wrongAnswersKey, wrongAnswersJsonList);
   }
-}
 
+  static const _playerIdKey = 'progress_player_id';
   static Future<void> savePlayerId(String playerId) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_playerIdKey, playerId);
@@ -171,3 +170,4 @@ class ProgressStorage {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(_playerIdKey);
   }
+}

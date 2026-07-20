@@ -1,9 +1,14 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/game_state.dart';
 import '../screens/find_match_screen.dart';
 import '../services/app_i18n.dart';
+import '../services/firebase_service.dart';
 import '../widgets/mascot_widget.dart';
 
 // ─── League Helper ───
@@ -180,7 +185,9 @@ class CommunityScreen extends StatelessWidget {
               const SizedBox(height: 24),
               _buildAchievementsSection(context),
               const SizedBox(height: 24),
-              _buildLeaderboardSection(context, userXp, nickname),
+              _buildLeaderboardSection(context, userXp, nickname, game),
+              const SizedBox(height: 24),
+              _buildFriendsSection(context, game),
               const SizedBox(height: 24),
               _buildMatchCard(context),
               const SizedBox(height: 32),
@@ -256,7 +263,7 @@ class CommunityScreen extends StatelessWidget {
               ),
               const SizedBox(height: 2),
               Text(
-                '${league.emoji} ${AppI18n.t(league.name)}  ·  #LD${(game.xp + game.nickname.hashCode).abs() % 9999}  ·  ${AppI18n.t('community.skill')} ${game.skillRating}',
+                '${league.emoji} ${AppI18n.t(league.name)}  ·  ${game.playerId ?? '#LD----'}  ·  ${AppI18n.t('community.skill')} ${game.skillRating}',
                 style: GoogleFonts.nunito(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
@@ -624,21 +631,16 @@ class CommunityScreen extends StatelessWidget {
 
   // ─── Leaderboard Section (with Add Friend button) ───
   Widget _buildLeaderboardSection(
-      BuildContext context, int userXp, String nickname) {
-    final topEntries = _fakeLeaderboard.take(3).toList();
-    int userRank = _fakeLeaderboard.length + 1;
-    for (int i = 0; i < _fakeLeaderboard.length; i++) {
-      if (userXp >= _fakeLeaderboard[i].xp) {
-        userRank = i + 1;
-        break;
-      }
-    }
+      BuildContext context, int userXp, String nickname, GameState game) {
+    final uid = game.currentUid;
+    final region = game.region;
+    final myPlayerId = game.playerId ?? '';
 
     return Column(
       children: [
         Row(
           children: [
-            Text(AppI18n.t('community.friendLeaderboard'),
+            Text(AppI18n.t('community.regionLeaderboard'),
                 style: GoogleFonts.nunito(
                     fontSize: 17,
                     fontWeight: FontWeight.w800,
@@ -646,7 +648,7 @@ class CommunityScreen extends StatelessWidget {
             const Spacer(),
             // Add Friend button
             GestureDetector(
-              onTap: () => _showAddFriendDialog(context),
+              onTap: () => _showAddFriendDialog(context, uid),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
@@ -677,6 +679,9 @@ class CommunityScreen extends StatelessWidget {
                   builder: (_) => _AllLeaderboardPage(
                     userXp: userXp,
                     nickname: nickname,
+                    avatarEmoji: game.avatarEmoji,
+                    uid: uid,
+                    region: region,
                   ),
                 ));
               },
@@ -710,109 +715,603 @@ class CommunityScreen extends StatelessWidget {
               ),
             ],
           ),
-          child: Column(
-            children: [
-              ...topEntries.map((e) => _leaderboardRow(e)),
-              _leaderboardRow(_LeaderboardEntry(
-                rank: userRank > 5 ? _fakeLeaderboard.length + 1 : userRank,
-                name: nickname,
-                avatar: '🐼',
-                xp: userXp,
-                isCurrentUser: true,
-              )),
-            ],
-          ),
+          child: uid == null
+              ? _leaderboardLoadingPlaceholder()
+              : StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseService.getRegionLeaderboard(region),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return _leaderboardLoadingPlaceholder();
+                    }
+                    if (snapshot.hasError) {
+                      return _leaderboardErrorPlaceholder(snapshot.error.toString());
+                    }
+                    final docs = snapshot.data?.docs ?? [];
+                    if (docs.isEmpty) {
+                      FirebaseService.seedFakePlayers(region, 6);
+                      return _leaderboardEmptyPlaceholder();
+                    }
+                    final entries = <_LeaderboardEntry>[];
+                    int myRank = docs.length + 1;
+                    bool meIncluded = false;
+                    for (int i = 0; i < docs.length; i++) {
+                      final d = docs[i].data() as Map<String, dynamic>;
+                      final docUid = docs[i].id;
+                      final isMe = docUid == uid;
+                      if (isMe) {
+                        meIncluded = true;
+                        myRank = i + 1;
+                      }
+                      entries.add(_LeaderboardEntry(
+                        rank: i + 1,
+                        name: (d['nickname'] as String?) ?? 'Player',
+                        avatar: (d['avatarEmoji'] as String?) ?? '🐼',
+                        xp: (d['xp'] as num?)?.toInt() ?? 0,
+                        streak: (d['streak'] as num?)?.toInt() ?? 0,
+                        isCurrentUser: isMe,
+                        playerId: (d['playerId'] as String?) ?? '',
+                        skillRating: ((d['xp'] as num?)?.toInt() ?? 0) ~/ 40,
+                      ));
+                    }
+                    final topEntries = entries.take(3).toList();
+                    return Column(
+                      children: [
+                        ...topEntries.map((e) => _leaderboardRow(e)),
+                        if (!meIncluded)
+                          _leaderboardRow(_LeaderboardEntry(
+                            rank: docs.length + 1,
+                            name: nickname,
+                            avatar: game.avatarEmoji,
+                            xp: userXp,
+                            isCurrentUser: true,
+                            playerId: myPlayerId,
+                            skillRating: userXp ~/ 40,
+                          )),
+                      ],
+                    );
+                  },
+                ),
         ),
       ],
     );
   }
 
-  void _showAddFriendDialog(BuildContext context) {
-    final controller = TextEditingController();
-    final playerId = controller.text.trim();
-    final foundPlayer = _fakeLeaderboard.firstWhere(
-      (entry) => entry.playerId == playerId,
-      orElse: () => _LeaderboardEntry(
-        rank: -1,
-        name: 'Unknown',
-        avatar: '🤔',
-        xp: 0,
-        streak: 0,
-        isCurrentUser: false,
-        playerId: '',
-        skillRating: 0,
-      ),
-    );
+  Widget _leaderboardLoadingPlaceholder() => Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 24),
+          child: CircularProgressIndicator(
+            color: const Color(0xFF4CAF50).withAlpha(120),
+            strokeWidth: 2,
+          ),
+        ),
+      );
 
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text(AppI18n.t('community.addFriend'),
-            style: GoogleFonts.nunito(fontWeight: FontWeight.w800)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
+  Widget _leaderboardErrorPlaceholder(String err) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+        child: Text('Load failed: $err',
+            style: GoogleFonts.nunito(fontSize: 12, color: Colors.redAccent),
+            textAlign: TextAlign.center),
+      );
+
+  Widget _leaderboardEmptyPlaceholder() => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: Text(AppI18n.t('community.noFriends'),
+            style: GoogleFonts.nunito(
+                fontSize: 13, color: const Color(0xFF9E9E9E)),
+            textAlign: TextAlign.center),
+      );
+
+  // ─── Friends Section (real data) ───
+  Widget _buildFriendsSection(BuildContext context, GameState game) {
+    final uid = game.currentUid;
+    if (uid == null) {
+      return const SizedBox.shrink();
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
           children: [
-            Text(AppI18n.t('community.addFriendDescFull'),
+            Text(AppI18n.t('community.friends'),
                 style: GoogleFonts.nunito(
-                    fontSize: 13, color: const Color(0xFF757575))),
-            const SizedBox(height: 16),
-            TextField(
-              controller: controller,
-              decoration: InputDecoration(
-                hintText: AppI18n.t('community.usernameOrInvite'),
-                prefixIcon: const Icon(Icons.search_rounded,
-                    color: Color(0xFF9E9E9E)),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12)),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide:
-                      const BorderSide(color: Color(0xFF4CAF50), width: 2),
+                    fontSize: 17,
+                    fontWeight: FontWeight.w800,
+                    color: const Color(0xFF2D2D2D))),
+            const SizedBox(width: 8),
+            StreamBuilder<QuerySnapshot>(
+              stream: FirebaseService.getFriendRequests(uid),
+              builder: (context, snap) {
+                final count = snap.data?.docs.length ?? 0;
+                if (count == 0) return const SizedBox.shrink();
+                return Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE53935),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text('$count',
+                      style: GoogleFonts.nunito(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white)),
+                );
+              },
+            ),
+            const Spacer(),
+            GestureDetector(
+              onTap: () => _showAddFriendDialog(context, uid),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF4CAF50).withAlpha(15),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: const Color(0xFF4CAF50).withAlpha(50)),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.person_add_rounded,
+                        size: 14, color: Color(0xFF4CAF50)),
+                    const SizedBox(width: 4),
+                    Text(AppI18n.t('community.addAll'),
+                        style: GoogleFonts.nunito(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xFF4CAF50))),
+                  ],
                 ),
               ),
             ),
-            if (foundPlayer.rank != -1)
-              Text('${AppI18n.t('community.found')}: ${foundPlayer.name}',
-                  style: GoogleFonts.nunito(
-                      fontSize: 13, color: const Color(0xFF4CAF50))),
-            if (foundPlayer.rank == -1)
-              Text(AppI18n.t('community.playerNotFoundShort'),
-                  style: GoogleFonts.nunito(
-                      fontSize: 13, color: const Color(0xFFE53935))),
           ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: Text(AppI18n.t('common.cancel'),
-                style: GoogleFonts.nunito(color: const Color(0xFF757575))),
-          ),
-          ElevatedButton.icon(
-            onPressed: () {
-              Navigator.pop(ctx);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(AppI18n.t('community.friendRequestSent'),
-                      style: GoogleFonts.nunito()),
-                  backgroundColor: const Color(0xFF4CAF50),
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
+        const SizedBox(height: 12),
+        // Pending requests
+        StreamBuilder<QuerySnapshot>(
+          stream: FirebaseService.getFriendRequests(uid),
+          builder: (context, snap) {
+            final docs = snap.data?.docs ?? [];
+            if (docs.isEmpty) return const SizedBox.shrink();
+            return Container(
+              margin: const EdgeInsets.only(bottom: 12),
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(18),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(8),
+                    blurRadius: 10,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                    child: Text(AppI18n.t('community.friendRequests'),
+                        style: GoogleFonts.nunito(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xFF757575))),
+                  ),
+                  ...docs.map((doc) {
+                    final data = doc.data() as Map<String, dynamic>;
+                    final fromUid = data['from'] as String? ?? '';
+                    return FutureBuilder<Map<String, dynamic>?>(
+                      future: FirebaseService.getUserProfile(fromUid),
+                      builder: (context, psnap) {
+                        final p = psnap.data;
+                        return _friendRequestRow(
+                          context,
+                          requestId: doc.id,
+                          name: (p?['nickname'] as String?) ?? 'Player',
+                          avatar: (p?['avatarEmoji'] as String?) ?? '🐼',
+                        );
+                      },
+                    );
+                  }),
+                ],
+              ),
+            );
+          },
+        ),
+        // Friends list
+        StreamBuilder<QuerySnapshot>(
+          stream: FirebaseService.getFriends(uid),
+          builder: (context, snap) {
+            final docs = snap.data?.docs ?? [];
+            if (docs.isEmpty) {
+              return Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(18),
                 ),
+                child: Text(AppI18n.t('community.noFriends'),
+                    style: GoogleFonts.nunito(
+                        fontSize: 13, color: const Color(0xFF9E9E9E)),
+                    textAlign: TextAlign.center),
               );
+            }
+            return Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(18),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(8),
+                    blurRadius: 10,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Column(
+                children: docs.map((doc) {
+                  final data = doc.data() as Map<String, dynamic>;
+                  final friendUid = data['friendUid'] as String? ?? doc.id;
+                  return FutureBuilder<Map<String, dynamic>?>(
+                    future: FirebaseService.getUserProfile(friendUid),
+                    builder: (context, psnap) {
+                      final p = psnap.data;
+                      return _friendRow(
+                        name: (p?['nickname'] as String?) ?? 'Player',
+                        avatar: (p?['avatarEmoji'] as String?) ?? '🐼',
+                        xp: (p?['xp'] as num?)?.toInt() ?? 0,
+                        playerId: (p?['playerId'] as String?) ?? '',
+                      );
+                    },
+                  );
+                }).toList(),
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _friendRequestRow(
+    BuildContext context, {
+    required String requestId,
+    required String name,
+    required String avatar,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      child: Row(
+        children: [
+          Container(
+            width: 36,
+            height: 36,
+            decoration: const BoxDecoration(
+              color: Color(0xFFF5F5F5),
+              shape: BoxShape.circle,
+            ),
+            child: Center(child: Text(avatar, style: const TextStyle(fontSize: 18))),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(name,
+                style: GoogleFonts.nunito(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF2D2D2D))),
+          ),
+          GestureDetector(
+            onTap: () async {
+              try {
+                await FirebaseService.acceptFriendRequest(requestId);
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(AppI18n.t('community.accept')),
+                    backgroundColor: const Color(0xFF4CAF50),
+                    behavior: SnackBarBehavior.floating,
+                  ));
+                }
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Error: $e'),
+                    backgroundColor: Colors.redAccent,
+                  ));
+                }
+              }
             },
-            icon: const Icon(Icons.send_rounded, size: 16),
-            label: Text(AppI18n.t('community.send'),
-                style: GoogleFonts.nunito(fontWeight: FontWeight.w700)),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF4CAF50),
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: const Color(0xFF4CAF50),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(AppI18n.t('community.accept'),
+                  style: GoogleFonts.nunito(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white)),
+            ),
+          ),
+          const SizedBox(width: 8),
+          GestureDetector(
+            onTap: () async {
+              try {
+                await FirebaseService.rejectFriendRequest(requestId);
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Error: $e'),
+                    backgroundColor: Colors.redAccent,
+                  ));
+                }
+              }
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF5F5F5),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(AppI18n.t('community.reject'),
+                  style: GoogleFonts.nunito(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF757575))),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _friendRow({
+    required String name,
+    required String avatar,
+    required int xp,
+    required String playerId,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      child: Row(
+        children: [
+          Container(
+            width: 36,
+            height: 36,
+            decoration: const BoxDecoration(
+              color: Color(0xFFF5F5F5),
+              shape: BoxShape.circle,
+            ),
+            child: Center(child: Text(avatar, style: const TextStyle(fontSize: 18))),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(name,
+                    style: GoogleFonts.nunito(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xFF2D2D2D))),
+                if (playerId.isNotEmpty)
+                  Text('#$playerId',
+                      style: GoogleFonts.nunito(
+                          fontSize: 10, color: const Color(0xFF9E9E9E))),
+              ],
+            ),
+          ),
+          Text('$xp XP',
+              style: GoogleFonts.nunito(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xFF757575))),
+        ],
+      ),
+    );
+  }
+
+  void _showAddFriendDialog(BuildContext context, String? uid) {
+    final controller = TextEditingController();
+    // Live lookup state
+    ValueNotifier<Map<String, dynamic>?> foundPlayer = ValueNotifier(null);
+    ValueNotifier<bool> searching = ValueNotifier(false);
+    ValueNotifier<String?> errorMsg = ValueNotifier(null);
+    Timer? debounce;
+
+    void lookup(String code) {
+      final trimmed = code.trim();
+      if (trimmed.isEmpty) {
+        foundPlayer.value = null;
+        errorMsg.value = null;
+        return;
+      }
+      debounce?.cancel();
+      debounce = Timer(const Duration(milliseconds: 400), () async {
+        searching.value = true;
+        errorMsg.value = null;
+        try {
+          final player = await FirebaseService.getUserByPlayerId(trimmed);
+          foundPlayer.value = player;
+          if (player == null) {
+            errorMsg.value = AppI18n.t('community.playerNotFound');
+          }
+        } catch (e) {
+          errorMsg.value = 'Error: $e';
+        } finally {
+          searching.value = false;
+        }
+      });
+    }
+
+    showDialog(
+      context: context,
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setSt) => AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Text(AppI18n.t('community.addFriend'),
+              style: GoogleFonts.nunito(fontWeight: FontWeight.w800)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(AppI18n.t('community.addFriendDesc'),
+                  style: GoogleFonts.nunito(
+                      fontSize: 13, color: const Color(0xFF757575))),
+              const SizedBox(height: 16),
+              TextField(
+                controller: controller,
+                decoration: InputDecoration(
+                  hintText: AppI18n.t('community.playerNumberHint'),
+                  prefixIcon: const Icon(Icons.search_rounded,
+                      color: Color(0xFF9E9E9E)),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide:
+                        const BorderSide(color: Color(0xFF4CAF50), width: 2),
+                  ),
+                ),
+                onChanged: lookup,
+              ),
+              const SizedBox(height: 12),
+              ValueListenableBuilder<bool>(
+                valueListenable: searching,
+                builder: (_, loading, __) => loading
+                    ? const Padding(
+                        padding: EdgeInsets.all(8),
+                        child: SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(
+                              strokeWidth: 2, color: Color(0xFF4CAF50)),
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+              ),
+              ValueListenableBuilder<Map<String, dynamic>?>(
+                valueListenable: foundPlayer,
+                builder: (_, player, __) {
+                  if (player != null) {
+                    return Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFE8F5E9),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 36,
+                            height: 36,
+                            decoration: const BoxDecoration(
+                                color: Colors.white, shape: BoxShape.circle),
+                            child: Center(
+                                child: Text(
+                                    (player['avatarEmoji'] as String?) ?? '🐼',
+                                    style: const TextStyle(fontSize: 18))),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text((player['nickname'] as String?) ?? 'Player',
+                                    style: GoogleFonts.nunito(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        color: const Color(0xFF2D2D2D))),
+                                Text(
+                                    '#${(player['playerId'] as String?) ?? ''}',
+                                    style: GoogleFonts.nunito(
+                                        fontSize: 11,
+                                        color: const Color(0xFF9E9E9E))),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  return ValueListenableBuilder<String?>(
+                    valueListenable: errorMsg,
+                    builder: (_, err, __) => err != null
+                        ? Text(err,
+                            style: GoogleFonts.nunito(
+                                fontSize: 13, color: const Color(0xFFE53935)))
+                        : const SizedBox.shrink(),
+                  );
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                debounce?.cancel();
+                Navigator.pop(ctx);
+              },
+              child: Text(AppI18n.t('common.cancel'),
+                  style: GoogleFonts.nunito(color: const Color(0xFF757575))),
+            ),
+            ValueListenableBuilder<Map<String, dynamic>?>(
+              valueListenable: foundPlayer,
+              builder: (_, player, __) => ElevatedButton.icon(
+                onPressed: (player == null || uid == null)
+                    ? null
+                    : () async {
+                        final targetUid = player['uid'] as String?;
+                        if (targetUid == null) return;
+                        try {
+                          await FirebaseService.sendFriendRequest(
+                              uid, player['playerId'] as String);
+                          if (ctx.mounted) {
+                            Navigator.pop(ctx);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    AppI18n.t('community.friendRequestSent'),
+                                    style: GoogleFonts.nunito()),
+                                backgroundColor: const Color(0xFF4CAF50),
+                                behavior: SnackBarBehavior.floating,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                              ),
+                            );
+                          }
+                        } catch (e) {
+                          String msg = 'Error: $e';
+                          if (e.toString().contains('cannot_add_self')) {
+                            msg = 'You cannot add yourself.';
+                          } else if (e
+                              .toString()
+                              .contains('request_already_sent')) {
+                            msg = 'A request is already pending.';
+                          }
+                          if (ctx.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(msg),
+                              backgroundColor: Colors.redAccent,
+                            ));
+                          }
+                        }
+                      },
+                icon: const Icon(Icons.send_rounded, size: 16),
+                label: Text(AppI18n.t('community.send'),
+                    style: GoogleFonts.nunito(fontWeight: FontWeight.w700)),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF4CAF50),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -1614,22 +2113,20 @@ class _AllAchievementsPage extends StatelessWidget {
 class _AllLeaderboardPage extends StatelessWidget {
   final int userXp;
   final String nickname;
+  final String avatarEmoji;
+  final String? uid;
+  final String region;
 
   const _AllLeaderboardPage({
     required this.userXp,
     required this.nickname,
+    required this.avatarEmoji,
+    required this.uid,
+    required this.region,
   });
 
   @override
   Widget build(BuildContext context) {
-    int userRank = _fakeLeaderboard.length + 1;
-    for (int i = 0; i < _fakeLeaderboard.length; i++) {
-      if (userXp >= _fakeLeaderboard[i].xp) {
-        userRank = i + 1;
-        break;
-      }
-    }
-
     return Scaffold(
       backgroundColor: const Color(0xFFF5F9F3),
       appBar: AppBar(
@@ -1639,79 +2136,95 @@ class _AllLeaderboardPage extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_rounded, color: Color(0xFF2D2D2D)),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('Friend Leaderboard',
+        title: Text(AppI18n.t('community.regionLeaderboard'),
             style: GoogleFonts.nunito(
                 fontWeight: FontWeight.w800, color: const Color(0xFF2D2D2D))),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.person_add_rounded,
-                color: Color(0xFF4CAF50)),
-            onPressed: () {
-              // Reuse add friend dialog
-              _showAddFriendSnack(context);
-            },
-          ),
-        ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            _buildPodium(),
-            const SizedBox(height: 20),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(18),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withAlpha(8),
-                    blurRadius: 10,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  ..._fakeLeaderboard.map((e) => _fullRow(e)),
-                  _fullRow(_LeaderboardEntry(
-                    rank: userRank > 10 ? 11 : userRank,
+      body: uid == null
+          ? Center(
+              child: Text(AppI18n.t('community.noFriends'),
+                  style: GoogleFonts.nunito(color: const Color(0xFF9E9E9E))),
+            )
+          : StreamBuilder<QuerySnapshot>(
+              stream: FirebaseService.getRegionLeaderboard(region),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                      child: CircularProgressIndicator(
+                          color: Color(0xFF4CAF50), strokeWidth: 2));
+                }
+                if (snapshot.hasError) {
+                  return Center(
+                      child: Text('Load failed: \${snapshot.error}',
+                          style: GoogleFonts.nunito(
+                              fontSize: 13, color: Colors.redAccent)));
+                }
+                final docs = snapshot.data?.docs ?? [];
+                final entries = <_LeaderboardEntry>[];
+                int myRank = docs.length + 1;
+                bool meIncluded = false;
+                for (int i = 0; i < docs.length; i++) {
+                  final d = docs[i].data() as Map<String, dynamic>;
+                  final docUid = docs[i].id;
+                  final isMe = docUid == uid;
+                  if (isMe) {
+                    meIncluded = true;
+                    myRank = i + 1;
+                  }
+                  entries.add(_LeaderboardEntry(
+                    rank: i + 1,
+                    name: (d['nickname'] as String?) ?? 'Player',
+                    avatar: (d['avatarEmoji'] as String?) ?? '🐼',
+                    xp: (d['xp'] as num?)?.toInt() ?? 0,
+                    streak: (d['streak'] as num?)?.toInt() ?? 0,
+                    isCurrentUser: isMe,
+                    playerId: (d['playerId'] as String?) ?? '',
+                    skillRating: ((d['xp'] as num?)?.toInt() ?? 0) ~/ 40,
+                  ));
+                }
+                if (!meIncluded) {
+                  entries.add(_LeaderboardEntry(
+                    rank: docs.length + 1,
                     name: nickname,
-                    avatar: '🐼',
+                    avatar: avatarEmoji,
                     xp: userXp,
-                    streak: 0,
                     isCurrentUser: true,
-                  )),
-                ],
-              ),
+                  ));
+                }
+                return SingleChildScrollView(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      if (entries.length >= 3) _buildPodium(entries),
+                      const SizedBox(height: 20),
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(18),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withAlpha(8),
+                              blurRadius: 10,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: entries.map((e) => _fullRow(e)).toList(),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
-          ],
-        ),
-      ),
     );
   }
 
-  void _showAddFriendSnack(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(AppI18n.t('community.shareInviteCode').replaceAll('{code}', 'LUDI-${nickname.toUpperCase().substring(0, 3)}'),
-            style: GoogleFonts.nunito()),
-        backgroundColor: const Color(0xFF4CAF50),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        action: SnackBarAction(
-          label: AppI18n.t('community.copy'),
-          textColor: Colors.white,
-          onPressed: () {},
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPodium() {
-    final top3 = _fakeLeaderboard.take(3).toList();
+  Widget _buildPodium(List<_LeaderboardEntry> entries) {
+    final top3 = entries.take(3).toList();
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.end,
