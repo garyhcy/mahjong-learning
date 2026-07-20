@@ -18,7 +18,7 @@ migrate_working_dir/
 *.iws
 .idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
+# The .vscode folder contains launch configuration and tasks you configure for
 # VS Code which you may wish to be included in version control, so this line
 # is commented out by default.
 #.vscode/
@@ -55,3 +55,30 @@ app.*.map.json
 lib/main_diag*.dart
 lib/main_firebase_only.dart
 lib/main_test.dart
+
+# === Secrets & signing materials (never commit) ===
+# Apple API keys / signing
+*.p8
+AuthKey_*.p8
+*.mobileprovision
+*.cer
+*.pem
+*.key
+
+# Firebase service account keys
+*service-account*.json
+*firebase-adminsdk*.json
+firebase-service-account*.json
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Codemagic local config
+.codemagic/
+
+# Build artifacts (defensive - prevent accidental commit)
+*.apk
+*.aab
+*.ipa
