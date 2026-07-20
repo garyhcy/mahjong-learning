@@ -235,7 +235,7 @@ lib/
 | ✅ | Google Play 階段 4：內部測試 + 上傳 AAB | 已完成（2026-07-16，app-release.aab 已上傳，版本 3，待審批 1-3 天） |
 | ✅ | Google Play 訂閱商品 + 基本方案（`ludi_pro_monthly` HK$48/月、`ludi_pro_yearly` HK$368/年，各含 7 天免費試用 base plan） | 已完成（2026-07-16） |
 | ✅ | RevenueCat：匯入兩個 product、歸入 entitlement `pro`、放入 Offering `default`（current） | 已完成（2026-07-16，product 匯入 + entitlement 歸屬 + current offering 設定） |
-| ✅ | Apple TestFlight 測試版（Codemagic 雲端 build） | 已完成（2026-07-17，Gary 手動建立 App Store provisioning profile 後 Codemagic build 成功，IPA 已上傳 App Store Connect）。歷史：certificate private key 問題已解決（Gary 撤銷舊 cert，經 Codemagic UI 建立新 Ludi Distribution cert，Codemagic 持有 private key）；profile 問題根因為 Codemagic `ios_signing` 的 `distribution_type` + `bundle_identifier` 模式只 fetch 已存在 profile 不會 auto-create，Gary 手動在 Apple Developer Portal 建立 App Store profile -> 上傳 Codemagic -> 重新觸發 build 後解決。 |
+| 🟢 | Apple TestFlight 測試版（Codemagic 雲端 build） | ✅ 已完成（2026-07-20 22:50 Gary 確認 build 成功上傳並可安裝測試，ExportOptions.plist 修正後 export 成功產出 IPA） |
 | 🟡 | 商店截圖、描述文案 | 待製作 |
 | ⚪ | Community Feed 改為真實數據 | 後端待開發 |
 | ⚪ | Find a Match 約戰配對引擎（Cloud Functions + 場地 DB） | 後端待開發 |
@@ -252,7 +252,7 @@ lib/
 | Codemagic dashboard 上 com.ludi.teach 的 App Store profile 數量 | 只有 1 個（UUID 正確） |
 | App Store Connect build 位置 | TestFlight > Builds（已無 Activity tab） |
 
-> ⚠️ 以上皆已由 Gary 多次確認，不需要再重複驗證。下一步只缺「驗證 Codemagic build 真的上傳成功 + TestFlight build 處理完成」，詳見 `../CHANGELOG2.md`「⚠️ Codemagic Build 上傳驗證（2026-07-20 重新開啟）」區塊。
+> ⚠️ 以上皆已由 Gary 多次確認，不需要再重複驗證。**TestFlight Build 上傳驗證已於 2026-07-20 22:50 完成**（Gary 確認 build 成功上傳並可安裝測試，checklist 0.5-0.7 全數通過）。
 
 ---
 

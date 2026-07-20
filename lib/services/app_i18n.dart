@@ -13,11 +13,14 @@ class AppI18n extends ChangeNotifier {
   static DisplayLang _current = DisplayLang.en;
   static DisplayLang get current => _current;
 
+  static final ValueNotifier<int> _languageVersion = ValueNotifier(0);
+  static ValueListenable<int> get languageNotifier => _languageVersion;
   static void set(DisplayLang lang) {
     if (_current == lang) return;
     _current = lang;
     // Notify listeners via a singleton instance registered in provider tree.
     _instance?._notify();
+    _languageVersion.value++;
   }
 
   static AppI18n? _instance;
@@ -198,6 +201,23 @@ const Map<String, Map<String, String>> _strings = {
   'community.friendLeaderboard': {'en': 'Friend Leaderboard', 'zh': '好友排行榜'},
   'community.addAll': {'en': 'Add', 'zh': '加入'},
   'community.viewAll': {'en': 'View All', 'zh': '查看全部'},
+  'community.friendRequests': {'en': 'Friend Requests', 'zh': '好友請求'},
+  'community.accept': {'en': 'Accept', 'zh': '接受'},
+  'community.reject': {'en': 'Reject', 'zh': '拒絕'},
+  'community.pending': {'en': 'Pending', 'zh': '處理中'},
+  'community.noFriends': {'en': 'No friends yet. Add friends to see them here!', 'zh': '還沒有好友，加入好友後可在這裡查看！'},
+  'community.noRequests': {'en': 'No pending friend requests', 'zh': '沒有待處理的好友請求'},
+  'community.regionLeaderboard': {'en': 'Region Leaderboard', 'zh': '地區排行榜'},
+  'community.global': {'en': 'Global', 'zh': '全球'},
+  'community.hongKong': {'en': 'Hong Kong', 'zh': '香港'},
+  'community.taiwan': {'en': 'Taiwan', 'zh': '台灣'},
+  'community.mainland': {'en': 'Mainland China', 'zh': '中國大陸'},
+  'community.overseas': {'en': 'Overseas', 'zh': '海外'},
+  'community.friends': {'en': 'Friends', 'zh': '好友'},
+  'community.copied': {'en': 'Copied!', 'zh': '已複製！'},
+  'community.earned': {'en': 'Earned', 'zh': '已獲得'},
+  'community.joined': {'en': 'Joined', 'zh': '已加入'},
+  'community.profile': {'en': 'Profile', 'zh': '個人檔案'},
   'community.addFriend': {'en': 'Add Friend', 'zh': '加入好友'},
   'community.addFriendDesc': {'en': "Enter your friend's player number to connect.", 'zh': '輸入好友的玩家編號以加入。'},
   'community.playerNumber': {'en': 'Player Number', 'zh': '玩家編號'},

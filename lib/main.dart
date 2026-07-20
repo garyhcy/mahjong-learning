@@ -364,17 +364,22 @@ class _MainShellState extends State<MainShell> {
       context.read<MatchState>().updatePremium(isPremium);
     });
     return Scaffold(
-      body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 300),
-        switchInCurve: Curves.easeOut,
-        switchOutCurve: Curves.easeIn,
-        transitionBuilder: (child, animation) {
-          return FadeTransition(opacity: animation, child: child);
+      body: ValueListenableBuilder<int>(
+        valueListenable: AppI18n.languageNotifier,
+        builder: (context, lang, child) {
+          return AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            switchInCurve: Curves.easeOut,
+            switchOutCurve: Curves.easeIn,
+            transitionBuilder: (child, animation) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+            child: KeyedSubtree(
+              key: ValueKey(_currentIndex),
+              child: _screens[_currentIndex],
+            ),
+          );
         },
-        child: KeyedSubtree(
-          key: ValueKey(_currentIndex),
-          child: _screens[_currentIndex],
-        ),
       ),
       bottomNavigationBar: ClipRect(
         child: BackdropFilter(

@@ -178,6 +178,9 @@ class GameState extends ChangeNotifier {
   final Map<String, int> _dailyTasks = {};
   String _lastActiveDate = '';
   int _consecutiveCorrect = 0;
+  String? _playerId;
+  String _region = 'HK';
+  final List<String> _friends = [];
   int _dailyXpEarned = 0;
   int _lessonCompletedToday = 0;
 
@@ -229,6 +232,9 @@ class GameState extends ChangeNotifier {
   int get lessonCompletedToday => _lessonCompletedToday;
   String get lastActiveDate => _lastActiveDate;
 
+  String? get playerId => _playerId;
+  String get region => _region;
+  List<String> get friends => List.unmodifiable(_friends);
   // ── Wrong answer getters ──
   List<WrongAnswer> get wrongAnswers => List.unmodifiable(_wrongAnswers);
   int get wrongAnswerCount => _wrongAnswers.length;
@@ -1165,5 +1171,40 @@ class GameState extends ChangeNotifier {
 
     // Trigger debounced sync to Firebase (logged-in users)
     _scheduleCloudSync();
+  // ── Player ID & Region ──
+  Future<void> initPlayerId() async {
+    if (_playerId != null) return;
+    _playerId = FirebaseService.generatePlayerId();
+    await ProgressStorage.savePlayerId(_playerId!);
+    notifyListeners();
+  }
+
+  void setRegion(String r) {
+    _region = r;
+    notifyListeners();
+  }
+
+  Future<void> loadPlayerId() async {
+    _playerId = await ProgressStorage.getPlayerId();
+  }
+
+  // ── Friends ──
+  void addFriend(String uid) {
+    if (!_friends.contains(uid)) {
+      _friends.add(uid);
+      notifyListeners();
+    }
+  }
+
+  void removeFriend(String uid) {
+    _friends.remove(uid);
+    notifyListeners();
+  }
+
+  void setFriends(List<String> uids) {
+    _friends.clear();
+    _friends.addAll(uids);
+    notifyListeners();
+  }
   }
 }
