@@ -23,7 +23,7 @@ workflows:
       - name: Build IPA
         script: |
           set -e
-          flutter build ipa --release
+          flutter build ipa --release --export-options-plist=ios/ExportOptions.plist
       - name: List build artifacts
         script: |
           echo "=== build/ios directory structure ==="

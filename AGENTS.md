@@ -252,7 +252,7 @@ lib/
 | Codemagic dashboard 上 com.ludi.teach 的 App Store profile 數量 | 只有 1 個（UUID 正確） |
 | App Store Connect build 位置 | TestFlight > Builds（已無 Activity tab） |
 
-> ⚠️ 以上皆已由 Gary 多次確認，不需要再重複驗證。下一步只缺「驗證 Codemagic build 真的上傳成功 + TestFlight build 處理完成」，詳見 CHANGELOG2.md「驗證 Codemagic Build 真的成功」區塊。
+> ⚠️ 以上皆已由 Gary 多次確認，不需要再重複驗證。下一步只缺「驗證 Codemagic build 真的上傳成功 + TestFlight build 處理完成」，詳見 `../CHANGELOG2.md`「⚠️ Codemagic Build 上傳驗證（2026-07-20 重新開啟）」區塊。
 
 ---
 
