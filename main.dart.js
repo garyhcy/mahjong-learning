@@ -32885,7 +32885,7 @@ break
 case 1:return A.p(q,r)}})
 return A.q($async$DQ,r)},
 b9e(){var s,r=J.jv(4,t.N)
-for(s=0;s<4;++s)r[s]="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"[B.c3.fv(36)]
+for(s=0;s<4;++s)r[s]="0123456789"[B.c3.fv(10)]
 return"#LD"+B.b.n5(r)},
 Ro(a){var s=0,r=A.r(t.nA),q,p,o,n
 var $async$Ro=A.n(function(b,c){if(b===1)return A.o(c,r)
@@ -32987,7 +32987,7 @@ a0=$.kc()
 a1=A.b_t(a0,a0.giy().Lw())
 for(a0=t.N,q=t.K,p=t.a,o=t.s,n="fake_"+a2+"_",m=0;m<a3;++m){l=Date.now()
 k=A.a(new Array(4),o)
-for(j=0;j<4;++j)k[j]="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"[B.c3.fv(36)]
+for(j=0;j<4;++j)k[j]="0123456789"[B.c3.fv(10)]
 i=B.b.n5(k)
 l=$.kc().cF("users").d2(n+m+"_"+l)
 h=B.j.bw(m,8)
