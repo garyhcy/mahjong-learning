@@ -1023,6 +1023,7 @@ class GameState extends ChangeNotifier {
       'nickname': _nickname,
       'avatarEmoji': _avatarEmoji,
       'userLevel': userLevel,
+      'playerId': _playerId,
     });
   }
 
@@ -1070,6 +1071,18 @@ class GameState extends ChangeNotifier {
           }
         }
         _syncStageProgress();
+      }
+
+      // Sync playerId from cloud (prefer cloud value if local is missing or legacy format)
+      final cloudPlayerId = data['playerId'] as String?;
+      if (cloudPlayerId != null && cloudPlayerId.isNotEmpty) {
+        if (_playerId == null || !RegExp(r'^LD\d{4}$').hasMatch(_playerId!)) {
+          _playerId = cloudPlayerId;
+          await ProgressStorage.savePlayerId(_playerId!);
+        }
+      } else if (_playerId == null) {
+        _playerId = FirebaseService.generatePlayerId();
+        await ProgressStorage.savePlayerId(_playerId!);
       }
 
       _persist();
@@ -1193,6 +1206,11 @@ class GameState extends ChangeNotifier {
 
   Future<void> loadPlayerId() async {
     _playerId = await ProgressStorage.getPlayerId();
+    // Migrate legacy player IDs: regenerate if not matching LD + 4 digits
+    if (_playerId != null && !RegExp(r'^LD\d{4}$').hasMatch(_playerId!)) {
+      _playerId = FirebaseService.generatePlayerId();
+      await ProgressStorage.savePlayerId(_playerId!);
+    }
   }
 
   // ── Friends ──
