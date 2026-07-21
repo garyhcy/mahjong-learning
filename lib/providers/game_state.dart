@@ -353,6 +353,13 @@ class GameState extends ChangeNotifier {
     }
 
     _streak = _resolveStreak(saved.streak, saved.lastLessonDate);
+
+    // ── Player ID: load from storage, generate if absent ──
+    _playerId = await ProgressStorage.getPlayerId();
+    if (_playerId == null) {
+      _playerId = FirebaseService.generatePlayerId();
+      await ProgressStorage.savePlayerId(_playerId!);
+    }
     if (_isPremium) {
       _hearts = maxHearts;
       _lastHeartLossAt = null;
