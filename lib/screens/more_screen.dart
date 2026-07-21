@@ -4,12 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/game_state.dart';
 import '../widgets/mascot_widget.dart';
 import '../services/app_i18n.dart';
 import '../services/audio_service.dart';
 import 'paywall_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // League calculation (same as community_screen)
 String _getLeagueName(int xp) {
@@ -378,7 +378,51 @@ class _MoreScreenState extends State<MoreScreen> {
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final confirmed = await showDialog<bool>(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        title: Text(AppI18n.t('settings.signOut'),
+                            style: GoogleFonts.nunito(fontWeight: FontWeight.w800)),
+                        content: Text(AppI18n.t('settings.signOutConfirm'),
+                            style: GoogleFonts.nunito(color: const Color(0xFF616161))),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(ctx, false),
+                            child: Text(AppI18n.t('common.cancel'),
+                                style: GoogleFonts.nunito(
+                                    color: const Color(0xFF4CAF50),
+                                    fontWeight: FontWeight.w700)),
+                          ),
+                          ElevatedButton(
+                            onPressed: () => Navigator.pop(ctx, true),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFFE53935),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                            ),
+                            child: Text(AppI18n.t('settings.signOut'),
+                                style: GoogleFonts.nunito(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700)),
+                          ),
+                        ],
+                      ),
+                    );
+                    if (confirmed != true) return;
+                    try {
+                      await FirebaseAuth.instance.signOut();
+                    } catch (_) {}
+                    await SharedPreferences.getInstance()
+                        .then((prefs) => prefs.remove('local_demo_authed'));
+                    if (context.mounted) {
+                      final game = context.read<GameState>();
+                      game.disableCloudSync();
+                      game.loadFromStorage();
+                    }
+                  },
                   style: OutlinedButton.styleFrom(
                     foregroundColor: const Color(0xFFE53935),
                     side: const BorderSide(color: Color(0xFFE53935)),

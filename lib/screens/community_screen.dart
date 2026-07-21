@@ -2243,7 +2243,7 @@ class _AllLeaderboardPage extends StatelessWidget {
             borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
           ),
           child: Center(
-            child: Text('#${entry.rank}',
+            child: Text('${entry.rank}',
                 style: GoogleFonts.nunito(
                     fontSize: 16, fontWeight: FontWeight.w800, color: color)),
           ),
@@ -2268,7 +2268,7 @@ class _AllLeaderboardPage extends StatelessWidget {
         children: [
           SizedBox(
             width: 28,
-            child: Text('#${entry.rank}',
+            child: Text('${entry.rank}',
                 style: GoogleFonts.nunito(
                     fontSize: 14,
                     fontWeight: FontWeight.w800,

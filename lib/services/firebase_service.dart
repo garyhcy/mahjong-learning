@@ -69,7 +69,7 @@ class FirebaseService {
     const chars = '0123456789';
     final random = Random();
     final code = List.generate(4, (_) => chars[random.nextInt(chars.length)]).join();
-    return '#LD$code';
+    return 'LD$code';
   }
 
   static Future<void> savePlayerId(String uid, String playerId) async {
@@ -194,7 +194,7 @@ class FirebaseService {
 
     for (int i = 0; i < count; i++) {
       final fakeUid = 'fake_${region}_${i}_${DateTime.now().millisecondsSinceEpoch}';
-      final fakePlayerId = '#LD${List.generate(4, (_) => '0123456789'[random.nextInt(10)]).join()}';
+      final fakePlayerId = 'LD${List.generate(4, (_) => '0123456789'[random.nextInt(10)]).join()}';
       batch.set(_firestore.collection('users').doc(fakeUid), {
         'playerId': fakePlayerId,
         'nickname': names[i % names.length],

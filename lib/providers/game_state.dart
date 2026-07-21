@@ -354,9 +354,11 @@ class GameState extends ChangeNotifier {
 
     _streak = _resolveStreak(saved.streak, saved.lastLessonDate);
 
-    // ── Player ID: load from storage, generate if absent ──
+    // ── Player ID: load from storage, regenerate if legacy format ──
     _playerId = await ProgressStorage.getPlayerId();
-    if (_playerId == null) {
+    final isPlayerIdValid =
+        _playerId != null && RegExp(r'^LD\d{4}$').hasMatch(_playerId!);
+    if (!isPlayerIdValid) {
       _playerId = FirebaseService.generatePlayerId();
       await ProgressStorage.savePlayerId(_playerId!);
     }
@@ -1073,14 +1075,22 @@ class GameState extends ChangeNotifier {
         _syncStageProgress();
       }
 
-      // Sync playerId from cloud (prefer cloud value if local is missing or legacy format)
+      // Sync playerId from cloud (only accept well-formed LD#### IDs; regenerate if legacy)
       final cloudPlayerId = data['playerId'] as String?;
-      if (cloudPlayerId != null && cloudPlayerId.isNotEmpty) {
-        if (_playerId == null || !RegExp(r'^LD\d{4}$').hasMatch(_playerId!)) {
-          _playerId = cloudPlayerId;
-          await ProgressStorage.savePlayerId(_playerId!);
+      final isLocalValid = _playerId != null && RegExp(r'^LD\d{4}$').hasMatch(_playerId!);
+      if (isLocalValid) {
+        // Local already correct; if cloud is legacy/different, push local back to cloud
+        if (cloudPlayerId != _playerId) {
+          // will be synced by _syncToCloud() below
         }
-      } else if (_playerId == null) {
+      } else if (cloudPlayerId != null &&
+          cloudPlayerId.isNotEmpty &&
+          RegExp(r'^LD\d{4}$').hasMatch(cloudPlayerId)) {
+        // Cloud is well-formed, adopt it
+        _playerId = cloudPlayerId;
+        await ProgressStorage.savePlayerId(_playerId!);
+      } else {
+        // Both missing or legacy: generate a fresh well-formed ID
         _playerId = FirebaseService.generatePlayerId();
         await ProgressStorage.savePlayerId(_playerId!);
       }

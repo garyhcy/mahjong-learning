@@ -132,6 +132,7 @@ const Map<String, Map<String, String>> _strings = {
   'settings.privacyPolicy': {'en': 'Privacy Policy', 'zh': '隱私政策'},
   'settings.deleteAccount': {'en': 'Delete Account', 'zh': '刪除帳號'},
   'settings.signOut': {'en': 'Sign Out', 'zh': '登出'},
+  'settings.signOutConfirm': {'en': 'Are you sure you want to sign out? Your local progress will remain on this device.', 'zh': '確定要登出嗎？本地進度將保留在此裝置上。'},
   'settings.logOut': {'en': 'Log Out', 'zh': '登出'},
   'settings.accountManagement': {'en': 'Account Management', 'zh': '帳號管理'},
   'settings.helpSupport': {'en': 'Help & Support', 'zh': '幫助與支援'},
