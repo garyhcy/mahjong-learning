@@ -31,7 +31,7 @@ export PATH="$PATH:/opt/flutter/bin"
 cd /home/workspace/Ludi/mahjong-learning
 flutter pub get
 flutter analyze
-flutter build web --no-tree-shake-icons
+flutter build web --no-tree-shake-icons --base-href /mahjong-learning/  # base-href 必填，否則白屏
 flutter build apk --debug        # Android debug build（在本機）
 ```
 
@@ -272,7 +272,7 @@ lib/
 ```bash
 export PATH="$PATH:/opt/flutter/bin"
 cd /home/workspace/Ludi/mahjong-learning
-flutter build web --no-tree-shake-icons          # ~40s
+flutter build web --no-tree-shake-icons --base-href /mahjong-learning/          # ~40s，base-href 必填，否則白屏
 # 部署（保留 gh-pages 歷史）：
 TMP=$(mktemp -d) && cd "$TMP" 
   && git clone --branch gh-pages --depth 1 https://github.com/garyhcy/mahjong-learning.git . 
