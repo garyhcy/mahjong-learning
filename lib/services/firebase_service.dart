@@ -68,7 +68,7 @@ class FirebaseService {
   static String generatePlayerId() {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     final random = Random();
-    final code = List.generate(6, (_) => chars[random.nextInt(chars.length)]).join();
+    final code = List.generate(4, (_) => chars[random.nextInt(chars.length)]).join();
     return '#LD$code';
   }
 
@@ -194,7 +194,7 @@ class FirebaseService {
 
     for (int i = 0; i < count; i++) {
       final fakeUid = 'fake_${region}_${i}_${DateTime.now().millisecondsSinceEpoch}';
-      final fakePlayerId = '#LD${List.generate(6, (_) => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'[random.nextInt(36)]).join()}';
+      final fakePlayerId = '#LD${List.generate(4, (_) => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'[random.nextInt(36)]).join()}';
       batch.set(_firestore.collection('users').doc(fakeUid), {
         'playerId': fakePlayerId,
         'nickname': names[i % names.length],

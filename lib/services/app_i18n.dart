@@ -222,7 +222,7 @@ const Map<String, Map<String, String>> _strings = {
   'community.addFriend': {'en': 'Add Friend', 'zh': '加入好友'},
   'community.addFriendDesc': {'en': "Enter your friend's player number to connect.", 'zh': '輸入好友的玩家編號以加入。'},
   'community.playerNumber': {'en': 'Player Number', 'zh': '玩家編號'},
-  'community.playerNumberHint': {'en': 'e.g. 100234', 'zh': '例如 100234'},
+  'community.playerNumberHint': {'en': 'e.g. LD1234', 'zh': '例如 LD1234'},
   'community.friendRequestSent': {'en': 'Friend request sent!', 'zh': '好友請求已發送！'},
   'community.playerNotFound': {'en': 'Player not found. Check the number and try again.', 'zh': '找不到該玩家，請檢查編號再試。'},
   'community.findMatch': {'en': 'Find a Match', 'zh': '約戰'},

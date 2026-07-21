@@ -53,11 +53,12 @@ class _FindMatchScreenState extends State<FindMatchScreen> {
             const SizedBox(height: 24),
             _findButton(match, skill),
             const SizedBox(height: 28),
-            if (match.activeRooms.isNotEmpty) ...[
-              _roomsHeader(),
-              const SizedBox(height: 12),
-              ...match.activeRooms.map((r) => _roomCard(r, match)),
-            ],
+            // T3: Match Rooms hidden - backend not ready
+            // if (match.activeRooms.isNotEmpty) ...[
+            //   _roomsHeader(),
+            //   const SizedBox(height: 12),
+            //   ...match.activeRooms.map((r) => _roomCard(r, match)),
+            // ],
             const SizedBox(height: 24),
           ],
         ),

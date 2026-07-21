@@ -67,16 +67,16 @@ class _LeaderboardEntry {
 }
 
 const List<_LeaderboardEntry> _fakeLeaderboard = [
-  _LeaderboardEntry(rank: 1, name: 'Jason', avatar: '🐉', xp: 3120, streak: 14, playerId: '#LD001', skillRating: 88),
-  _LeaderboardEntry(rank: 2, name: 'Emily', avatar: '🐱', xp: 2340, streak: 9, playerId: '#LD002', skillRating: 72),
-  _LeaderboardEntry(rank: 3, name: 'David', avatar: '🎯', xp: 1980, streak: 7, playerId: '#LD003', skillRating: 65),
-  _LeaderboardEntry(rank: 4, name: 'Michelle', avatar: '🌸', xp: 1650, streak: 5, playerId: '#LD004', skillRating: 55),
-  _LeaderboardEntry(rank: 5, name: 'Sarah', avatar: '🦊', xp: 1420, streak: 3, playerId: '#LD005', skillRating: 48),
-  _LeaderboardEntry(rank: 6, name: 'Kevin', avatar: '🎮', xp: 1280, streak: 4, playerId: '#LD006', skillRating: 40),
-  _LeaderboardEntry(rank: 7, name: 'Amy', avatar: '🌺', xp: 1100, streak: 2, playerId: '#LD007', skillRating: 25),
-  _LeaderboardEntry(rank: 8, name: 'Tom', avatar: '🦝', xp: 950, streak: 1, playerId: '#LD008', skillRating: 20),
-  _LeaderboardEntry(rank: 9, name: 'Lisa', avatar: '🦜', xp: 800, streak: 3, playerId: '#LD009', skillRating: 15),
-  _LeaderboardEntry(rank: 10, name: 'Ben', avatar: '🦝', xp: 650, streak: 0, playerId: '#LD010', skillRating: 10),
+  _LeaderboardEntry(rank: 1, name: 'Jason', avatar: '🐉', xp: 3120, streak: 14, playerId: '#LD01', skillRating: 88),
+  _LeaderboardEntry(rank: 2, name: 'Emily', avatar: '🐱', xp: 2340, streak: 9, playerId: '#LD02', skillRating: 72),
+  _LeaderboardEntry(rank: 3, name: 'David', avatar: '🎯', xp: 1980, streak: 7, playerId: '#LD03', skillRating: 65),
+  _LeaderboardEntry(rank: 4, name: 'Michelle', avatar: '🌸', xp: 1650, streak: 5, playerId: '#LD04', skillRating: 55),
+  _LeaderboardEntry(rank: 5, name: 'Sarah', avatar: '🦊', xp: 1420, streak: 3, playerId: '#LD05', skillRating: 48),
+  _LeaderboardEntry(rank: 6, name: 'Kevin', avatar: '🎮', xp: 1280, streak: 4, playerId: '#LD06', skillRating: 40),
+  _LeaderboardEntry(rank: 7, name: 'Amy', avatar: '🌺', xp: 1100, streak: 2, playerId: '#LD07', skillRating: 25),
+  _LeaderboardEntry(rank: 8, name: 'Tom', avatar: '🦝', xp: 950, streak: 1, playerId: '#LD08', skillRating: 20),
+  _LeaderboardEntry(rank: 9, name: 'Lisa', avatar: '🦜', xp: 800, streak: 3, playerId: '#LD09', skillRating: 15),
+  _LeaderboardEntry(rank: 10, name: 'Ben', avatar: '🦝', xp: 650, streak: 0, playerId: '#LD10', skillRating: 10),
 ];
 
 // ─── Achievement display model (expanded to 24) ───
@@ -188,9 +188,10 @@ class CommunityScreen extends StatelessWidget {
               _buildLeaderboardSection(context, userXp, nickname, game),
               const SizedBox(height: 24),
               _buildFriendsSection(context, game),
-              const SizedBox(height: 24),
-              _buildMatchCard(context),
               const SizedBox(height: 32),
+              // T3: Find a Match hidden - backend not ready
+              // _buildMatchCard(context),
+              // const SizedBox(height: 32),
             ],
           ),
         ),
@@ -263,7 +264,7 @@ class CommunityScreen extends StatelessWidget {
               ),
               const SizedBox(height: 2),
               Text(
-                '${league.emoji} ${AppI18n.t(league.name)}  ·  ${game.playerId ?? '#LD----'}  ·  ${AppI18n.t('community.skill')} ${game.skillRating}',
+                '${league.emoji} ${AppI18n.t(league.name)}  ·  ${game.playerId ?? 'LD----'}  ·  ${AppI18n.t('community.skill')} ${game.skillRating}',
                 style: GoogleFonts.nunito(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
@@ -488,7 +489,7 @@ class CommunityScreen extends StatelessWidget {
         children: [
           _statItem('⚡', AppI18n.t('community.totalXp'), '$xp'),
           _statDivider(),
-          _statItem('🔥', AppI18n.t('community.streak'), '$streak ${AppI18n.t("community.days")}'),
+          _statItem('🔥', AppI18n.t('community.streak'), '$streak'),
           _statDivider(),
           _statItem('✅', AppI18n.t('community.completed'), '$completedCount'),
         ],
@@ -646,33 +647,6 @@ class CommunityScreen extends StatelessWidget {
                     fontWeight: FontWeight.w800,
                     color: const Color(0xFF2D2D2D))),
             const Spacer(),
-            // Add Friend button
-            GestureDetector(
-              onTap: () => _showAddFriendDialog(context, uid),
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF4CAF50).withAlpha(15),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                      color: const Color(0xFF4CAF50).withAlpha(50)),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.person_add_rounded,
-                        size: 14, color: Color(0xFF4CAF50)),
-                    const SizedBox(width: 4),
-                    Text(AppI18n.t('community.addAll'),
-                        style: GoogleFonts.nunito(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xFF4CAF50))),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(width: 10),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
@@ -1098,7 +1072,7 @@ class CommunityScreen extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                         color: const Color(0xFF2D2D2D))),
                 if (playerId.isNotEmpty)
-                  Text('#$playerId',
+                  Text(playerId,
                       style: GoogleFonts.nunito(
                           fontSize: 10, color: const Color(0xFF9E9E9E))),
               ],
@@ -1225,7 +1199,7 @@ class CommunityScreen extends StatelessWidget {
                                         fontWeight: FontWeight.w700,
                                         color: const Color(0xFF2D2D2D))),
                                 Text(
-                                    '#${(player['playerId'] as String?) ?? ''}',
+                                    '${(player['playerId'] as String?) ?? ''}',
                                     style: GoogleFonts.nunito(
                                         fontSize: 11,
                                         color: const Color(0xFF9E9E9E))),
@@ -1371,7 +1345,7 @@ class CommunityScreen extends StatelessWidget {
                           color: const Color(0xFFF5F5F5),
                           borderRadius: BorderRadius.circular(4),
                         ),
-                        child: Text('#${entry.playerId}',
+                        child: Text(entry.playerId,
                             style: GoogleFonts.nunito(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w600,
