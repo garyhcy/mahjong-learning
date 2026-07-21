@@ -414,7 +414,7 @@ class CommunityScreen extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        AppI18n.t('community.rank') + '$rank',
+                        AppI18n.t('community.rank') + ' ' + '$rank',
                         style: GoogleFonts.nunito(
                           fontSize: 13,
                           color: const Color(0xFF757575),

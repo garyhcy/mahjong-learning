@@ -306,7 +306,7 @@ const Map<String, Map<String, String>> _strings = {
   'community.streak': {'en': 'Streak', 'zh': '連續天數'},
   'community.streakDays': {'en': '{n} Days', 'zh': '{n} 天'},
   'community.completed': {'en': 'Completed', 'zh': '已完成'},
-  'community.rank': {'en': 'Rank #{rank}', 'zh': '排名 #{rank}'},
+  'community.rank': {'en': 'Rank', 'zh': '排名'},
   'community.xp': {'en': '{xp} XP', 'zh': '{xp} XP'},
   'community.leaderboard': {'en': 'Leaderboard', 'zh': '排行榜'},
   'community.weekly': {'en': 'Weekly', 'zh': '每週'},
