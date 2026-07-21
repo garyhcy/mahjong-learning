@@ -121,7 +121,7 @@ class HomeScreen extends StatelessWidget {
     );
     final stageIndex = currentStageIndex >= 0 ? currentStageIndex : 0;
     final stage = game.stages.isNotEmpty ? game.stages[stageIndex] : null;
-    final title = stage?.title ?? AppI18n.t('home.mahjongBasics');
+    final title = stage?.localizedTitle ?? AppI18n.t('home.mahjongBasics');
     final stageNum = stageIndex + 1;
     final stageProgress = stage != null && stage.lessonCount > 0
         ? stage.completedLessons
@@ -574,7 +574,7 @@ class _AnimatedPathNodeState extends State<_AnimatedPathNode>
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  '${widget.index}. ${widget.stage.title}',
+                  '${widget.index}. ${widget.stage.localizedTitle}',
                   style: GoogleFonts.nunito(
                     fontSize: 15,
                     fontWeight: FontWeight.w800,

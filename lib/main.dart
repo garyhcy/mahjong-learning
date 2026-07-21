@@ -60,44 +60,50 @@ class MahjongApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: matchState),
         ChangeNotifierProvider.value(value: i18n),
       ],
-      child: MaterialApp(
-        title: 'Ludi',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color(0xFF4CAF50),
-            primary: const Color(0xFF4CAF50),
-            secondary: const Color(0xFFE8B93E),
-            surface: const Color(0xFFFFF8F0),
-          ),
-          scaffoldBackgroundColor: const Color(0xFFFFF8F0),
-          textTheme: GoogleFonts.nunitoTextTheme().apply(
-            bodyColor: const Color(0xFF2D2D2D),
-          ),
-          appBarTheme: const AppBarTheme(
-            backgroundColor: Colors.white,
-            elevation: 0,
-            centerTitle: true,
-            foregroundColor: Color(0xFF2D2D2D),
-          ),
-          elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF4CAF50),
-              foregroundColor: Colors.white,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+      child: ValueListenableBuilder<int>(
+        valueListenable: AppI18n.languageNotifier,
+        builder: (context, langVersion, _) {
+          return MaterialApp(
+            key: ValueKey('ludi-app-$langVersion'),
+            title: 'Ludi',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              useMaterial3: true,
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: const Color(0xFF4CAF50),
+                primary: const Color(0xFF4CAF50),
+                secondary: const Color(0xFFE8B93E),
+                surface: const Color(0xFFFFF8F0),
               ),
-              textStyle: GoogleFonts.nunito(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
+              scaffoldBackgroundColor: const Color(0xFFFFF8F0),
+              textTheme: GoogleFonts.nunitoTextTheme().apply(
+                bodyColor: const Color(0xFF2D2D2D),
+              ),
+              appBarTheme: const AppBarTheme(
+                backgroundColor: Colors.white,
+                elevation: 0,
+                centerTitle: true,
+                foregroundColor: Color(0xFF2D2D2D),
+              ),
+              elevatedButtonTheme: ElevatedButtonThemeData(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF4CAF50),
+                  foregroundColor: Colors.white,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  textStyle: GoogleFonts.nunito(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-        home: const AuthGate(),
+            home: const AuthGate(),
+          );
+        },
       ),
     );
   }
@@ -375,7 +381,7 @@ class _MainShellState extends State<MainShell> {
               return FadeTransition(opacity: animation, child: child);
             },
             child: KeyedSubtree(
-              key: ValueKey(_currentIndex),
+              key: ValueKey((_currentIndex, lang)),
               child: _screens[_currentIndex],
             ),
           );

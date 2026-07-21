@@ -762,6 +762,7 @@ class _MoreScreenState extends State<MoreScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () async {
+                        Navigator.pop(ctx);  // 先關閉 sheet，避免重建期間 sheet 干擾
                         AppI18n.set(pendingLang);
                         final p = await SharedPreferences.getInstance();
                         await p.setString(
@@ -769,7 +770,6 @@ class _MoreScreenState extends State<MoreScreen> {
                             pendingLang == DisplayLang.zh ? 'zh' : 'en');
                         if (!ctx.mounted) return;
                         ctx.read<AppI18n>().renotify();
-                        Navigator.pop(ctx);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF4CAF50),
