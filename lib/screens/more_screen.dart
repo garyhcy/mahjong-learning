@@ -291,9 +291,6 @@ class _MoreScreenState extends State<MoreScreen> {
               _sectionTitle(AppI18n.t('settings.learning')),
               const SizedBox(height: 8),
               _settingsCard([
-                _settingsRow(Icons.schedule_rounded, AppI18n.t('settings.dailyReminder'),
-                    subtitle: '9:00 AM', onTap: () {}),
-                _settingsDivider(),
                 _settingsRow(Icons.restart_alt_rounded, AppI18n.t('settings.resetProgress'),
                     isDestructive: true, onTap: () {
                   _showResetDialog();
