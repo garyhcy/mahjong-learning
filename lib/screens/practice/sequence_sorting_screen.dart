@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../models/practice_data.dart';
 import '../../providers/practice_state.dart';
+import '../../providers/game_state.dart';
 import '../../services/audio_service.dart';
 
 class SequenceSortingScreen extends StatefulWidget {
@@ -119,6 +120,7 @@ class _SequenceSortingScreenState extends State<SequenceSortingScreen> {
       wrongTiles: _wrongTiles,
       wrongCategories: _wrongCategories,
     ));
+    context.read<GameState>().recordPracticeResult('sequence_sorting');
   }
 
   @override

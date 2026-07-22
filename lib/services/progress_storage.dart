@@ -20,6 +20,10 @@ class SavedProgress {
   final int consecutiveCorrect;
   final int dailyXpEarned;
   final List<String> wrongAnswersJsonList;
+  final List<int> lessonCompletionTimestamps;
+  final Set<String> practiceModesCompleted;
+  final int speedChallengeWins;
+  final int lastInactiveDays;
 
   const SavedProgress({
     this.xp = 0,
@@ -39,6 +43,10 @@ class SavedProgress {
     this.consecutiveCorrect = 0,
     this.dailyXpEarned = 0,
     this.wrongAnswersJsonList = const [],
+    this.lessonCompletionTimestamps = const [],
+    this.practiceModesCompleted = const {},
+    this.speedChallengeWins = 0,
+    this.lastInactiveDays = 0,
   });
 }
 
@@ -60,6 +68,10 @@ class ProgressStorage {
   static const _consecutiveCorrectKey = 'progress_consecutive_correct';
   static const _dailyXpEarnedKey = 'progress_daily_xp_earned';
   static const _wrongAnswersKey = 'progress_wrong_answers';
+  static const _lessonTimestampsKey = 'progress_lesson_timestamps';
+  static const _practiceModesKey = 'progress_practice_modes';
+  static const _speedChallengeWinsKey = 'progress_speed_challenge_wins';
+  static const _lastInactiveDaysKey = 'progress_last_inactive_days';
 
   Future<SavedProgress> load() async {
     final prefs = await SharedPreferences.getInstance();
@@ -102,6 +114,13 @@ class ProgressStorage {
       consecutiveCorrect: prefs.getInt(_consecutiveCorrectKey) ?? 0,
       dailyXpEarned: prefs.getInt(_dailyXpEarnedKey) ?? 0,
       wrongAnswersJsonList: wrongAnswers,
+      lessonCompletionTimestamps: (prefs.getStringList(_lessonTimestampsKey) ?? [])
+          .map((s) => int.tryParse(s) ?? 0)
+          .where((n) => n > 0)
+          .toList(),
+      practiceModesCompleted: (prefs.getStringList(_practiceModesKey) ?? []).toSet(),
+      speedChallengeWins: prefs.getInt(_speedChallengeWinsKey) ?? 0,
+      lastInactiveDays: prefs.getInt(_lastInactiveDaysKey) ?? 0,
     );
   }
 
@@ -123,6 +142,10 @@ class ProgressStorage {
     required int consecutiveCorrect,
     required int dailyXpEarned,
     required List<String> wrongAnswersJsonList,
+    required List<int> lessonCompletionTimestamps,
+    required Set<String> practiceModesCompleted,
+    required int speedChallengeWins,
+    required int lastInactiveDays,
   }) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt(_xpKey, xp);
@@ -158,6 +181,12 @@ class ProgressStorage {
     await prefs.setInt(_consecutiveCorrectKey, consecutiveCorrect);
     await prefs.setInt(_dailyXpEarnedKey, dailyXpEarned);
     await prefs.setStringList(_wrongAnswersKey, wrongAnswersJsonList);
+    await prefs.setStringList(
+        _lessonTimestampsKey, lessonCompletionTimestamps.map((n) => n.toString()).toList());
+    await prefs.setStringList(
+        _practiceModesKey, practiceModesCompleted.toList());
+    await prefs.setInt(_speedChallengeWinsKey, speedChallengeWins);
+    await prefs.setInt(_lastInactiveDaysKey, lastInactiveDays);
   }
 
   static const _playerIdKey = 'progress_player_id';

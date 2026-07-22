@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../models/practice_data.dart';
 import '../../providers/practice_state.dart';
+import '../../providers/game_state.dart';
 import '../../services/audio_service.dart';
 
 class SpeedChallengeScreen extends StatefulWidget {
@@ -113,6 +114,7 @@ class _SpeedChallengeScreenState extends State<SpeedChallengeScreen> {
       wrongCategories: [],
       timeTaken: totalSeconds,
     ));
+    context.read<GameState>().recordPracticeResult('speed_challenge', isWin: _score >= 10);
   }
 
   @override

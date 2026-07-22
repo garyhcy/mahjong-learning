@@ -7,7 +7,7 @@
 
 ## 1. 項目概述
 
-Ludi = Duolingo 式麻將教學 + 線下約戰社交 App。目標：做出 MVP 上架雙商店，供 Pre-seed / Seed 階段向投資者 Pitching。原則：**速度大於完美**。
+Ludi = Duolingo 式麻將教學 + 線下約戰社交 App。目標：做出 MVP 上架雙商店，供 Pre-seed / Seed 階段向投資者 Pitching。
 
 - **Framework:** Flutter（Web/Mobile），Dart `^3.10.0`
 - **State Management:** Provider（`GameState` + `PracticeState`）

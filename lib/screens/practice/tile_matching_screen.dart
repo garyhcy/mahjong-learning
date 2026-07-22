@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../models/practice_data.dart';
 import '../../providers/practice_state.dart';
+import '../../providers/game_state.dart';
 import '../../services/audio_service.dart';
 
 class TileMatchingScreen extends StatefulWidget {
@@ -138,6 +139,7 @@ class _TileMatchingScreenState extends State<TileMatchingScreen> {
       wrongTiles: _wrongTiles,
       wrongCategories: _wrongCategories,
     ));
+    context.read<GameState>().recordPracticeResult('tile_matching');
   }
 
   @override

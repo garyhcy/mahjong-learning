@@ -20,49 +20,133 @@ class AchievementDef {
       required this.desc});
 }
 
-/// All achievements
+/// All achievements (24) - IDs aligned with community_screen.dart _allAchievements
 const Map<String, AchievementDef> achievementDefs = {
   'first_lesson': AchievementDef(
       id: 'first_lesson',
-      name: 'First Lesson',
+      name: 'Beginner',
       emoji: '🎓',
-      desc: 'Complete Lesson 1'),
-  'scholar': AchievementDef(
-      id: 'scholar',
-      name: 'Scholar',
-      emoji: '📚',
-      desc: 'Complete 10 lessons'),
-  'graduate': AchievementDef(
-      id: 'graduate',
-      name: 'Graduate',
-      emoji: '🏆',
-      desc: 'Complete all lessons'),
-  '7day_streak': AchievementDef(
-      id: '7day_streak',
-      name: '7-Day Streak',
+      desc: 'Complete 1 lesson'),
+  'early_bird': AchievementDef(
+      id: 'early_bird',
+      name: 'Early Bird',
+      emoji: '🐦',
+      desc: 'Complete a lesson between 06:00-09:00'),
+  'streak_3': AchievementDef(
+      id: 'streak_3',
+      name: '3-Day Streak',
       emoji: '🔥',
+      desc: '3-day learning streak'),
+  'streak_7': AchievementDef(
+      id: 'streak_7',
+      name: '7-Day Streak',
+      emoji: '💪',
       desc: '7-day learning streak'),
-  'speed_learner': AchievementDef(
-      id: 'speed_learner',
-      name: 'Speed Learner',
-      emoji: '⚡',
-      desc: 'Complete 5 lessons in one day'),
-  'perfect': AchievementDef(
-      id: 'perfect',
-      name: 'Perfectionist',
-      emoji: '🎯',
-      desc: 'Answer 10 questions correctly in a row'),
-  'stage1_done': AchievementDef(
-      id: 'stage1_done',
-      name: 'MJ Newbie',
-      emoji: '🀇',
-      desc: 'Complete Stage 1'),
-  'all_stages_done': AchievementDef(
-      id: 'all_stages_done',
-      name: 'MJ Master',
+  'perfect_quiz': AchievementDef(
+      id: 'perfect_quiz',
+      name: 'Perfect Score',
+      emoji: '💯',
+      desc: '100% correct in a single quiz'),
+  'five_lessons': AchievementDef(
+      id: 'five_lessons',
+      name: 'Bookworm',
+      emoji: '📚',
+      desc: 'Complete 5 lessons'),
+  'first_stage': AchievementDef(
+      id: 'first_stage',
+      name: 'Stage Clear',
       emoji: '🏅',
+      desc: 'Complete Stage 1'),
+  'quick_learner': AchievementDef(
+      id: 'quick_learner',
+      name: 'Quick Learner',
+      emoji: '⚡',
+      desc: 'Complete 3 lessons within 30 minutes'),
+  'comeback': AchievementDef(
+      id: 'comeback',
+      name: 'Comeback',
+      emoji: '🔄',
+      desc: 'Complete a lesson after 7+ days inactive'),
+  'night_owl': AchievementDef(
+      id: 'night_owl',
+      name: 'Night Owl',
+      emoji: '🦉',
+      desc: 'Complete a lesson between 23:00-02:00'),
+  'streak_14': AchievementDef(
+      id: 'streak_14',
+      name: '14-Day Streak',
+      emoji: '🌟',
+      desc: '14-day learning streak'),
+  'streak_30': AchievementDef(
+      id: 'streak_30',
+      name: '30-Day Streak',
+      emoji: '🏆',
+      desc: '30-day learning streak'),
+  'ten_lessons': AchievementDef(
+      id: 'ten_lessons',
+      name: 'Scholar',
+      emoji: '📖',
+      desc: 'Complete 10 lessons'),
+  'twenty_lessons': AchievementDef(
+      id: 'twenty_lessons',
+      name: 'Dedicated',
+      emoji: '🎯',
+      desc: 'Complete 20 lessons'),
+  'all_stages': AchievementDef(
+      id: 'all_stages',
+      name: 'Master',
+      emoji: '👑',
       desc: 'Complete all stages'),
+  'social_3': AchievementDef(
+      id: 'social_3',
+      name: 'Social',
+      emoji: '🤝',
+      desc: 'Add 3 friends'),
+  'social_10': AchievementDef(
+      id: 'social_10',
+      name: 'Popular',
+      emoji: '🎉',
+      desc: 'Add 10 friends'),
+  'first_match': AchievementDef(
+      id: 'first_match',
+      name: 'First Match',
+      emoji: '🀄',
+      desc: 'Play your first match (locked)'),
+  'match_5': AchievementDef(
+      id: 'match_5',
+      name: 'Regular',
+      emoji: '🎲',
+      desc: 'Play 5 matches (locked)'),
+  'match_win': AchievementDef(
+      id: 'match_win',
+      name: 'Winner',
+      emoji: '🏅',
+      desc: 'Win a match (locked)'),
+  'speed_demon': AchievementDef(
+      id: 'speed_demon',
+      name: 'Speed Demon',
+      emoji: '💨',
+      desc: 'Win speed challenge 10 times'),
+  'explorer': AchievementDef(
+      id: 'explorer',
+      name: 'Explorer',
+      emoji: '🗺️',
+      desc: 'Complete all 17 course types'),
+  'gold_league': AchievementDef(
+      id: 'gold_league',
+      name: 'Gold Member',
+      emoji: '🥇',
+      desc: 'Reach Gold league (1200+ XP)'),
+  'diamond_league': AchievementDef(
+      id: 'diamond_league',
+      name: 'Diamond',
+      emoji: '💎',
+      desc: 'Reach Diamond league (4000+ XP)'),
 };
+
+/// League tier thresholds (XP-based) - used by achievement checks
+const int leagueGoldXp = 1200;
+const int leagueDiamondXp = 4000;
 
 /// Daily task definition
 class DailyTaskDef {
@@ -175,6 +259,12 @@ class GameState extends ChangeNotifier {
   String _nickname = 'Player';
   String _avatarEmoji = '🐼';
   final Set<String> _unlockedAchievements = {};
+  // ── Achievement tracking fields ──
+  List<int> _lessonCompletionTimestamps = [];
+  Set<String> _practiceModesCompleted = {};
+  int _speedChallengeWins = 0;
+  int _lastInactiveDays = 0; // days between last 2 active periods; used for comeback
+  double _lastQuizCorrectRatio = 0.0; // ratio of correct answers in last completed quiz
   final Map<String, int> _dailyTasks = {};
   String _lastActiveDate = '';
   int _consecutiveCorrect = 0;
@@ -184,7 +274,6 @@ class GameState extends ChangeNotifier {
   int _dailyXpEarned = 0;
   int _lessonCompletedToday = 0;
 
-  // ── Wrong answer tracking ──
   final List<WrongAnswer> _wrongAnswers = [];
 
   // ── Review mode ──
@@ -231,6 +320,19 @@ class GameState extends ChangeNotifier {
   int get dailyXpEarned => _dailyXpEarned;
   int get lessonCompletedToday => _lessonCompletedToday;
   String get lastActiveDate => _lastActiveDate;
+
+  // Achievement tracking getters
+  List<int> get lessonCompletionTimestamps => List.unmodifiable(_lessonCompletionTimestamps);
+  Set<String> get practiceModesCompleted => Set.unmodifiable(_practiceModesCompleted);
+  int get speedChallengeWins => _speedChallengeWins;
+  int get lastInactiveDays => _lastInactiveDays;  double get lastQuizCorrectRatio => _lastQuizCorrectRatio;
+
+  /// Lessons completed in last 30 minutes (for quick_learner achievement)
+  int get lessonsCompletedInLast30Min {
+    final now = DateTime.now().millisecondsSinceEpoch;
+    final cutoff = now - 30 * 60 * 1000;
+    return _lessonCompletionTimestamps.where((ts) => ts >= cutoff).length;
+  }
 
   String? get playerId => _playerId;
   String get region => _region;
@@ -342,6 +444,12 @@ class GameState extends ChangeNotifier {
     _consecutiveCorrect = saved.consecutiveCorrect;
     _dailyXpEarned = saved.dailyXpEarned;
 
+    // Achievement tracking fields
+    _lessonCompletionTimestamps = List.from(saved.lessonCompletionTimestamps);
+    _practiceModesCompleted = Set.from(saved.practiceModesCompleted);
+    _speedChallengeWins = saved.speedChallengeWins;
+    _lastInactiveDays = saved.lastInactiveDays;
+
     // Wrong answers
     _wrongAnswers.clear();
     for (final json in saved.wrongAnswersJsonList) {
@@ -451,41 +559,131 @@ class GameState extends ChangeNotifier {
     _persist();
   }
 
-  // ── Achievement checking ──
+  // ── Achievement checking (24 achievements, dynamic) ──
 
   void checkAchievements() {
     final before = Set<String>.from(_unlockedAchievements);
 
-    if (_lessonCompleted['1-1'] == true) {
+    // #1 first_lesson: complete 1 lesson
+    if (completedLessons >= 1) {
       _unlockedAchievements.add('first_lesson');
     }
-    if (completedLessons >= 10) {
-      _unlockedAchievements.add('scholar');
+    // #2 early_bird: complete a lesson 06:00-09:00
+    if (_hasLessonCompletedInHourRange(6, 9)) {
+      _unlockedAchievements.add('early_bird');
     }
-    if (completedLessons >= allLessonsData.length) {
-      _unlockedAchievements.add('graduate');
+    // #3 streak_3: 3-day streak
+    if (_streak >= 3) {
+      _unlockedAchievements.add('streak_3');
     }
+    // #4 streak_7: 7-day streak
     if (_streak >= 7) {
-      _unlockedAchievements.add('7day_streak');
+      _unlockedAchievements.add('streak_7');
     }
-    if (_lessonCompletedToday >= 5) {
-      _unlockedAchievements.add('speed_learner');
+    // #5 perfect_quiz: 100% correct in a single quiz
+    if (_lastQuizCorrectRatio == 1.0) {
+      _unlockedAchievements.add('perfect_quiz');
     }
-    if (_consecutiveCorrect >= 10) {
-      _unlockedAchievements.add('perfect');
+    // #6 five_lessons: complete 5 lessons
+    if (completedLessons >= 5) {
+      _unlockedAchievements.add('five_lessons');
     }
-    bool stage1Complete = _stages.isNotEmpty && _stages[0].completedLessons >= _stages[0].lessonCount;
-    if (stage1Complete) {
-      _unlockedAchievements.add('stage1_done');
+    // #7 first_stage: complete Stage 1
+    if (_stages.isNotEmpty && _stages[0].completedLessons >= _stages[0].lessonCount) {
+      _unlockedAchievements.add('first_stage');
     }
-    bool allStagesComplete = _stages.every((s) => s.completedLessons >= s.lessonCount);
-    if (allStagesComplete) {
-      _unlockedAchievements.add('all_stages_done');
+    // #8 quick_learner: complete 3 lessons within 30 minutes
+    if (lessonsCompletedInLast30Min >= 3) {
+      _unlockedAchievements.add('quick_learner');
+    }
+    // #9 comeback: complete a lesson after 7+ days inactive
+    if (_lastInactiveDays >= 7) {
+      _unlockedAchievements.add('comeback');
+    }
+    // #10 night_owl: complete a lesson 23:00-02:00
+    if (_hasLessonCompletedInHourRange(23, 26)) {
+      _unlockedAchievements.add('night_owl');
+    }
+    // #11 streak_14: 14-day streak
+    if (_streak >= 14) {
+      _unlockedAchievements.add('streak_14');
+    }
+    // #12 streak_30: 30-day streak
+    if (_streak >= 30) {
+      _unlockedAchievements.add('streak_30');
+    }
+    // #13 ten_lessons: complete 10 lessons
+    if (completedLessons >= 10) {
+      _unlockedAchievements.add('ten_lessons');
+    }
+    // #14 twenty_lessons: complete 20 lessons
+    if (completedLessons >= 20) {
+      _unlockedAchievements.add('twenty_lessons');
+    }
+    // #15 all_stages: complete all stages
+    if (_stages.isNotEmpty && _stages.every((s) => s.completedLessons >= s.lessonCount)) {
+      _unlockedAchievements.add('all_stages');
+    }
+    // #16 social_3: add 3 friends
+    if (_friends.length >= 3) {
+      _unlockedAchievements.add('social_3');
+    }
+    // #17 social_10: add 10 friends
+    if (_friends.length >= 10) {
+      _unlockedAchievements.add('social_10');
+    }
+    // #18-20 match series: permanently locked (Find a Match hidden)
+    // #21 speed_demon: win speed challenge 10 times
+    if (_speedChallengeWins >= 10) {
+      _unlockedAchievements.add('speed_demon');
+    }
+    // #22 explorer: complete all 17 course types (12 stages + 5 practice modes)
+    if (_isExplorerComplete()) {
+      _unlockedAchievements.add('explorer');
+    }
+    // #23 gold_league: reach Gold league (1200+ XP)
+    if (_xp >= leagueGoldXp) {
+      _unlockedAchievements.add('gold_league');
+    }
+    // #24 diamond_league: reach Diamond league (4000+ XP)
+    if (_xp >= leagueDiamondXp) {
+      _unlockedAchievements.add('diamond_league');
     }
 
     if (_unlockedAchievements.length > before.length) {
       notifyListeners();
     }
+  }
+
+  bool _hasLessonCompletedInHourRange(int startHour, int endHour) {
+    if (_lessonCompletionTimestamps.isEmpty) return false;
+    for (final ts in _lessonCompletionTimestamps) {
+      final dt = DateTime.fromMillisecondsSinceEpoch(ts);
+      final h = dt.hour;
+      if (startHour <= endHour) {
+        if (h >= startHour && h < endHour) return true;
+      } else {
+        // wraps midnight (e.g., 23-26 -> 23:00-02:00)
+        if (h >= startHour || h < (endHour % 24)) return true;
+      }
+    }
+    return false;
+  }
+
+  bool _isExplorerComplete() {
+    // 12 Learning Stages completed at least once
+    final stagesComplete = _stages.isNotEmpty &&
+        _stages.every((s) => s.completedLessons >= 1);
+    if (!stagesComplete) return false;
+    // 5 practice modes completed at least once
+    const requiredPracticeModes = {
+      'tile_recognition',
+      'tile_matching',
+      'sequence_sorting',
+      'rules_quiz',
+      'speed_challenge',
+    };
+    return requiredPracticeModes.every((m) => _practiceModesCompleted.contains(m));
   }
 
   // ── Core gameplay ──
@@ -651,6 +849,26 @@ class GameState extends ChangeNotifier {
       _dailyXpEarned += 20;
       _lessonCompletedToday++;
       _updateStreakOnLessonComplete();
+
+      // Track lesson completion timestamp (for early_bird / night_owl / quick_learner)
+      _lessonCompletionTimestamps.add(DateTime.now().millisecondsSinceEpoch);
+      // Keep only last 100 entries to avoid unbounded growth
+      if (_lessonCompletionTimestamps.length > 100) {
+        _lessonCompletionTimestamps =
+            _lessonCompletionTimestamps.sublist(_lessonCompletionTimestamps.length - 100);
+      }
+
+      // Compute inactive days for comeback achievement
+      if (_lastLessonDate != null) {
+        final last = _dateOnlyDate(DateTime.parse(_lastLessonDate!));
+        final today = _dateOnlyDate(DateTime.now());
+        _lastInactiveDays = today.difference(last).inDays;
+      }
+    }
+
+    // Compute last quiz correct ratio for perfect_quiz achievement
+    if (_currentQuestions.isNotEmpty) {
+      _lastQuizCorrectRatio = _correctAnswers / _currentQuestions.length;
     }
 
     _syncStageProgress();
@@ -683,6 +901,18 @@ class GameState extends ChangeNotifier {
     }
 
     _lastLessonDate = today;
+  }
+
+  /// Record a practice session result.
+  /// [mode] is one of: 'tile_recognition', 'tile_matching', 'sequence_sorting', 'rules_quiz', 'speed_challenge'.
+  /// [isWin] for speed_challenge win counting (toward speed_demon achievement).
+  void recordPracticeResult(String mode, {bool isWin = false}) {
+    _practiceModesCompleted.add(mode);
+    if (mode == 'speed_challenge' && isWin) {
+      _speedChallengeWins++;
+    }
+    checkAchievements();
+    _persist();
   }
 
   DateTime _dateOnlyDate(DateTime date) =>
@@ -1026,6 +1256,10 @@ class GameState extends ChangeNotifier {
       'avatarEmoji': _avatarEmoji,
       'userLevel': userLevel,
       'playerId': _playerId,
+      'lessonCompletionTimestamps': _lessonCompletionTimestamps,
+      'practiceModesCompleted': _practiceModesCompleted.toList(),
+      'speedChallengeWins': _speedChallengeWins,
+      'lastInactiveDays': _lastInactiveDays,
     });
   }
 
@@ -1074,6 +1308,24 @@ class GameState extends ChangeNotifier {
         }
         _syncStageProgress();
       }
+
+      // Merge new tracking fields (union / max strategy)
+      final cloudTimestamps = (data['lessonCompletionTimestamps'] as List<dynamic>?)
+          ?.map((e) => (e is int) ? e : int.tryParse(e.toString()) ?? 0)
+          .where((t) => t > 0)
+          .toList() ?? [];
+      _lessonCompletionTimestamps = List.from({..._lessonCompletionTimestamps, ...cloudTimestamps});
+      if (_lessonCompletionTimestamps.length > 100) {
+        _lessonCompletionTimestamps = _lessonCompletionTimestamps.sublist(
+            _lessonCompletionTimestamps.length - 100);
+      }
+      final cloudModes = (data['practiceModesCompleted'] as List<dynamic>?)
+          ?.map((e) => e.toString()).toSet() ?? <String>{};
+      _practiceModesCompleted = _practiceModesCompleted.union(cloudModes);
+      final cloudSpeedWins = (data['speedChallengeWins'] as num?)?.toInt() ?? 0;
+      if (cloudSpeedWins > _speedChallengeWins) _speedChallengeWins = cloudSpeedWins;
+      final cloudInactiveDays = (data['lastInactiveDays'] as num?)?.toInt() ?? 0;
+      if (cloudInactiveDays > _lastInactiveDays) _lastInactiveDays = cloudInactiveDays;
 
       // Sync playerId from cloud (only accept well-formed LD#### IDs; regenerate if legacy)
       final cloudPlayerId = data['playerId'] as String?;
@@ -1181,6 +1433,10 @@ class GameState extends ChangeNotifier {
       consecutiveCorrect: _consecutiveCorrect,
       dailyXpEarned: _dailyXpEarned,
       wrongAnswersJsonList: wrongAnswersJsonList,
+      lessonCompletionTimestamps: _lessonCompletionTimestamps,
+      practiceModesCompleted: _practiceModesCompleted,
+      speedChallengeWins: _speedChallengeWins,
+      lastInactiveDays: _lastInactiveDays,
     );
 
     if (_cloudEnabled && _cloudUid != null) {
@@ -1201,6 +1457,8 @@ class GameState extends ChangeNotifier {
 
     // Trigger debounced sync to Firebase (logged-in users)
     _scheduleCloudSync();
+  }
+
   // ── Player ID & Region ──
   Future<void> initPlayerId() async {
     if (_playerId != null) return;
@@ -1240,6 +1498,5 @@ class GameState extends ChangeNotifier {
     _friends.clear();
     _friends.addAll(uids);
     notifyListeners();
-  }
   }
 }

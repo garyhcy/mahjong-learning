@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../models/practice_data.dart';
 import '../../providers/practice_state.dart';
+import '../../providers/game_state.dart';
 import '../../services/audio_service.dart';
 
 class RulesQuizScreen extends StatefulWidget {
@@ -76,6 +77,7 @@ class _RulesQuizScreenState extends State<RulesQuizScreen> {
       wrongTiles: [],
       wrongCategories: _wrongCategories,
     ));
+    context.read<GameState>().recordPracticeResult('rules_quiz');
   }
 
   @override

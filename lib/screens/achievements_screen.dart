@@ -1,13 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import '../providers/game_state.dart';
 import '../widgets/mascot_widget.dart';
 import '../services/app_i18n.dart';
+
+// Achievement display metadata (id + icon + color). Unlock state is read live
+// from GameState.unlockedAchievements so the UI reflects actual progress.
+class _AchievementMeta {
+  final String id;
+  final IconData icon;
+  final Color color;
+  const _AchievementMeta(this.id, this.icon, this.color);
+}
+
+const List<_AchievementMeta> _allAchievements = [
+  _AchievementMeta('first_lesson', Icons.school_rounded, Color(0xFF4CAF50)),
+  _AchievementMeta('early_bird', Icons.wb_sunny_rounded, Color(0xFFFF9800)),
+  _AchievementMeta('streak_3', Icons.local_fire_department_rounded, Color(0xFFE8B93E)),
+  _AchievementMeta('streak_7', Icons.whatshot_rounded, Color(0xFFE8B93E)),
+  _AchievementMeta('perfect_quiz', Icons.stars_rounded, Color(0xFFE8B93E)),
+  _AchievementMeta('five_lessons', Icons.menu_book_rounded, Color(0xFF4CAF50)),
+  _AchievementMeta('first_stage', Icons.auto_awesome_rounded, Color(0xFF4CAF50)),
+  _AchievementMeta('quick_learner', Icons.speed_rounded, Color(0xFF2196F3)),
+  _AchievementMeta('comeback', Icons.refresh_rounded, Color(0xFF607D8B)),
+  _AchievementMeta('night_owl', Icons.nights_stay_rounded, Color(0xFF5C6BC0)),
+  _AchievementMeta('streak_14', Icons.star_rounded, Color(0xFFE8B93E)),
+  _AchievementMeta('streak_30', Icons.emoji_events_rounded, Color(0xFFE8B93E)),
+  _AchievementMeta('ten_lessons', Icons.library_books_rounded, Color(0xFF4CAF50)),
+  _AchievementMeta('twenty_lessons', Icons.collections_bookmark_rounded, Color(0xFF4CAF50)),
+  _AchievementMeta('all_stages', Icons.workspace_premium_rounded, Color(0xFF9C27B0)),
+  _AchievementMeta('social_3', Icons.handshake_rounded, Color(0xFF4CAF50)),
+  _AchievementMeta('social_10', Icons.celebration_rounded, Color(0xFFE8B93E)),
+  _AchievementMeta('first_match', Icons.casino_rounded, Color(0xFF9C27B0)),
+  _AchievementMeta('match_5', Icons.sports_esports_rounded, Color(0xFF2196F3)),
+  _AchievementMeta('match_win', Icons.emoji_events_rounded, Color(0xFFE8B93E)),
+  _AchievementMeta('speed_demon', Icons.bolt_rounded, Color(0xFFFF6B35)),
+  _AchievementMeta('explorer', Icons.explore_rounded, Color(0xFF9C27B0)),
+  _AchievementMeta('gold_league', Icons.emoji_events_rounded, Color(0xFFE8B93E)),
+  _AchievementMeta('diamond_league', Icons.diamond_rounded, Color(0xFF7C4DFF)),
+];
 
 class AchievementsScreen extends StatelessWidget {
   const AchievementsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final game = context.watch<GameState>();
+    final unlockedSet = game.unlockedAchievements;
+    final unlockedCount = unlockedSet.length;
+    final total = _allAchievements.length;
+    final progress = total > 0 ? unlockedCount / total : 0.0;
+
     return Scaffold(
       backgroundColor: const Color(0xFFFFF8F0),
       appBar: AppBar(
@@ -66,7 +110,7 @@ class AchievementsScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            AppI18n.t('community.unlockedCount').replaceAll('{unlocked}', '8').replaceAll('{total}', '24'),
+                            AppI18n.t('community.unlockedCount').replaceAll('{unlocked}', '$unlockedCount').replaceAll('{total}', '$total'),
                             style: GoogleFonts.nunito(
                               fontSize: 14,
                               color: Colors.white.withAlpha(200),
@@ -76,7 +120,7 @@ class AchievementsScreen extends StatelessWidget {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(6),
                             child: LinearProgressIndicator(
-                              value: 0.33,
+                              value: progress,
                               backgroundColor: Colors.white.withAlpha(40),
                               valueColor: const AlwaysStoppedAnimation<Color>(
                                 Colors.white,
@@ -92,7 +136,7 @@ class AchievementsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 28),
 
-              // Section Header
+              // Unlocked Section Header
               Row(
                 children: [
                   Container(
@@ -105,7 +149,7 @@ class AchievementsScreen extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    AppI18n.t('community.unlocked'),
+                    '${AppI18n.t('community.unlocked')} ($unlockedCount)',
                     style: GoogleFonts.nunito(
                       fontSize: 18,
                       fontWeight: FontWeight.w800,
@@ -116,65 +160,23 @@ class AchievementsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              // Achievement Grid
+              // Unlocked Achievement Grid (dynamic)
               Wrap(
                 spacing: 12,
                 runSpacing: 12,
-                children: [
-                  _AchievementBadge(
-                    icon: Icons.school_rounded,
-                    color: const Color(0xFF4CAF50),
-                    title: AppI18n.t('achievement.first_lesson.title'),
-                    subtitle: AppI18n.t('achievement.first_lesson.subtitle'),
-                  ),
-                  _AchievementBadge(
-                    icon: Icons.local_fire_department_rounded,
-                    color: const Color(0xFFE8B93E),
-                    title: AppI18n.t('achievement.streak_7.title'),
-                    subtitle: AppI18n.t('achievement.streak_7.subtitle'),
-                  ),
-                  _AchievementBadge(
-                    icon: Icons.stars_rounded,
-                    color: const Color(0xFFE8B93E),
-                    title: AppI18n.t('achievement.perfect_quiz.title'),
-                    subtitle: AppI18n.t('achievement.perfect_quiz.subtitle'),
-                  ),
-                  _AchievementBadge(
-                    icon: Icons.auto_awesome_rounded,
-                    color: const Color(0xFF4CAF50),
-                    title: AppI18n.t('achievement.first_stage.title'),
-                    subtitle: AppI18n.t('achievement.first_stage.subtitle'),
-                  ),
-                  _AchievementBadge(
-                    icon: Icons.psychology_rounded,
-                    color: const Color(0xFF9C27B0),
-                    title: AppI18n.t('achievement.explorer.title'),
-                    subtitle: AppI18n.t('achievement.explorer.subtitle'),
-                  ),
-                  _AchievementBadge(
-                    icon: Icons.speed_rounded,
-                    color: const Color(0xFF2196F3),
-                    title: AppI18n.t('achievement.quick_learner.title'),
-                    subtitle: AppI18n.t('achievement.quick_learner.subtitle'),
-                  ),
-                  _AchievementBadge(
-                    icon: Icons.emoji_events_rounded,
-                    color: const Color(0xFFE8B93E),
-                    title: AppI18n.t('achievement.gold_league.title'),
-                    subtitle: AppI18n.t('achievement.gold_league.subtitle'),
-                  ),
-                  _AchievementBadge(
-                    icon: Icons.menu_book_rounded,
-                    color: const Color(0xFF4CAF50),
-                    title: AppI18n.t('achievement.twenty_lessons.title'),
-                    subtitle: AppI18n.t('achievement.twenty_lessons.subtitle'),
-                  ),
-                ],
+                children: _allAchievements
+                    .where((a) => unlockedSet.contains(a.id))
+                    .map((a) => _AchievementBadge(
+                          icon: a.icon,
+                          color: a.color,
+                          title: AppI18n.t('achievement.${a.id}.title'),
+                          subtitle: AppI18n.t('achievement.${a.id}.subtitle'),
+                        ))
+                    .toList(),
               ),
-
               const SizedBox(height: 28),
 
-              // Locked Section
+              // Locked Section Header
               Row(
                 children: [
                   Container(
@@ -187,7 +189,7 @@ class AchievementsScreen extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    AppI18n.t('community.locked'),
+                    '${AppI18n.t('community.locked')} (${total - unlockedCount})',
                     style: GoogleFonts.nunito(
                       fontSize: 18,
                       fontWeight: FontWeight.w800,
@@ -197,17 +199,20 @@ class AchievementsScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
+              // Locked Achievement Grid (dynamic)
               Wrap(
                 spacing: 12,
                 runSpacing: 12,
-                children: List.generate(6, (i) {
-                  return _AchievementBadge(
-                    icon: Icons.lock_rounded,
-                    color: const Color(0xFFE0E0E0),
-                    title: '???',
-                    subtitle: AppI18n.t('community.keepLearningToUnlock'),
-                  );
-                }),
+                children: _allAchievements
+                    .where((a) => !unlockedSet.contains(a.id))
+                    .map((a) => _AchievementBadge(
+                          icon: a.icon,
+                          color: a.color,
+                          title: AppI18n.t('achievement.${a.id}.title'),
+                          subtitle: AppI18n.t('achievement.${a.id}.subtitle'),
+                          isLocked: true,
+                        ))
+                    .toList(),
               ),
               const SizedBox(height: 32),
             ],
@@ -223,17 +228,18 @@ class _AchievementBadge extends StatelessWidget {
   final Color color;
   final String title;
   final String subtitle;
+  final bool isLocked;
 
   const _AchievementBadge({
     required this.icon,
     required this.color,
     required this.title,
     required this.subtitle,
+    this.isLocked = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    final isLocked = icon == Icons.lock_rounded;
     return Container(
       width: (MediaQuery.of(context).size.width - 64) / 2,
       padding: const EdgeInsets.all(16),
@@ -262,7 +268,7 @@ class _AchievementBadge extends StatelessWidget {
             ),
             child: Icon(
               icon,
-              color: isLocked ? const Color(0xFFE0E0E0) : color,
+              color: isLocked ? const Color(0xFFBDBDBD) : color,
               size: 24,
             ),
           ),

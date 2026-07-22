@@ -85,14 +85,12 @@ class _AchievementDisplay {
   final String emoji;
   final String title;
   final String subtitle;
-  final bool unlocked;
 
   const _AchievementDisplay({
     required this.id,
     required this.emoji,
     required this.title,
     required this.subtitle,
-    this.unlocked = true,
   });
 }
 
@@ -109,20 +107,20 @@ const List<_AchievementDisplay> _allAchievements = [
   _AchievementDisplay(id: 'comeback', emoji: '🔄', title: 'achievement.comeback.title', subtitle: 'achievement.comeback.subtitle'),
   _AchievementDisplay(id: 'night_owl', emoji: '🦉', title: 'achievement.night_owl.title', subtitle: 'achievement.night_owl.subtitle'),
   // Locked (14)
-  _AchievementDisplay(id: 'streak_14', emoji: '🌟', title: 'achievement.streak_14.title', subtitle: 'achievement.streak_14.subtitle', unlocked: false),
-  _AchievementDisplay(id: 'streak_30', emoji: '🏆', title: 'achievement.streak_30.title', subtitle: 'achievement.streak_30.subtitle', unlocked: false),
-  _AchievementDisplay(id: 'ten_lessons', emoji: '📖', title: 'achievement.ten_lessons.title', subtitle: 'achievement.ten_lessons.subtitle', unlocked: false),
-  _AchievementDisplay(id: 'twenty_lessons', emoji: '🎯', title: 'achievement.twenty_lessons.title', subtitle: 'achievement.twenty_lessons.subtitle', unlocked: false),
-  _AchievementDisplay(id: 'all_stages', emoji: '👑', title: 'achievement.all_stages.title', subtitle: 'achievement.all_stages.subtitle', unlocked: false),
-  _AchievementDisplay(id: 'social_3', emoji: '🤝', title: 'achievement.social_3.title', subtitle: 'achievement.social_3.subtitle', unlocked: false),
-  _AchievementDisplay(id: 'social_10', emoji: '🎉', title: 'achievement.social_10.title', subtitle: 'achievement.social_10.subtitle', unlocked: false),
-  _AchievementDisplay(id: 'first_match', emoji: '🀄', title: 'achievement.first_match.title', subtitle: 'achievement.first_match.subtitle', unlocked: false),
-  _AchievementDisplay(id: 'match_5', emoji: '🎲', title: 'achievement.match_5.title', subtitle: 'achievement.match_5.subtitle', unlocked: false),
-  _AchievementDisplay(id: 'match_win', emoji: '🏅', title: 'achievement.match_win.title', subtitle: 'achievement.match_win.subtitle', unlocked: false),
-  _AchievementDisplay(id: 'speed_demon', emoji: '💨', title: 'achievement.speed_demon.title', subtitle: 'achievement.speed_demon.subtitle', unlocked: false),
-  _AchievementDisplay(id: 'explorer', emoji: '🗺️', title: 'achievement.explorer.title', subtitle: 'achievement.explorer.subtitle', unlocked: false),
-  _AchievementDisplay(id: 'gold_league', emoji: '🥇', title: 'achievement.gold_league.title', subtitle: 'achievement.gold_league.subtitle', unlocked: false),
-  _AchievementDisplay(id: 'diamond_league', emoji: '💎', title: 'achievement.diamond_league.title', subtitle: 'achievement.diamond_league.subtitle', unlocked: false),
+  _AchievementDisplay(id: 'streak_14', emoji: '🌟', title: 'achievement.streak_14.title', subtitle: 'achievement.streak_14.subtitle'),
+  _AchievementDisplay(id: 'streak_30', emoji: '🏆', title: 'achievement.streak_30.title', subtitle: 'achievement.streak_30.subtitle'),
+  _AchievementDisplay(id: 'ten_lessons', emoji: '📖', title: 'achievement.ten_lessons.title', subtitle: 'achievement.ten_lessons.subtitle'),
+  _AchievementDisplay(id: 'twenty_lessons', emoji: '🎯', title: 'achievement.twenty_lessons.title', subtitle: 'achievement.twenty_lessons.subtitle'),
+  _AchievementDisplay(id: 'all_stages', emoji: '👑', title: 'achievement.all_stages.title', subtitle: 'achievement.all_stages.subtitle'),
+  _AchievementDisplay(id: 'social_3', emoji: '🤝', title: 'achievement.social_3.title', subtitle: 'achievement.social_3.subtitle'),
+  _AchievementDisplay(id: 'social_10', emoji: '🎉', title: 'achievement.social_10.title', subtitle: 'achievement.social_10.subtitle'),
+  _AchievementDisplay(id: 'first_match', emoji: '🀄', title: 'achievement.first_match.title', subtitle: 'achievement.first_match.subtitle'),
+  _AchievementDisplay(id: 'match_5', emoji: '🎲', title: 'achievement.match_5.title', subtitle: 'achievement.match_5.subtitle'),
+  _AchievementDisplay(id: 'match_win', emoji: '🏅', title: 'achievement.match_win.title', subtitle: 'achievement.match_win.subtitle'),
+  _AchievementDisplay(id: 'speed_demon', emoji: '💨', title: 'achievement.speed_demon.title', subtitle: 'achievement.speed_demon.subtitle'),
+  _AchievementDisplay(id: 'explorer', emoji: '🗺️', title: 'achievement.explorer.title', subtitle: 'achievement.explorer.subtitle'),
+  _AchievementDisplay(id: 'gold_league', emoji: '🥇', title: 'achievement.gold_league.title', subtitle: 'achievement.gold_league.subtitle'),
+  _AchievementDisplay(id: 'diamond_league', emoji: '💎', title: 'achievement.diamond_league.title', subtitle: 'achievement.diamond_league.subtitle'),
 ];
 
 // ─── Mascot/Avatar options ───
@@ -521,8 +519,9 @@ class CommunityScreen extends StatelessWidget {
 
   // ─── Achievements Section ───
   Widget _buildAchievementsSection(BuildContext context) {
-    final showcase = _allAchievements.where((a) => a.unlocked).take(3).toList();
-    final unlockedCount = _allAchievements.where((a) => a.unlocked).length;
+    final game = context.watch<GameState>();
+    final showcase = _allAchievements.where((a) => game.unlockedAchievements.contains(a.id)).take(3).toList();
+    final unlockedCount = _allAchievements.where((a) => game.unlockedAchievements.contains(a.id)).length;
     final total = _allAchievements.length;
 
     return Column(
@@ -586,26 +585,26 @@ class CommunityScreen extends StatelessWidget {
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: showcase.map((a) => _achievementBadge(a)).toList(),
+            children: showcase.map((a) => _achievementBadge(a, game.unlockedAchievements.contains(a.id))).toList(),
           ),
         ),
       ],
     );
   }
 
-  Widget _achievementBadge(_AchievementDisplay achievement) {
+  Widget _achievementBadge(_AchievementDisplay achievement, bool isUnlocked) {
     return Column(
       children: [
         Container(
           width: 56,
           height: 56,
           decoration: BoxDecoration(
-            color: achievement.unlocked
+            color: isUnlocked
                 ? const Color(0xFFFFF8E1)
                 : const Color(0xFFF5F5F5),
             shape: BoxShape.circle,
             border: Border.all(
-              color: achievement.unlocked
+              color: isUnlocked
                   ? const Color(0xFFFFD54F)
                   : const Color(0xFFE0E0E0),
               width: 2,
@@ -1924,7 +1923,8 @@ class _AllAchievementsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final unlockedCount = _allAchievements.where((a) => a.unlocked).length;
+    final game = context.watch<GameState>();
+    final unlockedCount = _allAchievements.where((a) => game.unlockedAchievements.contains(a.id)).length;
     final total = _allAchievements.length;
 
     return Scaffold(
@@ -2006,8 +2006,8 @@ class _AllAchievementsPage extends StatelessWidget {
               spacing: 12,
               runSpacing: 16,
               children: _allAchievements
-                  .where((a) => a.unlocked)
-                  .map((a) => _achievementGridItem(a))
+                  .where((a) => game.unlockedAchievements.contains(a.id))
+                  .map((a) => _achievementGridItem(a, true))
                   .toList(),
             ),
             const SizedBox(height: 24),
@@ -2021,8 +2021,8 @@ class _AllAchievementsPage extends StatelessWidget {
               spacing: 12,
               runSpacing: 16,
               children: _allAchievements
-                  .where((a) => !a.unlocked)
-                  .map((a) => _achievementGridItem(a))
+                  .where((a) => !game.unlockedAchievements.contains(a.id))
+                  .map((a) => _achievementGridItem(a, false))
                   .toList(),
             ),
           ],
@@ -2031,7 +2031,7 @@ class _AllAchievementsPage extends StatelessWidget {
     );
   }
 
-  Widget _achievementGridItem(_AchievementDisplay a) {
+  Widget _achievementGridItem(_AchievementDisplay a, bool isUnlocked) {
     return SizedBox(
       width: 75,
       child: Column(
@@ -2040,12 +2040,12 @@ class _AllAchievementsPage extends StatelessWidget {
             width: 56,
             height: 56,
             decoration: BoxDecoration(
-              color: a.unlocked
+              color: isUnlocked
                   ? const Color(0xFFFFF8E1)
                   : const Color(0xFFF5F5F5),
               shape: BoxShape.circle,
               border: Border.all(
-                color: a.unlocked
+                color: isUnlocked
                     ? const Color(0xFFFFD54F)
                     : const Color(0xFFE0E0E0),
                 width: 2,
@@ -2055,7 +2055,7 @@ class _AllAchievementsPage extends StatelessWidget {
               child: Text(a.emoji,
                   style: TextStyle(
                       fontSize: 24,
-                      color: a.unlocked ? null : const Color(0xFFBDBDBD))),
+                      color: isUnlocked ? null : const Color(0xFFBDBDBD))),
             ),
           ),
           const SizedBox(height: 6),
@@ -2063,7 +2063,7 @@ class _AllAchievementsPage extends StatelessWidget {
               style: GoogleFonts.nunito(
                   fontSize: 10,
                   fontWeight: FontWeight.w700,
-                  color: a.unlocked
+                  color: isUnlocked
                       ? const Color(0xFF2D2D2D)
                       : const Color(0xFFBDBDBD)),
               textAlign: TextAlign.center,
