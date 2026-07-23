@@ -186,26 +186,31 @@ class FirebaseService {
         .snapshots();
   }
 
+  static final Set<String> _seededRegions = {};
+
   static Future<void> seedFakePlayers(String region, int count) async {
+    if (_seededRegions.contains(region)) return;
+    _seededRegions.add(region);
+
     final names = ['Alex', 'Bella', 'Charlie', 'Diana', 'Edward', 'Fiona', 'George', 'Hannah'];
     final emojis = ['🐉', '🐱', '🎯', '🌸', '🦊', '🎮', '🌺', '🦝'];
-    final random = Random();
     final batch = _firestore.batch();
 
     for (int i = 0; i < count; i++) {
-      final fakeUid = 'fake_${region}_${i}_${DateTime.now().millisecondsSinceEpoch}';
-      final fakePlayerId = 'LD${List.generate(4, (_) => '0123456789'[random.nextInt(10)]).join()}';
+      final fakeUid = 'fake_${region}_$i';
+      final fakePlayerId = 'LD${1000 + i * 137}';
+      final xp = 1200 - i * 160;
       batch.set(_firestore.collection('users').doc(fakeUid), {
         'playerId': fakePlayerId,
         'nickname': names[i % names.length],
         'avatarEmoji': emojis[i % emojis.length],
-        'xp': 200 + random.nextInt(1300),
-        'streak': random.nextInt(10),
+        'xp': xp,
+        'streak': i * 2,
         'region': region,
         'isFake': true,
-        'completedLessons': random.nextInt(20),
+        'completedLessons': i * 3,
         'updatedAt': FieldValue.serverTimestamp(),
-      });
+      }, SetOptions(merge: true));
     }
     await batch.commit();
   }

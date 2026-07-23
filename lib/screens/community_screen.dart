@@ -699,9 +699,11 @@ class CommunityScreen extends StatelessWidget {
                     if (snapshot.hasError) {
                       return _leaderboardErrorPlaceholder(snapshot.error.toString());
                     }
+                    // Seed fake players once per region (idempotent via static guard + merge:true).
+                    // Triggered unconditionally so old random-XP docs are also overwritten.
+                    FirebaseService.seedFakePlayers(region, 6);
                     final docs = snapshot.data?.docs ?? [];
                     if (docs.isEmpty) {
-                      FirebaseService.seedFakePlayers(region, 6);
                       return _leaderboardEmptyPlaceholder();
                     }
                     final entries = <_LeaderboardEntry>[];
