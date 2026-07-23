@@ -102195,11 +102195,12 @@ $2(a,b){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e=this,d=null
 if(b.a===B.fZ)return e.a.VV()
 s=b.c
 if(s!=null)return new A.aN(B.L0,A.w("Load failed: "+J.cO(s),d,d,d,A.x().$2$color$fontSize(B.hC,12),B.ay,d),d)
+A.aeT(e.b,6)
 s=b.b
 r=s==null?d:s.gjS()
 if(r==null)r=A.a([],t._Q)
-if(r.length===0){A.aeT(e.b,6)
-return new A.aN(B.bo,A.w(A.H("community.noFriends"),d,d,d,A.x().$2$color$fontSize(B.a1,13),B.ay,d),d)}q=A.a([],t.bT)
+if(r.length===0)return new A.aN(B.bo,A.w(A.H("community.noFriends"),d,d,d,A.x().$2$color$fontSize(B.a1,13),B.ay,d),d)
+q=A.a([],t.bT)
 for(s=t.a,p=e.c,o=!1,n=0;n<r.length;){m=r[n].rk()
 m.toString
 s.a(m)
