@@ -95,32 +95,63 @@ class FirebaseService {
   /// Lazy seeding：只在 leaderboard 查詢該地區時才透過 [seedFakePlayers] 建立
   /// 假玩家，啟動時不主動 seed 全部地區。
   static const List<String> kSupportedRegions = [
-    'HK', // Hong Kong
-    'CN', // Mainland China
-    'TW', // Taiwan
-    'SG', // Singapore
-    'MY', // Malaysia
-    'MO', // Macau
+    // Asia
+    'HK', 'TW', 'CN', 'SG', 'MY', 'MO', 'JP', 'KR', 'TH', 'VN', 'ID', 'PH', 'IN',
+    // North America
+    'US', 'CA', 'MX',
+    // Europe
+    'GB', 'IE', 'DE', 'FR', 'IT', 'ES', 'NL', 'BE', 'SE', 'NO', 'DK', 'FI',
+    'CH', 'AT', 'PT', 'PL', 'CZ', 'GR',
+    // Oceania
+    'AU', 'NZ',
+    // South America
+    'BR', 'AR',
   ];
 
   /// 地區代碼 -> 顯示名稱（App UI 全英文）。未知代碼 fallback 原值。
+  static const Map<String, String> _regionNames = {
+    'HK': 'Hong Kong',
+    'TW': 'Taiwan',
+    'CN': 'Mainland China',
+    'SG': 'Singapore',
+    'MY': 'Malaysia',
+    'MO': 'Macau',
+    'JP': 'Japan',
+    'KR': 'South Korea',
+    'TH': 'Thailand',
+    'VN': 'Vietnam',
+    'ID': 'Indonesia',
+    'PH': 'Philippines',
+    'IN': 'India',
+    'US': 'United States',
+    'CA': 'Canada',
+    'MX': 'Mexico',
+    'GB': 'United Kingdom',
+    'IE': 'Ireland',
+    'DE': 'Germany',
+    'FR': 'France',
+    'IT': 'Italy',
+    'ES': 'Spain',
+    'NL': 'Netherlands',
+    'BE': 'Belgium',
+    'SE': 'Sweden',
+    'NO': 'Norway',
+    'DK': 'Denmark',
+    'FI': 'Finland',
+    'CH': 'Switzerland',
+    'AT': 'Austria',
+    'PT': 'Portugal',
+    'PL': 'Poland',
+    'CZ': 'Czech Republic',
+    'GR': 'Greece',
+    'AU': 'Australia',
+    'NZ': 'New Zealand',
+    'BR': 'Brazil',
+    'AR': 'Argentina',
+  };
+
   static String getRegionDisplayName(String code) {
-    switch (code) {
-      case 'HK':
-        return 'Hong Kong';
-      case 'CN':
-        return 'Mainland China';
-      case 'TW':
-        return 'Taiwan';
-      case 'SG':
-        return 'Singapore';
-      case 'MY':
-        return 'Malaysia';
-      case 'MO':
-        return 'Macau';
-      default:
-        return code;
-    }
+    return _regionNames[code] ?? code;
   }
 
   static Future<void> saveRegion(String uid, String region) async {
