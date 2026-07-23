@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/game_state.dart';
 import '../widgets/mascot_widget.dart';
 import '../services/app_i18n.dart';
+import '../services/firebase_service.dart';
 import '../services/audio_service.dart';
 import 'paywall_screen.dart';
 
@@ -284,6 +285,10 @@ class _MoreScreenState extends State<MoreScreen> {
                 _settingsRow(Icons.language_rounded, AppI18n.t('settings.language'),
                     subtitle: AppI18n.current == DisplayLang.zh ? '中文' : 'English',
                     onTap: _showLanguageSheet),
+                _settingsDivider(),
+                _settingsRow(Icons.public_rounded, AppI18n.t('settings.region'),
+                    subtitle: FirebaseService.getRegionDisplayName(game.region),
+                    onTap: () => _showRegionSheet(game)),
               ]),
               const SizedBox(height: 20),
 
@@ -777,6 +782,116 @@ class _MoreScreenState extends State<MoreScreen> {
                       ),
                       child: Text(
                           pendingLang == DisplayLang.zh ? '完成' : 'Done',
+                          style: GoogleFonts.nunito(
+                              fontWeight: FontWeight.w800, fontSize: 16)),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showRegionSheet(GameState game) {
+    String pending = game.region;
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        return StatefulBuilder(
+          builder: (ctx, setSheetState) {
+            return Container(
+              padding: const EdgeInsets.all(24),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFE0E0E0),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(AppI18n.t('settings.region'),
+                      style: GoogleFonts.nunito(
+                          fontSize: 18, fontWeight: FontWeight.w800)),
+                  const SizedBox(height: 20),
+                  Wrap(
+                    spacing: 12,
+                    runSpacing: 12,
+                    children: FirebaseService.kSupportedRegions.map((code) {
+                      final selected = code == pending;
+                      return GestureDetector(
+                        onTap: () {
+                          pending = code;
+                          setSheetState(() {});
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 18, vertical: 14),
+                          decoration: BoxDecoration(
+                            color: selected
+                                ? const Color(0xFF4CAF50).withAlpha(20)
+                                : const Color(0xFFF5F5F5),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: selected
+                                  ? const Color(0xFF4CAF50)
+                                  : Colors.transparent,
+                              width: 2,
+                            ),
+                          ),
+                          child: Text(
+                              FirebaseService.getRegionDisplayName(code),
+                              style: GoogleFonts.nunito(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                  color: selected
+                                      ? const Color(0xFF4CAF50)
+                                      : const Color(0xFF757575))),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 28),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        Navigator.pop(ctx);
+                        if (pending == game.region) return;
+                        game.setRegion(pending);
+                        final uid = game.currentUid;
+                        if (uid != null) {
+                          await FirebaseService.saveRegion(uid, pending);
+                        }
+                        final p = await SharedPreferences.getInstance();
+                        await p.setString('manual_region', pending);
+                        if (!ctx.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(AppI18n.t('settings.regionUpdated')),
+                          behavior: SnackBarBehavior.floating,
+                          duration: const Duration(seconds: 2),
+                        ));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF4CAF50),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16)),
+                      ),
+                      child: Text(
+                          AppI18n.current == DisplayLang.zh ? '完成' : 'Done',
                           style: GoogleFonts.nunito(
                               fontWeight: FontWeight.w800, fontSize: 16)),
                     ),

@@ -91,6 +91,38 @@ class FirebaseService {
   }
 
   // ── Region ──
+  /// Ludi 地區 leaderboard 所支援的固定地區列表。
+  /// Lazy seeding：只在 leaderboard 查詢該地區時才透過 [seedFakePlayers] 建立
+  /// 假玩家，啟動時不主動 seed 全部地區。
+  static const List<String> kSupportedRegions = [
+    'HK', // Hong Kong
+    'CN', // Mainland China
+    'TW', // Taiwan
+    'SG', // Singapore
+    'MY', // Malaysia
+    'MO', // Macau
+  ];
+
+  /// 地區代碼 -> 顯示名稱（App UI 全英文）。未知代碼 fallback 原值。
+  static String getRegionDisplayName(String code) {
+    switch (code) {
+      case 'HK':
+        return 'Hong Kong';
+      case 'CN':
+        return 'Mainland China';
+      case 'TW':
+        return 'Taiwan';
+      case 'SG':
+        return 'Singapore';
+      case 'MY':
+        return 'Malaysia';
+      case 'MO':
+        return 'Macau';
+      default:
+        return code;
+    }
+  }
+
   static Future<void> saveRegion(String uid, String region) async {
     await _firestore.collection('users').doc(uid).set({
       'region': region,
