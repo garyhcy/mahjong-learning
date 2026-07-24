@@ -18,13 +18,7 @@ class LeagueDetailPage extends StatelessWidget {
     final xp = game.xp;
     final currentLeague = getLeague(xp);
 
-    int currentIdx = 0;
-    for (int i = leagueTiers.length - 1; i >= 0; i--) {
-      if (xp >= leagueTiers[i].minXp) {
-        currentIdx = i;
-        break;
-      }
-    }
+    final currentIdx = getLeagueIndex(xp);
 
     final progress = (xp - currentLeague.minXp) /
         (currentLeague.maxXp - currentLeague.minXp);

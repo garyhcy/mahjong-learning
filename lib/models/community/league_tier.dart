@@ -25,10 +25,12 @@ const List<LeagueTier> leagueTiers = [
   LeagueTier(name: 'league.diamond', emoji: '👑', minXp: 4000, maxXp: 6000, color: Color(0xFF7C4DFF)),
 ];
 
-LeagueTier getLeague(int xp) {
+int getLeagueIndex(int xp) {
   for (int i = leagueTiers.length - 1; i >= 0; i--) {
-    if (xp >= leagueTiers[i].minXp) return leagueTiers[i];
+    if (xp >= leagueTiers[i].minXp) return i;
   }
-  return leagueTiers[0];
+  return 0;
 }
+
+LeagueTier getLeague(int xp) => leagueTiers[getLeagueIndex(xp)];
 
