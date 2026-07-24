@@ -20,7 +20,7 @@
 
 | 詞彙 | 含義 |
 | --- | --- |
-| **League / LeagueTier** | 聯賽階級，依 XP 劃分：Bronze / Silver / Gold / Platinum / Diamond。 |
+| **League / LeagueTier** | 聯賽階級，依 XP 劃分：Bronze / Silver / Gold / Emerald / Diamond。 |
 | **LeaderboardEntry** | 排行榜項目，含 rank / name / avatar / xp / streak / playerId / skillRating。 |
 | **AchievementDisplay** | 成就展示項，含 emoji / title / subtitle，依條件動態解鎖（共 24 個）。 |
 | **AvatarOption** | 頭像選項，綁定 MascotExpression 與框色。 |
