@@ -10,146 +10,10 @@ import '../screens/find_match_screen.dart';
 import '../services/app_i18n.dart';
 import '../services/firebase_service.dart';
 import '../widgets/mascot_widget.dart';
-
-// ─── League Helper ───
-class _LeagueTier {
-  final String name;
-  final String emoji;
-  final int minXp;
-  final int maxXp;
-  final Color color;
-
-  const _LeagueTier({
-    required this.name,
-    required this.emoji,
-    required this.minXp,
-    required this.maxXp,
-    required this.color,
-  });
-}
-
-const List<_LeagueTier> _leagueTiers = [
-  _LeagueTier(name: 'league.bronze', emoji: '🥉', minXp: 0, maxXp: 500, color: Color(0xFFCD7F32)),
-  _LeagueTier(name: 'league.silver', emoji: '🥈', minXp: 500, maxXp: 1200, color: Color(0xFFC0C0C0)),
-  _LeagueTier(name: 'league.gold', emoji: '🥇', minXp: 1200, maxXp: 2500, color: Color(0xFFFFD700)),
-  _LeagueTier(name: 'league.emerald', emoji: '💎', minXp: 2500, maxXp: 4000, color: Color(0xFF4CAF50)),
-  _LeagueTier(name: 'league.diamond', emoji: '👑', minXp: 4000, maxXp: 6000, color: Color(0xFF7C4DFF)),
-];
-
-_LeagueTier _getLeague(int xp) {
-  for (int i = _leagueTiers.length - 1; i >= 0; i--) {
-    if (xp >= _leagueTiers[i].minXp) return _leagueTiers[i];
-  }
-  return _leagueTiers[0];
-}
-
-// ─── Fake leaderboard data ───
-class _LeaderboardEntry {
-  final int rank;
-  final String name;
-  final String avatar;
-  final int xp;
-  final int streak;
-  final bool isCurrentUser;
-  final String playerId;
-  final int skillRating;
-
-  const _LeaderboardEntry({
-    required this.rank,
-    required this.name,
-    required this.avatar,
-    required this.xp,
-    this.streak = 0,
-    this.isCurrentUser = false,
-    this.playerId = '',
-    this.skillRating = 0,
-  });
-}
-
-const List<_LeaderboardEntry> _fakeLeaderboard = [
-  _LeaderboardEntry(rank: 1, name: 'Jason', avatar: '🐉', xp: 3120, streak: 14, playerId: '#LD01', skillRating: 88),
-  _LeaderboardEntry(rank: 2, name: 'Emily', avatar: '🐱', xp: 2340, streak: 9, playerId: '#LD02', skillRating: 72),
-  _LeaderboardEntry(rank: 3, name: 'David', avatar: '🎯', xp: 1980, streak: 7, playerId: '#LD03', skillRating: 65),
-  _LeaderboardEntry(rank: 4, name: 'Michelle', avatar: '🌸', xp: 1650, streak: 5, playerId: '#LD04', skillRating: 55),
-  _LeaderboardEntry(rank: 5, name: 'Sarah', avatar: '🦊', xp: 1420, streak: 3, playerId: '#LD05', skillRating: 48),
-  _LeaderboardEntry(rank: 6, name: 'Kevin', avatar: '🎮', xp: 1280, streak: 4, playerId: '#LD06', skillRating: 40),
-  _LeaderboardEntry(rank: 7, name: 'Amy', avatar: '🌺', xp: 1100, streak: 2, playerId: '#LD07', skillRating: 25),
-  _LeaderboardEntry(rank: 8, name: 'Tom', avatar: '🦝', xp: 950, streak: 1, playerId: '#LD08', skillRating: 20),
-  _LeaderboardEntry(rank: 9, name: 'Lisa', avatar: '🦜', xp: 800, streak: 3, playerId: '#LD09', skillRating: 15),
-  _LeaderboardEntry(rank: 10, name: 'Ben', avatar: '🦝', xp: 650, streak: 0, playerId: '#LD10', skillRating: 10),
-];
-
-// ─── Achievement display model (expanded to 24) ───
-class _AchievementDisplay {
-  final String id;
-  final String emoji;
-  final String title;
-  final String subtitle;
-
-  const _AchievementDisplay({
-    required this.id,
-    required this.emoji,
-    required this.title,
-    required this.subtitle,
-  });
-}
-
-const List<_AchievementDisplay> _allAchievements = [
-  // Unlocked (10)
-  _AchievementDisplay(id: 'first_lesson', emoji: '🎓', title: 'achievement.first_lesson.title', subtitle: 'achievement.first_lesson.subtitle'),
-  _AchievementDisplay(id: 'early_bird', emoji: '🐦', title: 'achievement.early_bird.title', subtitle: 'achievement.early_bird.subtitle'),
-  _AchievementDisplay(id: 'streak_3', emoji: '🔥', title: 'achievement.streak_3.title', subtitle: 'achievement.streak_3.subtitle'),
-  _AchievementDisplay(id: 'streak_7', emoji: '💪', title: 'achievement.streak_7.title', subtitle: 'achievement.streak_7.subtitle'),
-  _AchievementDisplay(id: 'perfect_quiz', emoji: '💯', title: 'achievement.perfect_quiz.title', subtitle: 'achievement.perfect_quiz.subtitle'),
-  _AchievementDisplay(id: 'five_lessons', emoji: '📚', title: 'achievement.five_lessons.title', subtitle: 'achievement.five_lessons.subtitle'),
-  _AchievementDisplay(id: 'first_stage', emoji: '🏅', title: 'achievement.first_stage.title', subtitle: 'achievement.first_stage.subtitle'),
-  _AchievementDisplay(id: 'quick_learner', emoji: '⚡', title: 'achievement.quick_learner.title', subtitle: 'achievement.quick_learner.subtitle'),
-  _AchievementDisplay(id: 'comeback', emoji: '🔄', title: 'achievement.comeback.title', subtitle: 'achievement.comeback.subtitle'),
-  _AchievementDisplay(id: 'night_owl', emoji: '🦉', title: 'achievement.night_owl.title', subtitle: 'achievement.night_owl.subtitle'),
-  // Locked (14)
-  _AchievementDisplay(id: 'streak_14', emoji: '🌟', title: 'achievement.streak_14.title', subtitle: 'achievement.streak_14.subtitle'),
-  _AchievementDisplay(id: 'streak_30', emoji: '🏆', title: 'achievement.streak_30.title', subtitle: 'achievement.streak_30.subtitle'),
-  _AchievementDisplay(id: 'ten_lessons', emoji: '📖', title: 'achievement.ten_lessons.title', subtitle: 'achievement.ten_lessons.subtitle'),
-  _AchievementDisplay(id: 'twenty_lessons', emoji: '🎯', title: 'achievement.twenty_lessons.title', subtitle: 'achievement.twenty_lessons.subtitle'),
-  _AchievementDisplay(id: 'all_stages', emoji: '👑', title: 'achievement.all_stages.title', subtitle: 'achievement.all_stages.subtitle'),
-  _AchievementDisplay(id: 'social_3', emoji: '🤝', title: 'achievement.social_3.title', subtitle: 'achievement.social_3.subtitle'),
-  _AchievementDisplay(id: 'social_10', emoji: '🎉', title: 'achievement.social_10.title', subtitle: 'achievement.social_10.subtitle'),
-  _AchievementDisplay(id: 'first_match', emoji: '🀄', title: 'achievement.first_match.title', subtitle: 'achievement.first_match.subtitle'),
-  _AchievementDisplay(id: 'match_5', emoji: '🎲', title: 'achievement.match_5.title', subtitle: 'achievement.match_5.subtitle'),
-  _AchievementDisplay(id: 'match_win', emoji: '🏅', title: 'achievement.match_win.title', subtitle: 'achievement.match_win.subtitle'),
-  _AchievementDisplay(id: 'speed_demon', emoji: '💨', title: 'achievement.speed_demon.title', subtitle: 'achievement.speed_demon.subtitle'),
-  _AchievementDisplay(id: 'explorer', emoji: '🗺️', title: 'achievement.explorer.title', subtitle: 'achievement.explorer.subtitle'),
-  _AchievementDisplay(id: 'gold_league', emoji: '🥇', title: 'achievement.gold_league.title', subtitle: 'achievement.gold_league.subtitle'),
-  _AchievementDisplay(id: 'diamond_league', emoji: '💎', title: 'achievement.diamond_league.title', subtitle: 'achievement.diamond_league.subtitle'),
-];
-
-// ─── Mascot/Avatar options ───
-class _AvatarOption {
-  final String id;
-  final MascotExpression expression;
-  final String label;
-  final Color frameColor;
-  final bool isLocked;
-
-  const _AvatarOption({
-    required this.id,
-    required this.expression,
-    required this.label,
-    required this.frameColor,
-    this.isLocked = false,
-  });
-}
-
-const List<_AvatarOption> _avatarOptions = [
-  _AvatarOption(id: 'happy', expression: MascotExpression.happy, label: 'Happy', frameColor: Color(0xFF4CAF50)),
-  _AvatarOption(id: 'excited', expression: MascotExpression.excited, label: 'Excited', frameColor: Color(0xFFFF9800)),
-  _AvatarOption(id: 'wink', expression: MascotExpression.wink, label: 'Wink', frameColor: Color(0xFF9C27B0)),
-  _AvatarOption(id: 'content', expression: MascotExpression.content, label: 'Chill', frameColor: Color(0xFF2196F3)),
-  _AvatarOption(id: 'thinking', expression: MascotExpression.thinking, label: 'Thinking', frameColor: Color(0xFF607D8B)),
-  _AvatarOption(id: 'pro_gold', expression: MascotExpression.happy, label: 'Gold Frame', frameColor: Color(0xFFFFD700), isLocked: true),
-  _AvatarOption(id: 'pro_diamond', expression: MascotExpression.excited, label: 'Diamond Frame', frameColor: Color(0xFF7C4DFF), isLocked: true),
-  _AvatarOption(id: 'pro_fire', expression: MascotExpression.wink, label: 'Fire Frame', frameColor: Color(0xFFFF5722), isLocked: true),
-];
+import '../models/community/league_tier.dart';
+import '../models/community/leaderboard_entry.dart';
+import '../models/community/achievement_display.dart';
+import '../models/community/avatar_option.dart';
 
 // ═══════════════════════════════════════════════════════════════
 // ─── Main Widget ───
@@ -164,7 +28,7 @@ class CommunityScreen extends StatelessWidget {
     final userStreak = game.streak;
     final completedCount = game.completedLessons;
     final nickname = game.nickname;
-    final league = _getLeague(userXp);
+    final league = getLeague(userXp);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F9F3),
@@ -199,7 +63,7 @@ class CommunityScreen extends StatelessWidget {
 
   // ─── Profile Header ───
   Widget _buildProfileHeader(
-      BuildContext context, String nickname, _LeagueTier league, GameState game) {
+      BuildContext context, String nickname, LeagueTier league, GameState game) {
     return Row(
       children: [
         // Mascot Avatar (tappable → avatar selection)
@@ -327,12 +191,12 @@ class CommunityScreen extends StatelessWidget {
   }
 
   // ─── League Card (dynamic, tappable) ───
-  Widget _buildLeagueCard(BuildContext context, _LeagueTier league, int xp) {
+  Widget _buildLeagueCard(BuildContext context, LeagueTier league, int xp) {
     final progress = (xp - league.minXp) / (league.maxXp - league.minXp);
     // Calculate rank among fake leaderboard
-    int rank = _fakeLeaderboard.length + 1;
-    for (int i = 0; i < _fakeLeaderboard.length; i++) {
-      if (xp >= _fakeLeaderboard[i].xp) {
+    int rank = fakeLeaderboard.length + 1;
+    for (int i = 0; i < fakeLeaderboard.length; i++) {
+      if (xp >= fakeLeaderboard[i].xp) {
         rank = i + 1;
         break;
       }
@@ -495,9 +359,9 @@ class CommunityScreen extends StatelessWidget {
   // ─── Achievements Section ───
   Widget _buildAchievementsSection(BuildContext context) {
     final game = context.watch<GameState>();
-    final showcase = _allAchievements.where((a) => game.unlockedAchievements.contains(a.id)).take(3).toList();
-    final unlockedCount = _allAchievements.where((a) => game.unlockedAchievements.contains(a.id)).length;
-    final total = _allAchievements.length;
+    final showcase = allAchievements.where((a) => game.unlockedAchievements.contains(a.id)).take(3).toList();
+    final unlockedCount = allAchievements.where((a) => game.unlockedAchievements.contains(a.id)).length;
+    final total = allAchievements.length;
 
     return Column(
       children: [
@@ -567,7 +431,7 @@ class CommunityScreen extends StatelessWidget {
     );
   }
 
-  Widget _achievementBadge(_AchievementDisplay achievement, bool isUnlocked) {
+  Widget _achievementBadge(AchievementDisplay achievement, bool isUnlocked) {
     return Column(
       children: [
         Container(
@@ -688,13 +552,13 @@ class CommunityScreen extends StatelessWidget {
                     final fakes = FirebaseService.generateLocalFakePlayers(
                         region, count: 6, realNicknames: realNicknames);
                     // 合併：真實玩家 + 假玩家 + 自己（若不在 docs 內）
-                    final merged = <_LeaderboardEntry>[];
+                    final merged = <LeaderboardEntry>[];
                     bool meIncluded = false;
                     for (final doc in realDocs) {
                       final d = doc.data() as Map<String, dynamic>;
                       final isMe = doc.id == uid;
                       if (isMe) meIncluded = true;
-                      merged.add(_LeaderboardEntry(
+                      merged.add(LeaderboardEntry(
                         rank: 0,
                         name: (d['nickname'] as String?) ?? 'Player',
                         avatar: (d['avatarEmoji'] as String?) ?? '🐼',
@@ -706,7 +570,7 @@ class CommunityScreen extends StatelessWidget {
                       ));
                     }
                     for (final f in fakes) {
-                      merged.add(_LeaderboardEntry(
+                      merged.add(LeaderboardEntry(
                         rank: 0,
                         name: (f['nickname'] as String?) ?? 'Player',
                         avatar: (f['avatarEmoji'] as String?) ?? '🐼',
@@ -718,7 +582,7 @@ class CommunityScreen extends StatelessWidget {
                       ));
                     }
                     if (!meIncluded) {
-                      merged.add(_LeaderboardEntry(
+                      merged.add(LeaderboardEntry(
                         rank: 0,
                         name: nickname,
                         avatar: game.avatarEmoji,
@@ -733,10 +597,10 @@ class CommunityScreen extends StatelessWidget {
                     if (merged.isEmpty) {
                       return _leaderboardEmptyPlaceholder();
                     }
-                    final entries = <_LeaderboardEntry>[];
+                    final entries = <LeaderboardEntry>[];
                     for (int i = 0; i < merged.length; i++) {
                       final e = merged[i];
-                      entries.add(_LeaderboardEntry(
+                      entries.add(LeaderboardEntry(
                         rank: i + 1,
                         name: e.name,
                         avatar: e.avatar,
@@ -1308,7 +1172,7 @@ class CommunityScreen extends StatelessWidget {
     );
   }
 
-  Widget _leaderboardRow(_LeaderboardEntry entry) {
+  Widget _leaderboardRow(LeaderboardEntry entry) {
     final isUser = entry.isCurrentUser;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
@@ -1584,7 +1448,7 @@ class _AvatarSelectionPageState extends State<_AvatarSelectionPage> {
                 color: const Color(0xFFE8F5E9),
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: _avatarOptions
+                  color: avatarOptions
                       .firstWhere((a) => a.id == _selectedId)
                       .frameColor,
                   width: 4,
@@ -1592,7 +1456,7 @@ class _AvatarSelectionPageState extends State<_AvatarSelectionPage> {
               ),
               child: ClipOval(
                 child: MascotWidget(
-                  expression: _avatarOptions
+                  expression: avatarOptions
                       .firstWhere((a) => a.id == _selectedId)
                       .expression,
                   size: 100,
@@ -1614,7 +1478,7 @@ class _AvatarSelectionPageState extends State<_AvatarSelectionPage> {
               mainAxisSpacing: 12,
               crossAxisSpacing: 12,
               childAspectRatio: 0.75,
-              children: _avatarOptions
+              children: avatarOptions
                   .where((a) => !a.isLocked)
                   .map((a) => _avatarGridItem(a))
                   .toList(),
@@ -1652,7 +1516,7 @@ class _AvatarSelectionPageState extends State<_AvatarSelectionPage> {
               mainAxisSpacing: 12,
               crossAxisSpacing: 12,
               childAspectRatio: 0.75,
-              children: _avatarOptions
+              children: avatarOptions
                   .where((a) => a.isLocked)
                   .map((a) => _avatarGridItem(a))
                   .toList(),
@@ -1695,7 +1559,7 @@ class _AvatarSelectionPageState extends State<_AvatarSelectionPage> {
     );
   }
 
-  Widget _avatarGridItem(_AvatarOption option) {
+  Widget _avatarGridItem(AvatarOption option) {
     final isSelected = option.id == _selectedId;
     return GestureDetector(
       onTap: () {
@@ -1776,11 +1640,11 @@ class _LeagueDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final game = context.watch<GameState>();
     final xp = game.xp;
-    final currentLeague = _getLeague(xp);
+    final currentLeague = getLeague(xp);
 
     int currentIdx = 0;
-    for (int i = _leagueTiers.length - 1; i >= 0; i--) {
-      if (xp >= _leagueTiers[i].minXp) {
+    for (int i = leagueTiers.length - 1; i >= 0; i--) {
+      if (xp >= leagueTiers[i].minXp) {
         currentIdx = i;
         break;
       }
@@ -1855,7 +1719,7 @@ class _LeagueDetailPage extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             // All leagues
-            ..._leagueTiers.asMap().entries.map((entry) {
+            ...leagueTiers.asMap().entries.map((entry) {
               final idx = entry.key;
               final league = entry.value;
               final isCurrent = idx == currentIdx;
@@ -1943,8 +1807,8 @@ class _AllAchievementsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final game = context.watch<GameState>();
-    final unlockedCount = _allAchievements.where((a) => game.unlockedAchievements.contains(a.id)).length;
-    final total = _allAchievements.length;
+    final unlockedCount = allAchievements.where((a) => game.unlockedAchievements.contains(a.id)).length;
+    final total = allAchievements.length;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F9F3),
@@ -2024,7 +1888,7 @@ class _AllAchievementsPage extends StatelessWidget {
             Wrap(
               spacing: 12,
               runSpacing: 16,
-              children: _allAchievements
+              children: allAchievements
                   .where((a) => game.unlockedAchievements.contains(a.id))
                   .map((a) => _achievementGridItem(a, true))
                   .toList(),
@@ -2039,7 +1903,7 @@ class _AllAchievementsPage extends StatelessWidget {
             Wrap(
               spacing: 12,
               runSpacing: 16,
-              children: _allAchievements
+              children: allAchievements
                   .where((a) => !game.unlockedAchievements.contains(a.id))
                   .map((a) => _achievementGridItem(a, false))
                   .toList(),
@@ -2050,7 +1914,7 @@ class _AllAchievementsPage extends StatelessWidget {
     );
   }
 
-  Widget _achievementGridItem(_AchievementDisplay a, bool isUnlocked) {
+  Widget _achievementGridItem(AchievementDisplay a, bool isUnlocked) {
     return SizedBox(
       width: 75,
       child: Column(
@@ -2166,13 +2030,13 @@ class _AllLeaderboardPage extends StatelessWidget {
                 final fakes = FirebaseService.generateLocalFakePlayers(
                     region, count: 6, realNicknames: realNicknames);
                 // 合併：真實玩家 + 假玩家 + 自己（若不在 docs 內）
-                final merged = <_LeaderboardEntry>[];
+                final merged = <LeaderboardEntry>[];
                 bool meIncluded = false;
                 for (final doc in realDocs) {
                   final d = doc.data() as Map<String, dynamic>;
                   final isMe = doc.id == uid;
                   if (isMe) meIncluded = true;
-                  merged.add(_LeaderboardEntry(
+                  merged.add(LeaderboardEntry(
                     rank: 0,
                     name: (d['nickname'] as String?) ?? 'Player',
                     avatar: (d['avatarEmoji'] as String?) ?? '🐼',
@@ -2184,7 +2048,7 @@ class _AllLeaderboardPage extends StatelessWidget {
                   ));
                 }
                 for (final f in fakes) {
-                  merged.add(_LeaderboardEntry(
+                  merged.add(LeaderboardEntry(
                     rank: 0,
                     name: (f['nickname'] as String?) ?? 'Player',
                     avatar: (f['avatarEmoji'] as String?) ?? '🐼',
@@ -2196,7 +2060,7 @@ class _AllLeaderboardPage extends StatelessWidget {
                   ));
                 }
                 if (!meIncluded) {
-                  merged.add(_LeaderboardEntry(
+                  merged.add(LeaderboardEntry(
                     rank: 0,
                     name: nickname,
                     avatar: avatarEmoji,
@@ -2208,10 +2072,10 @@ class _AllLeaderboardPage extends StatelessWidget {
                 }
                 // 純 XP 降序排序
                 merged.sort((a, b) => b.xp.compareTo(a.xp));
-                final entries = <_LeaderboardEntry>[];
+                final entries = <LeaderboardEntry>[];
                 for (int i = 0; i < merged.length; i++) {
                   final e = merged[i];
-                  entries.add(_LeaderboardEntry(
+                  entries.add(LeaderboardEntry(
                     rank: i + 1,
                     name: e.name,
                     avatar: e.avatar,
@@ -2254,7 +2118,7 @@ class _AllLeaderboardPage extends StatelessWidget {
     );
   }
 
-  Widget _buildPodium(List<_LeaderboardEntry> entries) {
+  Widget _buildPodium(List<LeaderboardEntry> entries) {
     final top3 = entries.take(3).toList();
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -2269,7 +2133,7 @@ class _AllLeaderboardPage extends StatelessWidget {
     );
   }
 
-  Widget _podiumItem(_LeaderboardEntry entry, double height, Color color) {
+  Widget _podiumItem(LeaderboardEntry entry, double height, Color color) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -2309,7 +2173,7 @@ class _AllLeaderboardPage extends StatelessWidget {
     );
   }
 
-  Widget _fullRow(_LeaderboardEntry entry) {
+  Widget _fullRow(LeaderboardEntry entry) {
     final isUser = entry.isCurrentUser;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
