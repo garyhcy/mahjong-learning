@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/community/leaderboard_entry.dart';
+import '../utils/sort_utils.dart';
 import 'firebase_service.dart';
 
 /// Builds the merged leaderboard entries used by both the inline region
@@ -67,7 +68,7 @@ List<LeaderboardEntry> buildLeaderboardEntries({
     ));
   }
 
-  merged.sort((a, b) => b.xp.compareTo(a.xp));
+  sortLeaderboard(merged);
 
   final entries = <LeaderboardEntry>[];
   for (int i = 0; i < merged.length; i++) {

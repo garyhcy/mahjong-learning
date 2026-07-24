@@ -1,4 +1,4 @@
-// ─── Fake leaderboard data ───
+// ─── Leaderboard entry model (used by both real and fake leaderboards) ───
 class LeaderboardEntry {
   final int rank;
   final String name;
