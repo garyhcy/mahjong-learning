@@ -10,12 +10,7 @@ import '../services/otp_service.dart';
 import '../widgets/mascot_widget.dart';
 
 class AuthScreen extends StatefulWidget {
-  const AuthScreen({super.key, this.onDemoAuth});
-
-  /// Demo-mode sign-in callback (used when Firebase is unavailable, e.g. web
-  /// demo). When provided, a "Continue as Guest (Demo)" button is shown
-  /// alongside the email/social login form.
-  final Future<void> Function()? onDemoAuth;
+  const AuthScreen({super.key});
 
   @override
   State<AuthScreen> createState() => _AuthScreenState();
@@ -55,33 +50,13 @@ class _AuthScreenState extends State<AuthScreen> {
 
       if (_isLogin) {
         // Sign in — no OTP required for login (per Gary's spec).
-        if (firebaseAvailable) {
-          await FirebaseService.signIn(email, password);
-        } else {
-          // Demo mode: check local mock account.
-          final sp = await SharedPreferences.getInstance();
-          final storedEmail = sp.getString('demo_account_email');
-          final storedPw = sp.getString('demo_account_password');
-          if (storedEmail != email || storedPw != password) {
-            setState(() {
-              _errorMessage = AppI18n.t('auth.invalidCredentials');
-            });
-            return;
-          }
-          await widget.onDemoAuth?.call();
-        }
+        await FirebaseService.signIn(email, password);
       } else {
         // Sign up — generate OTP and move to OTP screen.
-        if (firebaseAvailable) {
-          final code = await FirebaseService.signUp(email, password);
-          // In production a Cloud Function would email this. For now surface
-          // it as a hint in demo/test contexts only.
-          if (kDebugMode || kIsWeb || !firebaseAvailable) {
-            _demoOtpHint = code;
-          }
-        } else {
-          // Demo mode: create a local pending account + mock OTP.
-          final code = await OtpService.generateAndStore(email);
+        final code = await FirebaseService.signUp(email, password);
+        // In production a Cloud Function would email this. For now surface
+        // it as a hint in debug/web test contexts only.
+        if (kDebugMode || kIsWeb) {
           _demoOtpHint = code;
         }
         setState(() {
@@ -155,27 +130,11 @@ class _AuthScreenState extends State<AuthScreen> {
       _errorMessage = null;
     });
     try {
-      OtpResult result;
-      if (firebaseAvailable) {
-        result = await FirebaseService.verifyOtp(_pendingEmail!, code);
-      } else {
-        result = await OtpService.verify(_pendingEmail!, code);
-      }
+      final result = await FirebaseService.verifyOtp(_pendingEmail!, code);
 
       if (result == OtpResult.success) {
-        // Mark registration complete.
-        if (!firebaseAvailable) {
-          // Demo mode: persist mock account.
-          final sp = await SharedPreferences.getInstance();
-          await sp.setString('demo_account_email', _pendingEmail!);
-          await sp.setString(
-              'demo_account_password', _passwordController.text.trim());
-          await OtpService.clear();
-          await widget.onDemoAuth?.call();
-        } else {
-          // Firebase mode: user is already created; auth state will switch.
-          await OtpService.clear();
-        }
+        // Firebase mode: user is already created; auth state will switch.
+        await OtpService.clear();
       } else {
         setState(() {
           switch (result) {
@@ -204,13 +163,8 @@ class _AuthScreenState extends State<AuthScreen> {
       _errorMessage = null;
     });
     try {
-      String code;
-      if (firebaseAvailable) {
-        code = await FirebaseService.resendOtp(_pendingEmail!);
-      } else {
-        code = await OtpService.resend(_pendingEmail!);
-      }
-      if (kDebugMode || kIsWeb || !firebaseAvailable) {
+      final code = await FirebaseService.resendOtp(_pendingEmail!);
+      if (kDebugMode || kIsWeb) {
         setState(() => _demoOtpHint = code);
       }
       if (mounted) {
@@ -301,10 +255,6 @@ class _AuthScreenState extends State<AuthScreen> {
                       const SizedBox(height: 12),
                       _buildAppleButton(),
                     ],
-                  ],
-                  if (widget.onDemoAuth != null) ...[
-                    const SizedBox(height: 12),
-                    _buildGuestButton(),
                   ],
                   const SizedBox(height: 20),
                   _buildToggleRow(),
@@ -517,37 +467,6 @@ class _AuthScreenState extends State<AuthScreen> {
               fontSize: 15,
               fontWeight: FontWeight.w600,
               color: Colors.white,
-            )),
-      ),
-    );
-  }
-
-  Widget _buildGuestButton() {
-    return SizedBox(
-      width: double.infinity,
-      height: 52,
-      child: OutlinedButton.icon(
-        onPressed: _isLoading ? null : () async {
-          setState(() => _isLoading = true);
-          try {
-            await widget.onDemoAuth!();
-          } finally {
-            if (mounted) setState(() => _isLoading = false);
-          }
-        },
-        style: OutlinedButton.styleFrom(
-          backgroundColor: Colors.white,
-          side: const BorderSide(color: Color(0xFFBDBDBD)),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-          ),
-        ),
-        icon: const Icon(Icons.person_outline, size: 22, color: Color(0xFF757575)),
-        label: Text(AppI18n.t('auth.continueAsGuest'),
-            style: GoogleFonts.nunito(
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-              color: const Color(0xFF757575),
             )),
       ),
     );

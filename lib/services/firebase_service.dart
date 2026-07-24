@@ -91,9 +91,9 @@ class FirebaseService {
   }
 
   // ── Region ──
-  /// Ludi 地區 leaderboard 所支援的固定地區列表。
-  /// Lazy seeding：只在 leaderboard 查詢該地區時才透過 [seedFakePlayers] 建立
-  /// 假玩家，啟動時不主動 seed 全部地區。
+  /// 地區 leaderboard 所支援的固定地區列表。
+  /// 假玩家採本地合併（generateLocalFakePlayers），不寫 Firestore，
+  /// leaderboard 查詢時與真實用戶在客戶端合併顯示。
   static const List<String> kSupportedRegions = [
     // Asia
     'HK', 'TW', 'CN', 'SG', 'MY', 'MO', 'JP', 'KR', 'TH', 'VN', 'ID', 'PH', 'IN',
@@ -249,33 +249,91 @@ class FirebaseService {
         .snapshots();
   }
 
-  static final Set<String> _seededRegions = {};
+  /// 純本地生成假玩家資料（不寫 Firestore）。
+  ///
+  /// 每個 region 以 deterministic seed 產生 [count] 名假玩家，
+  /// 名字與 XP 每區不同；XP 範圍 400–1200；過濾不雅字詞與
+  /// 與真實玩家重複的名字。回傳已按 XP 降序排序的清單。
+  ///
+  /// 同一 region 每次呼叫結果相同（deterministic），不會跳動。
+  static List<Map<String, dynamic>> generateLocalFakePlayers(
+    String region, {
+    int count = 6,
+    List<String> realNicknames = const [],
+  }) {
+    final seed = region.hashCode;
+    final random = Random(seed);
 
-  static Future<void> seedFakePlayers(String region, int count) async {
-    if (_seededRegions.contains(region)) return;
-    _seededRegions.add(region);
+    const adjectives = [
+      'Swift', 'Calm', 'Brave', 'Clever', 'Bright', 'Cosmic', 'Lucky',
+      'Mighty', 'Noble', 'Royal', 'Silent', 'Vivid', 'Witty', 'Zen', 'Golden',
+      'Azure', 'Crimson', 'Emerald', 'Silver', 'Stormy', 'Jolly', 'Frosty',
+    ];
+    const nouns = [
+      'Panda', 'Tiger', 'Phoenix', 'Dragon', 'Falcon', 'Otter', 'Lion', 'Wolf',
+      'Hawk', 'Crane', 'Fox', 'Bear', 'Heron', 'Koi', 'Lynx', 'Raven', 'Stag',
+      'Owl', 'Swan', 'Viper', 'Sparrow', 'Otter',
+    ];
+    const emojis = [
+      '🐉', '🐱', '🎯', '🌸', '🦊', '🎮', '🌺', '🦝', '🐼', '🦁',
+      '🐯', '🦅', '🐸', '🦢', '🐠', '🦉', '🐍', '🦌', '🦚', '🐙',
+    ];
 
-    final names = ['Alex', 'Bella', 'Charlie', 'Diana', 'Edward', 'Fiona', 'George', 'Hannah'];
-    final emojis = ['🐉', '🐱', '🎯', '🌸', '🦊', '🎮', '🌺', '🦝'];
-    final batch = _firestore.batch();
+    // 不雅字詞黑名單（小寫子字串比對）
+    const bannedSubstrings = [
+      'fuck', 'shit', 'damn', 'ass', 'dick', 'pussy', 'cunt', 'bitch',
+      'nigger', 'nigga', 'retard', 'fag', 'rape', 'kill', 'nazi', 'slut',
+      'whore', 'anal', 'cum', 'porn', 'sex',
+    ];
 
-    for (int i = 0; i < count; i++) {
-      final fakeUid = 'fake_${region}_$i';
-      final fakePlayerId = 'LD${1000 + i * 137}';
-      final xp = 1200 - i * 160;
-      batch.set(_firestore.collection('users').doc(fakeUid), {
-        'playerId': fakePlayerId,
-        'nickname': names[i % names.length],
-        'avatarEmoji': emojis[i % emojis.length],
+    final realSet = realNicknames
+        .map((n) => n.toLowerCase().trim())
+        .where((n) => n.isNotEmpty)
+        .toSet();
+    final usedNames = <String>{};
+    final usedXps = <int>{};
+    final players = <Map<String, dynamic>>[];
+
+    int attempts = 0;
+    while (players.length < count && attempts < count * 60) {
+      attempts++;
+      final adj = adjectives[random.nextInt(adjectives.length)];
+      final noun = nouns[random.nextInt(nouns.length)];
+      final name = '$adj$noun';
+      final lower = name.toLowerCase();
+
+      // 過濾不雅字詞
+      if (bannedSubstrings.any((b) => lower.contains(b))) continue;
+      // 過濾與真實玩家重複
+      if (realSet.contains(lower)) continue;
+      // 過濾本批次重複
+      if (usedNames.contains(name)) continue;
+
+      // XP: 400–1200，deterministic，本批次內不重複
+      int xp = 400 + random.nextInt(801); // 400..1200
+      int xpAttempts = 0;
+      while (usedXps.contains(xp) && xpAttempts < 60) {
+        xp = 400 + random.nextInt(801);
+        xpAttempts++;
+      }
+      usedXps.add(xp);
+      usedNames.add(name);
+
+      players.add({
+        'playerId': 'LD${1000 + (seed.abs() % 8000) + players.length * 7}',
+        'nickname': name,
+        'avatarEmoji': emojis[random.nextInt(emojis.length)],
         'xp': xp,
-        'streak': i * 2,
+        'streak': random.nextInt(30),
         'region': region,
         'isFake': true,
-        'completedLessons': i * 3,
-        'updatedAt': FieldValue.serverTimestamp(),
-      }, SetOptions(merge: true));
+        'completedLessons': random.nextInt(20),
+      });
     }
-    await batch.commit();
+
+    // 純 XP 降序排序
+    players.sort((a, b) => (b['xp'] as int).compareTo(a['xp'] as int));
+    return players;
   }
 
   // Save/Load Progress

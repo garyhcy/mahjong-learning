@@ -146,7 +146,6 @@ class _AuthFlow extends StatefulWidget {
 }
 
 class _AuthFlowState extends State<_AuthFlow> {
-  bool? _localAuthed;
   bool _checked = false;
 
   @override
@@ -156,23 +155,7 @@ class _AuthFlowState extends State<_AuthFlow> {
   }
 
   Future<void> _checkLocal() async {
-    if (firebaseAvailable) {
-      if (mounted) setState(() => _checked = true);
-      return;
-    }
-    final p = await SharedPreferences.getInstance();
-    if (mounted) {
-      setState(() {
-        _localAuthed = p.getBool('local_demo_authed') ?? false;
-        _checked = true;
-      });
-    }
-  }
-
-  Future<void> _demoSignIn() async {
-    final p = await SharedPreferences.getInstance();
-    await p.setBool('local_demo_authed', true);
-    if (mounted) setState(() => _localAuthed = true);
+    if (mounted) setState(() => _checked = true);
   }
 
   @override
@@ -186,31 +169,25 @@ class _AuthFlowState extends State<_AuthFlow> {
       );
     }
 
-    if (firebaseAvailable) {
-      return StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Scaffold(
-              backgroundColor: Color(0xFFFFF8F0),
-              body: Center(
-                child: CircularProgressIndicator(
-                  color: Color(0xFF4CAF50),
-                ),
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            backgroundColor: Color(0xFFFFF8F0),
+            body: Center(
+              child: CircularProgressIndicator(
+                color: Color(0xFF4CAF50),
               ),
-            );
-          }
-          if (snapshot.hasData && snapshot.data != null) {
-            return const MainShell();
-          }
-          return const AuthScreen();
-        },
-      );
-    }
-
-    // Demo mode (Firebase unavailable): local-only auth gate.
-    if (_localAuthed == true) return const MainShell();
-    return AuthScreen(onDemoAuth: _demoSignIn);
+            ),
+          );
+        }
+        if (snapshot.hasData && snapshot.data != null) {
+          return const MainShell();
+        }
+        return const AuthScreen();
+      },
+    );
   }
 }
 
@@ -373,17 +350,18 @@ class _MainShellState extends State<MainShell> {
       body: ValueListenableBuilder<int>(
         valueListenable: AppI18n.languageNotifier,
         builder: (context, lang, child) {
-          return AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
-            switchInCurve: Curves.easeOut,
-            switchOutCurve: Curves.easeIn,
-            transitionBuilder: (child, animation) {
-              return FadeTransition(opacity: animation, child: child);
-            },
-            child: KeyedSubtree(
-              key: ValueKey((_currentIndex, lang)),
-              child: _screens[_currentIndex],
-            ),
+          // IndexedStack keeps every tab's State alive across tab switches, so
+          // CommunityScreen's leaderboard Stream stays subscribed (fixes region
+          // leaderboard disappearing after switching tabs and back). lang change
+          // still rebuilds each screen via the per-child ValueKey.
+          return IndexedStack(
+            index: _currentIndex,
+            children: _screens
+                .map((s) => KeyedSubtree(
+                      key: ValueKey(lang),
+                      child: s,
+                    ))
+                .toList(),
           );
         },
       ),

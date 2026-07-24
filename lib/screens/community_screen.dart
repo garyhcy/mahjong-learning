@@ -674,26 +674,28 @@ class CommunityScreen extends StatelessWidget {
                     if (snapshot.hasError) {
                       return _leaderboardErrorPlaceholder(snapshot.error.toString());
                     }
-                    // Seed fake players once per region (idempotent via static guard + merge:true).
-                    // Triggered unconditionally so old random-XP docs are also overwritten.
-                    FirebaseService.seedFakePlayers(region, 6);
                     final docs = snapshot.data?.docs ?? [];
-                    if (docs.isEmpty) {
-                      return _leaderboardEmptyPlaceholder();
-                    }
-                    final entries = <_LeaderboardEntry>[];
-                    int myRank = docs.length + 1;
+                    // 過濾掉舊的 Firestore fake_ 文檔（本地合併後不再寫入，殘留者忽略）
+                    final realDocs =
+                        docs.where((d) => !d.id.startsWith('fake_')).toList();
+                    final realNicknames = realDocs
+                        .map((d) =>
+                            ((d.data() as Map<String, dynamic>)['nickname']
+                                    as String?) ??
+                            '')
+                        .toList();
+                    // 本地生成假玩家（不寫 Firestore，deterministic，不跳動）
+                    final fakes = FirebaseService.generateLocalFakePlayers(
+                        region, count: 6, realNicknames: realNicknames);
+                    // 合併：真實玩家 + 假玩家 + 自己（若不在 docs 內）
+                    final merged = <_LeaderboardEntry>[];
                     bool meIncluded = false;
-                    for (int i = 0; i < docs.length; i++) {
-                      final d = docs[i].data() as Map<String, dynamic>;
-                      final docUid = docs[i].id;
-                      final isMe = docUid == uid;
-                      if (isMe) {
-                        meIncluded = true;
-                        myRank = i + 1;
-                      }
-                      entries.add(_LeaderboardEntry(
-                        rank: i + 1,
+                    for (final doc in realDocs) {
+                      final d = doc.data() as Map<String, dynamic>;
+                      final isMe = doc.id == uid;
+                      if (isMe) meIncluded = true;
+                      merged.add(_LeaderboardEntry(
+                        rank: 0,
                         name: (d['nickname'] as String?) ?? 'Player',
                         avatar: (d['avatarEmoji'] as String?) ?? '🐼',
                         xp: (d['xp'] as num?)?.toInt() ?? 0,
@@ -703,20 +705,60 @@ class CommunityScreen extends StatelessWidget {
                         skillRating: ((d['xp'] as num?)?.toInt() ?? 0) ~/ 40,
                       ));
                     }
+                    for (final f in fakes) {
+                      merged.add(_LeaderboardEntry(
+                        rank: 0,
+                        name: (f['nickname'] as String?) ?? 'Player',
+                        avatar: (f['avatarEmoji'] as String?) ?? '🐼',
+                        xp: (f['xp'] as num?)?.toInt() ?? 0,
+                        streak: (f['streak'] as num?)?.toInt() ?? 0,
+                        isCurrentUser: false,
+                        playerId: (f['playerId'] as String?) ?? '',
+                        skillRating: ((f['xp'] as num?)?.toInt() ?? 0) ~/ 40,
+                      ));
+                    }
+                    if (!meIncluded) {
+                      merged.add(_LeaderboardEntry(
+                        rank: 0,
+                        name: nickname,
+                        avatar: game.avatarEmoji,
+                        xp: userXp,
+                        isCurrentUser: true,
+                        playerId: myPlayerId,
+                        skillRating: userXp ~/ 40,
+                      ));
+                    }
+                    // 純 XP 降序排序
+                    merged.sort((a, b) => b.xp.compareTo(a.xp));
+                    if (merged.isEmpty) {
+                      return _leaderboardEmptyPlaceholder();
+                    }
+                    final entries = <_LeaderboardEntry>[];
+                    for (int i = 0; i < merged.length; i++) {
+                      final e = merged[i];
+                      entries.add(_LeaderboardEntry(
+                        rank: i + 1,
+                        name: e.name,
+                        avatar: e.avatar,
+                        xp: e.xp,
+                        streak: e.streak,
+                        isCurrentUser: e.isCurrentUser,
+                        playerId: e.playerId,
+                        skillRating: e.skillRating,
+                      ));
+                    }
                     final topEntries = entries.take(3).toList();
+                    int myRank = 0;
+                    for (int i = 0; i < entries.length; i++) {
+                      if (entries[i].isCurrentUser) {
+                        myRank = i + 1;
+                        break;
+                      }
+                    }
                     return Column(
                       children: [
                         ...topEntries.map((e) => _leaderboardRow(e)),
-                        if (!meIncluded)
-                          _leaderboardRow(_LeaderboardEntry(
-                            rank: docs.length + 1,
-                            name: nickname,
-                            avatar: game.avatarEmoji,
-                            xp: userXp,
-                            isCurrentUser: true,
-                            playerId: myPlayerId,
-                            skillRating: userXp ~/ 40,
-                          )),
+                        if (myRank > 3) _leaderboardRow(entries[myRank - 1]),
                       ],
                     );
                   },
@@ -2111,19 +2153,27 @@ class _AllLeaderboardPage extends StatelessWidget {
                               fontSize: 13, color: Colors.redAccent)));
                 }
                 final docs = snapshot.data?.docs ?? [];
-                final entries = <_LeaderboardEntry>[];
-                int myRank = docs.length + 1;
+                // 過濾掉舊的 Firestore fake_ 文檔（本地合併後不再寫入，殘留者忽略）
+                final realDocs =
+                    docs.where((d) => !d.id.startsWith('fake_')).toList();
+                final realNicknames = realDocs
+                    .map((d) =>
+                        ((d.data() as Map<String, dynamic>)['nickname']
+                                as String?) ??
+                        '')
+                    .toList();
+                // 本地生成假玩家（不寫 Firestore，deterministic，不跳動）
+                final fakes = FirebaseService.generateLocalFakePlayers(
+                    region, count: 6, realNicknames: realNicknames);
+                // 合併：真實玩家 + 假玩家 + 自己（若不在 docs 內）
+                final merged = <_LeaderboardEntry>[];
                 bool meIncluded = false;
-                for (int i = 0; i < docs.length; i++) {
-                  final d = docs[i].data() as Map<String, dynamic>;
-                  final docUid = docs[i].id;
-                  final isMe = docUid == uid;
-                  if (isMe) {
-                    meIncluded = true;
-                    myRank = i + 1;
-                  }
-                  entries.add(_LeaderboardEntry(
-                    rank: i + 1,
+                for (final doc in realDocs) {
+                  final d = doc.data() as Map<String, dynamic>;
+                  final isMe = doc.id == uid;
+                  if (isMe) meIncluded = true;
+                  merged.add(_LeaderboardEntry(
+                    rank: 0,
                     name: (d['nickname'] as String?) ?? 'Player',
                     avatar: (d['avatarEmoji'] as String?) ?? '🐼',
                     xp: (d['xp'] as num?)?.toInt() ?? 0,
@@ -2133,13 +2183,43 @@ class _AllLeaderboardPage extends StatelessWidget {
                     skillRating: ((d['xp'] as num?)?.toInt() ?? 0) ~/ 40,
                   ));
                 }
+                for (final f in fakes) {
+                  merged.add(_LeaderboardEntry(
+                    rank: 0,
+                    name: (f['nickname'] as String?) ?? 'Player',
+                    avatar: (f['avatarEmoji'] as String?) ?? '🐼',
+                    xp: (f['xp'] as num?)?.toInt() ?? 0,
+                    streak: (f['streak'] as num?)?.toInt() ?? 0,
+                    isCurrentUser: false,
+                    playerId: (f['playerId'] as String?) ?? '',
+                    skillRating: ((f['xp'] as num?)?.toInt() ?? 0) ~/ 40,
+                  ));
+                }
                 if (!meIncluded) {
-                  entries.add(_LeaderboardEntry(
-                    rank: docs.length + 1,
+                  merged.add(_LeaderboardEntry(
+                    rank: 0,
                     name: nickname,
                     avatar: avatarEmoji,
                     xp: userXp,
                     isCurrentUser: true,
+                    playerId: '',
+                    skillRating: userXp ~/ 40,
+                  ));
+                }
+                // 純 XP 降序排序
+                merged.sort((a, b) => b.xp.compareTo(a.xp));
+                final entries = <_LeaderboardEntry>[];
+                for (int i = 0; i < merged.length; i++) {
+                  final e = merged[i];
+                  entries.add(_LeaderboardEntry(
+                    rank: i + 1,
+                    name: e.name,
+                    avatar: e.avatar,
+                    xp: e.xp,
+                    streak: e.streak,
+                    isCurrentUser: e.isCurrentUser,
+                    playerId: e.playerId,
+                    skillRating: e.skillRating,
                   ));
                 }
                 return SingleChildScrollView(

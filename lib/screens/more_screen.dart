@@ -417,8 +417,6 @@ class _MoreScreenState extends State<MoreScreen> {
                     try {
                       await FirebaseAuth.instance.signOut();
                     } catch (_) {}
-                    await SharedPreferences.getInstance()
-                        .then((prefs) => prefs.remove('local_demo_authed'));
                     if (context.mounted) {
                       final game = context.read<GameState>();
                       game.disableCloudSync();

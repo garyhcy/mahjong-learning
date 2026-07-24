@@ -292,7 +292,7 @@ TMP=$(mktemp -d) && cd "$TMP"
 | \# | 項目 | 修正 |
 | --- | --- | --- |
 | 1 | 語言選擇頁 logo | 改用 `file assets/images/topbar_logo.png`（原 chat 上傳的 `_TopBar_256px`） |
-| 2 | 按完語言沒轉登入頁 | `_AuthFlow` 改 StatefulWidget；Firebase 不可用時顯示 AuthScreen（demo/guest mode，`Continue as Guest` 按鈕），存 `local_demo_authed` |
+| 2 | 按完語言沒轉登入頁 | `_AuthFlow` 改 StatefulWidget；Firebase 不可用時顯示 AuthScreen。**⚠️ 無未登入 demo/guest mode（Gary 已明確定案：必須登入才能使用）**；舊殘留代碼 `local_demo_authed` / `_demoSignIn()` / `Continue as Guest` 按鈕為待清理項目 |
 | 3-13 | Find a Match / Skill Rating / playerId / auto-matchmaking / chat 輸入欄 / propose slot 月曆(30min) / 自選場地警告 / Match Rooms 列表 | 代碼上個 session 已改，但**從未 commit / build / 部署**，本次一併部署 |
 | 12 根因 | 完成預訂後找不到 Chat Room | (a) `MatchRoomData.toJson()` 存 ISO 字串但 `loadRooms()` 用 `as num?` 解析→崩→room 被清空，改為 DateTime.parse 兼容；(b) confirm 時 `updateRoom` 把 deleteAt 改為預約當天 +24h（原本是建立+24h） |
 | 14 | Delete Account 位置 | 從 Account section 移到頁面最底（Account Management section，Log Out 之後） |
