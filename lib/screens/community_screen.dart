@@ -9,6 +9,7 @@ import '../providers/game_state.dart';
 import '../screens/find_match_screen.dart';
 import '../services/app_i18n.dart';
 import '../services/firebase_service.dart';
+import '../services/leaderboard_merge.dart';
 import '../widgets/mascot_widget.dart';
 import '../models/community/league_tier.dart';
 import '../models/community/leaderboard_entry.dart';
@@ -497,6 +498,7 @@ class CommunityScreen extends StatelessWidget {
                     avatarEmoji: game.avatarEmoji,
                     uid: uid,
                     region: region,
+                    myPlayerId: myPlayerId,
                   ),
                 ));
               },
@@ -545,75 +547,20 @@ class CommunityScreen extends StatelessWidget {
                     // 過濾掉舊的 Firestore fake_ 文檔（本地合併後不再寫入，殘留者忽略）
                     final realDocs =
                         docs.where((d) => !d.id.startsWith('fake_')).toList();
-                    final realNicknames = realDocs
-                        .map((d) =>
-                            ((d.data() as Map<String, dynamic>)['nickname']
-                                    as String?) ??
-                            '')
-                        .toList();
-                    // 本地生成假玩家（不寫 Firestore，deterministic，不跳動）
-                    final fakes = FirebaseService.generateLocalFakePlayers(
-                        region, count: 6, realNicknames: realNicknames);
-                    // 合併：真實玩家 + 假玩家 + 自己（若不在 docs 內）
-                    final merged = <LeaderboardEntry>[];
-                    bool meIncluded = false;
-                    for (final doc in realDocs) {
-                      final d = doc.data() as Map<String, dynamic>;
-                      final isMe = doc.id == uid;
-                      if (isMe) meIncluded = true;
-                      merged.add(LeaderboardEntry(
-                        rank: 0,
-                        name: (d['nickname'] as String?) ?? 'Player',
-                        avatar: (d['avatarEmoji'] as String?) ?? '🐼',
-                        xp: (d['xp'] as num?)?.toInt() ?? 0,
-                        streak: (d['streak'] as num?)?.toInt() ?? 0,
-                        isCurrentUser: isMe,
-                        playerId: (d['playerId'] as String?) ?? '',
-                        skillRating: ((d['xp'] as num?)?.toInt() ?? 0) ~/ 40,
-                      ));
-                    }
-                    for (final f in fakes) {
-                      merged.add(LeaderboardEntry(
-                        rank: 0,
-                        name: (f['nickname'] as String?) ?? 'Player',
-                        avatar: (f['avatarEmoji'] as String?) ?? '🐼',
-                        xp: (f['xp'] as num?)?.toInt() ?? 0,
-                        streak: (f['streak'] as num?)?.toInt() ?? 0,
-                        isCurrentUser: false,
-                        playerId: (f['playerId'] as String?) ?? '',
-                        skillRating: ((f['xp'] as num?)?.toInt() ?? 0) ~/ 40,
-                      ));
-                    }
-                    if (!meIncluded) {
-                      merged.add(LeaderboardEntry(
-                        rank: 0,
-                        name: nickname,
-                        avatar: game.avatarEmoji,
-                        xp: userXp,
-                        isCurrentUser: true,
-                        playerId: myPlayerId,
-                        skillRating: userXp ~/ 40,
-                      ));
-                    }
-                    // 純 XP 降序排序
-                    merged.sort((a, b) => b.xp.compareTo(a.xp));
+                    // 合併真實玩家 + 假玩家 + 自己（共用 helper）
+                    final merged = generateAndMergeLeaderboard(
+                      region: region,
+                      realDocs: realDocs,
+                      uid: uid!,
+                      nickname: nickname,
+                      avatarEmoji: game.avatarEmoji,
+                      userXp: userXp,
+                      myPlayerId: myPlayerId,
+                    );
                     if (merged.isEmpty) {
                       return _leaderboardEmptyPlaceholder();
                     }
-                    final entries = <LeaderboardEntry>[];
-                    for (int i = 0; i < merged.length; i++) {
-                      final e = merged[i];
-                      entries.add(LeaderboardEntry(
-                        rank: i + 1,
-                        name: e.name,
-                        avatar: e.avatar,
-                        xp: e.xp,
-                        streak: e.streak,
-                        isCurrentUser: e.isCurrentUser,
-                        playerId: e.playerId,
-                        skillRating: e.skillRating,
-                      ));
-                    }
+                    final entries = merged;
                     final topEntries = entries.take(3).toList();
                     int myRank = 0;
                     for (int i = 0; i < entries.length; i++) {

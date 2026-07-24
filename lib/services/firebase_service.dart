@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'fake_players.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -256,84 +257,18 @@ class FirebaseService {
   /// 與真實玩家重複的名字。回傳已按 XP 降序排序的清單。
   ///
   /// 同一 region 每次呼叫結果相同（deterministic），不會跳動。
+    /// 假玩家採本地合併，不寫 Firestore，deterministic，不跳動。
+  /// 實作已抽至 [FakePlayers]；此處保留 thin wrapper 維持向後相容。
   static List<Map<String, dynamic>> generateLocalFakePlayers(
     String region, {
     int count = 6,
     List<String> realNicknames = const [],
   }) {
-    final seed = region.hashCode;
-    final random = Random(seed);
-
-    const adjectives = [
-      'Swift', 'Calm', 'Brave', 'Clever', 'Bright', 'Cosmic', 'Lucky',
-      'Mighty', 'Noble', 'Royal', 'Silent', 'Vivid', 'Witty', 'Zen', 'Golden',
-      'Azure', 'Crimson', 'Emerald', 'Silver', 'Stormy', 'Jolly', 'Frosty',
-    ];
-    const nouns = [
-      'Panda', 'Tiger', 'Phoenix', 'Dragon', 'Falcon', 'Otter', 'Lion', 'Wolf',
-      'Hawk', 'Crane', 'Fox', 'Bear', 'Heron', 'Koi', 'Lynx', 'Raven', 'Stag',
-      'Owl', 'Swan', 'Viper', 'Sparrow', 'Otter',
-    ];
-    const emojis = [
-      '🐉', '🐱', '🎯', '🌸', '🦊', '🎮', '🌺', '🦝', '🐼', '🦁',
-      '🐯', '🦅', '🐸', '🦢', '🐠', '🦉', '🐍', '🦌', '🦚', '🐙',
-    ];
-
-    // 不雅字詞黑名單（小寫子字串比對）
-    const bannedSubstrings = [
-      'fuck', 'shit', 'damn', 'ass', 'dick', 'pussy', 'cunt', 'bitch',
-      'nigger', 'nigga', 'retard', 'fag', 'rape', 'kill', 'nazi', 'slut',
-      'whore', 'anal', 'cum', 'porn', 'sex',
-    ];
-
-    final realSet = realNicknames
-        .map((n) => n.toLowerCase().trim())
-        .where((n) => n.isNotEmpty)
-        .toSet();
-    final usedNames = <String>{};
-    final usedXps = <int>{};
-    final players = <Map<String, dynamic>>[];
-
-    int attempts = 0;
-    while (players.length < count && attempts < count * 60) {
-      attempts++;
-      final adj = adjectives[random.nextInt(adjectives.length)];
-      final noun = nouns[random.nextInt(nouns.length)];
-      final name = '$adj$noun';
-      final lower = name.toLowerCase();
-
-      // 過濾不雅字詞
-      if (bannedSubstrings.any((b) => lower.contains(b))) continue;
-      // 過濾與真實玩家重複
-      if (realSet.contains(lower)) continue;
-      // 過濾本批次重複
-      if (usedNames.contains(name)) continue;
-
-      // XP: 400–1200，deterministic，本批次內不重複
-      int xp = 400 + random.nextInt(801); // 400..1200
-      int xpAttempts = 0;
-      while (usedXps.contains(xp) && xpAttempts < 60) {
-        xp = 400 + random.nextInt(801);
-        xpAttempts++;
-      }
-      usedXps.add(xp);
-      usedNames.add(name);
-
-      players.add({
-        'playerId': 'LD${1000 + (seed.abs() % 8000) + players.length * 7}',
-        'nickname': name,
-        'avatarEmoji': emojis[random.nextInt(emojis.length)],
-        'xp': xp,
-        'streak': random.nextInt(30),
-        'region': region,
-        'isFake': true,
-        'completedLessons': random.nextInt(20),
-      });
-    }
-
-    // 純 XP 降序排序
-    players.sort((a, b) => (b['xp'] as int).compareTo(a['xp'] as int));
-    return players;
+    return FakePlayers.generateLocalFakePlayers(
+      region,
+      count: count,
+      realNicknames: realNicknames,
+    );
   }
 
   // Save/Load Progress
