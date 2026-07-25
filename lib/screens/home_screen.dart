@@ -127,6 +127,9 @@ class HomeScreen extends StatelessWidget {
         ? stage.completedLessons
         : 0;
     final stageTotal = stage?.lessonCount ?? 7;
+    // 王冠邏輯：每個完成 stage（progress >= 1.0）= 1 王冠，與 stage node 一致
+    final crownsEarned = game.stages.where((s) => s.progress >= 1.0).length;
+    final crownsTotal = game.stages.length;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -192,22 +195,59 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 3),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withAlpha(35),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      '${AppI18n.t('home.stage')} $stageNum',
-                      style: GoogleFonts.nunito(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 0.5,
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withAlpha(35),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          '${AppI18n.t('home.stage')} $stageNum',
+                          style: GoogleFonts.nunito(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
                       ),
-                    ),
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFB300).withAlpha(70),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: const Color(0xFFFFD54F).withAlpha(120),
+                            width: 1,
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Image.asset(
+                              'assets/images/crown.png',
+                              width: 16,
+                              height: 16,
+                              fit: BoxFit.contain,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              '$crownsEarned / $crownsTotal',
+                              style: GoogleFonts.nunito(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 6),
                   Text(
