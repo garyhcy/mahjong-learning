@@ -534,4 +534,8 @@ const Map<String, Map<String, String>> _strings = {
   'social.taskStreak3': {'en': '3 Correct in a Row', 'zh': '連續答對 3 題'},
   'social.you': {'en': '(You)', 'zh': '（你）'},
 
+  // ── Quiz UI ──
+  'quiz.tileOrdering.instruction': {'en': 'Drag tiles to arrange in the correct order', 'zh': '拖曳麻雀以排列成正確順序'},
+  'quiz.tileOrdering.submit': {'en': 'Submit Order', 'zh': '提交順序'},
+
 };

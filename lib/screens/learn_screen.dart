@@ -949,11 +949,9 @@ class _LearnScreenState extends State<LearnScreen> {
                     ? null
                     : () {
                         setState(() {
-                          if (_selectedOptions.contains(idx)) {
-                            _selectedOptions.remove(idx);
-                          } else {
-                            _selectedOptions.add(idx);
-                          }
+                          // P0 #2: multiChoice 為單選題，點擊即替換選擇，不允許複選
+                          _selectedOptions.clear();
+                          _selectedOptions.add(idx);
                         });
                       },
                 child: AnimatedContainer(
@@ -1198,7 +1196,7 @@ class _LearnScreenState extends State<LearnScreen> {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  'Drag tiles to arrange in the correct order',
+                  AppI18n.t('quiz.tileOrdering.instruction'),
                   style: GoogleFonts.nunito(
                     fontSize: 13,
                     color: const Color(0xFF8D6E00),
@@ -1305,7 +1303,7 @@ class _LearnScreenState extends State<LearnScreen> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14)),
             ),
-            child: Text('Submit Order',
+            child: Text(AppI18n.t('quiz.tileOrdering.submit'),
                 style: GoogleFonts.nunito(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,

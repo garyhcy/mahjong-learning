@@ -515,7 +515,10 @@ class GameState extends ChangeNotifier with FriendsMixin {
     _reviewQuestions = [];
     _reviewResults.clear();
     _reviewCorrectCount = 0;
-    _hearts = maxHearts;
+    // P0 #1: 心心跨課程持續 - 不在 loadLesson 重置，僅每日 00:00 回血
+    if (!_isPremium) {
+      _applyDailyHeartRefill();
+    }
     _lessonStartAt = DateTime.now();
     _persist();
     notifyListeners();
