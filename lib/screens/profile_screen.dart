@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/game_state.dart';
+import '../models/achievement_def.dart';
 import '../services/app_i18n.dart';
 import '../services/firebase_service.dart';
 import 'learn_screen.dart';

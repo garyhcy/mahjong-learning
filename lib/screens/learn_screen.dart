@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/game_state.dart';
+import '../models/wrong_answer.dart';
 import '../models/mahjong_data.dart';
 import '../widgets/mascot_widget.dart';
 import '../services/audio_service.dart';
