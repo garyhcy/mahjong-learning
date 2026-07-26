@@ -11,6 +11,7 @@ class SavedProgress {
   final String? lastLessonDate;
   final bool hasSeenOnboarding;
   final Map<String, bool> lessonCompleted;
+  final Map<String, int> lessonBestAccuracy;
   final String? lastLessonId;
   final String nickname;
   final String avatarEmoji;
@@ -34,6 +35,7 @@ class SavedProgress {
     this.lastLessonDate,
     this.hasSeenOnboarding = false,
     this.lessonCompleted = const {},
+    this.lessonBestAccuracy = const {},
     this.lastLessonId,
     this.nickname = 'Player',
     this.avatarEmoji = '🐼',
@@ -72,6 +74,7 @@ class ProgressStorage {
   static const _practiceModesKey = 'progress_practice_modes';
   static const _speedChallengeWinsKey = 'progress_speed_challenge_wins';
   static const _lastInactiveDaysKey = 'progress_last_inactive_days';
+  static const _lessonBestAccuracyKey = 'progress_lesson_best_accuracy';
 
   Future<SavedProgress> load() async {
     final prefs = await SharedPreferences.getInstance();
@@ -95,6 +98,14 @@ class ProgressStorage {
 
     final wrongAnswersRaw = prefs.getStringList(_wrongAnswersKey);
     final wrongAnswers = wrongAnswersRaw ?? [];
+
+    final bestAccRaw = prefs.getString(_lessonBestAccuracyKey);
+    Map<String, int> lessonBestAccuracy = {};
+    if (bestAccRaw != null) {
+      final decoded = jsonDecode(bestAccRaw) as Map<String, dynamic>;
+      lessonBestAccuracy =
+          decoded.map((key, value) => MapEntry(key, (value as num).toInt()));
+    }
 
     return SavedProgress(
       xp: prefs.getInt(_xpKey) ?? 0,
@@ -121,6 +132,7 @@ class ProgressStorage {
       practiceModesCompleted: (prefs.getStringList(_practiceModesKey) ?? []).toSet(),
       speedChallengeWins: prefs.getInt(_speedChallengeWinsKey) ?? 0,
       lastInactiveDays: prefs.getInt(_lastInactiveDaysKey) ?? 0,
+      lessonBestAccuracy: lessonBestAccuracy,
     );
   }
 
@@ -146,6 +158,7 @@ class ProgressStorage {
     required Set<String> practiceModesCompleted,
     required int speedChallengeWins,
     required int lastInactiveDays,
+    required Map<String, int> lessonBestAccuracy,
   }) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt(_xpKey, xp);
@@ -187,6 +200,8 @@ class ProgressStorage {
         _practiceModesKey, practiceModesCompleted.toList());
     await prefs.setInt(_speedChallengeWinsKey, speedChallengeWins);
     await prefs.setInt(_lastInactiveDaysKey, lastInactiveDays);
+    await prefs.setString(
+        _lessonBestAccuracyKey, jsonEncode(lessonBestAccuracy));
   }
 
   static const _playerIdKey = 'progress_player_id';

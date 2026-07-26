@@ -46,6 +46,7 @@ class GameState extends ChangeNotifier with FriendsMixin {
 
   String? _currentLessonId;
   final Map<String, bool> _lessonCompleted = {};
+  final Map<String, int> _lessonBestAccuracy = {};
   List<QuizQuestion> _currentQuestions = [];
   DateTime? _lessonStartAt;
 
@@ -104,6 +105,29 @@ class GameState extends ChangeNotifier with FriendsMixin {
   int get completedLessons =>
       _lessonCompleted.values.where((v) => v).length;
   bool isLessonCompleted(String id) => _lessonCompleted[id] ?? false;
+
+  /// Best accuracy (0-100) for a lesson across all attempts.
+  int getLessonBestAccuracy(String lessonId) =>
+      _lessonBestAccuracy[lessonId] ?? 0;
+
+  /// Weighted stage accuracy (0-100). Weights = number of questions per lesson.
+  /// Only completed lessons contribute.
+  int getStageAccuracy(String stageId) {
+    final stageLessons =
+        allLessonsData.where((l) => l.stageId == stageId).toList();
+    if (stageLessons.isEmpty) return 0;
+    int totalWeight = 0;
+    int weightedSum = 0;
+    for (final l in stageLessons) {
+      if (_lessonCompleted[l.id] != true) continue;
+      final weight = l.questions.length;
+      if (weight == 0) continue;
+      totalWeight += weight;
+      weightedSum += (getLessonBestAccuracy(l.id)) * weight;
+    }
+    if (totalWeight == 0) return 0;
+    return (weightedSum / totalWeight).round();
+  }
   String? get targetStageId => _targetStageId;
   bool get cloudEnabled => _cloudEnabled;
   bool get cloudConnected => _cloudEnabled && _cloudUid != null;
@@ -227,6 +251,9 @@ class GameState extends ChangeNotifier with FriendsMixin {
     _lessonCompleted
       ..clear()
       ..addAll(saved.lessonCompleted);
+    _lessonBestAccuracy
+      ..clear()
+      ..addAll(saved.lessonBestAccuracy);
 
     // New fields
     _lastLessonId = saved.lastLessonId;
@@ -670,6 +697,15 @@ class GameState extends ChangeNotifier with FriendsMixin {
     // Compute last quiz correct ratio for perfect_quiz achievement
     if (_currentQuestions.isNotEmpty) {
       _lastQuizCorrectRatio = _correctAnswers / _currentQuestions.length;
+      // Update best accuracy (best-track policy)
+      if (_currentLessonId != null) {
+        final accuracy =
+            ((_correctAnswers / _currentQuestions.length) * 100).round();
+        final prev = _lessonBestAccuracy[_currentLessonId!] ?? 0;
+        if (accuracy > prev) {
+          _lessonBestAccuracy[_currentLessonId!] = accuracy;
+        }
+      }
     }
 
     _syncStageProgress();
@@ -735,7 +771,8 @@ class GameState extends ChangeNotifier with FriendsMixin {
     for (int i = 1; i < _stages.length; i++) {
       final prevStage = _stages[i - 1];
       final currentStage = _stages[i];
-      if (!currentStage.isUnlocked && prevStage.progress >= 0.7) {
+      if (!currentStage.isUnlocked &&
+          getStageAccuracy(prevStage.id) >= 70) {
         currentStage.isUnlocked = true;
       }
     }
@@ -774,7 +811,7 @@ class GameState extends ChangeNotifier with FriendsMixin {
     if (!stage.isUnlocked) {
       final stageIdx = _stages.indexWhere((s) => s.id == stage.id);
       if (stageIdx > 0) {
-        return 'Complete ${_stages[stageIdx - 1].title} 70% to unlock';
+        return 'Reach 70% accuracy in ${_stages[stageIdx - 1].localizedTitle} to unlock';
       }
       return 'Locked';
     }
@@ -879,7 +916,7 @@ class GameState extends ChangeNotifier with FriendsMixin {
       if (i == 0) {
         _stages[i].isUnlocked = true;
       } else {
-        _stages[i].isUnlocked = _stages[i - 1].progress >= 0.7;
+        _stages[i].isUnlocked = getStageAccuracy(_stages[i - 1].id) >= 70;
       }
     }
     _persist();
@@ -1178,6 +1215,7 @@ class GameState extends ChangeNotifier with FriendsMixin {
     _lastLessonDate = null;
     _hasSeenOnboarding = false;
     _lessonCompleted.clear();
+    _lessonBestAccuracy.clear();
     _lastLessonId = null;
     _nickname = 'Player';
     _avatarEmoji = '🐼';
@@ -1225,6 +1263,7 @@ class GameState extends ChangeNotifier with FriendsMixin {
       lastLessonDate: _lastLessonDate,
       hasSeenOnboarding: _hasSeenOnboarding,
       lessonCompleted: lessonCompletedSnapshot,
+      lessonBestAccuracy: Map<String, int>.from(_lessonBestAccuracy),
       lastLessonId: _lastLessonId,
       nickname: _nickname,
       avatarEmoji: _avatarEmoji,

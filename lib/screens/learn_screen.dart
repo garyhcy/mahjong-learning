@@ -271,13 +271,20 @@ class _LearnScreenState extends State<LearnScreen> {
   }
 
   List<Widget> _buildStageCards(GameState game) {
-    return game.stages.map((stage) {
+    return game.stages.asMap().entries.map((entry) {
+      final stageIdx = entry.key;
+      final stage = entry.value;
       final key = _stageKeys.putIfAbsent(
           stage.id, () => GlobalKey());
       final progress = stage.lessonCount > 0
           ? stage.completedLessons / stage.lessonCount
           : 0.0;
       final percent = (progress * 100).toInt();
+      // Accuracy of previous stage (used for locked stage display)
+      final prevAccuracy = stageIdx > 0
+          ? game.getStageAccuracy(game.stages[stageIdx - 1].id)
+          : 0;
+      final unlockProgress = (prevAccuracy / 70).clamp(0.0, 1.0);
 
       return Padding(
         key: key,
@@ -367,7 +374,31 @@ class _LearnScreenState extends State<LearnScreen> {
                               color: const Color(0xFF9E9E9E))),
                     ] else ...[
                       Icon(Icons.lock_rounded,
-                          size: 20, color: const Color(0xFFBDBDBD)),
+                          size: 18, color: const Color(0xFFBDBDBD)),
+                      const SizedBox(height: 4),
+                      Text('$prevAccuracy% / 70%',
+                          style: GoogleFonts.nunito(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xFF9E9E9E),
+                          )),
+                      const SizedBox(height: 4),
+                      SizedBox(
+                        width: 56,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(4),
+                          child: LinearProgressIndicator(
+                            value: unlockProgress,
+                            minHeight: 4,
+                            backgroundColor: const Color(0xFFE0E0E0),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              prevAccuracy >= 70
+                                  ? const Color(0xFF4CAF50)
+                                  : const Color(0xFFFFA726),
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ],
                 ),
