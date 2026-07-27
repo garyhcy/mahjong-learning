@@ -542,10 +542,7 @@ class GameState extends ChangeNotifier with FriendsMixin {
     _reviewQuestions = [];
     _reviewResults.clear();
     _reviewCorrectCount = 0;
-    // P0 #1: 心心跨課程持續 - 不在 loadLesson 重置，僅每日 00:00 回血
-    if (!_isPremium) {
-      _applyDailyHeartRefill();
-    }
+    // P9-01: 心心跨關卡持久化 - 不在 loadLesson 回血，僅 app 啟動時（_loadFromStorage）跨日回血
     _lessonStartAt = DateTime.now();
     _persist();
     notifyListeners();
@@ -592,9 +589,7 @@ class GameState extends ChangeNotifier with FriendsMixin {
   }
 
   bool _processAnswer(List<int> selectedIndices, List<String>? userOrder, QuizQuestion question) {
-    if (!_isPremium) {
-      _applyDailyHeartRefill();
-    }
+    // P9-01: 移除答題時回血，心心僅 app 啟動時跨日回血
     _resetDailyTasksIfNeeded();
 
     bool isCorrect;

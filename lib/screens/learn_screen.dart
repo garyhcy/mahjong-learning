@@ -9,6 +9,7 @@ import '../models/mahjong_data.dart';
 import '../widgets/mascot_widget.dart';
 import '../services/audio_service.dart';
 import '../services/app_i18n.dart';
+import 'paywall_screen.dart';
 
 /// ── MahjongTile widget ──
 class MahjongTile extends StatelessWidget {
@@ -1997,19 +1998,21 @@ class _LearnScreenState extends State<LearnScreen> {
 
             // Next lesson
             TextButton(
-              onPressed: () {
-                setState(() {
-                  _selectedOptions.clear();
-                  _shuffledOrderingTiles = [];
-                  _orderingSubmitted = false;
-                });
-                final nextId = game.getNextLessonId();
-                if (nextId != null) {
-                  game.loadLesson(nextId);
-                } else {
-                  game.clearLesson();
-                }
-              },
+              onPressed: game.hearts > 0
+                  ? () {
+                      setState(() {
+                        _selectedOptions.clear();
+                        _shuffledOrderingTiles = [];
+                        _orderingSubmitted = false;
+                      });
+                      final nextId = game.getNextLessonId();
+                      if (nextId != null) {
+                        game.loadLesson(nextId);
+                      } else {
+                        game.clearLesson();
+                      }
+                    }
+                  : null,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -2018,12 +2021,17 @@ class _LearnScreenState extends State<LearnScreen> {
                     style: GoogleFonts.nunito(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: const Color(0xFF4CAF50),
+                      color: game.hearts > 0
+                          ? const Color(0xFF4CAF50)
+                          : const Color(0xFFBDBDBD),
                     ),
                   ),
                   const SizedBox(width: 4),
-                  const Icon(Icons.arrow_forward_rounded,
-                      size: 18, color: Color(0xFF4CAF50)),
+                  Icon(Icons.arrow_forward_rounded,
+                      size: 18,
+                      color: game.hearts > 0
+                          ? const Color(0xFF4CAF50)
+                          : const Color(0xFFBDBDBD)),
                 ],
               ),
             ),
@@ -2156,19 +2164,26 @@ class _LearnScreenState extends State<LearnScreen> {
           ),
           const SizedBox(height: 24),
           ElevatedButton(
-            onPressed: () => game.retryQuiz(),
-            child: const Text('Try Again'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const PaywallScreen()),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF4CAF50),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14)),
+            ),
+            child: Text('Upgrade to Pro',
+                style: GoogleFonts.nunito(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white)),
           ),
           const SizedBox(height: 12),
           TextButton(
-            onPressed: () {
-              final nextId = game.getNextLessonId();
-              if (nextId != null) {
-                game.loadLesson(nextId);
-              } else {
-                game.clearLesson();
-              }
-            },
+            onPressed: null,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -2177,11 +2192,11 @@ class _LearnScreenState extends State<LearnScreen> {
                   style: GoogleFonts.nunito(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: const Color(0xFF4CAF50)),
+                      color: const Color(0xFFBDBDBD)),
                 ),
                 const SizedBox(width: 4),
                 const Icon(Icons.arrow_forward_rounded,
-                    size: 18, color: Color(0xFF4CAF50)),
+                    size: 18, color: Color(0xFFBDBDBD)),
               ],
             ),
           ),
