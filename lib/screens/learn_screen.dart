@@ -543,6 +543,10 @@ class _LearnScreenState extends State<LearnScreen> {
         behavior: HitTestBehavior.opaque,
         onTap: _canAdvanceDialogue(game) ? () => _advanceDialogue(game) : null,
         child: Container(
+          // Fill the body: without an explicit size the dialogue column only
+          // grew to the width of its bubble, leaving a dead strip on the right.
+          width: double.infinity,
+          height: double.infinity,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
