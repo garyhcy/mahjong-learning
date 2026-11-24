@@ -75,13 +75,10 @@ void main() {
     expect(count(QuizType.multiChoice), greaterThanOrEqualTo(2));
   });
 
-  test('Stage 1-13 lessons carry 8-12 questions with 2+ types', () {
-    const targetStages = {
-      'stage1', 'stage2', 'stage3', 'stage4', 'stage5', 'stage6',
-      'stage7', 'stage8', 'stage9', 'stage10', 'stage11', 'stage12',
-      'stage13',
-    };
-    final lessons = allLessonsData.where((l) => targetStages.contains(l.stageId));
+  test('every lesson carries 8-12 questions with 2+ types', () {
+    // Deliberately checks the whole course instead of a fixed stage list, so a
+    // newly added stage cannot slip in without matching the shape.
+    final lessons = allLessonsData;
     expect(lessons, isNotEmpty);
     for (final lesson in lessons) {
       final label = '${lesson.id} ${lesson.title}';

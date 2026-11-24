@@ -347,10 +347,18 @@ final List<LearningStage> defaultStages = [
     color: const Color(0xFFB71C1C),
     lessonCount: 9,
   ),
+  LearningStage(
+    id: 'stage14',
+    title: 'Faan Mastery',
+    subtitle: 'Every hand priced, every point counted',
+    icon: Icons.calculate_rounded,
+    color: const Color(0xFF6A1B9A),
+    lessonCount: 7,
+  ),
 ];
 
 // ═══════════════════════════════════════════════════════
-//  Complete Curriculum (13 Stages, 79 Lessons)
+//  Complete Curriculum (14 Stages, 86 Lessons)
 // ═══════════════════════════════════════════════════════
 
 final List<Lesson> allLessonsData = defaultLessons;
@@ -10573,6 +10581,968 @@ final List<Lesson> defaultLessons = [
         correctIndex: 1,
         explanation:
             'Nine Gates requires a fully concealed hand, so any open meld rules it out even if the tiles look right.',
+      ),
+    ],
+  ),
+  // ═══════════════════════════════════
+  //  STAGE 14: Faan Mastery (7 lessons)
+  // ═══════════════════════════════════
+  Lesson(
+    id: '14-1',
+    stageId: 'stage14',
+    title: 'Big Flower Hand',
+    subtitle: 'Eight flowers, the rarest luck',
+    dialogues: [
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Big Flower Hand 大花糊 is the rarest luck in the game: you draw all eight flower tiles.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Flowers are bonus tiles. You set each one aside and draw a replacement straight away, so your hand never grows.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text: 'And eight of them just sits at the top of the chart?',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'It is a limit hand, so it settles at 10 faan, which is 128 points off a discard.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Seven flowers is the smaller cousin, 小花糊, worth 3 faan, and holding all four seasons or all four flowers is 一台花 for 2.',
+      ),
+    ],
+    questions: [
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'How many faan is Big Flower Hand 大花糊 worth?',
+        options: ['3 faan', '7 faan', '8 faan', '10 faan'],
+        correctIndex: 3,
+        explanation:
+            '大花糊 is a limit hand, and every limit hand is scored at the 10-faan ceiling.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'How many flower tiles must you draw to make Big Flower Hand 大花糊?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['8', 'eight', '8 flowers', 'eight flowers'],
+        explanation:
+            'The set has four seasons plus four flowers, so collecting all eight of them is the hand.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You draw seven flowers instead of eight. What does that pay, and does self-draw add anything?',
+        options: [
+          '小花糊, 3 faan, with no self-draw faan added',
+          '小花糊, 4 faan with the self-draw faan',
+          '一台花, 2 faan',
+          'Nothing, because seven flowers does not count',
+        ],
+        correctIndex: 0,
+        explanation:
+            '小花糊 is 3 faan for seven flowers, and the rules do not add a self-draw faan to it.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'Put the four season flowers in seasonal order, starting from spring.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['f_spring', 'f_summer', 'f_autumn', 'f_winter'],
+        explanation:
+            'The seasons run spring, summer, autumn, winter, and all four together make 一台花.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'You already hold {{f_plum}} {{f_orchid}} {{f_chrys}}. Which tile completes the four-flower set for 一台花?',
+        options: ['f_bamboo', 'f_spring', 'f_winter', 'f_summer'],
+        correctIndex: 0,
+        explanation:
+            'The flower set is plum, orchid, chrysanthemum and bamboo, so 竹 is the missing fourth tile.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each flower holding to what it is worth.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 'Eight flowers drawn', right: '大花糊, 10 faan'),
+          QuestionPair(left: 'Seven flowers drawn', right: '小花糊, 3 faan'),
+          QuestionPair(
+            left: 'All four seasons, or all four flowers',
+            right: '一台花, 2 faan',
+          ),
+          QuestionPair(left: 'No flowers at all', right: '無花, 1 faan'),
+        ],
+        explanation:
+            'The chart runs from 1 faan for no flowers up to the 10-faan limit for the full eight.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'A 大花糊 is won by self-draw. How much does each of the other three players pay?',
+        options: ['32 points', '64 points', '96 points', '128 points'],
+        correctIndex: 1,
+        explanation:
+            'At 10 faan a self-draw is 64 from each player; the 128 figure is what a single discarder would pay.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which statements about flowers are true?',
+        options: [
+          'A drawn flower is set aside and you draw a replacement tile',
+          'Eight flowers is 大花糊, a 10-faan limit hand',
+          'A flower tile can be used as a triplet inside your hand',
+          'Seven flowers is worth 3 faan',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 3],
+        explanation:
+            'Flowers are never part of the hand, so they cannot form a triplet; the other three statements match the chart.',
+      ),
+    ],
+  ),
+  Lesson(
+    id: '14-2',
+    stageId: 'stage14',
+    title: 'All Terminals & Honours',
+    subtitle: '花么 — ones, nines and honours only',
+    dialogues: [
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'All Terminals and Honours 花么 is a small hand with a very big family tree.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Every tile must be a one, a nine, or an honour tile. Nothing in between is allowed.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text: 'Then I cannot make a chow at all, can I?',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Right, which is why 花么 always arrives with 對對糊. That is 1 faan plus 3, so 4 in total.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Do not confuse it with 清么九, which is ones and nines only, or 字一色, which is all honours. Both are 10 faan.',
+      ),
+    ],
+    questions: [
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'The 花么 pattern on its own is worth how many faan?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['1', 'one', '1 faan', 'one faan'],
+        explanation:
+            '花么 is a 1-faan pattern; the 對對糊 it forces is counted separately on top.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Which tiles may appear in an All Terminals and Honours 花么 hand?',
+        options: [
+          'Ones and nines of the three suits only',
+          'Ones, nines and honour tiles',
+          'Honour tiles only',
+          'Any tile, as long as no chow is used',
+        ],
+        correctIndex: 1,
+        explanation:
+            '花么 allows every terminal and every honour, but no tile from two to eight.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'Why does 花么 always count as 對對糊 as well?',
+        options: [
+          'Because a chow cannot be built from terminals and honours, so every set is a triplet or kong',
+          'Because 花么 hands must be concealed',
+          'Because the pair must be an honour pair',
+          'Because 對對糊 is automatically added to any 1-faan hand',
+        ],
+        correctIndex: 0,
+        explanation:
+            'A chow needs three consecutive numbers, and none of them can be a terminal or an honour, so only triplets and kongs remain.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'Adding the 對對糊 to the 花么 pattern, how many faan does the hand collect in total?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['4', 'four', '4 faan', 'four faan'],
+        explanation: '1 faan for 花么 plus 3 faan for 對對糊 gives 4 faan.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question: 'Which of these tiles could never appear in a 花么 hand?',
+        options: ['m1', 'p9', 'north', 'm5'],
+        correctIndex: 3,
+        explanation:
+            'A five of characters is a middle tile, and 花么 only permits ones, nines and honours.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each hand to its value.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: '花么 pattern on its own', right: '1 faan'),
+          QuestionPair(left: '花么 together with 對對糊', right: '4 faan'),
+          QuestionPair(left: '清么九 or 字一色', right: '10 faan, a limit hand'),
+        ],
+        explanation:
+            '花么 is a 1-faan pattern that drags 對對糊 along for 3 more, while the two pure versions are limit hands.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'A 4-faan hand is completed on a discard. How much does the discarder pay?',
+        options: ['8 points', '16 points', '24 points', '32 points'],
+        correctIndex: 1,
+        explanation:
+            'On the payment table 4 faan is 16 points from the discarder, who pays the whole amount alone.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which statements about these three hands are true?',
+        options: [
+          '花么 may contain honour tiles',
+          '清么九 may contain honour tiles',
+          '字一色 contains no suited tiles at all',
+          '花么 always brings 對對糊, so it is worth 4 faan',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 2, 3],
+        explanation:
+            '清么九 is ones and nines with no honours; the other three statements describe 花么 and 字一色 correctly.',
+      ),
+    ],
+  ),
+  Lesson(
+    id: '14-3',
+    stageId: 'stage14',
+    title: 'Rob the Kong',
+    subtitle: '搶槓 — stealing the fourth tile',
+    dialogues: [
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Rob the Kong 搶槓 is the art of stealing a tile that someone has just turned into a kong.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Normally it happens on an added kong 加槓, where a player tops up their own pung with the fourth tile.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text:
+            'And if that fourth tile is exactly what I need to win, I just take it?',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'You do, for 1 faan, and the player who made the kong pays your whole self-draw amount on their own.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'One more twist: 十三么 is the only hand allowed to rob a concealed kong.',
+      ),
+    ],
+    questions: [
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'What exactly is Rob the Kong 搶槓?',
+        options: [
+          'Winning on the tile an opponent adds to their kong',
+          'Winning on the last tile of the wall',
+          'Winning on the tile you draw to replace a flower',
+          'Winning on a tile that you discarded earlier yourself',
+        ],
+        correctIndex: 0,
+        explanation:
+            '搶槓 is claiming a kong tile as your winning tile, not a wall draw or a flower replacement.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'Which kong can normally be robbed?',
+        options: [
+          'A concealed kong',
+          'An added kong 加槓',
+          'Any kong at all',
+          'Only a kong of honour tiles',
+        ],
+        correctIndex: 1,
+        explanation:
+            'The usual target is the added kong, because the fourth tile is placed openly on an existing pung.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'Which hand is allowed to rob a concealed kong?',
+        options: ['十三么 Thirteen Orphans', '平糊', '混一色', '大花糊'],
+        correctIndex: 0,
+        explanation:
+            '十三么 is the single exception that may rob a concealed kong; every other hand needs an added kong.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many faan does 搶槓 add to a hand?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['1', 'one', '1 faan', 'one faan'],
+        explanation:
+            '搶槓 is listed as a 1-faan item, and it stacks with whatever the rest of the hand is worth.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'An opponent upgrades their exposed {{s6}} {{s6}} {{s6}} pung by adding the fourth {{s6}}, and {{s6}} is your winning tile. Which tile do you claim?',
+        options: ['s6', 's5', 's7', 'white'],
+        correctIndex: 0,
+        explanation:
+            'You claim the exact tile added to the kong, which here is the fourth 六索.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'A 4-faan hand is completed by robbing a kong. Who pays what?',
+        options: [
+          'The player whose kong was robbed pays all 24 points alone',
+          'All three players pay 8 points each',
+          'The last discarder pays 16 points',
+          'Nobody pays, because a kong is not a discard',
+        ],
+        correctIndex: 0,
+        explanation:
+            'A robbed kong is treated as a self-draw paid as a package: the robbed player covers the whole 24-point self-draw total for 4 faan.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each term to its description.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: '搶槓', right: '1 faan'),
+          QuestionPair(
+            left: 'The kong that is normally robbable',
+            right: 'An added kong 加槓',
+          ),
+          QuestionPair(
+            left: 'The hand allowed to rob a concealed kong',
+            right: '十三么 Thirteen Orphans',
+          ),
+        ],
+        explanation:
+            '搶槓 scores 1 faan, targets an added kong by default, and only 十三么 may go after a concealed one.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which statements about 搶槓 are true?',
+        options: [
+          '搶槓 is scored as 1 faan',
+          'The robbed player pays the whole self-draw amount alone',
+          'The other two players split the rest between them',
+          'A concealed kong can only be robbed by 十三么',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 3],
+        explanation:
+            'The robbed player is treated as the package payer and covers everything, so the other two pay nothing.',
+      ),
+    ],
+  ),
+  Lesson(
+    id: '14-4',
+    stageId: 'stage14',
+    title: 'Last Tile of the Wall',
+    subtitle: '海底撈月 — winning on the final draw',
+    dialogues: [
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            '海底撈月 is the last-tile hand: you win on the very last tile drawn from the wall, and it is worth 1 faan.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'It is always a self-draw. That tile never came from anyone\'s discard, so 自摸 is inside the hand as well.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text: 'So 自摸 and 海底 together already make 2 faan?',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Two, which is still short of the 3-faan minimum, so you need one more item before the hand is even legal.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'And if that last tile is thrown away instead, there is no 海底 at all. Somebody just wins normally on a discard.',
+      ),
+    ],
+    questions: [
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'When exactly does 海底撈月 apply?',
+        options: [
+          'When you draw the final tile left in the wall and it completes your hand',
+          'When you win on the final discard of the hand',
+          'When you declare a kong on your last turn',
+          'When your hand contains only one suit',
+        ],
+        correctIndex: 0,
+        explanation:
+            '海底撈月 is defined by the source of the tile: the last tile in the wall, drawn by you, and it completes the hand.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many faan is 海底撈月 worth on its own?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['1', 'one', '1 faan', 'one faan'],
+        explanation:
+            'It sits in the 1-faan group, alongside 自摸 and 門前清, so it is a small bonus rather than a limit hand.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'The wall is empty, and the player to your left discards the tile that completes your hand. Do you score 海底撈月?',
+        options: [
+          'Yes, it is still the last tile of the hand',
+          'No, 海底撈月 needs a tile you drew yourself',
+          'Yes, but only if you also score 自摸',
+          'Yes, and the hand becomes a 10-faan limit',
+        ],
+        correctIndex: 1,
+        explanation:
+            'A discarded final tile is an ordinary discard win. 海底撈月 only counts the last tile drawn from the wall, so a claimed tile never earns it.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which statements about 海底撈月 are correct?',
+        options: [
+          'It is a 1-faan item',
+          'It can stack with 自摸 for 2 faan',
+          'It can be won on another player\'s discard',
+          'It is one of the 10-faan limit hands',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'It is 1 faan and it stacks with 自摸, because a last-tile win is always self-drawn. It is not a limit hand, and it cannot come from a discard.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each winning situation to the faan item it earns.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Drawing the final tile of the wall to win',
+            right: '海底撈月, 1 faan',
+          ),
+          QuestionPair(
+            left: 'Winning on any tile you drew yourself',
+            right: '自摸, 1 faan',
+          ),
+          QuestionPair(
+            left: 'Winning on the tile a player adds to their kong',
+            right: '搶槓, 1 faan',
+          ),
+          QuestionPair(
+            left:
+                'Winning on the replacement tile straight after your own kong',
+            right: '槓上自摸, 1 faan',
+          ),
+        ],
+        explanation:
+            'All four are 1-faan items, and each is triggered by a different source of tile: the wall\'s last tile, any self-draw, a robbed kong tile, or a kong replacement.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'Adding 自摸 and 海底撈月 together gives how many faan?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['2', 'two', '2 faan', 'two faan'],
+        explanation:
+            '1 faan for 自摸 plus 1 faan for 海底撈月 is 2, which on its own is still below the 3-faan minimum needed to win.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Your hand is 平糊, won by 自摸 on the last tile of the wall, so 3 faan in total. What does each of the other three players pay?',
+        options: ['4 points', '8 points', '12 points', '24 points'],
+        correctIndex: 0,
+        explanation:
+            'A 3-faan hand is 8 from a discarder, and on a self-draw the other three each pay half of that, so 4 points each and 12 in total.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'The last tile of the wall is about to be drawn. Your hand holds {{p3}}{{p3}} and one more copy turns that pair into a pung. Which tile do you need?',
+        options: ['p3', 'p4', 'p2', 'east'],
+        correctIndex: 0,
+        explanation:
+            'A pair becomes a pung only with a third copy of the same tile, so {{p3}} is the only card that completes the set.',
+      ),
+    ],
+  ),
+  Lesson(
+    id: '14-5',
+    stageId: 'stage14',
+    title: 'Concealed Hand',
+    subtitle: '門前清 — nothing claimed',
+    dialogues: [
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            '門前清 means a front hand: you never chowed, punged or made an exposed kong before you won. It is worth 1 faan.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'A concealed kong is the exception. Gary\'s ruling is that 暗槓 keeps 門前清, because nobody at the table supplied those tiles.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text:
+            'So the real test is whether the other players saw me take a tile from someone else?',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'That is the whole test. One chow or pung and the 1 faan is gone for the rest of the hand, however clean you play afterwards.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'With 自摸 on top you reach 2 faan, still under the 3-faan minimum, so a concealed hand usually needs one more item to be worth declaring.',
+      ),
+    ],
+    questions: [
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many faan is 門前清 worth?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['1', 'one', '1 faan', 'one faan'],
+        explanation: '門前清 is a 1-faan item, the same size as 自摸 and 海底撈月.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'Which of these actions destroys 門前清?',
+        options: [
+          'Declaring a concealed kong 暗槓',
+          'Claiming a discard to complete a chow',
+          'Drawing a flower tile',
+          'Winning on another player\'s discard',
+        ],
+        correctIndex: 1,
+        explanation:
+            'Claiming a discard for a chow opens the hand. A concealed kong and flower draws do not, and neither does winning on a discard.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You declared a concealed kong 暗槓 early in the hand, then won later. Do you still score 門前清?',
+        options: [
+          'Yes, a concealed kong does not break it',
+          'No, any kong breaks it',
+          'Only if you also win by self-draw',
+          'Only if the kong was a wind tile',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Gary\'s ruling is that 暗槓 keeps 門前清, because no other player gave you those tiles. Only an exposed kong 明槓 breaks the concealment.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these leave 門前清 intact?',
+        options: [
+          'Winning on a discarded tile',
+          'Declaring a concealed kong',
+          'Claiming a discard to pung',
+          'Chowing a discarded tile',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'The winning discard is not a meld you made, and a concealed kong takes nothing from the table. Punging or chowing a discard turns the hand open and kills the 1 faan.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each action to its effect on 門前清.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Declaring a concealed kong 暗槓',
+            right: 'Kept, the tiles came from your own hand',
+          ),
+          QuestionPair(
+            left: 'Making an exposed kong 明槓',
+            right: 'Lost, the meld was supplied by a discard',
+          ),
+          QuestionPair(
+            left: 'Claiming a discard for a chow or pung',
+            right: 'Lost, the hand is now open',
+          ),
+          QuestionPair(
+            left: 'Winning on a discarded tile',
+            right: 'Kept, a winning discard is not a meld',
+          ),
+        ],
+        explanation:
+            'Concealment is broken by melds built from other players\' tiles. A concealed kong and a winning discard both leave the hand closed.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: '門前清 plus 自摸 comes to how many faan?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['2', 'two', '2 faan', 'two faan'],
+        explanation:
+            '1 faan for 門前清 plus 1 faan for 自摸 is 2, and the hand still needs a third faan to reach the 3-faan minimum.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'Your hand scores only 門前清 and 自摸, for 2 faan. What happens?',
+        options: [
+          'You may win, and each player pays 2 points',
+          'You cannot win yet, because 3 faan is the minimum',
+          'You may win, but only on a discard',
+          'You may win, and the hand is rounded up to 3 faan',
+        ],
+        correctIndex: 1,
+        explanation:
+            'The table only starts at 3 faan, so a 2-faan hand is not payable. You keep building until a third item arrives.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'You hold {{p5}}{{p7}} and are still concealed. A discard of which tile would complete a chow and cost you 門前清?',
+        options: ['p6', 'p5', 'p8', 'east'],
+        correctIndex: 0,
+        explanation:
+            '{{p5}} and {{p7}} are a closed wait that only {{p6}} fills, so that is the discard that would open the hand.',
+      ),
+    ],
+  ),
+  Lesson(
+    id: '14-6',
+    stageId: 'stage14',
+    title: 'Faan to Points',
+    subtitle: 'Turning faan into money',
+    dialogues: [
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Stage 7 gave you the table. Today is only the part players still get wrong at the table: turning a faan count into the exact number that changes hands.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'One rule drives all of it. A discarder pays the full listed amount; on a self-draw each of the other three pays half, so the winner collects one and a half times the listed amount.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text:
+            'So 8 faan is 64 from one player, but 32 from each of three players, 96 in total?',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Correct. And 10 faan is the ceiling, so anything above it still settles at 128 from a discarder or 192 from a self-draw.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text: 'No definitions in this lesson, just numbers. Ready?',
+      ),
+    ],
+    questions: [
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Your hand is 3 faan: All Chows 平糊, Concealed Hand 門前清, and you win by self-draw. What does each opponent pay, and what do you collect in total?',
+        options: [
+          '4 each, 12 in total',
+          '8 each, 24 in total',
+          '8 from one player, 8 in total',
+          '4 from one player, 4 in total',
+        ],
+        correctIndex: 0,
+        explanation:
+            '3 faan is 8 on a discard, so a self-draw is half of that: 4 from each of three players, 12 in total.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'A 6-faan hand can be won either on a discard or by self-draw. How much more do you collect by self-drawing?',
+        options: [
+          '16 more',
+          '24 more',
+          '32 more',
+          'Nothing more, the two pay the same',
+        ],
+        correctIndex: 0,
+        explanation:
+            '6 faan pays 32 from a discarder, while a self-draw takes 16 from each of three players, 48 in total: 48 minus 32 is 16.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'You win a 9-faan hand on a discard. How many points does the discarder hand over?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: [
+          '96',
+          'ninety-six',
+          'ninety six',
+          '96 points',
+          'ninety-six points',
+        ],
+        explanation:
+            '9 faan sits at 96 on the table, and the discarder pays that whole amount alone while the other two pay nothing.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question:
+            'Match each faan total to what a self-draw actually collects in total.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: '4 faan', right: '24 in total'),
+          QuestionPair(left: '5 faan', right: '36 in total'),
+          QuestionPair(left: '7 faan', right: '72 in total'),
+          QuestionPair(left: '9 faan', right: '144 in total'),
+        ],
+        explanation:
+            'A self-draw collects half the discard figure from each of three players: 8 times 3, 12 times 3, 24 times 3 and 48 times 3.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which of these payment statements are correct? (Select all that apply)',
+        options: [
+          'A 5-faan discard costs the discarder 24',
+          'A 10-faan self-draw collects 128 in total',
+          'A 7-faan self-draw takes 24 from each opponent',
+          'Moving from 9 faan to 10 faan adds 32 to the discard payment',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 2, 3],
+        explanation:
+            'A 10-faan self-draw is 64 from each of three players, 192 in total, not 128; the other three statements match the table exactly.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Three opponents each pay you 48. What was your hand worth, and what would a discarder have paid instead?',
+        options: [
+          '9 faan; a discarder would pay 96',
+          '8 faan; a discarder would pay 96',
+          '9 faan; a discarder would pay 128',
+          '10 faan; a discarder would pay 128',
+        ],
+        correctIndex: 0,
+        explanation:
+            '48 each is half of 96, and 96 is the 9-faan line, so the discarder at 9 faan pays that same 96 in full.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Your hand adds up to 12 faan: Full Flush 清一色 (7), All Pongs 對對糊 (3), self-draw (1) and Concealed Hand 門前清 (1). You win on a discard. What does the discarder pay?',
+        options: [
+          '128, because the hand is capped at 10 faan',
+          '192, because 12 faan is paid in full',
+          '96, because the extra faan are halved',
+          '144, because 12 faan lands on the 9-faan line',
+        ],
+        correctIndex: 0,
+        explanation:
+            'The table stops at 10 faan, so the two extra faan are ignored and 10 faan pays the discarder\'s figure of 128.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'A limit hand 例牌 is always counted as 10 faan. If you self-draw one, how many points do you collect in total?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: [
+          '192',
+          'one hundred ninety-two',
+          'one hundred and ninety-two',
+          '192 points',
+        ],
+        explanation:
+            'A 10-faan self-draw is 64 from each of three players, 192 in total, which is the largest single hand on the table.',
+      ),
+    ],
+  ),
+  Lesson(
+    id: '14-7',
+    stageId: 'stage14',
+    title: 'How Many Faan?',
+    subtitle: 'Put the whole chart to work',
+    dialogues: [
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Now the real thing. I describe a hand, you total the faan, then you price it. Two steps, every single time.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text:
+            'And I have to notice whether it was a discard or a self-draw, because that changes who pays.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Right. Watch for three traps: a 包 liability that puts the whole bill on one player, the 10-faan ceiling, and bonuses that refuse to stack.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'If your total runs past 10, stop counting at 10 and price it there.',
+      ),
+    ],
+    questions: [
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You self-draw with All Chows 平糊, a fully concealed hand and no flowers at all. Total the faan, then price it.',
+        options: [
+          '4 faan; 8 from each opponent, 24 in total',
+          '3 faan; 4 from each opponent, 12 in total',
+          '4 faan; 16 from each opponent, 48 in total',
+          '4 faan; 16 from the discarder only',
+        ],
+        correctIndex: 0,
+        explanation:
+            '平糊 1 + 門前清 1 + 無花 1 + 自摸 1 = 4 faan, and a 4-faan self-draw is 8 from each of three players, 24 in total.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'Your hand is Mixed One Suit 混一色 (3) + All Pongs 對對糊 (3) + self-draw (1) + one seat flower 正花 (1). How many faan is that in total?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['8', 'eight', '8 faan', 'eight faan'],
+        explanation:
+            '3 + 3 + 1 + 1 = 8 faan, which pays 64 from a discarder or 32 from each player on a self-draw.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You win on a discard with Big Three Dragons 大三元: three dragon triplets, one chow and a pair, and you never claimed anything. Total the faan and the payment.',
+        options: [
+          '8 faan; 64 points',
+          '9 faan; 96 points',
+          '10 faan; 128 points',
+          '5 faan; 24 points',
+        ],
+        correctIndex: 1,
+        explanation:
+            'The 5-faan pattern plus its three dragon triplets is 8, and Concealed Hand adds 1 more: 9 faan pays 96 from the discarder.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each described hand to its total faan.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Self-draw + Concealed Hand + All Chows',
+            right: '3 faan',
+          ),
+          QuestionPair(
+            left: 'Mixed One Suit + All Pongs + self-draw',
+            right: '7 faan',
+          ),
+          QuestionPair(
+            left: 'Full Flush + self-draw + Concealed Hand',
+            right: '9 faan',
+          ),
+          QuestionPair(
+            left: 'Big Three Dragons with three dragon triplets, on a discard',
+            right: '8 faan',
+          ),
+        ],
+        explanation:
+            'The four totals are 1+1+1, 3+3+1, 7+1+1 and 5+3, giving 3, 7, 9 and 8.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which of these hands reach the 10-faan ceiling? (Select all that apply)',
+        options: [
+          'Full Flush 清一色 (7) + All Pongs 對對糊 (3)',
+          'Mixed One Suit 混一色 (3) + All Pongs (3) + self-draw (1) + Concealed Hand (1)',
+          'Thirteen Orphans 十三么',
+          'Big Flower Hand 大花糊 with a self-draw',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 2, 3],
+        explanation:
+            '清一色 7 + 對對糊 3 reaches 10 and both limit hands are 10 by definition, while the mixed hand only totals 8.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You completed Big Three Dragons 大三元 by claiming West\'s discard of the third dragon triplet, so West is liable under 大三元包. You later self-draw the hand at 8 faan. How is the money paid?',
+        options: [
+          'West pays the whole self-draw alone: 96 points',
+          'West pays 64 and the other two pay 16 each',
+          'All three opponents pay 32 each',
+          'West pays 128 alone',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Under 包 the liable player covers the entire self-draw, and 8 faan self-draw is 32 from each of three players, 96 in total, all of it from West.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'West\'s discard completed your third dragon triplet and made West liable for your whole self-draw. Your exposed melds are {{red}}{{red}}{{red}} and {{green}}{{green}}{{green}}. Which tile did West supply?',
+        options: ['white', 'east', 'm5', 'p9'],
+        correctIndex: 0,
+        explanation:
+            'The third dragon triplet is 白板, which turns the hand into 大三元: 5 faan plus 3 for the dragon triplets is 8, and West pays the entire 96-point self-draw alone.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'You self-draw a hand that adds up to 13 faan. How many points do you collect in total?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: [
+          '192',
+          'one hundred ninety-two',
+          'one hundred and ninety-two',
+          '192 points',
+        ],
+        explanation:
+            '13 faan is over the ceiling, so it is priced as 10 faan: 64 from each of three players, 192 in total.',
       ),
     ],
   ),

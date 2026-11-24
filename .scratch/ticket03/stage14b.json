@@ -1,0 +1,288 @@
+{
+  "14-4": {
+    "title": "Last Tile of the Wall",
+    "subtitle": "海底撈月 — winning on the final draw",
+    "dialogues": [
+      {
+        "speaker": "mj",
+        "text": "海底撈月 is the last-tile hand: you win on the very last tile drawn from the wall, and it is worth 1 faan."
+      },
+      {
+        "speaker": "mj",
+        "text": "It is always a self-draw. That tile never came from anyone's discard, so 自摸 is inside the hand as well."
+      },
+      {
+        "speaker": "you",
+        "text": "So 自摸 and 海底 together already make 2 faan?"
+      },
+      {
+        "speaker": "mj",
+        "text": "Two, which is still short of the 3-faan minimum, so you need one more item before the hand is even legal."
+      },
+      {
+        "speaker": "mj",
+        "text": "And if that last tile is thrown away instead, there is no 海底 at all. Somebody just wins normally on a discard."
+      }
+    ],
+    "questions": [
+      {
+        "type": "singleChoice",
+        "question": "When exactly does 海底撈月 apply?",
+        "options": [
+          "When you draw the final tile left in the wall and it completes your hand",
+          "When you win on the final discard of the hand",
+          "When you declare a kong on your last turn",
+          "When your hand contains only one suit"
+        ],
+        "correctIndex": 0,
+        "explanation": "海底撈月 is defined by the source of the tile: the last tile in the wall, drawn by you, and it completes the hand."
+      },
+      {
+        "type": "fillBlank",
+        "question": "How many faan is 海底撈月 worth on its own?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": [
+          "1",
+          "one",
+          "1 faan",
+          "one faan"
+        ],
+        "explanation": "It sits in the 1-faan group, alongside 自摸 and 門前清, so it is a small bonus rather than a limit hand."
+      },
+      {
+        "type": "singleChoice",
+        "question": "The wall is empty, and the player to your left discards the tile that completes your hand. Do you score 海底撈月?",
+        "options": [
+          "Yes, it is still the last tile of the hand",
+          "No, 海底撈月 needs a tile you drew yourself",
+          "Yes, but only if you also score 自摸",
+          "Yes, and the hand becomes a 10-faan limit"
+        ],
+        "correctIndex": 1,
+        "explanation": "A discarded final tile is an ordinary discard win. 海底撈月 only counts the last tile drawn from the wall, so a claimed tile never earns it."
+      },
+      {
+        "type": "multiChoice",
+        "question": "Which statements about 海底撈月 are correct?",
+        "options": [
+          "It is a 1-faan item",
+          "It can stack with 自摸 for 2 faan",
+          "It can be won on another player's discard",
+          "It is one of the 10-faan limit hands"
+        ],
+        "correctIndex": 0,
+        "correctIndexes": [
+          0,
+          1
+        ],
+        "explanation": "It is 1 faan and it stacks with 自摸, because a last-tile win is always self-drawn. It is not a limit hand, and it cannot come from a discard."
+      },
+      {
+        "type": "matching",
+        "question": "Match each winning situation to the faan item it earns.",
+        "options": [],
+        "correctIndex": 0,
+        "pairs": [
+          {
+            "left": "Drawing the final tile of the wall to win",
+            "right": "海底撈月, 1 faan"
+          },
+          {
+            "left": "Winning on any tile you drew yourself",
+            "right": "自摸, 1 faan"
+          },
+          {
+            "left": "Winning on the tile a player adds to their kong",
+            "right": "搶槓, 1 faan"
+          },
+          {
+            "left": "Winning on the replacement tile straight after your own kong",
+            "right": "槓上自摸, 1 faan"
+          }
+        ],
+        "explanation": "All four are 1-faan items, and each is triggered by a different source of tile: the wall's last tile, any self-draw, a robbed kong tile, or a kong replacement."
+      },
+      {
+        "type": "fillBlank",
+        "question": "Adding 自摸 and 海底撈月 together gives how many faan?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": [
+          "2",
+          "two",
+          "2 faan",
+          "two faan"
+        ],
+        "explanation": "1 faan for 自摸 plus 1 faan for 海底撈月 is 2, which on its own is still below the 3-faan minimum needed to win."
+      },
+      {
+        "type": "singleChoice",
+        "question": "Your hand is 平糊, won by 自摸 on the last tile of the wall, so 3 faan in total. What does each of the other three players pay?",
+        "options": [
+          "4 points",
+          "8 points",
+          "12 points",
+          "24 points"
+        ],
+        "correctIndex": 0,
+        "explanation": "A 3-faan hand is 8 from a discarder, and on a self-draw the other three each pay half of that, so 4 points each and 12 in total."
+      },
+      {
+        "type": "tileSelection",
+        "question": "The last tile of the wall is about to be drawn. Your hand holds {{p3}}{{p3}} and one more copy turns that pair into a pung. Which tile do you need?",
+        "options": [
+          "p3",
+          "p4",
+          "p2",
+          "east"
+        ],
+        "correctIndex": 0,
+        "explanation": "A pair becomes a pung only with a third copy of the same tile, so {{p3}} is the only card that completes the set."
+      }
+    ]
+  },
+  "14-5": {
+    "title": "Concealed Hand",
+    "subtitle": "門前清 — nothing claimed",
+    "dialogues": [
+      {
+        "speaker": "mj",
+        "text": "門前清 means a front hand: you never chowed, punged or made an exposed kong before you won. It is worth 1 faan."
+      },
+      {
+        "speaker": "mj",
+        "text": "A concealed kong is the exception. Gary's ruling is that 暗槓 keeps 門前清, because nobody at the table supplied those tiles."
+      },
+      {
+        "speaker": "you",
+        "text": "So the real test is whether the other players saw me take a tile from someone else?"
+      },
+      {
+        "speaker": "mj",
+        "text": "That is the whole test. One chow or pung and the 1 faan is gone for the rest of the hand, however clean you play afterwards."
+      },
+      {
+        "speaker": "mj",
+        "text": "With 自摸 on top you reach 2 faan, still under the 3-faan minimum, so a concealed hand usually needs one more item to be worth declaring."
+      }
+    ],
+    "questions": [
+      {
+        "type": "fillBlank",
+        "question": "How many faan is 門前清 worth?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": [
+          "1",
+          "one",
+          "1 faan",
+          "one faan"
+        ],
+        "explanation": "門前清 is a 1-faan item, the same size as 自摸 and 海底撈月."
+      },
+      {
+        "type": "singleChoice",
+        "question": "Which of these actions destroys 門前清?",
+        "options": [
+          "Declaring a concealed kong 暗槓",
+          "Claiming a discard to complete a chow",
+          "Drawing a flower tile",
+          "Winning on another player's discard"
+        ],
+        "correctIndex": 1,
+        "explanation": "Claiming a discard for a chow opens the hand. A concealed kong and flower draws do not, and neither does winning on a discard."
+      },
+      {
+        "type": "singleChoice",
+        "question": "You declared a concealed kong 暗槓 early in the hand, then won later. Do you still score 門前清?",
+        "options": [
+          "Yes, a concealed kong does not break it",
+          "No, any kong breaks it",
+          "Only if you also win by self-draw",
+          "Only if the kong was a wind tile"
+        ],
+        "correctIndex": 0,
+        "explanation": "Gary's ruling is that 暗槓 keeps 門前清, because no other player gave you those tiles. Only an exposed kong 明槓 breaks the concealment."
+      },
+      {
+        "type": "multiChoice",
+        "question": "Which of these leave 門前清 intact?",
+        "options": [
+          "Winning on a discarded tile",
+          "Declaring a concealed kong",
+          "Claiming a discard to pung",
+          "Chowing a discarded tile"
+        ],
+        "correctIndex": 0,
+        "correctIndexes": [
+          0,
+          1
+        ],
+        "explanation": "The winning discard is not a meld you made, and a concealed kong takes nothing from the table. Punging or chowing a discard turns the hand open and kills the 1 faan."
+      },
+      {
+        "type": "matching",
+        "question": "Match each action to its effect on 門前清.",
+        "options": [],
+        "correctIndex": 0,
+        "pairs": [
+          {
+            "left": "Declaring a concealed kong 暗槓",
+            "right": "Kept, the tiles came from your own hand"
+          },
+          {
+            "left": "Making an exposed kong 明槓",
+            "right": "Lost, the meld was supplied by a discard"
+          },
+          {
+            "left": "Claiming a discard for a chow or pung",
+            "right": "Lost, the hand is now open"
+          },
+          {
+            "left": "Winning on a discarded tile",
+            "right": "Kept, a winning discard is not a meld"
+          }
+        ],
+        "explanation": "Concealment is broken by melds built from other players' tiles. A concealed kong and a winning discard both leave the hand closed."
+      },
+      {
+        "type": "fillBlank",
+        "question": "門前清 plus 自摸 comes to how many faan?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": [
+          "2",
+          "two",
+          "2 faan",
+          "two faan"
+        ],
+        "explanation": "1 faan for 門前清 plus 1 faan for 自摸 is 2, and the hand still needs a third faan to reach the 3-faan minimum."
+      },
+      {
+        "type": "singleChoice",
+        "question": "Your hand scores only 門前清 and 自摸, for 2 faan. What happens?",
+        "options": [
+          "You may win, and each player pays 2 points",
+          "You cannot win yet, because 3 faan is the minimum",
+          "You may win, but only on a discard",
+          "You may win, and the hand is rounded up to 3 faan"
+        ],
+        "correctIndex": 1,
+        "explanation": "The table only starts at 3 faan, so a 2-faan hand is not payable. You keep building until a third item arrives."
+      },
+      {
+        "type": "tileSelection",
+        "question": "You hold {{p5}}{{p7}} and are still concealed. A discard of which tile would complete a chow and cost you 門前清?",
+        "options": [
+          "p6",
+          "p5",
+          "p8",
+          "east"
+        ],
+        "correctIndex": 0,
+        "explanation": "{{p5}} and {{p7}} are a closed wait that only {{p6}} fills, so that is the discard that would open the hand."
+      }
+    ]
+  }
+}

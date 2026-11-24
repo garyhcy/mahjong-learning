@@ -1,0 +1,278 @@
+{
+  "14-1": {
+    "title": "Big Flower Hand",
+    "subtitle": "Eight flowers, the rarest luck",
+    "dialogues": [
+      {"speaker": "mj", "text": "Big Flower Hand 大花糊 is the rarest luck in the game: you draw all eight flower tiles."},
+      {"speaker": "mj", "text": "Flowers are bonus tiles. You set each one aside and draw a replacement straight away, so your hand never grows."},
+      {"speaker": "you", "text": "And eight of them just sits at the top of the chart?"},
+      {"speaker": "mj", "text": "It is a limit hand, so it settles at 10 faan, which is 128 points off a discard."},
+      {"speaker": "mj", "text": "Seven flowers is the smaller cousin, 小花糊, worth 3 faan, and holding all four seasons or all four flowers is 一台花 for 2."}
+    ],
+    "questions": [
+      {
+        "type": "singleChoice",
+        "question": "How many faan is Big Flower Hand 大花糊 worth?",
+        "options": ["3 faan", "7 faan", "8 faan", "10 faan"],
+        "correctIndex": 3,
+        "explanation": "大花糊 is a limit hand, and every limit hand is scored at the 10-faan ceiling."
+      },
+      {
+        "type": "fillBlank",
+        "question": "How many flower tiles must you draw to make Big Flower Hand 大花糊?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": ["8", "eight", "8 flowers", "eight flowers"],
+        "explanation": "The set has four seasons plus four flowers, so collecting all eight of them is the hand."
+      },
+      {
+        "type": "singleChoice",
+        "question": "You draw seven flowers instead of eight. What does that pay, and does self-draw add anything?",
+        "options": [
+          "小花糊, 3 faan, with no self-draw faan added",
+          "小花糊, 4 faan with the self-draw faan",
+          "一台花, 2 faan",
+          "Nothing, because seven flowers does not count"
+        ],
+        "correctIndex": 0,
+        "explanation": "小花糊 is 3 faan for seven flowers, and the rules do not add a self-draw faan to it."
+      },
+      {
+        "type": "tileOrdering",
+        "question": "Put the four season flowers in seasonal order, starting from spring.",
+        "options": [],
+        "correctIndex": 0,
+        "tiles": ["f_spring", "f_summer", "f_autumn", "f_winter"],
+        "explanation": "The seasons run spring, summer, autumn, winter, and all four together make 一台花."
+      },
+      {
+        "type": "tileSelection",
+        "question": "You already hold {{f_plum}} {{f_orchid}} {{f_chrys}}. Which tile completes the four-flower set for 一台花?",
+        "options": ["f_bamboo", "f_spring", "f_winter", "f_summer"],
+        "correctIndex": 0,
+        "explanation": "The flower set is plum, orchid, chrysanthemum and bamboo, so 竹 is the missing fourth tile."
+      },
+      {
+        "type": "matching",
+        "question": "Match each flower holding to what it is worth.",
+        "options": [],
+        "correctIndex": 0,
+        "pairs": [
+          {"left": "Eight flowers drawn", "right": "大花糊, 10 faan"},
+          {"left": "Seven flowers drawn", "right": "小花糊, 3 faan"},
+          {"left": "All four seasons, or all four flowers", "right": "一台花, 2 faan"},
+          {"left": "No flowers at all", "right": "無花, 1 faan"}
+        ],
+        "explanation": "The chart runs from 1 faan for no flowers up to the 10-faan limit for the full eight."
+      },
+      {
+        "type": "singleChoice",
+        "question": "A 大花糊 is won by self-draw. How much does each of the other three players pay?",
+        "options": ["32 points", "64 points", "96 points", "128 points"],
+        "correctIndex": 1,
+        "explanation": "At 10 faan a self-draw is 64 from each player; the 128 figure is what a single discarder would pay."
+      },
+      {
+        "type": "multiChoice",
+        "question": "Which statements about flowers are true?",
+        "options": [
+          "A drawn flower is set aside and you draw a replacement tile",
+          "Eight flowers is 大花糊, a 10-faan limit hand",
+          "A flower tile can be used as a triplet inside your hand",
+          "Seven flowers is worth 3 faan"
+        ],
+        "correctIndex": 0,
+        "correctIndexes": [0, 1, 3],
+        "explanation": "Flowers are never part of the hand, so they cannot form a triplet; the other three statements match the chart."
+      }
+    ]
+  },
+  "14-2": {
+    "title": "All Terminals & Honours",
+    "subtitle": "花么 — ones, nines and honours only",
+    "dialogues": [
+      {"speaker": "mj", "text": "All Terminals and Honours 花么 is a small hand with a very big family tree."},
+      {"speaker": "mj", "text": "Every tile must be a one, a nine, or an honour tile. Nothing in between is allowed."},
+      {"speaker": "you", "text": "Then I cannot make a chow at all, can I?"},
+      {"speaker": "mj", "text": "Right, which is why 花么 always arrives with 對對糊. That is 1 faan plus 3, so 4 in total."},
+      {"speaker": "mj", "text": "Do not confuse it with 清么九, which is ones and nines only, or 字一色, which is all honours. Both are 10 faan."}
+    ],
+    "questions": [
+      {
+        "type": "fillBlank",
+        "question": "The 花么 pattern on its own is worth how many faan?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": ["1", "one", "1 faan", "one faan"],
+        "explanation": "花么 is a 1-faan pattern; the 對對糊 it forces is counted separately on top."
+      },
+      {
+        "type": "singleChoice",
+        "question": "Which tiles may appear in an All Terminals and Honours 花么 hand?",
+        "options": [
+          "Ones and nines of the three suits only",
+          "Ones, nines and honour tiles",
+          "Honour tiles only",
+          "Any tile, as long as no chow is used"
+        ],
+        "correctIndex": 1,
+        "explanation": "花么 allows every terminal and every honour, but no tile from two to eight."
+      },
+      {
+        "type": "singleChoice",
+        "question": "Why does 花么 always count as 對對糊 as well?",
+        "options": [
+          "Because a chow cannot be built from terminals and honours, so every set is a triplet or kong",
+          "Because 花么 hands must be concealed",
+          "Because the pair must be an honour pair",
+          "Because 對對糊 is automatically added to any 1-faan hand"
+        ],
+        "correctIndex": 0,
+        "explanation": "A chow needs three consecutive numbers, and none of them can be a terminal or an honour, so only triplets and kongs remain."
+      },
+      {
+        "type": "fillBlank",
+        "question": "Adding the 對對糊 to the 花么 pattern, how many faan does the hand collect in total?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": ["4", "four", "4 faan", "four faan"],
+        "explanation": "1 faan for 花么 plus 3 faan for 對對糊 gives 4 faan."
+      },
+      {
+        "type": "tileSelection",
+        "question": "Which of these tiles could never appear in a 花么 hand?",
+        "options": ["m1", "p9", "north", "m5"],
+        "correctIndex": 3,
+        "explanation": "A five of characters is a middle tile, and 花么 only permits ones, nines and honours."
+      },
+      {
+        "type": "matching",
+        "question": "Match each hand to its value.",
+        "options": [],
+        "correctIndex": 0,
+        "pairs": [
+          {"left": "花么 pattern on its own", "right": "1 faan"},
+          {"left": "花么 together with 對對糊", "right": "4 faan"},
+          {"left": "清么九 or 字一色", "right": "10 faan, a limit hand"}
+        ],
+        "explanation": "花么 is a 1-faan pattern that drags 對對糊 along for 3 more, while the two pure versions are limit hands."
+      },
+      {
+        "type": "singleChoice",
+        "question": "A 4-faan hand is completed on a discard. How much does the discarder pay?",
+        "options": ["8 points", "16 points", "24 points", "32 points"],
+        "correctIndex": 1,
+        "explanation": "On the payment table 4 faan is 16 points from the discarder, who pays the whole amount alone."
+      },
+      {
+        "type": "multiChoice",
+        "question": "Which statements about these three hands are true?",
+        "options": [
+          "花么 may contain honour tiles",
+          "清么九 may contain honour tiles",
+          "字一色 contains no suited tiles at all",
+          "花么 always brings 對對糊, so it is worth 4 faan"
+        ],
+        "correctIndex": 0,
+        "correctIndexes": [0, 2, 3],
+        "explanation": "清么九 is ones and nines with no honours; the other three statements describe 花么 and 字一色 correctly."
+      }
+    ]
+  },
+  "14-3": {
+    "title": "Rob the Kong",
+    "subtitle": "搶槓 — stealing the fourth tile",
+    "dialogues": [
+      {"speaker": "mj", "text": "Rob the Kong 搶槓 is the art of stealing a tile that someone has just turned into a kong."},
+      {"speaker": "mj", "text": "Normally it happens on an added kong 加槓, where a player tops up their own pung with the fourth tile."},
+      {"speaker": "you", "text": "And if that fourth tile is exactly what I need to win, I just take it?"},
+      {"speaker": "mj", "text": "You do, for 1 faan, and the player who made the kong pays your whole self-draw amount on their own."},
+      {"speaker": "mj", "text": "One more twist: 十三么 is the only hand allowed to rob a concealed kong."}
+    ],
+    "questions": [
+      {
+        "type": "singleChoice",
+        "question": "What exactly is Rob the Kong 搶槓?",
+        "options": [
+          "Winning on the tile an opponent adds to their kong",
+          "Winning on the last tile of the wall",
+          "Winning on the tile you draw to replace a flower",
+          "Winning on a tile that you discarded earlier yourself"
+        ],
+        "correctIndex": 0,
+        "explanation": "搶槓 is claiming a kong tile as your winning tile, not a wall draw or a flower replacement."
+      },
+      {
+        "type": "singleChoice",
+        "question": "Which kong can normally be robbed?",
+        "options": [
+          "A concealed kong",
+          "An added kong 加槓",
+          "Any kong at all",
+          "Only a kong of honour tiles"
+        ],
+        "correctIndex": 1,
+        "explanation": "The usual target is the added kong, because the fourth tile is placed openly on an existing pung."
+      },
+      {
+        "type": "singleChoice",
+        "question": "Which hand is allowed to rob a concealed kong?",
+        "options": ["十三么 Thirteen Orphans", "平糊", "混一色", "大花糊"],
+        "correctIndex": 0,
+        "explanation": "十三么 is the single exception that may rob a concealed kong; every other hand needs an added kong."
+      },
+      {
+        "type": "fillBlank",
+        "question": "How many faan does 搶槓 add to a hand?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": ["1", "one", "1 faan", "one faan"],
+        "explanation": "搶槓 is listed as a 1-faan item, and it stacks with whatever the rest of the hand is worth."
+      },
+      {
+        "type": "tileSelection",
+        "question": "An opponent upgrades their exposed {{s6}} {{s6}} {{s6}} pung by adding the fourth {{s6}}, and {{s6}} is your winning tile. Which tile do you claim?",
+        "options": ["s6", "s5", "s7", "white"],
+        "correctIndex": 0,
+        "explanation": "You claim the exact tile added to the kong, which here is the fourth 六索."
+      },
+      {
+        "type": "singleChoice",
+        "question": "A 4-faan hand is completed by robbing a kong. Who pays what?",
+        "options": [
+          "The player whose kong was robbed pays all 24 points alone",
+          "All three players pay 8 points each",
+          "The last discarder pays 16 points",
+          "Nobody pays, because a kong is not a discard"
+        ],
+        "correctIndex": 0,
+        "explanation": "A robbed kong is treated as a self-draw paid as a package: the robbed player covers the whole 24-point self-draw total for 4 faan."
+      },
+      {
+        "type": "matching",
+        "question": "Match each term to its description.",
+        "options": [],
+        "correctIndex": 0,
+        "pairs": [
+          {"left": "搶槓", "right": "1 faan"},
+          {"left": "The kong that is normally robbable", "right": "An added kong 加槓"},
+          {"left": "The hand allowed to rob a concealed kong", "right": "十三么 Thirteen Orphans"}
+        ],
+        "explanation": "搶槓 scores 1 faan, targets an added kong by default, and only 十三么 may go after a concealed one."
+      },
+      {
+        "type": "multiChoice",
+        "question": "Which statements about 搶槓 are true?",
+        "options": [
+          "搶槓 is scored as 1 faan",
+          "The robbed player pays the whole self-draw amount alone",
+          "The other two players split the rest between them",
+          "A concealed kong can only be robbed by 十三么"
+        ],
+        "correctIndex": 0,
+        "correctIndexes": [0, 1, 3],
+        "explanation": "The robbed player is treated as the package payer and covers everything, so the other two pay nothing."
+      }
+    ]
+  }
+}

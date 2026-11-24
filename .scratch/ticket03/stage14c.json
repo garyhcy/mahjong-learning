@@ -1,0 +1,287 @@
+{
+  "14-6": {
+    "title": "Faan to Points",
+    "subtitle": "Turning faan into money",
+    "dialogues": [
+      {
+        "speaker": "mj",
+        "text": "Stage 7 gave you the table. Today is only the part players still get wrong at the table: turning a faan count into the exact number that changes hands."
+      },
+      {
+        "speaker": "mj",
+        "text": "One rule drives all of it. A discarder pays the full listed amount; on a self-draw each of the other three pays half, so the winner collects one and a half times the listed amount."
+      },
+      {
+        "speaker": "you",
+        "text": "So 8 faan is 64 from one player, but 32 from each of three players, 96 in total?"
+      },
+      {
+        "speaker": "mj",
+        "text": "Correct. And 10 faan is the ceiling, so anything above it still settles at 128 from a discarder or 192 from a self-draw."
+      },
+      {
+        "speaker": "mj",
+        "text": "No definitions in this lesson, just numbers. Ready?"
+      }
+    ],
+    "questions": [
+      {
+        "type": "singleChoice",
+        "question": "Your hand is 3 faan: All Chows 平糊, Concealed Hand 門前清, and you win by self-draw. What does each opponent pay, and what do you collect in total?",
+        "options": [
+          "4 each, 12 in total",
+          "8 each, 24 in total",
+          "8 from one player, 8 in total",
+          "4 from one player, 4 in total"
+        ],
+        "correctIndex": 0,
+        "explanation": "3 faan is 8 on a discard, so a self-draw is half of that: 4 from each of three players, 12 in total."
+      },
+      {
+        "type": "singleChoice",
+        "question": "A 6-faan hand can be won either on a discard or by self-draw. How much more do you collect by self-drawing?",
+        "options": [
+          "16 more",
+          "24 more",
+          "32 more",
+          "Nothing more, the two pay the same"
+        ],
+        "correctIndex": 0,
+        "explanation": "6 faan pays 32 from a discarder, while a self-draw takes 16 from each of three players, 48 in total: 48 minus 32 is 16."
+      },
+      {
+        "type": "fillBlank",
+        "question": "You win a 9-faan hand on a discard. How many points does the discarder hand over?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": [
+          "96",
+          "ninety-six",
+          "ninety six",
+          "96 points",
+          "ninety-six points"
+        ],
+        "explanation": "9 faan sits at 96 on the table, and the discarder pays that whole amount alone while the other two pay nothing."
+      },
+      {
+        "type": "matching",
+        "question": "Match each faan total to what a self-draw actually collects in total.",
+        "options": [],
+        "correctIndex": 0,
+        "pairs": [
+          {
+            "left": "4 faan",
+            "right": "24 in total"
+          },
+          {
+            "left": "5 faan",
+            "right": "36 in total"
+          },
+          {
+            "left": "7 faan",
+            "right": "72 in total"
+          },
+          {
+            "left": "9 faan",
+            "right": "144 in total"
+          }
+        ],
+        "explanation": "A self-draw collects half the discard figure from each of three players: 8 times 3, 12 times 3, 24 times 3 and 48 times 3."
+      },
+      {
+        "type": "multiChoice",
+        "question": "Which of these payment statements are correct? (Select all that apply)",
+        "options": [
+          "A 5-faan discard costs the discarder 24",
+          "A 10-faan self-draw collects 128 in total",
+          "A 7-faan self-draw takes 24 from each opponent",
+          "Moving from 9 faan to 10 faan adds 32 to the discard payment"
+        ],
+        "correctIndex": 0,
+        "correctIndexes": [
+          0,
+          2,
+          3
+        ],
+        "explanation": "A 10-faan self-draw is 64 from each of three players, 192 in total, not 128; the other three statements match the table exactly."
+      },
+      {
+        "type": "singleChoice",
+        "question": "Three opponents each pay you 48. What was your hand worth, and what would a discarder have paid instead?",
+        "options": [
+          "9 faan; a discarder would pay 96",
+          "8 faan; a discarder would pay 96",
+          "9 faan; a discarder would pay 128",
+          "10 faan; a discarder would pay 128"
+        ],
+        "correctIndex": 0,
+        "explanation": "48 each is half of 96, and 96 is the 9-faan line, so the discarder at 9 faan pays that same 96 in full."
+      },
+      {
+        "type": "singleChoice",
+        "question": "Your hand adds up to 12 faan: Full Flush 清一色 (7), All Pongs 對對糊 (3), self-draw (1) and Concealed Hand 門前清 (1). You win on a discard. What does the discarder pay?",
+        "options": [
+          "128, because the hand is capped at 10 faan",
+          "192, because 12 faan is paid in full",
+          "96, because the extra faan are halved",
+          "144, because 12 faan lands on the 9-faan line"
+        ],
+        "correctIndex": 0,
+        "explanation": "The table stops at 10 faan, so the two extra faan are ignored and 10 faan pays the discarder's figure of 128."
+      },
+      {
+        "type": "fillBlank",
+        "question": "A limit hand 例牌 is always counted as 10 faan. If you self-draw one, how many points do you collect in total?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": [
+          "192",
+          "one hundred ninety-two",
+          "one hundred and ninety-two",
+          "192 points"
+        ],
+        "explanation": "A 10-faan self-draw is 64 from each of three players, 192 in total, which is the largest single hand on the table."
+      }
+    ]
+  },
+  "14-7": {
+    "title": "How Many Faan?",
+    "subtitle": "Put the whole chart to work",
+    "dialogues": [
+      {
+        "speaker": "mj",
+        "text": "Now the real thing. I describe a hand, you total the faan, then you price it. Two steps, every single time."
+      },
+      {
+        "speaker": "you",
+        "text": "And I have to notice whether it was a discard or a self-draw, because that changes who pays."
+      },
+      {
+        "speaker": "mj",
+        "text": "Right. Watch for three traps: a 包 liability that puts the whole bill on one player, the 10-faan ceiling, and bonuses that refuse to stack."
+      },
+      {
+        "speaker": "mj",
+        "text": "If your total runs past 10, stop counting at 10 and price it there."
+      }
+    ],
+    "questions": [
+      {
+        "type": "singleChoice",
+        "question": "You self-draw with All Chows 平糊, a fully concealed hand and no flowers at all. Total the faan, then price it.",
+        "options": [
+          "4 faan; 8 from each opponent, 24 in total",
+          "3 faan; 4 from each opponent, 12 in total",
+          "4 faan; 16 from each opponent, 48 in total",
+          "4 faan; 16 from the discarder only"
+        ],
+        "correctIndex": 0,
+        "explanation": "平糊 1 + 門前清 1 + 無花 1 + 自摸 1 = 4 faan, and a 4-faan self-draw is 8 from each of three players, 24 in total."
+      },
+      {
+        "type": "fillBlank",
+        "question": "Your hand is Mixed One Suit 混一色 (3) + All Pongs 對對糊 (3) + self-draw (1) + one seat flower 正花 (1). How many faan is that in total?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": [
+          "8",
+          "eight",
+          "8 faan",
+          "eight faan"
+        ],
+        "explanation": "3 + 3 + 1 + 1 = 8 faan, which pays 64 from a discarder or 32 from each player on a self-draw."
+      },
+      {
+        "type": "singleChoice",
+        "question": "You win on a discard with Big Three Dragons 大三元: three dragon triplets, one chow and a pair, and you never claimed anything. Total the faan and the payment.",
+        "options": [
+          "8 faan; 64 points",
+          "9 faan; 96 points",
+          "10 faan; 128 points",
+          "5 faan; 24 points"
+        ],
+        "correctIndex": 1,
+        "explanation": "The 5-faan pattern plus its three dragon triplets is 8, and Concealed Hand adds 1 more: 9 faan pays 96 from the discarder."
+      },
+      {
+        "type": "matching",
+        "question": "Match each described hand to its total faan.",
+        "options": [],
+        "correctIndex": 0,
+        "pairs": [
+          {
+            "left": "Self-draw + Concealed Hand + All Chows",
+            "right": "3 faan"
+          },
+          {
+            "left": "Mixed One Suit + All Pongs + self-draw",
+            "right": "7 faan"
+          },
+          {
+            "left": "Full Flush + self-draw + Concealed Hand",
+            "right": "9 faan"
+          },
+          {
+            "left": "Big Three Dragons with three dragon triplets, on a discard",
+            "right": "8 faan"
+          }
+        ],
+        "explanation": "The four totals are 1+1+1, 3+3+1, 7+1+1 and 5+3, giving 3, 7, 9 and 8."
+      },
+      {
+        "type": "multiChoice",
+        "question": "Which of these hands reach the 10-faan ceiling? (Select all that apply)",
+        "options": [
+          "Full Flush 清一色 (7) + All Pongs 對對糊 (3)",
+          "Mixed One Suit 混一色 (3) + All Pongs (3) + self-draw (1) + Concealed Hand (1)",
+          "Thirteen Orphans 十三么",
+          "Big Flower Hand 大花糊 with a self-draw"
+        ],
+        "correctIndex": 0,
+        "correctIndexes": [
+          0,
+          2,
+          3
+        ],
+        "explanation": "清一色 7 + 對對糊 3 reaches 10 and both limit hands are 10 by definition, while the mixed hand only totals 8."
+      },
+      {
+        "type": "singleChoice",
+        "question": "You completed Big Three Dragons 大三元 by claiming West's discard of the third dragon triplet, so West is liable under 大三元包. You later self-draw the hand at 8 faan. How is the money paid?",
+        "options": [
+          "West pays the whole self-draw alone: 96 points",
+          "West pays 64 and the other two pay 16 each",
+          "All three opponents pay 32 each",
+          "West pays 128 alone"
+        ],
+        "correctIndex": 0,
+        "explanation": "Under 包 the liable player covers the entire self-draw, and 8 faan self-draw is 32 from each of three players, 96 in total, all of it from West."
+      },
+      {
+        "type": "tileSelection",
+        "question": "West's discard completed your third dragon triplet and made West liable for your whole self-draw. Your exposed melds are {{red}}{{red}}{{red}} and {{green}}{{green}}{{green}}. Which tile did West supply?",
+        "options": [
+          "white",
+          "east",
+          "m5",
+          "p9"
+        ],
+        "correctIndex": 0,
+        "explanation": "The third dragon triplet is 白板, which turns the hand into 大三元: 5 faan plus 3 for the dragon triplets is 8, and West pays the entire 96-point self-draw alone."
+      },
+      {
+        "type": "fillBlank",
+        "question": "You self-draw a hand that adds up to 13 faan. How many points do you collect in total?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": [
+          "192",
+          "one hundred ninety-two",
+          "one hundred and ninety-two",
+          "192 points"
+        ],
+        "explanation": "13 faan is over the ceiling, so it is priced as 10 faan: 64 from each of three players, 192 in total."
+      }
+    ]
+  }
+}
