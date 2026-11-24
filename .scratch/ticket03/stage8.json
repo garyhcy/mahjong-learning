@@ -1,0 +1,338 @@
+{
+  "8-1": [
+    {
+      "type": "multiChoice",
+      "question": "An opponent discards {{east}} on their first turn. Which conclusions are reasonable?",
+      "options": [
+        "They are unlikely to be collecting honour tiles",
+        "{{east}} is safe to discard against them for the rest of this rotation",
+        "They are definitely building a single-suit flush",
+        "They no longer hold any honour tiles"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1],
+      "explanation": "An early honour discard says little about suit shape, but it does mean they cannot use that honour against you this rotation."
+    },
+    {
+      "type": "fillBlank",
+      "question": "An opponent throws {{s1}}, {{s5}} and {{s9}} in their first three turns but keeps every Dot tile. Which suit are they most likely collecting?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["circles", "circle", "dots", "dot", "pins", "pin"],
+      "explanation": "Throwing Bamboo at every rank early says Bamboo is not their suit, so the suit they never touch is the likely target."
+    },
+    {
+      "type": "matching",
+      "question": "Match each discard pattern to the most likely reading.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "Throws {{p1}} and {{p9}} on turn 1", "right": "Circles terminals are not needed"},
+        {"left": "Discards every Character drawn, turn after turn", "right": "Characters are not their suit"},
+        {"left": "Throws honours on every early turn", "right": "Not collecting honour tiles"},
+        {"left": "Suddenly stops discarding Bamboo", "right": "May have picked up Bamboo"}
+      ],
+      "explanation": "Early discards reveal what a hand does not want, while a sudden change of pattern reveals what it has started to collect."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Four early discards from the same opponent are shown. Which one is the strongest evidence that they are avoiding the middle of that suit?",
+      "options": ["s5", "east", "p1", "m9"],
+      "correctIndex": 0,
+      "explanation": "A middle tile is the most useful tile in its suit, so throwing it early is the clearest sign the suit is unwanted."
+    },
+    {
+      "type": "singleChoice",
+      "question": "An opponent who kept every honour tile for ten turns now discards {{south}}. What does this most likely mean?",
+      "options": [
+        "They have given up on an honour-based plan",
+        "They are collecting honours harder than before",
+        "They have no hand at all",
+        "Their hand is already complete"
+      ],
+      "correctIndex": 0,
+      "explanation": "A late honour discard usually means the honour plan was dropped once the hand took its real shape."
+    }
+  ],
+  "8-2": [
+    {
+      "type": "multiChoice",
+      "question": "Which of these make a tile safer to discard?",
+      "options": [
+        "All four copies are already visible on the table",
+        "The opponent you fear discarded it earlier this rotation",
+        "Nobody has discarded this tile yet",
+        "Two different opponents have already discarded it"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1, 3],
+      "explanation": "Visible copies and discards by the players you fear both cut the chance that the tile completes their hand."
+    },
+    {
+      "type": "matching",
+      "question": "Match each situation to how safe that tile is against the player you fear.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "They discarded it earlier this rotation", "right": "Absolutely safe against them until they draw"},
+        {"left": "They discarded it, then drew twice", "right": "Only relatively safe"},
+        {"left": "All four copies lie on the table", "right": "Cannot be won on at all"},
+        {"left": "Never seen in the game, mid-hand", "right": "Most dangerous"}
+      ],
+      "explanation": "Absolute safety lasts only until the opponent draws again, while four visible copies means no fifth copy exists to win on."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Why is a tile with all four copies visible completely safe to discard?",
+      "options": [
+        "No opponent can hold or wait on a fifth copy",
+        "It must be an honour tile",
+        "Every player has already thrown it",
+        "It must be a terminal tile"
+      ],
+      "correctIndex": 0,
+      "explanation": "There are only four copies of any tile, so once all four are visible nobody can complete a pair, pong or wait with it."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Which of these is NOT a reason for a tile to be safe?",
+      "options": [
+        "The threatening opponent discarded it this rotation",
+        "All four copies are visible",
+        "It is a fresh middle tile nobody has played",
+        "Two opponents have already thrown it away"
+      ],
+      "correctIndex": 2,
+      "explanation": "A fresh middle tile is the classic danger tile, because it connects to many sequences and all four copies are still live."
+    },
+    {
+      "type": "fillBlank",
+      "question": "You can see all four copies of {{p6}} on the table. How many copies could an opponent still be waiting on?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["0", "zero", "none", "no copies"],
+      "explanation": "All four copies are accounted for, so no opponent can be waiting on a tile that no longer exists in play."
+    }
+  ],
+  "8-3": [
+    {
+      "type": "multiChoice",
+      "question": "Which situations call for folding rather than pushing?",
+      "options": [
+        "Your hand is several tiles from ready and two opponents have called melds",
+        "You are comfortably leading and the hand is nearly over",
+        "You are one tile from a cheap win and nobody looks close",
+        "An opponent has three exposed melds and discards are getting dangerous"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1, 3],
+      "explanation": "Folding pays when your own hand is far off or you have something to protect and someone else is close."
+    },
+    {
+      "type": "matching",
+      "question": "Match each table situation to the right response.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "Four tiles from ready, opponent holds three melds", "right": "Fold and discard only safe tiles"},
+        {"left": "One tile from a cheap win, nobody threatening", "right": "Push for the win"},
+        {"left": "Leading late, your winning tile is dangerous", "right": "Hold the tile and take the draw"},
+        {"left": "Far behind with five turns left", "right": "Push a bigger hand and accept risk"}
+      ],
+      "explanation": "Defence is a choice about relative position, not a fixed rule, so the same hand can call for folding or pushing."
+    },
+    {
+      "type": "fillBlank",
+      "question": "A player who folds scores nothing, but also pays nothing when the hand ends in a ___.",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["draw", "a draw", "tie", "流局"],
+      "explanation": "A drawn hand involves no payments at all, which is why folding can cost less than chasing a hopeless win."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Is it ever right to break up a meld you already hold just to find a safe discard?",
+      "options": [
+        "Yes, when an opponent is clearly close and no safe tile is free",
+        "No, a meld must never be broken",
+        "Only on the first turn",
+        "Only if you are the dealer"
+      ],
+      "correctIndex": 0,
+      "explanation": "When folding, the hand's value is already given up, so structure can be sacrificed to avoid dealing in."
+    },
+    {
+      "type": "singleChoice",
+      "question": "You are far behind on points with ten tiles left in the wall and no opponent looks close. What is the best approach?",
+      "options": [
+        "Push for a bigger hand and accept some risk",
+        "Fold immediately and discard only honours",
+        "Stop drawing tiles",
+        "Discard randomly to hide your shape"
+      ],
+      "correctIndex": 0,
+      "explanation": "A player who needs points cannot profit from a draw, so taking risk to chase a larger hand is the correct trade."
+    }
+  ],
+  "8-4": [
+    {
+      "type": "tileOrdering",
+      "question": "You hold {{m2}}{{m3}}. Arrange its two winning tiles from lowest to highest.",
+      "options": [],
+      "correctIndex": 0,
+      "tiles": ["m1", "m4"],
+      "explanation": "A 23 shape is a two-sided wait, because both {{m1}} and {{m4}} complete the run."
+    },
+    {
+      "type": "fillBlank",
+      "question": "You hold {{m4}}{{m6}}. How many different tile types complete this closed wait?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["1", "one", "1 tile", "one tile"],
+      "explanation": "A closed wait has a hole in the middle, so only {{m5}} can fill it."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which of these are two-sided waits?",
+      "options": [
+        "{{m2}}{{m3}} waiting on {{m1}} or {{m4}}",
+        "{{p7}}{{p8}} waiting on {{p6}} or {{p9}}",
+        "{{s5}}{{s7}} waiting on {{s6}} only",
+        "{{m1}}{{m2}} waiting on {{m3}} only"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1],
+      "explanation": "A two-sided wait accepts two different tiles, so it has about twice as many winning tiles as a closed wait."
+    },
+    {
+      "type": "tileSelection",
+      "question": "You want flexible waits. Which of these single tiles is the least useful to keep?",
+      "options": ["m1", "m5", "p5", "s5"],
+      "correctIndex": 0,
+      "explanation": "A terminal only fits one run, while a middle tile fits several, so terminals are the least flexible tiles to hold."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Which pair of tiles forms a closed wait (kanchan)?",
+      "options": [
+        "{{s5}}{{s7}}",
+        "{{m2}}{{m3}}",
+        "{{p7}}{{p8}}",
+        "{{m8}}{{m9}}"
+      ],
+      "correctIndex": 0,
+      "explanation": "The pair {{s5}}{{s7}} is one rank apart with a gap in the middle, which is the definition of a closed wait."
+    }
+  ],
+  "8-5": [
+    {
+      "type": "multiChoice",
+      "question": "What does calling a Pong cost you?",
+      "options": [
+        "It exposes part of your hand to opponents",
+        "It spends a turn you could have used to reshape your hand",
+        "It stops you from ever winning by self-draw",
+        "It forfeits the 1-Faan 門前清 bonus on an otherwise concealed hand"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1, 3],
+      "explanation": "A call speeds the hand up but reveals tiles, reduces flexibility, and ends the concealed bonus."
+    },
+    {
+      "type": "matching",
+      "question": "Match each situation to the tempo choice that fits it.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "One cheap meld away from a 3-Faan win, wall still deep", "right": "Call the meld and speed up"},
+        {"left": "Promising 混一色 with plenty of tiles left", "right": "Stay concealed and build"},
+        {"left": "Two opponents have called melds and the wall is thin", "right": "Slow down and defend"},
+        {"left": "Far behind on points with few tiles left", "right": "Push for a big hand"}
+      ],
+      "explanation": "Tempo should follow the table: speed up when a cheap win is near, slow down when others are faster or the wall is short."
+    },
+    {
+      "type": "singleChoice",
+      "question": "An opponent calls Chow on their second turn. What is the main information this gives you?",
+      "options": [
+        "Which suit they are collecting",
+        "Their exact winning tile",
+        "Nothing at all",
+        "Their current score"
+      ],
+      "correctIndex": 0,
+      "explanation": "A Chow shows three tiles of one suit, which points to that suit without revealing the wait."
+    },
+    {
+      "type": "fillBlank",
+      "question": "Staying concealed for the whole hand keeps 門前清, worth how many Faan?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["1", "one", "1 faan", "one faan"],
+      "explanation": "門前清 is a 1-Faan pattern, so any call that breaks concealment gives up exactly one Faan."
+    },
+    {
+      "type": "tileSelection",
+      "question": "You are racing for the fastest possible win. Which of these single tiles is the least useful to hold?",
+      "options": ["east", "m4", "p5", "s6"],
+      "correctIndex": 0,
+      "explanation": "A lone honour needs two matching copies to become a meld, which is the slowest way to build a fast hand."
+    }
+  ],
+  "8-6": [
+    {
+      "type": "multiChoice",
+      "question": "Turn 12. You are two tiles from ready and one opponent holds three melds. Which actions are correct?",
+      "options": [
+        "Check what that opponent has discarded this rotation",
+        "Discard a fresh middle tile to keep your own shape",
+        "Break your hand to find a safe tile if no safe tile is free",
+        "Count how many copies of each candidate tile are already visible"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 2, 3],
+      "explanation": "Against a player who is close, safety comes first, so read their discards and visible copies rather than protecting shape."
+    },
+    {
+      "type": "matching",
+      "question": "Match each tactic to what it means.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "Reading discards", "right": "Inferring a hand from what an opponent throws"},
+        {"left": "Absolute safety", "right": "A tile the opponent discarded earlier this rotation"},
+        {"left": "Folding", "right": "Discarding safe tiles instead of chasing your win"},
+        {"left": "Tile efficiency", "right": "Maximising the tiles that complete your hand"}
+      ],
+      "explanation": "These four ideas are the whole tactical toolkit: read the table, judge safety, know when to fold, and count your outs."
+    },
+    {
+      "type": "tileOrdering",
+      "question": "An opponent is one tile from winning. Arrange these discards from safest to most dangerous: {{red}}, which they threw earlier this rotation; {{p9}}, of which three copies are visible; {{s2}}, which nobody has played.",
+      "options": [],
+      "correctIndex": 0,
+      "tiles": ["red", "p9", "s2"],
+      "explanation": "A tile they already discarded is safe this rotation, three visible copies leave only one live copy, and an unseen tile leaves all four."
+    },
+    {
+      "type": "fillBlank",
+      "question": "Three copies of {{s8}} are visible on the table. How many copies can an opponent still be holding?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["1", "one", "1 copy", "one copy"],
+      "explanation": "Four copies exist in total, so with three visible exactly one copy is still live and it may be in any hand or the wall."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Which single habit improves both your attack and your defence?",
+      "options": [
+        "Watching every discard and counting visible copies",
+        "Calling the first meld offered every hand",
+        "Never discarding honour tiles",
+        "Always keeping one pair in hand"
+      ],
+      "correctIndex": 0,
+      "explanation": "Discard reading and copy counting drive both your own wait choices and your safety judgements, so one habit serves both sides."
+    }
+  ]
+}

@@ -1,0 +1,324 @@
+{
+  "7-1": [
+    {
+      "type": "matching",
+      "question": "Match each hand to its Faan value in the chart.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "All Chows (平糊)", "right": "1 Faan" },
+        { "left": "All Pongs (對對糊)", "right": "3 Faan" },
+        { "left": "Small Three Dragons (小三元)", "right": "5 Faan" },
+        { "left": "Full Flush (清一色)", "right": "7 Faan" }
+      ],
+      "explanation": "The chart gives 平糊 1, 對對糊 3, 小三元 5 once its two Dragon Pongs are counted, and 清一色 7."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which of these are worth exactly 1 Faan? (Select all that apply)",
+      "options": [
+        "Self-draw (自摸)",
+        "Concealed hand (門前清)",
+        "No Flowers (無花)",
+        "All Pongs (對對糊)",
+        "Full Flush (清一色)"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1, 2],
+      "explanation": "自摸, 門前清 and 無花 sit in the 1-Faan block, while 對對糊 is 3 Faan and 清一色 is 7."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which of these are 3-Faan hands? (Select all that apply)",
+      "options": [
+        "Mixed One Suit (混一色)",
+        "All Pongs (對對糊)",
+        "Small Flower Win (小花糊, seven flowers)",
+        "All Chows (平糊)",
+        "Full Flush (清一色)"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1, 2],
+      "explanation": "混一色, 對對糊 and 小花糊 are all 3 Faan, while 平糊 is 1 and 清一色 is 7."
+    },
+    {
+      "type": "fillBlank",
+      "question": "A complete set of four Seasons (一台花) is worth how many Faan in total?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["2", "two", "2 faan", "two faan"],
+      "explanation": "一台花 is scored as 2 Faan as a whole, and the matching seat flower is not added on top of that."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Which of these tiles could never appear in a Full Flush (清一色) hand?",
+      "options": ["p5", "m5", "s5", "red"],
+      "correctIndex": 3,
+      "explanation": "清一色 is one suit with no honors, so any Dragon tile is impossible in it."
+    }
+  ],
+  "7-2": [
+    {
+      "type": "fillBlank",
+      "question": "You win a 5-Faan hand on a discard. How much does the discarder pay?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["24", "$24", "twenty-four", "twenty four"],
+      "explanation": "The table sets 5 Faan at 24, and on a discard the discarder pays that full amount."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which of these statements about the 半銃制 table are true? (Select all that apply)",
+      "options": [
+        "3 Faan by discard pays 8",
+        "6 Faan by self-draw collects 48 in total",
+        "4 Faan by discard pays 32",
+        "Every extra Faan doubles the payout"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1],
+      "explanation": "3 Faan pays 8 and 6 Faan self-draw is 16 from each of three players, while 4 Faan pays 16 and the table never doubles."
+    },
+    {
+      "type": "matching",
+      "question": "Match each Faan value to what the discarder pays.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "3 Faan", "right": "8" },
+        { "left": "4 Faan", "right": "16" },
+        { "left": "5 Faan", "right": "24" },
+        { "left": "6 Faan", "right": "32" }
+      ],
+      "explanation": "The discard column of the table runs 8, 16, 24, 32 for 3 to 6 Faan."
+    },
+    {
+      "type": "singleChoice",
+      "question": "You self-draw a 7-Faan hand. What does each opponent pay, and what do you collect in total?",
+      "options": [
+        "24 each, 72 in total",
+        "48 each, 144 in total",
+        "16 each, 48 in total",
+        "24 each, 96 in total"
+      ],
+      "correctIndex": 0,
+      "explanation": "7 Faan is 48 on a discard, so half is 24 from each of three players for 72 in total."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Three opponents each pay you 32 on a self-draw. How many Faan was your hand?",
+      "options": ["6 Faan", "7 Faan", "8 Faan", "10 Faan"],
+      "correctIndex": 2,
+      "explanation": "32 each is half of 64, and the table pays 64 on a discard at 8 Faan."
+    }
+  ],
+  "7-3": [
+    {
+      "type": "fillBlank",
+      "question": "Mixed One Suit (3) + All Pongs (3) + one seat flower (1): how many Faan is that in total?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["7", "seven", "7 faan", "seven faan"],
+      "explanation": "The three sources stack to 3 + 3 + 1 = 7 Faan, which pays 48 on a discard."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which of these pairs can never be scored together in one hand? (Select all that apply)",
+      "options": [
+        "Full Flush (清一色) and Mixed One Suit (混一色)",
+        "All Honors (字一色) and Full Flush (清一色)",
+        "All Chows (平糊) and Concealed Hand (門前清)",
+        "Mixed One Suit (混一色) and All Pongs (對對糊)"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1],
+      "explanation": "清一色 allows no honors while 混一色 needs them, and 字一色 is all honors while 清一色 is all one suit."
+    },
+    {
+      "type": "matching",
+      "question": "Match each stacked combination to its total Faan.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "All Chows + self-draw", "right": "2 Faan" },
+        { "left": "All Pongs + self-draw", "right": "4 Faan" },
+        { "left": "Mixed One Suit + Dragon Pong + self-draw", "right": "5 Faan" },
+        { "left": "Full Flush + self-draw", "right": "8 Faan" }
+      ],
+      "explanation": "The sources add up to 1 + 1, 3 + 1, 3 + 1 + 1 and 7 + 1, giving 2, 4, 5 and 8 Faan."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which of these hands reach the 3-Faan minimum to win? (Select all that apply)",
+      "options": [
+        "All Chows + self-draw + concealed hand",
+        "One Dragon Pong + self-draw",
+        "All Pongs with no other bonus",
+        "一台花 + self-draw"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 2, 3],
+      "explanation": "The three winners total 3, 3 and 3 Faan, while one Dragon Pong plus self-draw is only 2 and falls short."
+    },
+    {
+      "type": "tileOrdering",
+      "question": "Arrange the four Season tiles in their numbered order to form the complete set called 一台花.",
+      "options": [],
+      "correctIndex": 0,
+      "tiles": ["f_spring", "f_summer", "f_autumn", "f_winter"],
+      "explanation": "Spring to Winter is 1 to 4, and the complete set of four Seasons is scored as one 2-Faan 一台花."
+    }
+  ],
+  "7-4": [
+    {
+      "type": "multiChoice",
+      "question": "Which of these are NOT limit (例牌) hands? (Select all that apply)",
+      "options": [
+        "Large Three Dragons (大三元) — 8 Faan in total",
+        "Thirteen Orphans (十三么)",
+        "Full Flush (清一色) — 7 Faan",
+        "Heavenly Hand (天糊)",
+        "Big Flower Win (大花糊)"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 2],
+      "explanation": "大三元 is 5 Faan plus its three Dragon Pongs for 8, and 清一色 is 7, so neither is one of the 10-Faan limit hands."
+    },
+    {
+      "type": "fillBlank",
+      "question": "How many limit (例牌) hands does the reference chart list, all of them counting as 10 Faan?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["12", "twelve", "12 hands", "twelve hands"],
+      "explanation": "The chart lists twelve 例牌 hands, and each one is scored as exactly 10 Faan regardless of its shape."
+    },
+    {
+      "type": "matching",
+      "question": "Match each limit hand to what it means.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "Earthly Hand (地糊)", "right": "Non-dealer wins East's very first discard" },
+        { "left": "Eighteen Arhats (十八羅漢)", "right": "Four Kongs in one hand" },
+        { "left": "All Honors (字一色)", "right": "Every tile is a Wind or Dragon" },
+        { "left": "Big Flower Win (大花糊)", "right": "All eight Flower tiles drawn" }
+      ],
+      "explanation": "All four are 例牌 hands, so each one is scored as exactly 10 Faan no matter how many bonuses it would otherwise collect."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Which of these tiles could NOT appear in an All Terminals (清么九) hand?",
+      "options": ["m1", "s9", "m5", "p9"],
+      "correctIndex": 2,
+      "explanation": "清么九 uses only 1s and 9s, so a 5 is impossible in it."
+    },
+    {
+      "type": "singleChoice",
+      "question": "A limit hand pays 128 on a discard. How much more is that than a 9-Faan hand?",
+      "options": ["16", "24", "32", "64"],
+      "correctIndex": 2,
+      "explanation": "The table pays 96 at 9 Faan and 128 at the 10-Faan cap, a difference of 32."
+    }
+  ],
+  "7-5": [
+    {
+      "type": "multiChoice",
+      "question": "Which of these are true about the dealer seat and the round structure? (Select all that apply)",
+      "options": [
+        "East is the prevailing wind during the East round",
+        "A full game of four rounds is at least 16 hands",
+        "Every seat gets at least one dealer hand in each round",
+        "The dealer's winning hand counts double Faan"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1, 2],
+      "explanation": "Each round carries its own prevailing wind, four dealer hands make 16 in a full game, and the dealer gets no Faan bonus."
+    },
+    {
+      "type": "matching",
+      "question": "Match each term to its meaning.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "一圈 (a round)", "right": "Four dealer hands, one per seat" },
+        { "left": "四圈 (a full game)", "right": "East, South, West and North rounds" },
+        { "left": "莊家", "right": "The dealer, seated East" },
+        { "left": "閒家", "right": "Any of the three non-dealer seats" }
+      ],
+      "explanation": "A round is one pass of the deal through all four seats, and four such rounds make a full game."
+    },
+    {
+      "type": "fillBlank",
+      "question": "Four rounds with at least four hands each: what is the minimum number of hands in a full game?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["16", "sixteen", "16 hands"],
+      "explanation": "Four rounds times at least four dealer hands each gives a minimum of 16 hands."
+    },
+    {
+      "type": "singleChoice",
+      "question": "You are East (the dealer) and a non-dealer self-draws an 8-Faan hand. How much do you pay?",
+      "options": ["16", "32", "48", "64"],
+      "correctIndex": 1,
+      "explanation": "8 Faan is 64 on a discard, so every opponent including the dealer pays half, 32, with no dealer surcharge."
+    },
+    {
+      "type": "tileOrdering",
+      "question": "Arrange the four round winds in the order the rounds are played.",
+      "options": [],
+      "correctIndex": 0,
+      "tiles": ["east", "south", "west", "north"],
+      "explanation": "A full game runs East, South, West and North round, one round for each prevailing wind."
+    }
+  ],
+  "7-6": [
+    {
+      "type": "multiChoice",
+      "question": "Which of these payment statements are correct? (Select all that apply)",
+      "options": [
+        "3 Faan by discard: the discarder pays 8",
+        "5 Faan by self-draw: 12 from each opponent, 36 in total",
+        "7 Faan by discard: the discarder pays 56",
+        "9 Faan by self-draw: 48 from each opponent"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1, 3],
+      "explanation": "The table pays 8 at 3 Faan and half of 24 from each player at 5 Faan, while 7 Faan pays 48, not 56."
+    },
+    {
+      "type": "fillBlank",
+      "question": "You self-draw a 6-Faan hand. How much do you collect in total?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["48", "$48", "forty-eight", "forty eight"],
+      "explanation": "6 Faan is 32 on a discard, so each opponent pays 16 and three of them make 48 in total."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Full Flush (7) + Concealed Hand (1) + one seat flower (1) is 9 Faan and is won on a discard. What does the discarder pay?",
+      "options": ["64", "96", "128", "48"],
+      "correctIndex": 1,
+      "explanation": "The sources stack to 7 + 1 + 1 = 9 Faan, and the table pays 96 on a discard."
+    },
+    {
+      "type": "matching",
+      "question": "Match each Faan value to the total you collect on a self-draw.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "4 Faan", "right": "24" },
+        { "left": "6 Faan", "right": "48" },
+        { "left": "8 Faan", "right": "96" },
+        { "left": "10 Faan", "right": "192" }
+      ],
+      "explanation": "Each of the three opponents pays half of 16, 32, 64 and 128, giving totals of 24, 48, 96 and 192."
+    },
+    {
+      "type": "singleChoice",
+      "question": "A hand counts 12 Faan and is won by self-draw. What does each opponent pay?",
+      "options": ["48 each", "64 each", "96 each", "128 each"],
+      "correctIndex": 1,
+      "explanation": "The 12 Faan is capped at 10, whose 128 discard payment is split into 64 from each opponent."
+    }
+  ]
+}

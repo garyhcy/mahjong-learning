@@ -3747,6 +3747,74 @@ final List<Lesson> defaultLessons = [
         explanation:
             '3 + 1 + 1 = 5 Faan. Different Faan sources stack together!',
       ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which statements about 坎坎糊 (four concealed Pungs) are correct?',
+        options: [
+          'It is a limit hand worth 10 Faan',
+          'A Kong is allowed among the four sets',
+          'A single-tile wait (單吊) may win on a discard',
+          'A pair wait (對碰) must be won by self-draw',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 2, 3],
+        explanation:
+            '坎坎糊 is a 10-Faan limit hand with four concealed Pungs and no Kongs; a single wait may take a discard but a pair wait must be self-drawn.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each hand shape to what it is called.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Four Pongs or Kongs plus a pair',
+            right: '對對糊 — 3 Faan',
+          ),
+          QuestionPair(left: 'Four Chows plus a pair', right: '平糊 — 1 Faan'),
+          QuestionPair(left: 'Four Kongs', right: '十八羅漢 — 10 Faan'),
+          QuestionPair(
+            left: 'One suit plus honor tiles',
+            right: '混一色 — 3 Faan',
+          ),
+        ],
+        explanation:
+            'All Pongs is 對對糊, its all-Chow opposite is 平糊, four Kongs is 十八羅漢, and one suit with honors is 混一色.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'Going for All Pongs, your 13 tiles are {{m3}}{{m3}}{{m3}} {{p7}}{{p7}}{{p7}} {{s1}}{{s1}}{{s1}} {{red}}{{red}}{{red}} {{east}}. Which tile completes the hand?',
+        options: ['east', 'm3', 'p7', 's2'],
+        correctIndex: 0,
+        explanation:
+            '{{east}} becomes the pair for the eyes; the other four sets are already triplets.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'All Pongs is 3 Faan and Mixed One Suit is 3 Faan. An All Pongs hand built from one suit plus honors scores how many Faan in total?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['6', 'six', '6 faan', 'six faan'],
+        explanation:
+            'The two patterns stack, so 3 + 3 = 6 Faan, safely under the 10-Faan cap.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'A hand is four Pongs plus a pair. Can it also be scored as 平糊 (All Chows)?',
+        options: [
+          'Yes, if the hand is concealed',
+          'Yes, if it is won by self-draw',
+          'No — 平糊 needs four Chows and no triplets',
+          'No — 平糊 needs honor tiles',
+        ],
+        correctIndex: 2,
+        explanation:
+            '平糊 requires four Chows with no Pong or Kong, so it can never combine with 對對糊.',
+      ),
     ],
   ),
 
@@ -3811,6 +3879,68 @@ final List<Lesson> defaultLessons = [
         explanation:
             'Thirteen Orphans is always a limit hand — maximum Faan regardless of other bonuses.',
       ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each part of Thirteen Orphans (十三么) to its count.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Terminal types in the set (1s and 9s)',
+            right: '6',
+          ),
+          QuestionPair(left: 'Honor types in the set', right: '7'),
+          QuestionPair(left: 'Types duplicated to make the pair', right: '1'),
+        ],
+        explanation:
+            'Six terminals (1 and 9 of each suit) and seven honors make the 13 types, one of which is duplicated.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which statements about Thirteen Orphans (十三么) are correct?',
+        options: [
+          'It needs one of each of the 13 terminal and honor types',
+          'One of those types is duplicated to form the pair',
+          'It has no melds at all — no Chows, Pongs or Kongs',
+          'It may include one Chow as long as the hand stays concealed',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 2],
+        explanation:
+            '十三么 is 13 single tiles plus one duplicate, so it contains no Chows, Pongs or Kongs.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question: 'Which of these tiles is NOT used in Thirteen Orphans (十三么)?',
+        options: ['m5', 'm1', 'p9', 'white'],
+        correctIndex: 0,
+        explanation:
+            'Only 1s, 9s and honor tiles qualify, so the middle tile {{m5}} never appears.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'How many tiles does a completed Thirteen Orphans (十三么) hand contain?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['14', 'fourteen', '14 tiles', 'fourteen tiles'],
+        explanation:
+            'Thirteen different types plus the duplicated tile make 14 tiles.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Your opponent declares a concealed Kong (暗槓). Which hand is allowed to rob it?',
+        options: [
+          'Any hand worth at least 3 Faan',
+          'Only Thirteen Orphans (十三么)',
+          'Only Full Flush (清一色)',
+          'Only All Pongs (對對糊)',
+        ],
+        correctIndex: 1,
+        explanation:
+            '搶槓 normally only robs an added Kong, but 十三么 is the one hand that may rob a concealed Kong.',
+      ),
     ],
   ),
 
@@ -3871,6 +4001,61 @@ final List<Lesson> defaultLessons = [
         correctIndex: 1,
         explanation:
             'When you discard all other suits, opponents can clearly see you\'re building a Full Flush and will avoid discarding your suit.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'Your hand is a Full Flush (清一色) in Bamboo. Which of these tiles would break it?',
+        options: ['m5', 's1', 's9', 's5'],
+        correctIndex: 0,
+        explanation:
+            '清一色 uses exactly one suit with no honors, so any Character tile breaks the flush.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'Arrange these Character tiles into a Chow — Full Flush restricts the suit, not the meld shape.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['m2', 'm3', 'm4'],
+        explanation:
+            'A Chow is three consecutive tiles of one suit, so 2-3-4 of Characters is correct.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these hands are Full Flush (清一色)?',
+        options: [
+          '{{m1}}{{m2}}{{m3}} {{m4}}{{m5}}{{m6}} {{m7}}{{m8}}{{m9}} {{m5}}{{m5}}{{m5}} {{m9}}{{m9}}',
+          '{{s2}}{{s3}}{{s4}} {{s5}}{{s6}}{{s7}} {{s7}}{{s8}}{{s9}} {{s1}}{{s1}}{{s1}} {{s9}}{{s9}}',
+          '{{p1}}{{p2}}{{p3}} {{p4}}{{p5}}{{p6}} {{red}}{{red}}{{red}} {{p7}}{{p8}}{{p9}} {{p5}}{{p5}}',
+          '{{east}}{{east}}{{east}} {{red}}{{red}}{{red}} {{white}}{{white}}{{white}} {{north}}{{north}}{{north}} {{south}}{{south}}',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'The first two are single-suit hands, while the third carries a Dragon triplet and the fourth is all honors (字一色).',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'Full Flush is 7 Faan and All Pongs is 3 Faan. A one-suit All Pongs hand with no honors scores how many Faan?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['10', 'ten', '10 faan', 'ten faan'],
+        explanation: '7 + 3 = 10 Faan, which lands exactly on the 10-Faan cap.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'Does Full Flush (清一色) require a particular meld type?',
+        options: [
+          'Yes, it must be all Chows',
+          'Yes, it must be all Pongs',
+          'No — it only restricts the suit',
+          'No — honor tiles are also allowed',
+        ],
+        correctIndex: 2,
+        explanation:
+            '清一色 is defined by suit alone, so Chows and Pongs can be mixed freely.',
       ),
     ],
   ),
@@ -3936,6 +4121,73 @@ final List<Lesson> defaultLessons = [
         explanation:
             'Terminals are the 1s and 9s of each suited family. {{m5}} is a middle tile and {{east}} is an honor, not a terminal.',
       ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these tiles can appear in 清么九 (All Terminals)?',
+        options: ['{{m1}}', '{{s5}}', '{{p9}}', '{{east}}', '{{m9}}'],
+        correctIndex: 0,
+        correctIndexes: [0, 2, 4],
+        explanation:
+            '清么九 uses only the 1s and 9s of the three suits — no middle tiles and no honors.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each limit hand to the tiles it allows.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: '字一色 (All Honors)',
+            right: 'Winds and Dragons only',
+          ),
+          QuestionPair(
+            left: '清么九 (All Terminals)',
+            right: '1s and 9s only, no honors',
+          ),
+          QuestionPair(
+            left: '清一色 (Full Flush)',
+            right: 'One suit only, no honors',
+          ),
+          QuestionPair(
+            left: '混一色 (Mixed One Suit)',
+            right: 'One suit plus honors',
+          ),
+        ],
+        explanation:
+            'These four hands differ exactly in which tile groups are permitted.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'How many different tile types can appear in 清么九 (All Terminals)?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['6', 'six', '6 types', 'six types'],
+        explanation:
+            'Each suit contributes a 1 and a 9, so only six types qualify.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question: 'Which of these tiles could NOT appear in 字一色 (All Honors)?',
+        options: ['east', 'red', 'm1', 'white'],
+        correctIndex: 2,
+        explanation:
+            '字一色 is made only of Wind and Dragon tiles, so any suited tile is impossible.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            '{{m1}}{{m1}}{{m1}} {{m9}}{{m9}}{{m9}} {{p1}}{{p1}}{{p1}} {{s9}}{{s9}}{{s9}} {{p9}}{{p9}} — which hand is this?',
+        options: [
+          '清么九 (All Terminals)',
+          '字一色 (All Honors)',
+          '清一色 (Full Flush)',
+          '混一色 (Mixed One Suit)',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Every tile is a 1 or a 9 with no honors, which is exactly 清么九 — a 10-Faan limit hand.',
+      ),
     ],
   ),
 
@@ -3985,6 +4237,75 @@ final List<Lesson> defaultLessons = [
         explanation:
             'With 9+ different terminals/honors, Thirteen Orphans is a strong possibility since you need all 13 types.',
       ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each special hand to what it requires.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Thirteen Orphans (十三么)',
+            right: 'One of each of the 13 terminal and honor types',
+          ),
+          QuestionPair(
+            left: 'All Pongs (對對糊)',
+            right: 'Four triplets or Kongs plus a pair',
+          ),
+          QuestionPair(
+            left: 'Full Flush (清一色)',
+            right: 'A single suit with no honors',
+          ),
+          QuestionPair(
+            left: '字一色 (All Honors)',
+            right: 'Winds and Dragons only',
+          ),
+        ],
+        explanation:
+            'Each name maps to one defining condition: all 13 singles, all triplets, one suit, or honors only.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these are limit hands counted as 10 Faan?',
+        options: [
+          '十三么 (Thirteen Orphans)',
+          '字一色 (All Honors)',
+          '清一色 (Full Flush)',
+          '清么九 (All Terminals)',
+          '對對糊 (All Pongs)',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 3],
+        explanation:
+            '清一色 is 7 Faan and 對對糊 is 3; the other three are 例牌 scored at 10.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'A limit hand is won by self-draw. How much does each of the three opponents pay?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['64', 'sixty-four', 'sixty four', '64 each'],
+        explanation:
+            'At 10 Faan a self-draw costs each opponent 64, for 192 collected in total.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'Arrange these tiles into a Chow — the meld All Pongs forbids but Full Flush allows.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['s4', 's5', 's6'],
+        explanation:
+            'A Chow is three consecutive tiles of one suit, so 4-5-6 of Bamboo is correct.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'A hand is four Pongs plus a pair, all in one suit with no honors. How many Faan does it score?',
+        options: ['3 Faan', '7 Faan', '10 Faan', '6 Faan'],
+        correctIndex: 2,
+        explanation: '清一色 (7) + 對對糊 (3) = 10 Faan, which is the cap.',
+      ),
     ],
   ),
 
@@ -4015,7 +4336,7 @@ final List<Lesson> defaultLessons = [
       DialogueMessage(
         speaker: 'mj',
         text:
-            'Only your MATCHING flower (正花) = 1 Faan. Non-matching flowers give 0 Faan (you still declare and replace). Some house rules add bonuses for collecting all 4 of your group, but standard rule = 1 Faan per matching flower only!',
+            'One MATCHING flower (正花) = 1 Faan; non-matching flowers give 0 Faan (you still declare and replace). Collecting all four Seasons or all four Plants (一台花) = 2 Faan in total — the seat flower is not added on top of it.',
       ),
     ],
     questions: [
@@ -4058,6 +4379,62 @@ final List<Lesson> defaultLessons = [
         correctIndex: 2,
         explanation:
             'Standard rule: each matching flower (正花) = 1 Faan. East matching flowers are Spring+Plum, so 2 matching = 2 Faan. Non-matching flowers give 0 Faan.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question: 'Which of these is a Plant tile rather than a Season?',
+        options: ['f_orchid', 'f_spring', 'f_summer', 'f_winter'],
+        correctIndex: 0,
+        explanation:
+            'Orchid is one of the four Plants; Spring, Summer and Winter belong to the Seasons.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which statements about flower scoring are correct?',
+        options: [
+          'One matching seat flower is worth 1 Faan',
+          'All four Seasons together (一台花) are worth 2 Faan in total',
+          'A hand holding no flowers at all scores 無花 for 1 Faan',
+          'Every flower you declare is worth 1 Faan',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 2],
+        explanation:
+            'Only a matching seat flower scores 1 Faan; a complete 一台花 pays 2 in total, and a flowerless hand takes 無花 for 1.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'You hold all four Plants ({{f_plum}} {{f_orchid}} {{f_chrys}} {{f_bamboo}}). How many Faan does this 一台花 score in total?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['2', 'two', '2 faan', 'two faan'],
+        explanation:
+            'A complete set of four Seasons or four Plants is 2 Faan in total, and the seat flower is not added on top.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each flower number to the flower that carries it.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 'Season #2', right: 'Summer'),
+          QuestionPair(left: 'Plant #1', right: 'Plum'),
+          QuestionPair(left: 'Season #4', right: 'Winter'),
+          QuestionPair(left: 'Plant #4', right: 'Bamboo'),
+        ],
+        explanation:
+            'Seasons and Plants are each numbered 1 to 4, so the second Season is Summer and the fourth Plant is Bamboo.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'Put the four Season tiles in seat order: East, South, West, North.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['f_spring', 'f_summer', 'f_autumn', 'f_winter'],
+        explanation:
+            'Seasons run Spring, Summer, Autumn, Winter for East, South, West and North in that order.',
       ),
     ],
   ),
@@ -4127,6 +4504,74 @@ final List<Lesson> defaultLessons = [
         explanation:
             'After declaring any type of Kong, you draw a replacement tile from the back of the wall.',
       ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each Kong type to how it is formed.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: '明槓 (Exposed Kong)',
+            right: 'Claim a discard while holding three copies',
+          ),
+          QuestionPair(
+            left: '加槓 (Added Kong)',
+            right: 'Add the fourth tile to your own exposed Pong',
+          ),
+          QuestionPair(
+            left: '暗槓 (Concealed Kong)',
+            right: 'Draw the fourth copy yourself and keep it face-down',
+          ),
+        ],
+        explanation:
+            'Exposed Kongs come from a discard, Added Kongs extend your own Pong, and Concealed Kongs are completed from your own draw.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'You hold {{s5}}{{s5}}{{s5}}. Which discarded tile can you claim for an Exposed Kong?',
+        options: ['s5', 's4', 'p5', 's6'],
+        correctIndex: 0,
+        explanation:
+            'A Kong needs four identical tiles, so only the fourth {{s5}} can be claimed.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which statements about Kongs are correct?',
+        options: [
+          'A Kong counts as one meld of 3 tiles in hand structure but uses 4 physical tiles',
+          'A Concealed Kong does not break 門前清',
+          'A declared Kong adds 1 Faan by itself',
+          'After any Kong you draw a replacement tile from the back of the wall',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 3],
+        explanation:
+            'Kongs give a replacement draw and preserve 門前清 when concealed, but the Kong itself carries no Faan.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many physical tiles does one declared Kong use?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['4', 'four', '4 tiles', 'four tiles'],
+        explanation:
+            'A Kong is four copies of one tile, counted as a 3-tile meld when you read the hand.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You have three concealed {{p9}} in hand and draw the fourth. What is the correct declaration?',
+        options: [
+          'Concealed Kong: place it face-down, then draw a replacement',
+          'Exposed Kong: turn all four tiles face-up',
+          'Added Kong on your exposed Pong',
+          'Discard the fourth copy',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Completing a Kong from your own draw is a Concealed Kong, declared face-down with a replacement draw.',
+      ),
     ],
   ),
 
@@ -4183,16 +4628,89 @@ final List<Lesson> defaultLessons = [
             'You can only Rob a Supplemental Kong (adding to an existing Pong), not Concealed or Exposed Kongs.',
       ),
       QuizQuestion(
-        question: 'Who pays when a Kong is robbed?',
+        question: 'How is a robbed Kong paid?',
         options: [
-          'All players split',
-          'The player who declared the Kong',
-          'The dealer',
-          'No one pays extra',
+          'As a self-draw: every opponent pays',
+          'Only the player who declared the Kong pays',
+          'The dealer pays for the whole table',
+          'Nothing extra is paid',
         ],
-        correctIndex: 1,
+        correctIndex: 0,
         explanation:
-            'The player who declared the Supplemental Kong is treated as having dealt into your win.',
+            '搶槓當自摸: the win is paid as a self-draw, so each opponent pays the self-draw amount rather than the declarer alone.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'The pattern 槓上自摸 (winning on the replacement tile after a Kong) is listed at how many Faan?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['1', 'one', '1 faan', 'one faan'],
+        explanation: '槓上自摸 is a 1-Faan pattern on the Gary Faan list.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which statements about Kong chains and robbing are correct?',
+        options: [
+          'Winning after two consecutive Kongs (槓上槓自摸) is a limit hand at 10 Faan',
+          '搶槓 normally applies to an Added Kong (加槓)',
+          'Thirteen Orphans (十三么) may rob even a Concealed Kong',
+          'You may rob an Exposed Kong claimed from a discard',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 2],
+        explanation:
+            'A double-Kong self-draw is a limit hand, robbing normally targets an Added Kong, and only Thirteen Orphans may rob a Concealed Kong.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each Kong term to what it means.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: '槓上自摸',
+            right: 'Win on the replacement tile after one Kong',
+          ),
+          QuestionPair(
+            left: '槓上槓自摸',
+            right: 'Win after two consecutive Kongs, 10 Faan',
+          ),
+          QuestionPair(
+            left: '搶槓',
+            right: 'Win by taking the tile of someone\'s Added Kong',
+          ),
+        ],
+        explanation:
+            'One Kong replacement win is 1 Faan, two chained Kongs make the 10-Faan limit, and 搶槓 takes an Added Kong tile.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Your Kong replacement tile is the fourth copy of another tile you already hold three of. What happens next?',
+        options: [
+          'Declare a second Kong and draw another replacement',
+          'Discard it and end your turn',
+          'Return it and draw a normal tile instead',
+          'You may only declare one Kong per turn',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Kongs can chain: the new fourth copy allows another Kong, followed by another replacement draw.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You normally cannot rob a Concealed Kong. Which hand is the exception?',
+        options: [
+          'Thirteen Orphans (十三么)',
+          'All Pongs (對對糊)',
+          'Mixed One Suit (混一色)',
+          'Pure One Suit (清一色)',
+        ],
+        correctIndex: 0,
+        explanation:
+            'The rules let Thirteen Orphans rob a Concealed Kong, which ordinary hands cannot do.',
       ),
     ],
   ),
@@ -4262,6 +4780,75 @@ final List<Lesson> defaultLessons = [
         explanation:
             'Kong gives you an extra replacement draw - a chance to get the tile you need. The Kong itself does NOT add Faan; only hand patterns (like All Pongs) do.',
       ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'You hold three {{p4}} plus {{p3}} and {{p5}}. Put the run tiles in ascending order to see the meld you keep by not Kong-ing.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['p3', 'p4', 'p5'],
+        explanation:
+            'Keeping {{p4}} inside {{p3}}{{p4}}{{p5}} gives a finished run, so the extra copy is not always worth a Kong.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each table situation to the better Kong decision.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Opponents look close to winning',
+            right: 'Skip the Added Kong',
+          ),
+          QuestionPair(
+            left: 'You are going for All Pongs',
+            right: 'Kong, the meld is needed',
+          ),
+          QuestionPair(
+            left: 'The fourth tile also fits a run you need',
+            right: 'Keep it in hand',
+          ),
+        ],
+        explanation:
+            'A late Added Kong invites 搶槓, while a Kong that builds All Pongs or frees a useless tile is worth taking.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which are good reasons to declare a Kong?',
+        options: [
+          'You want the extra replacement draw',
+          'Your hand is going for All Pongs (對對糊)',
+          'The fourth tile is useless in any run or pair you could build',
+          'You want to reveal more information to your opponents',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 2],
+        explanation:
+            'Kong for the replacement draw, for All Pongs, or to shed a dead tile, never to give information away.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many Faan does declaring a Kong add by itself?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['0', 'zero', 'none', '0 faan'],
+        explanation:
+            'A Kong has no Faan value of its own; only patterns such as 槓上自摸 or All Pongs score.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You are keeping your hand fully concealed for 門前清. Which Kong can you still declare without breaking it?',
+        options: [
+          'Concealed Kong (暗槓)',
+          'Exposed Kong (明槓)',
+          'Added Kong (加槓)',
+          'Any Kong breaks 門前清',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Only a Concealed Kong leaves 門前清 intact; claiming or adding to a meld breaks it.',
+      ),
     ],
   ),
 
@@ -4320,6 +4907,71 @@ final List<Lesson> defaultLessons = [
         explanation:
             'Exposed Kong shows all 4 tiles face-up, revealing the most information. Concealed Kong is face-down.',
       ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which review statements are correct?',
+        options: [
+          'All four Seasons (一台花) score 2 Faan in total',
+          'The matching seat flower is not added on top of that 2 Faan',
+          'A declared Kong adds 1 Faan by itself',
+          '搶槓 can rob an Added Kong (加槓)',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 3],
+        explanation:
+            '一台花 pays 2 in total without stacking the seat flower, and 搶槓 targets an Added Kong, but a Kong alone is worth 0 Faan.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each term to its scoring or rule summary.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: '一台花',
+            right: 'Four Seasons or four Plants, 2 Faan in total',
+          ),
+          QuestionPair(
+            left: '槓上自摸',
+            right: 'Win on the Kong replacement tile, 1 Faan',
+          ),
+          QuestionPair(
+            left: '十八羅漢',
+            right: 'Four Kongs, a limit hand at 10 Faan',
+          ),
+          QuestionPair(left: '搶槓', right: 'Win by robbing an Added Kong'),
+        ],
+        explanation:
+            'These are the Stage 6 headline values: 2 for 一台花, 1 for 槓上自摸, 10 for 十八羅漢 and 搶槓 on an Added Kong.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            '十八羅漢 (four Kongs) is a limit hand. How many Faan does it score?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['10', 'ten', '10 faan', 'ten faan'],
+        explanation:
+            'Every limit hand including 十八羅漢 is scored at the 10-Faan cap.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'You already hold {{f_plum}} {{f_orchid}} {{f_chrys}}. Which tile completes 一台花?',
+        options: ['f_bamboo', 'f_spring', 'f_winter', 'f_summer'],
+        correctIndex: 0,
+        explanation:
+            'The Plants are Plum, Orchid, Chrysanthemum and Bamboo, so Bamboo completes the set.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You are East and hold all four Seasons, which include your seat flower Spring. How many Faan do your flowers score?',
+        options: ['1 Faan', '2 Faan', '3 Faan', '4 Faan'],
+        correctIndex: 1,
+        explanation:
+            '一台花 is 2 Faan in total and the seat flower inside the set is not added again.',
+      ),
     ],
   ),
 
@@ -4350,7 +5002,7 @@ final List<Lesson> defaultLessons = [
       DialogueMessage(
         speaker: 'mj',
         text:
-            'High Faan: Full Flush (7). Limit hands (10 Faan): Large Three Dragons (大三元), Thirteen Orphans (十三么), All Honors (字一式), All Terminals (清么九), Nine Gates (九子連環) = maximum!',
+            'High Faan: Full Flush (7), Big Three Dragons (大三元) at 8. Then the limit hands (例牌) all pay the maximum 10 Faan: Thirteen Orphans (十三么), All Honors (字一色), All Terminals (清么九), Big and Small Four Winds, Nine Gates (九子連環) and Big Flower Win (大花糊).',
       ),
     ],
     questions: [
@@ -4383,6 +5035,70 @@ final List<Lesson> defaultLessons = [
         correctIndex: 1,
         explanation:
             'Payment rises with Faan but NOT by doubling. The common Hong Kong table uses 3F=\$8, 4F=\$16, 5F=\$24, 6F=\$32, 7F=\$48, 8F=\$64, 9F=\$96, 10F=\$128 (the limit).',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each hand to its Faan value in the chart.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 'All Chows (平糊)', right: '1 Faan'),
+          QuestionPair(left: 'All Pongs (對對糊)', right: '3 Faan'),
+          QuestionPair(left: 'Small Three Dragons (小三元)', right: '5 Faan'),
+          QuestionPair(left: 'Full Flush (清一色)', right: '7 Faan'),
+        ],
+        explanation:
+            'The chart gives 平糊 1, 對對糊 3, 小三元 5 once its two Dragon Pongs are counted, and 清一色 7.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which of these are worth exactly 1 Faan? (Select all that apply)',
+        options: [
+          'Self-draw (自摸)',
+          'Concealed hand (門前清)',
+          'No Flowers (無花)',
+          'All Pongs (對對糊)',
+          'Full Flush (清一色)',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 2],
+        explanation:
+            '自摸, 門前清 and 無花 sit in the 1-Faan block, while 對對糊 is 3 Faan and 清一色 is 7.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these are 3-Faan hands? (Select all that apply)',
+        options: [
+          'Mixed One Suit (混一色)',
+          'All Pongs (對對糊)',
+          'Small Flower Win (小花糊, seven flowers)',
+          'All Chows (平糊)',
+          'Full Flush (清一色)',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 2],
+        explanation:
+            '混一色, 對對糊 and 小花糊 are all 3 Faan, while 平糊 is 1 and 清一色 is 7.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'A complete set of four Seasons (一台花) is worth how many Faan in total?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['2', 'two', '2 faan', 'two faan'],
+        explanation:
+            '一台花 is scored as 2 Faan as a whole, and the matching seat flower is not added on top of that.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'Which of these tiles could never appear in a Full Flush (清一色) hand?',
+        options: ['p5', 'm5', 's5', 'red'],
+        correctIndex: 3,
+        explanation:
+            '清一色 is one suit with no honors, so any Dragon tile is impossible in it.',
       ),
     ],
   ),
@@ -4453,6 +5169,68 @@ final List<Lesson> defaultLessons = [
         explanation:
             'Fixed table: 3F=\$8, 4F=\$16, 5F=\$24. Payment rises steadily, it does NOT double per Faan.',
       ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'You win a 5-Faan hand on a discard. How much does the discarder pay?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['24', r'$24', 'twenty-four', 'twenty four'],
+        explanation:
+            'The table sets 5 Faan at 24, and on a discard the discarder pays that full amount.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which of these statements about the 半銃制 table are true? (Select all that apply)',
+        options: [
+          '3 Faan by discard pays 8',
+          '6 Faan by self-draw collects 48 in total',
+          '4 Faan by discard pays 32',
+          'Every extra Faan doubles the payout',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            '3 Faan pays 8 and 6 Faan self-draw is 16 from each of three players, while 4 Faan pays 16 and the table never doubles.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each Faan value to what the discarder pays.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: '3 Faan', right: '8'),
+          QuestionPair(left: '4 Faan', right: '16'),
+          QuestionPair(left: '5 Faan', right: '24'),
+          QuestionPair(left: '6 Faan', right: '32'),
+        ],
+        explanation:
+            'The discard column of the table runs 8, 16, 24, 32 for 3 to 6 Faan.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You self-draw a 7-Faan hand. What does each opponent pay, and what do you collect in total?',
+        options: [
+          '24 each, 72 in total',
+          '48 each, 144 in total',
+          '16 each, 48 in total',
+          '24 each, 96 in total',
+        ],
+        correctIndex: 0,
+        explanation:
+            '7 Faan is 48 on a discard, so half is 24 from each of three players for 72 in total.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Three opponents each pay you 32 on a self-draw. How many Faan was your hand?',
+        options: ['6 Faan', '7 Faan', '8 Faan', '10 Faan'],
+        correctIndex: 2,
+        explanation:
+            '32 each is half of 64, and the table pays 64 on a discard at 8 Faan.',
+      ),
     ],
   ),
 
@@ -4509,6 +5287,73 @@ final List<Lesson> defaultLessons = [
         correctIndex: 2,
         explanation: '3 + 1 + 1 + 1 = 6 Faan. Multiple small bonuses add up!',
       ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'Mixed One Suit (3) + All Pongs (3) + one seat flower (1): how many Faan is that in total?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['7', 'seven', '7 faan', 'seven faan'],
+        explanation:
+            'The three sources stack to 3 + 3 + 1 = 7 Faan, which pays 48 on a discard.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which of these pairs can never be scored together in one hand? (Select all that apply)',
+        options: [
+          'Full Flush (清一色) and Mixed One Suit (混一色)',
+          'All Honors (字一色) and Full Flush (清一色)',
+          'All Chows (平糊) and Concealed Hand (門前清)',
+          'Mixed One Suit (混一色) and All Pongs (對對糊)',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            '清一色 allows no honors while 混一色 needs them, and 字一色 is all honors while 清一色 is all one suit.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each stacked combination to its total Faan.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 'All Chows + self-draw', right: '2 Faan'),
+          QuestionPair(left: 'All Pongs + self-draw', right: '4 Faan'),
+          QuestionPair(
+            left: 'Mixed One Suit + Dragon Pong + self-draw',
+            right: '5 Faan',
+          ),
+          QuestionPair(left: 'Full Flush + self-draw', right: '8 Faan'),
+        ],
+        explanation:
+            'The sources add up to 1 + 1, 3 + 1, 3 + 1 + 1 and 7 + 1, giving 2, 4, 5 and 8 Faan.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which of these hands reach the 3-Faan minimum to win? (Select all that apply)',
+        options: [
+          'All Chows + self-draw + concealed hand',
+          'One Dragon Pong + self-draw',
+          'All Pongs with no other bonus',
+          '一台花 + self-draw',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 2, 3],
+        explanation:
+            'The three winners total 3, 3 and 3 Faan, while one Dragon Pong plus self-draw is only 2 and falls short.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'Arrange the four Season tiles in their numbered order to form the complete set called 一台花.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['f_spring', 'f_summer', 'f_autumn', 'f_winter'],
+        explanation:
+            'Spring to Winter is 1 to 4, and the complete set of four Seasons is scored as one 2-Faan 一台花.',
+      ),
     ],
   ),
 
@@ -4526,7 +5371,7 @@ final List<Lesson> defaultLessons = [
       DialogueMessage(
         speaker: 'mj',
         text:
-            'There are 12 automatic limit hands (例牌), all counted as 10 Faan (the maximum): All Honors (字一式), Small Four Winds (小四喜), Big Four Winds (大四喜), All Concealed Pungs (坎坎糊), Eighteen Arhats (十八羅漢), All Terminals (清么九), Heavenly Hand (天糊), Earthly Hand (地糊), Thirteen Orphans (十三么), Kong-on-Kong Self-draw (槓上槓自摸), Nine Gates (九子連環), Big Flower Win (大花糊).',
+            'There are 12 automatic limit hands (例牌), all counted as 10 Faan (the maximum): All Honors (字一色), Small Four Winds (小四喜), Big Four Winds (大四喜), All Concealed Pungs (坎坎糊), Eighteen Arhats (十八羅漢), All Terminals (清么九), Heavenly Hand (天糊), Earthly Hand (地糊), Thirteen Orphans (十三么), Kong-on-Kong Self-draw (槓上槓自摸), Nine Gates (九子連環), Big Flower Win (大花糊).',
       ),
       DialogueMessage(
         speaker: 'mj',
@@ -4573,6 +5418,75 @@ final List<Lesson> defaultLessons = [
         correctIndex: 1,
         explanation:
             'Once you hit the 10-Faan limit, extra Faan don\'t increase payment. 12 Faan pays the same as 10 Faan.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which of these are NOT limit (例牌) hands? (Select all that apply)',
+        options: [
+          'Large Three Dragons (大三元) — 8 Faan in total',
+          'Thirteen Orphans (十三么)',
+          'Full Flush (清一色) — 7 Faan',
+          'Heavenly Hand (天糊)',
+          'Big Flower Win (大花糊)',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 2],
+        explanation:
+            '大三元 is 5 Faan plus its three Dragon Pongs for 8, and 清一色 is 7, so neither is one of the 10-Faan limit hands.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'How many limit (例牌) hands does the reference chart list, all of them counting as 10 Faan?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['12', 'twelve', '12 hands', 'twelve hands'],
+        explanation:
+            'The chart lists twelve 例牌 hands, and each one is scored as exactly 10 Faan regardless of its shape.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each limit hand to what it means.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Earthly Hand (地糊)',
+            right: 'Non-dealer wins East\'s very first discard',
+          ),
+          QuestionPair(
+            left: 'Eighteen Arhats (十八羅漢)',
+            right: 'Four Kongs in one hand',
+          ),
+          QuestionPair(
+            left: 'All Honors (字一色)',
+            right: 'Every tile is a Wind or Dragon',
+          ),
+          QuestionPair(
+            left: 'Big Flower Win (大花糊)',
+            right: 'All eight Flower tiles drawn',
+          ),
+        ],
+        explanation:
+            'All four are 例牌 hands, so each one is scored as exactly 10 Faan no matter how many bonuses it would otherwise collect.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'Which of these tiles could NOT appear in an All Terminals (清么九) hand?',
+        options: ['m1', 's9', 'm5', 'p9'],
+        correctIndex: 2,
+        explanation: '清么九 uses only 1s and 9s, so a 5 is impossible in it.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'A limit hand pays 128 on a discard. How much more is that than a 9-Faan hand?',
+        options: ['16', '24', '32', '64'],
+        correctIndex: 2,
+        explanation:
+            'The table pays 96 at 9 Faan and 128 at the 10-Faan cap, a difference of 32.',
       ),
     ],
   ),
@@ -4651,6 +5565,70 @@ final List<Lesson> defaultLessons = [
         explanation:
             'On a draw, the dealer does NOT keep the seat - the deal rotates. This applies even at the last hand of North round.',
       ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which of these are true about the dealer seat and the round structure? (Select all that apply)',
+        options: [
+          'East is the prevailing wind during the East round',
+          'A full game of four rounds is at least 16 hands',
+          'Every seat gets at least one dealer hand in each round',
+          'The dealer\'s winning hand counts double Faan',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 2],
+        explanation:
+            'Each round carries its own prevailing wind, four dealer hands make 16 in a full game, and the dealer gets no Faan bonus.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each term to its meaning.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: '一圈 (a round)',
+            right: 'Four dealer hands, one per seat',
+          ),
+          QuestionPair(
+            left: '四圈 (a full game)',
+            right: 'East, South, West and North rounds',
+          ),
+          QuestionPair(left: '莊家', right: 'The dealer, seated East'),
+          QuestionPair(left: '閒家', right: 'Any of the three non-dealer seats'),
+        ],
+        explanation:
+            'A round is one pass of the deal through all four seats, and four such rounds make a full game.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'Four rounds with at least four hands each: what is the minimum number of hands in a full game?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['16', 'sixteen', '16 hands'],
+        explanation:
+            'Four rounds times at least four dealer hands each gives a minimum of 16 hands.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You are East (the dealer) and a non-dealer self-draws an 8-Faan hand. How much do you pay?',
+        options: ['16', '32', '48', '64'],
+        correctIndex: 1,
+        explanation:
+            '8 Faan is 64 on a discard, so every opponent including the dealer pays half, 32, with no dealer surcharge.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'Arrange the four round winds in the order the rounds are played.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['east', 'south', 'west', 'north'],
+        explanation:
+            'A full game runs East, South, West and North round, one round for each prevailing wind.',
+      ),
     ],
   ),
 
@@ -4698,6 +5676,64 @@ final List<Lesson> defaultLessons = [
         correctIndex: 0,
         explanation:
             'Half-fire self-draw: 3 opponents each pay half, totaling 1.5x the base. Discard: only the discarder pays full (1x).',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which of these payment statements are correct? (Select all that apply)',
+        options: [
+          '3 Faan by discard: the discarder pays 8',
+          '5 Faan by self-draw: 12 from each opponent, 36 in total',
+          '7 Faan by discard: the discarder pays 56',
+          '9 Faan by self-draw: 48 from each opponent',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 3],
+        explanation:
+            'The table pays 8 at 3 Faan and half of 24 from each player at 5 Faan, while 7 Faan pays 48, not 56.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'You self-draw a 6-Faan hand. How much do you collect in total?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['48', r'$48', 'forty-eight', 'forty eight'],
+        explanation:
+            '6 Faan is 32 on a discard, so each opponent pays 16 and three of them make 48 in total.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Full Flush (7) + Concealed Hand (1) + one seat flower (1) is 9 Faan and is won on a discard. What does the discarder pay?',
+        options: ['64', '96', '128', '48'],
+        correctIndex: 1,
+        explanation:
+            'The sources stack to 7 + 1 + 1 = 9 Faan, and the table pays 96 on a discard.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question:
+            'Match each Faan value to the total you collect on a self-draw.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: '4 Faan', right: '24'),
+          QuestionPair(left: '6 Faan', right: '48'),
+          QuestionPair(left: '8 Faan', right: '96'),
+          QuestionPair(left: '10 Faan', right: '192'),
+        ],
+        explanation:
+            'Each of the three opponents pays half of 16, 32, 64 and 128, giving totals of 24, 48, 96 and 192.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'A hand counts 12 Faan and is won by self-draw. What does each opponent pay?',
+        options: ['48 each', '64 each', '96 each', '128 each'],
+        correctIndex: 1,
+        explanation:
+            'The 12 Faan is capped at 10, whose 128 discard payment is split into 64 from each opponent.',
       ),
     ],
   ),
@@ -4770,6 +5806,80 @@ final List<Lesson> defaultLessons = [
         correctIndex: 0,
         explanation:
             'Early discards are most informative because players discard tiles they definitely don\'t need first.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'An opponent discards {{east}} on their first turn. Which conclusions are reasonable?',
+        options: [
+          'They are unlikely to be collecting honour tiles',
+          '{{east}} is safe to discard against them for the rest of this rotation',
+          'They are definitely building a single-suit flush',
+          'They no longer hold any honour tiles',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'An early honour discard says little about suit shape, but it does mean they cannot use that honour against you this rotation.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'An opponent throws {{s1}}, {{s5}} and {{s9}} in their first three turns but keeps every Dot tile. Which suit are they most likely collecting?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['circles', 'circle', 'dots', 'dot', 'pins', 'pin'],
+        explanation:
+            'Throwing Bamboo at every rank early says Bamboo is not their suit, so the suit they never touch is the likely target.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each discard pattern to the most likely reading.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Throws {{p1}} and {{p9}} on turn 1',
+            right: 'Circles terminals are not needed',
+          ),
+          QuestionPair(
+            left: 'Discards every Character drawn, turn after turn',
+            right: 'Characters are not their suit',
+          ),
+          QuestionPair(
+            left: 'Throws honours on every early turn',
+            right: 'Not collecting honour tiles',
+          ),
+          QuestionPair(
+            left: 'Suddenly stops discarding Bamboo',
+            right: 'May have picked up Bamboo',
+          ),
+        ],
+        explanation:
+            'Early discards reveal what a hand does not want, while a sudden change of pattern reveals what it has started to collect.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'Four early discards from the same opponent are shown. Which one is the strongest evidence that they are avoiding the middle of that suit?',
+        options: ['s5', 'east', 'p1', 'm9'],
+        correctIndex: 0,
+        explanation:
+            'A middle tile is the most useful tile in its suit, so throwing it early is the clearest sign the suit is unwanted.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'An opponent who kept every honour tile for ten turns now discards {{south}}. What does this most likely mean?',
+        options: [
+          'They have given up on an honour-based plan',
+          'They are collecting honours harder than before',
+          'They have no hand at all',
+          'Their hand is already complete',
+        ],
+        correctIndex: 0,
+        explanation:
+            'A late honour discard usually means the honour plan was dropped once the hand took its real shape.',
       ),
     ],
   ),
@@ -4849,6 +5959,84 @@ final List<Lesson> defaultLessons = [
         explanation:
             'Previously discarded honor (safest) → Terminal tile (moderate) → Fresh middle tile (most dangerous).',
       ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these make a tile safer to discard?',
+        options: [
+          'All four copies are already visible on the table',
+          'The opponent you fear discarded it earlier this rotation',
+          'Nobody has discarded this tile yet',
+          'Two different opponents have already discarded it',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 3],
+        explanation:
+            'Visible copies and discards by the players you fear both cut the chance that the tile completes their hand.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question:
+            'Match each situation to how safe that tile is against the player you fear.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'They discarded it earlier this rotation',
+            right: 'Absolutely safe against them until they draw',
+          ),
+          QuestionPair(
+            left: 'They discarded it, then drew twice',
+            right: 'Only relatively safe',
+          ),
+          QuestionPair(
+            left: 'All four copies lie on the table',
+            right: 'Cannot be won on at all',
+          ),
+          QuestionPair(
+            left: 'Never seen in the game, mid-hand',
+            right: 'Most dangerous',
+          ),
+        ],
+        explanation:
+            'Absolute safety lasts only until the opponent draws again, while four visible copies means no fifth copy exists to win on.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Why is a tile with all four copies visible completely safe to discard?',
+        options: [
+          'No opponent can hold or wait on a fifth copy',
+          'It must be an honour tile',
+          'Every player has already thrown it',
+          'It must be a terminal tile',
+        ],
+        correctIndex: 0,
+        explanation:
+            'There are only four copies of any tile, so once all four are visible nobody can complete a pair, pong or wait with it.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'Which of these is NOT a reason for a tile to be safe?',
+        options: [
+          'The threatening opponent discarded it this rotation',
+          'All four copies are visible',
+          'It is a fresh middle tile nobody has played',
+          'Two opponents have already thrown it away',
+        ],
+        correctIndex: 2,
+        explanation:
+            'A fresh middle tile is the classic danger tile, because it connects to many sequences and all four copies are still live.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'You can see all four copies of {{p6}} on the table. How many copies could an opponent still be waiting on?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['0', 'zero', 'none', 'no copies'],
+        explanation:
+            'All four copies are accounted for, so no opponent can be waiting on a tile that no longer exists in play.',
+      ),
     ],
   ),
 
@@ -4915,6 +6103,84 @@ final List<Lesson> defaultLessons = [
         correctIndex: 1,
         explanation:
             'A draw costs you nothing. Dealing into a big hand (7+ Faan) could cost you \$128+!',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which situations call for folding rather than pushing?',
+        options: [
+          'Your hand is several tiles from ready and two opponents have called melds',
+          'You are comfortably leading and the hand is nearly over',
+          'You are one tile from a cheap win and nobody looks close',
+          'An opponent has three exposed melds and discards are getting dangerous',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 3],
+        explanation:
+            'Folding pays when your own hand is far off or you have something to protect and someone else is close.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each table situation to the right response.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Four tiles from ready, opponent holds three melds',
+            right: 'Fold and discard only safe tiles',
+          ),
+          QuestionPair(
+            left: 'One tile from a cheap win, nobody threatening',
+            right: 'Push for the win',
+          ),
+          QuestionPair(
+            left: 'Leading late, your winning tile is dangerous',
+            right: 'Hold the tile and take the draw',
+          ),
+          QuestionPair(
+            left: 'Far behind with five turns left',
+            right: 'Push a bigger hand and accept risk',
+          ),
+        ],
+        explanation:
+            'Defence is a choice about relative position, not a fixed rule, so the same hand can call for folding or pushing.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'A player who folds scores nothing, but also pays nothing when the hand ends in a ___.',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['draw', 'a draw', 'tie', '流局'],
+        explanation:
+            'A drawn hand involves no payments at all, which is why folding can cost less than chasing a hopeless win.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Is it ever right to break up a meld you already hold just to find a safe discard?',
+        options: [
+          'Yes, when an opponent is clearly close and no safe tile is free',
+          'No, a meld must never be broken',
+          'Only on the first turn',
+          'Only if you are the dealer',
+        ],
+        correctIndex: 0,
+        explanation:
+            'When folding, the hand\'s value is already given up, so structure can be sacrificed to avoid dealing in.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You are far behind on points with ten tiles left in the wall and no opponent looks close. What is the best approach?',
+        options: [
+          'Push for a bigger hand and accept some risk',
+          'Fold immediately and discard only honours',
+          'Stop drawing tiles',
+          'Discard randomly to hide your shape',
+        ],
+        correctIndex: 0,
+        explanation:
+            'A player who needs points cannot profit from a draw, so taking risk to chase a larger hand is the correct trade.',
       ),
     ],
   ),
@@ -4984,6 +6250,62 @@ final List<Lesson> defaultLessons = [
         explanation:
             'More possible winning tiles = higher chance of completing your hand. 7 > 4.',
       ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'You hold {{m2}}{{m3}}. Arrange its two winning tiles from lowest to highest.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['m1', 'm4'],
+        explanation:
+            'A 23 shape is a two-sided wait, because both {{m1}} and {{m4}} complete the run.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'You hold {{m4}}{{m6}}. How many different tile types complete this closed wait?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['1', 'one', '1 tile', 'one tile'],
+        explanation:
+            'A closed wait has a hole in the middle, so only {{m5}} can fill it.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these are two-sided waits?',
+        options: [
+          '{{m2}}{{m3}} waiting on {{m1}} or {{m4}}',
+          '{{p7}}{{p8}} waiting on {{p6}} or {{p9}}',
+          '{{s5}}{{s7}} waiting on {{s6}} only',
+          '{{m1}}{{m2}} waiting on {{m3}} only',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'A two-sided wait accepts two different tiles, so it has about twice as many winning tiles as a closed wait.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'You want flexible waits. Which of these single tiles is the least useful to keep?',
+        options: ['m1', 'm5', 'p5', 's5'],
+        correctIndex: 0,
+        explanation:
+            'A terminal only fits one run, while a middle tile fits several, so terminals are the least flexible tiles to hold.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'Which pair of tiles forms a closed wait (kanchan)?',
+        options: [
+          '{{s5}}{{s7}}',
+          '{{m2}}{{m3}}',
+          '{{p7}}{{p8}}',
+          '{{m8}}{{m9}}',
+        ],
+        correctIndex: 0,
+        explanation:
+            'The pair {{s5}}{{s7}} is one rank apart with a gap in the middle, which is the definition of a closed wait.',
+      ),
     ],
   ),
 
@@ -5052,6 +6374,79 @@ final List<Lesson> defaultLessons = [
         explanation:
             'Three exposed Pongs means they only need 1 more meld + pair. They\'re very close to winning!',
       ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'What does calling a Pong cost you?',
+        options: [
+          'It exposes part of your hand to opponents',
+          'It spends a turn you could have used to reshape your hand',
+          'It stops you from ever winning by self-draw',
+          'It forfeits the 1-Faan 門前清 bonus on an otherwise concealed hand',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 3],
+        explanation:
+            'A call speeds the hand up but reveals tiles, reduces flexibility, and ends the concealed bonus.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each situation to the tempo choice that fits it.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'One cheap meld away from a 3-Faan win, wall still deep',
+            right: 'Call the meld and speed up',
+          ),
+          QuestionPair(
+            left: 'Promising 混一色 with plenty of tiles left',
+            right: 'Stay concealed and build',
+          ),
+          QuestionPair(
+            left: 'Two opponents have called melds and the wall is thin',
+            right: 'Slow down and defend',
+          ),
+          QuestionPair(
+            left: 'Far behind on points with few tiles left',
+            right: 'Push for a big hand',
+          ),
+        ],
+        explanation:
+            'Tempo should follow the table: speed up when a cheap win is near, slow down when others are faster or the wall is short.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'An opponent calls Chow on their second turn. What is the main information this gives you?',
+        options: [
+          'Which suit they are collecting',
+          'Their exact winning tile',
+          'Nothing at all',
+          'Their current score',
+        ],
+        correctIndex: 0,
+        explanation:
+            'A Chow shows three tiles of one suit, which points to that suit without revealing the wait.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'Staying concealed for the whole hand keeps 門前清, worth how many Faan?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['1', 'one', '1 faan', 'one faan'],
+        explanation:
+            '門前清 is a 1-Faan pattern, so any call that breaks concealment gives up exactly one Faan.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'You are racing for the fastest possible win. Which of these single tiles is the least useful to hold?',
+        options: ['east', 'm4', 'p5', 's6'],
+        correctIndex: 0,
+        explanation:
+            'A lone honour needs two matching copies to become a meld, which is the slowest way to build a fast hand.',
+      ),
     ],
   ),
 
@@ -5107,6 +6502,81 @@ final List<Lesson> defaultLessons = [
         tiles: ['red', 'east', 's1'],
         explanation:
             'Fast play/calling melds (most aggressive) → Balanced concealed play (middle) → Full fold/defense (most defensive).',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Turn 12. You are two tiles from ready and one opponent holds three melds. Which actions are correct?',
+        options: [
+          'Check what that opponent has discarded this rotation',
+          'Discard a fresh middle tile to keep your own shape',
+          'Break your hand to find a safe tile if no safe tile is free',
+          'Count how many copies of each candidate tile are already visible',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 2, 3],
+        explanation:
+            'Against a player who is close, safety comes first, so read their discards and visible copies rather than protecting shape.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each tactic to what it means.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Reading discards',
+            right: 'Inferring a hand from what an opponent throws',
+          ),
+          QuestionPair(
+            left: 'Absolute safety',
+            right: 'A tile the opponent discarded earlier this rotation',
+          ),
+          QuestionPair(
+            left: 'Folding',
+            right: 'Discarding safe tiles instead of chasing your win',
+          ),
+          QuestionPair(
+            left: 'Tile efficiency',
+            right: 'Maximising the tiles that complete your hand',
+          ),
+        ],
+        explanation:
+            'These four ideas are the whole tactical toolkit: read the table, judge safety, know when to fold, and count your outs.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'An opponent is one tile from winning. Arrange these discards from safest to most dangerous: {{red}}, which they threw earlier this rotation; {{p9}}, of which three copies are visible; {{s2}}, which nobody has played.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['red', 'p9', 's2'],
+        explanation:
+            'A tile they already discarded is safe this rotation, three visible copies leave only one live copy, and an unseen tile leaves all four.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'Three copies of {{s8}} are visible on the table. How many copies can an opponent still be holding?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['1', 'one', '1 copy', 'one copy'],
+        explanation:
+            'Four copies exist in total, so with three visible exactly one copy is still live and it may be in any hand or the wall.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Which single habit improves both your attack and your defence?',
+        options: [
+          'Watching every discard and counting visible copies',
+          'Calling the first meld offered every hand',
+          'Never discarding honour tiles',
+          'Always keeping one pair in hand',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Discard reading and copy counting drive both your own wait choices and your safety judgements, so one habit serves both sides.',
       ),
     ],
   ),

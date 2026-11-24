@@ -1,0 +1,391 @@
+{
+  "5-1": [
+    {
+      "type": "multiChoice",
+      "question": "Which statements about 坎坎糊 (four concealed Pungs) are correct?",
+      "options": [
+        "It is a limit hand worth 10 Faan",
+        "A Kong is allowed among the four sets",
+        "A single-tile wait (單吊) may win on a discard",
+        "A pair wait (對碰) must be won by self-draw"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [
+        0,
+        2,
+        3
+      ],
+      "explanation": "坎坎糊 is a 10-Faan limit hand with four concealed Pungs and no Kongs; a single wait may take a discard but a pair wait must be self-drawn."
+    },
+    {
+      "type": "matching",
+      "question": "Match each hand shape to what it is called.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {
+          "left": "Four Pongs or Kongs plus a pair",
+          "right": "對對糊 — 3 Faan"
+        },
+        {
+          "left": "Four Chows plus a pair",
+          "right": "平糊 — 1 Faan"
+        },
+        {
+          "left": "Four Kongs",
+          "right": "十八羅漢 — 10 Faan"
+        },
+        {
+          "left": "One suit plus honor tiles",
+          "right": "混一色 — 3 Faan"
+        }
+      ],
+      "explanation": "All Pongs is 對對糊, its all-Chow opposite is 平糊, four Kongs is 十八羅漢, and one suit with honors is 混一色."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Going for All Pongs, your 13 tiles are {{m3}}{{m3}}{{m3}} {{p7}}{{p7}}{{p7}} {{s1}}{{s1}}{{s1}} {{red}}{{red}}{{red}} {{east}}. Which tile completes the hand?",
+      "options": [
+        "east",
+        "m3",
+        "p7",
+        "s2"
+      ],
+      "correctIndex": 0,
+      "explanation": "{{east}} becomes the pair for the eyes; the other four sets are already triplets."
+    },
+    {
+      "type": "fillBlank",
+      "question": "All Pongs is 3 Faan and Mixed One Suit is 3 Faan. An All Pongs hand built from one suit plus honors scores how many Faan in total?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": [
+        "6",
+        "six",
+        "6 faan",
+        "six faan"
+      ],
+      "explanation": "The two patterns stack, so 3 + 3 = 6 Faan, safely under the 10-Faan cap."
+    },
+    {
+      "type": "singleChoice",
+      "question": "A hand is four Pongs plus a pair. Can it also be scored as 平糊 (All Chows)?",
+      "options": [
+        "Yes, if the hand is concealed",
+        "Yes, if it is won by self-draw",
+        "No — 平糊 needs four Chows and no triplets",
+        "No — 平糊 needs honor tiles"
+      ],
+      "correctIndex": 2,
+      "explanation": "平糊 requires four Chows with no Pong or Kong, so it can never combine with 對對糊."
+    }
+  ],
+  "5-2": [
+    {
+      "type": "matching",
+      "question": "Match each part of Thirteen Orphans (十三么) to its count.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {
+          "left": "Terminal types in the set (1s and 9s)",
+          "right": "6"
+        },
+        {
+          "left": "Honor types in the set",
+          "right": "7"
+        },
+        {
+          "left": "Types duplicated to make the pair",
+          "right": "1"
+        }
+      ],
+      "explanation": "Six terminals (1 and 9 of each suit) and seven honors make the 13 types, one of which is duplicated."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which statements about Thirteen Orphans (十三么) are correct?",
+      "options": [
+        "It needs one of each of the 13 terminal and honor types",
+        "One of those types is duplicated to form the pair",
+        "It has no melds at all — no Chows, Pongs or Kongs",
+        "It may include one Chow as long as the hand stays concealed"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [
+        0,
+        1,
+        2
+      ],
+      "explanation": "十三么 is 13 single tiles plus one duplicate, so it contains no Chows, Pongs or Kongs."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Which of these tiles is NOT used in Thirteen Orphans (十三么)?",
+      "options": [
+        "m5",
+        "m1",
+        "p9",
+        "white"
+      ],
+      "correctIndex": 0,
+      "explanation": "Only 1s, 9s and honor tiles qualify, so the middle tile {{m5}} never appears."
+    },
+    {
+      "type": "fillBlank",
+      "question": "How many tiles does a completed Thirteen Orphans (十三么) hand contain?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": [
+        "14",
+        "fourteen",
+        "14 tiles",
+        "fourteen tiles"
+      ],
+      "explanation": "Thirteen different types plus the duplicated tile make 14 tiles."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Your opponent declares a concealed Kong (暗槓). Which hand is allowed to rob it?",
+      "options": [
+        "Any hand worth at least 3 Faan",
+        "Only Thirteen Orphans (十三么)",
+        "Only Full Flush (清一色)",
+        "Only All Pongs (對對糊)"
+      ],
+      "correctIndex": 1,
+      "explanation": "搶槓 normally only robs an added Kong, but 十三么 is the one hand that may rob a concealed Kong."
+    }
+  ],
+  "5-3": [
+    {
+      "type": "tileSelection",
+      "question": "Your hand is a Full Flush (清一色) in Bamboo. Which of these tiles would break it?",
+      "options": [
+        "m5",
+        "s1",
+        "s9",
+        "s5"
+      ],
+      "correctIndex": 0,
+      "explanation": "清一色 uses exactly one suit with no honors, so any Character tile breaks the flush."
+    },
+    {
+      "type": "tileOrdering",
+      "question": "Arrange these Character tiles into a Chow — Full Flush restricts the suit, not the meld shape.",
+      "options": [],
+      "correctIndex": 0,
+      "tiles": [
+        "m2",
+        "m3",
+        "m4"
+      ],
+      "explanation": "A Chow is three consecutive tiles of one suit, so 2-3-4 of Characters is correct."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which of these hands are Full Flush (清一色)?",
+      "options": [
+        "{{m1}}{{m2}}{{m3}} {{m4}}{{m5}}{{m6}} {{m7}}{{m8}}{{m9}} {{m5}}{{m5}}{{m5}} {{m9}}{{m9}}",
+        "{{s2}}{{s3}}{{s4}} {{s5}}{{s6}}{{s7}} {{s7}}{{s8}}{{s9}} {{s1}}{{s1}}{{s1}} {{s9}}{{s9}}",
+        "{{p1}}{{p2}}{{p3}} {{p4}}{{p5}}{{p6}} {{red}}{{red}}{{red}} {{p7}}{{p8}}{{p9}} {{p5}}{{p5}}",
+        "{{east}}{{east}}{{east}} {{red}}{{red}}{{red}} {{white}}{{white}}{{white}} {{north}}{{north}}{{north}} {{south}}{{south}}"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [
+        0,
+        1
+      ],
+      "explanation": "The first two are single-suit hands, while the third carries a Dragon triplet and the fourth is all honors (字一色)."
+    },
+    {
+      "type": "fillBlank",
+      "question": "Full Flush is 7 Faan and All Pongs is 3 Faan. A one-suit All Pongs hand with no honors scores how many Faan?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": [
+        "10",
+        "ten",
+        "10 faan",
+        "ten faan"
+      ],
+      "explanation": "7 + 3 = 10 Faan, which lands exactly on the 10-Faan cap."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Does Full Flush (清一色) require a particular meld type?",
+      "options": [
+        "Yes, it must be all Chows",
+        "Yes, it must be all Pongs",
+        "No — it only restricts the suit",
+        "No — honor tiles are also allowed"
+      ],
+      "correctIndex": 2,
+      "explanation": "清一色 is defined by suit alone, so Chows and Pongs can be mixed freely."
+    }
+  ],
+  "5-4": [
+    {
+      "type": "multiChoice",
+      "question": "Which of these tiles can appear in 清么九 (All Terminals)?",
+      "options": [
+        "{{m1}}",
+        "{{s5}}",
+        "{{p9}}",
+        "{{east}}",
+        "{{m9}}"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [
+        0,
+        2,
+        4
+      ],
+      "explanation": "清么九 uses only the 1s and 9s of the three suits — no middle tiles and no honors."
+    },
+    {
+      "type": "matching",
+      "question": "Match each limit hand to the tiles it allows.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {
+          "left": "字一色 (All Honors)",
+          "right": "Winds and Dragons only"
+        },
+        {
+          "left": "清么九 (All Terminals)",
+          "right": "1s and 9s only, no honors"
+        },
+        {
+          "left": "清一色 (Full Flush)",
+          "right": "One suit only, no honors"
+        },
+        {
+          "left": "混一色 (Mixed One Suit)",
+          "right": "One suit plus honors"
+        }
+      ],
+      "explanation": "These four hands differ exactly in which tile groups are permitted."
+    },
+    {
+      "type": "fillBlank",
+      "question": "How many different tile types can appear in 清么九 (All Terminals)?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": [
+        "6",
+        "six",
+        "6 types",
+        "six types"
+      ],
+      "explanation": "Each suit contributes a 1 and a 9, so only six types qualify."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Which of these tiles could NOT appear in 字一色 (All Honors)?",
+      "options": [
+        "east",
+        "red",
+        "m1",
+        "white"
+      ],
+      "correctIndex": 2,
+      "explanation": "字一色 is made only of Wind and Dragon tiles, so any suited tile is impossible."
+    },
+    {
+      "type": "singleChoice",
+      "question": "{{m1}}{{m1}}{{m1}} {{m9}}{{m9}}{{m9}} {{p1}}{{p1}}{{p1}} {{s9}}{{s9}}{{s9}} {{p9}}{{p9}} — which hand is this?",
+      "options": [
+        "清么九 (All Terminals)",
+        "字一色 (All Honors)",
+        "清一色 (Full Flush)",
+        "混一色 (Mixed One Suit)"
+      ],
+      "correctIndex": 0,
+      "explanation": "Every tile is a 1 or a 9 with no honors, which is exactly 清么九 — a 10-Faan limit hand."
+    }
+  ],
+  "5-5": [
+    {
+      "type": "matching",
+      "question": "Match each special hand to what it requires.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {
+          "left": "Thirteen Orphans (十三么)",
+          "right": "One of each of the 13 terminal and honor types"
+        },
+        {
+          "left": "All Pongs (對對糊)",
+          "right": "Four triplets or Kongs plus a pair"
+        },
+        {
+          "left": "Full Flush (清一色)",
+          "right": "A single suit with no honors"
+        },
+        {
+          "left": "字一色 (All Honors)",
+          "right": "Winds and Dragons only"
+        }
+      ],
+      "explanation": "Each name maps to one defining condition: all 13 singles, all triplets, one suit, or honors only."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which of these are limit hands counted as 10 Faan?",
+      "options": [
+        "十三么 (Thirteen Orphans)",
+        "字一色 (All Honors)",
+        "清一色 (Full Flush)",
+        "清么九 (All Terminals)",
+        "對對糊 (All Pongs)"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [
+        0,
+        1,
+        3
+      ],
+      "explanation": "清一色 is 7 Faan and 對對糊 is 3; the other three are 例牌 scored at 10."
+    },
+    {
+      "type": "fillBlank",
+      "question": "A limit hand is won by self-draw. How much does each of the three opponents pay?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": [
+        "64",
+        "sixty-four",
+        "sixty four",
+        "64 each"
+      ],
+      "explanation": "At 10 Faan a self-draw costs each opponent 64, for 192 collected in total."
+    },
+    {
+      "type": "tileOrdering",
+      "question": "Arrange these tiles into a Chow — the meld All Pongs forbids but Full Flush allows.",
+      "options": [],
+      "correctIndex": 0,
+      "tiles": [
+        "s4",
+        "s5",
+        "s6"
+      ],
+      "explanation": "A Chow is three consecutive tiles of one suit, so 4-5-6 of Bamboo is correct."
+    },
+    {
+      "type": "singleChoice",
+      "question": "A hand is four Pongs plus a pair, all in one suit with no honors. How many Faan does it score?",
+      "options": [
+        "3 Faan",
+        "7 Faan",
+        "10 Faan",
+        "6 Faan"
+      ],
+      "correctIndex": 2,
+      "explanation": "清一色 (7) + 對對糊 (3) = 10 Faan, which is the cap."
+    }
+  ]
+}

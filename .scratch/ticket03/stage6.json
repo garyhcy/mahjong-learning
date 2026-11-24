@@ -1,0 +1,271 @@
+{
+  "6-1": [
+    {
+      "type": "tileSelection",
+      "question": "Which of these is a Plant tile rather than a Season?",
+      "options": ["f_orchid", "f_spring", "f_summer", "f_winter"],
+      "correctIndex": 0,
+      "explanation": "Orchid is one of the four Plants; Spring, Summer and Winter belong to the Seasons."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which statements about flower scoring are correct?",
+      "options": [
+        "One matching seat flower is worth 1 Faan",
+        "All four Seasons together (一台花) are worth 2 Faan in total",
+        "A hand holding no flowers at all scores 無花 for 1 Faan",
+        "Every flower you declare is worth 1 Faan"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1, 2],
+      "explanation": "Only a matching seat flower scores 1 Faan; a complete 一台花 pays 2 in total, and a flowerless hand takes 無花 for 1."
+    },
+    {
+      "type": "fillBlank",
+      "question": "You hold all four Plants ({{f_plum}} {{f_orchid}} {{f_chrys}} {{f_bamboo}}). How many Faan does this 一台花 score in total?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["2", "two", "2 faan", "two faan"],
+      "explanation": "A complete set of four Seasons or four Plants is 2 Faan in total, and the seat flower is not added on top."
+    },
+    {
+      "type": "matching",
+      "question": "Match each flower number to the flower that carries it.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "Season #2", "right": "Summer"},
+        {"left": "Plant #1", "right": "Plum"},
+        {"left": "Season #4", "right": "Winter"},
+        {"left": "Plant #4", "right": "Bamboo"}
+      ],
+      "explanation": "Seasons and Plants are each numbered 1 to 4, so the second Season is Summer and the fourth Plant is Bamboo."
+    },
+    {
+      "type": "tileOrdering",
+      "question": "Put the four Season tiles in seat order: East, South, West, North.",
+      "options": [],
+      "correctIndex": 0,
+      "tiles": ["f_spring", "f_summer", "f_autumn", "f_winter"],
+      "explanation": "Seasons run Spring, Summer, Autumn, Winter for East, South, West and North in that order."
+    }
+  ],
+  "6-2": [
+    {
+      "type": "matching",
+      "question": "Match each Kong type to how it is formed.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "明槓 (Exposed Kong)", "right": "Claim a discard while holding three copies"},
+        {"left": "加槓 (Added Kong)", "right": "Add the fourth tile to your own exposed Pong"},
+        {"left": "暗槓 (Concealed Kong)", "right": "Draw the fourth copy yourself and keep it face-down"}
+      ],
+      "explanation": "Exposed Kongs come from a discard, Added Kongs extend your own Pong, and Concealed Kongs are completed from your own draw."
+    },
+    {
+      "type": "tileSelection",
+      "question": "You hold {{s5}}{{s5}}{{s5}}. Which discarded tile can you claim for an Exposed Kong?",
+      "options": ["s5", "s4", "p5", "s6"],
+      "correctIndex": 0,
+      "explanation": "A Kong needs four identical tiles, so only the fourth {{s5}} can be claimed."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which statements about Kongs are correct?",
+      "options": [
+        "A Kong counts as one meld of 3 tiles in hand structure but uses 4 physical tiles",
+        "A Concealed Kong does not break 門前清",
+        "A declared Kong adds 1 Faan by itself",
+        "After any Kong you draw a replacement tile from the back of the wall"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1, 3],
+      "explanation": "Kongs give a replacement draw and preserve 門前清 when concealed, but the Kong itself carries no Faan."
+    },
+    {
+      "type": "fillBlank",
+      "question": "How many physical tiles does one declared Kong use?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["4", "four", "4 tiles", "four tiles"],
+      "explanation": "A Kong is four copies of one tile, counted as a 3-tile meld when you read the hand."
+    },
+    {
+      "type": "singleChoice",
+      "question": "You have three concealed {{p9}} in hand and draw the fourth. What is the correct declaration?",
+      "options": [
+        "Concealed Kong: place it face-down, then draw a replacement",
+        "Exposed Kong: turn all four tiles face-up",
+        "Added Kong on your exposed Pong",
+        "Discard the fourth copy"
+      ],
+      "correctIndex": 0,
+      "explanation": "Completing a Kong from your own draw is a Concealed Kong, declared face-down with a replacement draw."
+    }
+  ],
+  "6-3": [
+    {
+      "type": "fillBlank",
+      "question": "The pattern 槓上自摸 (winning on the replacement tile after a Kong) is listed at how many Faan?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["1", "one", "1 faan", "one faan"],
+      "explanation": "槓上自摸 is a 1-Faan pattern on the Gary Faan list."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which statements about Kong chains and robbing are correct?",
+      "options": [
+        "Winning after two consecutive Kongs (槓上槓自摸) is a limit hand at 10 Faan",
+        "搶槓 normally applies to an Added Kong (加槓)",
+        "Thirteen Orphans (十三么) may rob even a Concealed Kong",
+        "You may rob an Exposed Kong claimed from a discard"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1, 2],
+      "explanation": "A double-Kong self-draw is a limit hand, robbing normally targets an Added Kong, and only Thirteen Orphans may rob a Concealed Kong."
+    },
+    {
+      "type": "matching",
+      "question": "Match each Kong term to what it means.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "槓上自摸", "right": "Win on the replacement tile after one Kong"},
+        {"left": "槓上槓自摸", "right": "Win after two consecutive Kongs, 10 Faan"},
+        {"left": "搶槓", "right": "Win by taking the tile of someone's Added Kong"}
+      ],
+      "explanation": "One Kong replacement win is 1 Faan, two chained Kongs make the 10-Faan limit, and 搶槓 takes an Added Kong tile."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Your Kong replacement tile is the fourth copy of another tile you already hold three of. What happens next?",
+      "options": [
+        "Declare a second Kong and draw another replacement",
+        "Discard it and end your turn",
+        "Return it and draw a normal tile instead",
+        "You may only declare one Kong per turn"
+      ],
+      "correctIndex": 0,
+      "explanation": "Kongs can chain: the new fourth copy allows another Kong, followed by another replacement draw."
+    },
+    {
+      "type": "singleChoice",
+      "question": "You normally cannot rob a Concealed Kong. Which hand is the exception?",
+      "options": [
+        "Thirteen Orphans (十三么)",
+        "All Pongs (對對糊)",
+        "Mixed One Suit (混一色)",
+        "Pure One Suit (清一色)"
+      ],
+      "correctIndex": 0,
+      "explanation": "The rules let Thirteen Orphans rob a Concealed Kong, which ordinary hands cannot do."
+    }
+  ],
+  "6-4": [
+    {
+      "type": "tileOrdering",
+      "question": "You hold three {{p4}} plus {{p3}} and {{p5}}. Put the run tiles in ascending order to see the meld you keep by not Kong-ing.",
+      "options": [],
+      "correctIndex": 0,
+      "tiles": ["p3", "p4", "p5"],
+      "explanation": "Keeping {{p4}} inside {{p3}}{{p4}}{{p5}} gives a finished run, so the extra copy is not always worth a Kong."
+    },
+    {
+      "type": "matching",
+      "question": "Match each table situation to the better Kong decision.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "Opponents look close to winning", "right": "Skip the Added Kong"},
+        {"left": "You are going for All Pongs", "right": "Kong, the meld is needed"},
+        {"left": "The fourth tile also fits a run you need", "right": "Keep it in hand"}
+      ],
+      "explanation": "A late Added Kong invites 搶槓, while a Kong that builds All Pongs or frees a useless tile is worth taking."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which are good reasons to declare a Kong?",
+      "options": [
+        "You want the extra replacement draw",
+        "Your hand is going for All Pongs (對對糊)",
+        "The fourth tile is useless in any run or pair you could build",
+        "You want to reveal more information to your opponents"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1, 2],
+      "explanation": "Kong for the replacement draw, for All Pongs, or to shed a dead tile, never to give information away."
+    },
+    {
+      "type": "fillBlank",
+      "question": "How many Faan does declaring a Kong add by itself?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["0", "zero", "none", "0 faan"],
+      "explanation": "A Kong has no Faan value of its own; only patterns such as 槓上自摸 or All Pongs score."
+    },
+    {
+      "type": "singleChoice",
+      "question": "You are keeping your hand fully concealed for 門前清. Which Kong can you still declare without breaking it?",
+      "options": [
+        "Concealed Kong (暗槓)",
+        "Exposed Kong (明槓)",
+        "Added Kong (加槓)",
+        "Any Kong breaks 門前清"
+      ],
+      "correctIndex": 0,
+      "explanation": "Only a Concealed Kong leaves 門前清 intact; claiming or adding to a meld breaks it."
+    }
+  ],
+  "6-5": [
+    {
+      "type": "multiChoice",
+      "question": "Which review statements are correct?",
+      "options": [
+        "All four Seasons (一台花) score 2 Faan in total",
+        "The matching seat flower is not added on top of that 2 Faan",
+        "A declared Kong adds 1 Faan by itself",
+        "搶槓 can rob an Added Kong (加槓)"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1, 3],
+      "explanation": "一台花 pays 2 in total without stacking the seat flower, and 搶槓 targets an Added Kong, but a Kong alone is worth 0 Faan."
+    },
+    {
+      "type": "matching",
+      "question": "Match each term to its scoring or rule summary.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "一台花", "right": "Four Seasons or four Plants, 2 Faan in total"},
+        {"left": "槓上自摸", "right": "Win on the Kong replacement tile, 1 Faan"},
+        {"left": "十八羅漢", "right": "Four Kongs, a limit hand at 10 Faan"},
+        {"left": "搶槓", "right": "Win by robbing an Added Kong"}
+      ],
+      "explanation": "These are the Stage 6 headline values: 2 for 一台花, 1 for 槓上自摸, 10 for 十八羅漢 and 搶槓 on an Added Kong."
+    },
+    {
+      "type": "fillBlank",
+      "question": "十八羅漢 (four Kongs) is a limit hand. How many Faan does it score?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["10", "ten", "10 faan", "ten faan"],
+      "explanation": "Every limit hand including 十八羅漢 is scored at the 10-Faan cap."
+    },
+    {
+      "type": "tileSelection",
+      "question": "You already hold {{f_plum}} {{f_orchid}} {{f_chrys}}. Which tile completes 一台花?",
+      "options": ["f_bamboo", "f_spring", "f_winter", "f_summer"],
+      "correctIndex": 0,
+      "explanation": "The Plants are Plum, Orchid, Chrysanthemum and Bamboo, so Bamboo completes the set."
+    },
+    {
+      "type": "singleChoice",
+      "question": "You are East and hold all four Seasons, which include your seat flower Spring. How many Faan do your flowers score?",
+      "options": ["1 Faan", "2 Faan", "3 Faan", "4 Faan"],
+      "correctIndex": 1,
+      "explanation": "一台花 is 2 Faan in total and the seat flower inside the set is not added again."
+    }
+  ]
+}
