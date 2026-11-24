@@ -4,7 +4,7 @@
 
 **Blocked by:** 02 - 題型標準化（新題型 widget 需先就位）
 
-**Status:** ready-for-agent
+**Status:** in-progress
 
 **範圍對應：** PHASE3_PLAN 階段 C2a / P2 #18, #23 / Gary 已確認事項 #1
 

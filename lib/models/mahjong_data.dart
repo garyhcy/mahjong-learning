@@ -408,6 +408,69 @@ final List<Lesson> defaultLessons = [
         explanation:
             'The goal is to complete a winning hand of 14 tiles (4 melds + 1 pair) before other players.',
       ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many tiles are in a set that has no Flower tiles?',
+        options: ['108', '120', '136', '144'],
+        correctIndex: 2,
+        acceptedAnswers: ['136', '136 tiles', 'one hundred thirty-six'],
+        explanation: '144 tiles minus the 8 Flower tiles leaves 136.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which of these belong to a standard mahjong tile set? (Select all that apply)',
+        options: [
+          'Suited tiles (Characters, Circles, Bamboo)',
+          'Wind tiles',
+          'Dragon tiles',
+          'Flower tiles',
+          'Poker cards',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 2, 3],
+        explanation:
+            'The set is 108 suited + 16 Wind + 12 Dragon + 8 Flower tiles; playing cards are not part of it.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each tile group to its total in a 144-tile set.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 'Suited tiles', right: '108'),
+          QuestionPair(left: 'Wind tiles', right: '16'),
+          QuestionPair(left: 'Dragon tiles', right: '12'),
+          QuestionPair(left: 'Flower tiles', right: '8'),
+        ],
+        explanation: '108 + 16 + 12 + 8 = 144 tiles.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question: 'Select the honor tile.',
+        options: ['red', 'm5', 'p5', 's5'],
+        correctIndex: 0,
+        tiles: const [
+          'm5',
+          'p5',
+          's5',
+          'red',
+          'green',
+          'white',
+          'east',
+          'south',
+        ],
+        explanation:
+            '{{red}} is a Dragon, and Dragons are honor tiles; the other three options are suited tiles.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'How many different tile faces are in a full 144-tile set?',
+        options: ['34', '36', '42', '44'],
+        correctIndex: 2,
+        explanation:
+            '27 suited numbers + 4 Winds + 3 Dragons + 8 Flowers = 42 distinct tiles.',
+      ),
     ],
   ),
 
@@ -464,6 +527,56 @@ final List<Lesson> defaultLessons = [
         tiles: ['m1', 'm2', 'm3', 'p1', 'p2', 'p3', 's1', 's2', 's3'],
         explanation:
             '{{m3}} is 3 of Characters (Wan). Tiles starting with "m" are Characters.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many Character tiles are in a complete set?',
+        options: ['9', '24', '36', '48'],
+        correctIndex: 2,
+        acceptedAnswers: ['36', '36 tiles', 'thirty-six'],
+        explanation: '9 ranks × 4 copies each = 36 Character tiles.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which of these are Character (Wan) tiles? (Select all that apply)',
+        options: ['{{m1}}', '{{p1}}', '{{m5}}', '{{s5}}', '{{m9}}'],
+        correctIndex: 0,
+        correctIndexes: [0, 2, 4],
+        explanation:
+            'm1, m5 and m9 are Characters; p1 is a Circle and s5 is Bamboo.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question: 'Put these Character tiles in ascending order.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['m2', 'm6', 'm9'],
+        explanation:
+            'Characters run 1 to 9, so {{m2}} comes before {{m6}} and {{m9}}.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question: 'Which tile completes the run {{m7}} {{m8}} ___ ?',
+        options: ['m9', 'm6', 'm5', 'p9'],
+        correctIndex: 0,
+        tiles: const ['m9', 'm6', 'm5', 'p9', 'm1', 'm7', 's9', 'p8'],
+        explanation:
+            '{{m7}} {{m8}} needs {{m9}} to make the run 7-8-9 in Characters.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each tile marker to its tile family.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 'm1', right: 'Characters (Wan)'),
+          QuestionPair(left: 'p1', right: 'Circles (Tong)'),
+          QuestionPair(left: 's1', right: 'Bamboo (Suo)'),
+          QuestionPair(left: 'east', right: 'Wind'),
+        ],
+        explanation:
+            'm = Characters, p = Circles, s = Bamboo; east is a Wind, not a suit.',
       ),
     ],
   ),
@@ -527,6 +640,55 @@ final List<Lesson> defaultLessons = [
         explanation:
             '{{p5}} is 5 of Circles (Tong). Tiles starting with "p" are Circles.',
       ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many dots does the 9 Circles tile show?',
+        options: ['3', '6', '9', '12'],
+        correctIndex: 2,
+        acceptedAnswers: ['9', 'nine', '9 dots'],
+        explanation:
+            'A Circle tile shows as many dots as its number, so 9 Circles has 9 dots.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which of these are Circle (Tong) tiles? (Select all that apply)',
+        options: ['{{p2}}', '{{m2}}', '{{p7}}', '{{s7}}', '{{p9}}'],
+        correctIndex: 0,
+        correctIndexes: [0, 2, 4],
+        explanation:
+            'p2, p7 and p9 are Circles; m2 is a Character and s7 is Bamboo.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question: 'Put these Circle tiles in descending order (highest first).',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['p8', 'p4', 'p1'],
+        explanation:
+            'Descending means highest first: {{p8}} then {{p4}} then {{p1}}.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each Circle tile to its dot count.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 'p1', right: '1 dot'),
+          QuestionPair(left: 'p5', right: '5 dots'),
+          QuestionPair(left: 'p9', right: '9 dots'),
+        ],
+        explanation:
+            'Circle tiles are numbered by the count of dots on the face.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'In Cantonese, the Circles suit is called...',
+        options: ['Tong (筒)', 'Wan (萬)', 'Suo (索)', 'Faan (番)'],
+        correctIndex: 0,
+        explanation:
+            'Circles are Tong (筒), Characters are Wan (萬) and Bamboo are Suo (索).',
+      ),
     ],
   ),
 
@@ -585,6 +747,58 @@ final List<Lesson> defaultLessons = [
         type: QuizType.tileOrdering,
         tiles: ['s2', 's3', 's4'],
         explanation: 'Bamboo tiles in sequence: {{s2}} → {{s3}} → {{s4}}.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many Bamboo tiles are in a complete set?',
+        options: ['9', '27', '36', '54'],
+        correctIndex: 2,
+        acceptedAnswers: ['36', '36 tiles', 'thirty-six'],
+        explanation: '9 ranks × 4 copies each = 36 Bamboo tiles.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which of these are Bamboo (Suo) tiles? (Select all that apply)',
+        options: ['{{s3}}', '{{m3}}', '{{s6}}', '{{p6}}', '{{s9}}'],
+        correctIndex: 0,
+        correctIndexes: [0, 2, 4],
+        explanation:
+            's3, s6 and s9 are Bamboo; m3 is a Character and p6 is a Circle.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question: 'Select the tile that is NOT a Bamboo tile.',
+        options: ['s4', 's8', 'p8', 's2'],
+        correctIndex: 2,
+        tiles: const ['s4', 's8', 'p8', 's2', 'm4', 'p4', 'east', 's6'],
+        explanation: '{{p8}} is a Circle; s4, s8 and s2 are all Bamboo.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each Bamboo tile to its rank.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 's1', right: '1 Bamboo (the bird)'),
+          QuestionPair(left: 's5', right: '5 Bamboo'),
+          QuestionPair(left: 's9', right: '9 Bamboo'),
+        ],
+        explanation:
+            'Bamboo tiles run 1 to 9, and the 1 Bamboo is drawn as a bird.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'Which three suits make up the 108 suited tiles?',
+        options: [
+          'Characters, Circles and Bamboo',
+          'Winds, Dragons and Flowers',
+          'Characters, Winds and Dragons',
+          'Circles, Bamboo and Flowers',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Only Characters, Circles and Bamboo are suited; Winds, Dragons and Flowers are not.',
       ),
     ],
   ),
@@ -645,6 +859,65 @@ final List<Lesson> defaultLessons = [
         tiles: ['east', 'south', 'west', 'north', 'm1', 'p1', 's1', 'red'],
         explanation: '{{north}} is the North Wind tile.',
       ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many copies of each Wind tile are in a set?',
+        options: ['1', '2', '4', '8'],
+        correctIndex: 2,
+        acceptedAnswers: ['4', 'four', '4 copies'],
+        explanation: 'Each Wind has 4 copies, just like every suited tile.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these are Wind tiles? (Select all that apply)',
+        options: ['{{east}}', '{{red}}', '{{south}}', '{{green}}', '{{north}}'],
+        correctIndex: 0,
+        correctIndexes: [0, 2, 4],
+        explanation:
+            'East, South and North are Winds; red and green are Dragons.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'Select the Wind that comes right after East in seating order.',
+        options: ['south', 'west', 'north', 'east'],
+        correctIndex: 0,
+        tiles: const [
+          'east',
+          'south',
+          'west',
+          'north',
+          'red',
+          'green',
+          'white',
+          'm1',
+        ],
+        explanation:
+            'Seating order runs East, South, West, North, so {{south}} follows East.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each Wind to its seat number.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 'East', right: 'Seat 1'),
+          QuestionPair(left: 'South', right: 'Seat 2'),
+          QuestionPair(left: 'West', right: 'Seat 3'),
+          QuestionPair(left: 'North', right: 'Seat 4'),
+        ],
+        explanation:
+            'Seats are numbered in order: East 1, South 2, West 3, North 4.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You are South and the round wind is South. Your South triplet is worth how much?',
+        options: ['0 Faan', '1 Faan', '2 Faan', '3 Faan'],
+        correctIndex: 2,
+        explanation:
+            'A Wind triplet scores 1 Faan for seat wind and 1 Faan for round wind, so they double to 2.',
+      ),
     ],
   ),
 
@@ -667,7 +940,7 @@ final List<Lesson> defaultLessons = [
       DialogueMessage(
         speaker: 'mj',
         text:
-            'A triplet of any Dragon is always worth 1 Faan (bonus point). Collect all three Dragon triplets? That\'s "Large Three Dragons" — a limit hand!',
+            'A triplet of any Dragon is always worth 1 Faan. Collect all three Dragon triplets? That\'s "Large Three Dragons" (大三元) — worth 5 Faan, plus 3 more for the triplets, so 8 Faan in total!',
       ),
       DialogueMessage(
         speaker: 'mj',
@@ -698,6 +971,58 @@ final List<Lesson> defaultLessons = [
         tiles: ['red', 'green', 'white', 'east', 'south', 'west', 'north'],
         explanation:
             '{{green}} is the Green Dragon (發), representing fortune and prosperity.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many different Dragon tiles are there?',
+        options: ['2', '3', '4', '6'],
+        correctIndex: 1,
+        acceptedAnswers: ['3', 'three', '3 dragons'],
+        explanation: 'Red, Green and White make 3 Dragons, each with 4 copies.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these are Dragon tiles? (Select all that apply)',
+        options: ['{{red}}', '{{east}}', '{{green}}', '{{white}}', '{{north}}'],
+        correctIndex: 0,
+        correctIndexes: [0, 2, 3],
+        explanation:
+            'Red, Green and White are Dragons; east and north are Winds.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each Dragon to its Chinese name.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 'Red Dragon', right: '紅中'),
+          QuestionPair(left: 'Green Dragon', right: '發財'),
+          QuestionPair(left: 'White Dragon', right: '白板'),
+        ],
+        explanation:
+            'The three Dragons are 紅中 (red), 發財 (green) and 白板 (white).',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question: 'Select a tile that can never be part of a sequence.',
+        options: ['east', 'm1', 'p5', 's9'],
+        correctIndex: 0,
+        tiles: const ['east', 'm1', 'p5', 's9', 'red', 'm5', 'p1', 's5'],
+        explanation:
+            'Only suited tiles form runs; an honor like {{east}} cannot.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'Triplets of all three Dragons make which hand?',
+        options: [
+          'Small Three Dragons (小三元)',
+          'Large Three Dragons (大三元)',
+          'All Honors (字一色)',
+          'Mixed One Suit (混一色)',
+        ],
+        correctIndex: 1,
+        explanation:
+            'Large Three Dragons is 5 Faan, plus 3 Faan from the Dragon triplets, for 8 Faan in total.',
       ),
     ],
   ),
@@ -762,6 +1087,71 @@ final List<Lesson> defaultLessons = [
         explanation:
             'A flower only counts as YOUR flower (正花) when it matches your seat wind. East: Spring+Plum, South: Summer+Orchid, West: Autumn+Chrysanthemum, North: Winter+Bamboo. Drawing another player\'s flower gives 0 Faan.',
       ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many copies of each Flower tile are in a set?',
+        options: ['1', '2', '4', '8'],
+        correctIndex: 0,
+        acceptedAnswers: ['1', 'one', '1 copy'],
+        explanation:
+            'There are 8 Flowers and each one exists only once, so 1 copy each.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these are Flower tiles? (Select all that apply)',
+        options: [
+          '{{f_spring}}',
+          '{{f_plum}}',
+          '{{east}}',
+          '{{f_chrys}}',
+          '{{red}}',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 3],
+        explanation:
+            'Spring, Plum and Chrysanthemum are Flowers; east is a Wind and red is a Dragon.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each seat to its two flowers.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 'East', right: 'Spring + Plum'),
+          QuestionPair(left: 'South', right: 'Summer + Orchid'),
+          QuestionPair(left: 'West', right: 'Autumn + Chrysanthemum'),
+          QuestionPair(left: 'North', right: 'Winter + Bamboo'),
+        ],
+        explanation:
+            'Each seat owns one Season and one Plant: East 1, South 2, West 3, North 4.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question: 'Select the Flower that belongs to the South seat.',
+        options: ['f_orchid', 'f_plum', 'f_chrys', 'f_bamboo'],
+        correctIndex: 0,
+        tiles: const [
+          'f_spring',
+          'f_summer',
+          'f_autumn',
+          'f_winter',
+          'f_plum',
+          'f_orchid',
+          'f_chrys',
+          'f_bamboo',
+        ],
+        explanation:
+            'South\'s flowers are Summer and Orchid, so {{f_orchid}} is South\'s flower.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Collecting all four Seasons or all four Plants is worth how much?',
+        options: ['0 Faan', '1 Faan', '3 Faan', '5 Faan'],
+        correctIndex: 1,
+        explanation:
+            'A complete set of four Seasons or four Plants (一台花) is 1 Faan, and matching seat flowers still count separately.',
+      ),
     ],
   ),
 
@@ -811,6 +1201,63 @@ final List<Lesson> defaultLessons = [
         tiles: ['m1', 'east', 'f_spring'],
         explanation:
             'Suited tiles (4 copies each) > Wind/Dragon tiles (4 copies each but fewer types) > Flower tiles (1 copy each). By total count: Suited (108) > Winds (16) > Dragons (12) > Flowers (8).',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many honor tiles (Winds plus Dragons) are in a set?',
+        options: ['19', '24', '28', '32'],
+        correctIndex: 2,
+        acceptedAnswers: ['28', '28 tiles', 'twenty-eight'],
+        explanation: '16 Wind tiles + 12 Dragon tiles = 28 honor tiles.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these are honor tiles? (Select all that apply)',
+        options: ['{{east}}', '{{m1}}', '{{red}}', '{{white}}', '{{s9}}'],
+        correctIndex: 0,
+        correctIndexes: [0, 2, 3],
+        explanation:
+            'Winds and Dragons are honors; m1 and s9 are suited tiles.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each tile to its family.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 'm5', right: 'Characters'),
+          QuestionPair(left: 'p5', right: 'Circles'),
+          QuestionPair(left: 's5', right: 'Bamboo'),
+          QuestionPair(left: 'white', right: 'Dragon'),
+        ],
+        explanation:
+            'The letter in the tile id names the family: m Characters, p Circles, s Bamboo; white is a Dragon.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question: 'Arrange the Winds in seating order, starting from East.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['east', 'south', 'west', 'north'],
+        explanation: 'Play moves East, South, West, North around the table.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question: 'Select the tile that scores 1 Faan as a triplet on its own.',
+        options: ['red', 'm5', 'p5', 's5'],
+        correctIndex: 0,
+        tiles: const [
+          'red',
+          'green',
+          'white',
+          'm5',
+          'p5',
+          's5',
+          'east',
+          'north',
+        ],
+        explanation:
+            'A Dragon triplet is 1 Faan on its own, while a suited triplet has no separate Faan.',
       ),
     ],
   ),
@@ -878,6 +1325,73 @@ final List<Lesson> defaultLessons = [
         tiles: ['s4', 's5', 's6'],
         explanation: '{{s4}}{{s5}}{{s6}} forms a valid Bamboo sequence.',
       ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which of these are valid Sequences (Chow)? Select all that apply.',
+        options: [
+          '{{m4}}{{m5}}{{m6}}',
+          '{{p2}}{{p3}}{{p4}}',
+          '{{s8}}{{s9}}{{s1}}',
+          '{{m6}}{{p7}}{{s8}}',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'A Chow is 3 consecutive tiles in one suit, so {{s8}}{{s9}}{{s1}} fails because sequences do not wrap around and {{m6}}{{p7}}{{s8}} mixes three suits.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each three-tile group to what it is.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: '{{s3}}{{s4}}{{s5}}', right: 'Valid Sequence'),
+          QuestionPair(
+            left: '{{s3}}{{s5}}{{s7}}',
+            right: 'Not a sequence (gap)',
+          ),
+          QuestionPair(
+            left: '{{m9}}{{m1}}{{m2}}',
+            right: 'Not a sequence (wraps)',
+          ),
+          QuestionPair(
+            left: '{{east}}{{south}}{{west}}',
+            right: 'Not a sequence (honors)',
+          ),
+        ],
+        explanation:
+            'Consecutive same-suit tiles make a Chow; a gap breaks the run, 9-1-2 wraps around the end, and honor tiles have no numbers at all.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many tiles are in one Sequence (Chow)?',
+        options: ['2', '3', '4', '5'],
+        correctIndex: 1,
+        acceptedAnswers: ['3', 'three', '3 tiles'],
+        explanation:
+            'A Chow is exactly 3 consecutive tiles, which is why four Chows plus a pair fill the 14-tile winning hand.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'Select the middle tile that completes this Sequence: {{m4}}___{{m6}}',
+        options: ['m3', 'm5', 'm7', 'm8'],
+        correctIndex: 1,
+        tiles: const ['m3', 'm5', 'm7', 'm8'],
+        explanation:
+            '{{m4}}{{m5}}{{m6}} is the only run through both given tiles, so {{m5}} is the one tile that fits in the gap.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'Arrange these tiles into the highest possible valid Sequence.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['m7', 'm8', 'm9'],
+        explanation:
+            '7-8-9 is the highest Chow in any suit, because 8-9-1 would wrap around and is never allowed.',
+      ),
     ],
   ),
 
@@ -942,6 +1456,73 @@ final List<Lesson> defaultLessons = [
         explanation:
             'A Pong needs 3 identical tiles. {{red}}{{red}} needs another {{red}} to complete.',
       ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which of these are valid Pongs (Triplets)? Select all that apply.',
+        options: [
+          '{{west}}{{west}}{{west}}',
+          '{{s9}}{{s9}}{{s9}}',
+          '{{m2}}{{m3}}{{m4}}',
+          '{{red}}{{green}}{{white}}',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'A Pong is 3 identical tiles of any type, so the three Wests and three 9-Bamboo both count, while {{m2}}{{m3}}{{m4}} is a Chow and the three different Dragons are not identical.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'Select the tile that makes a Pong out of your pair, not a Chow: {{p7}}{{p7}}___',
+        options: ['p7', 'p6', 'p8', 's7'],
+        correctIndex: 0,
+        tiles: const ['p7', 'p6', 'p8', 's7'],
+        explanation:
+            'A Pong needs 3 identical tiles, so the pair needs a third {{p7}}; {{p6}} or {{p8}} would not complete any meld.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many identical tiles are needed to make a Pong?',
+        options: ['2', '3', '4', '5'],
+        correctIndex: 1,
+        acceptedAnswers: ['3', 'three', '3 tiles'],
+        explanation:
+            'A Pong is exactly 3 identical tiles, while a 4th copy of the same tile would make it a Kong instead.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each Pong term to its meaning.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 'Pong', right: '3 identical tiles'),
+          QuestionPair(
+            left: 'Concealed Pong',
+            right: 'All 3 tiles drawn by you',
+          ),
+          QuestionPair(
+            left: 'Exposed Pong',
+            right: 'Completed by claiming a discard',
+          ),
+        ],
+        explanation:
+            'A Pong is 3 identical tiles, and it is concealed when you drew all three yourself but exposed when the third came from another player\'s discard.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Why is {{east}}{{east}}{{east}} a valid Pong but {{east}}{{south}}{{west}} is not?',
+        options: [
+          'East is a Dragon tile',
+          'Honor tiles have no numbers, so only identical copies can form a meld',
+          'Winds may only be used in pairs',
+          'Because East is the dealer',
+        ],
+        correctIndex: 1,
+        explanation:
+            'Winds and Dragons carry no rank, so they can never line up as consecutive tiles and only identical copies can form a Pong.',
+      ),
     ],
   ),
 
@@ -1005,6 +1586,66 @@ final List<Lesson> defaultLessons = [
         explanation:
             'A pair (2 tiles) does NOT add Faan. Only a TRIPLET (3 tiles) of Dragons or your seat Wind gives 1 Faan. The pair is just the required "eyes" of a winning hand.',
       ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each hand part to how many tiles it uses.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 'Pair (eyes)', right: '2 identical tiles'),
+          QuestionPair(left: 'Chow', right: '3 consecutive same-suit tiles'),
+          QuestionPair(left: 'Pong', right: '3 identical tiles'),
+          QuestionPair(left: 'Kong', right: '4 identical tiles'),
+        ],
+        explanation:
+            'The pair is the only 2-tile unit; Chow and Pong both use 3 tiles and a Kong uses 4, yet each meld still counts as 3 for hand structure.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question: 'Select the tile that completes this pair: {{p3}}___',
+        options: ['p3', 'p4', 'p2', 'm3'],
+        correctIndex: 0,
+        tiles: const ['p3', 'p4', 'p2', 'm3'],
+        explanation:
+            'A pair is 2 identical tiles, so {{p3}}{{p3}} is the pair; {{p2}} or {{p4}} would only start a run.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which of these can serve as the pair (eyes) of a winning hand? Select all that apply.',
+        options: [
+          '{{west}}{{west}}',
+          '{{red}}{{red}}',
+          '{{m3}}{{m4}}',
+          '{{east}}{{south}}',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'Any two identical tiles can be the eyes, so a West pair and a Red Dragon pair both work, but {{m3}}{{m4}} and {{east}}{{south}} are not identical.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'Which statement about the pair is correct?',
+        options: [
+          'A hand may hold two pairs if it has only three melds',
+          'A hand with 4 melds and 2 pairs is a valid win',
+          'A standard win is 4 melds plus exactly 1 pair',
+          'The pair must always be a suited tile',
+        ],
+        correctIndex: 2,
+        explanation:
+            'The standard hand is 4 melds + exactly 1 pair = 14 tiles, so an extra pair leaves the hand one meld short.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many tiles are in a Pair (eyes)?',
+        options: ['1', '2', '3', '4'],
+        correctIndex: 1,
+        acceptedAnswers: ['2', 'two', '2 tiles'],
+        explanation:
+            'A pair is 2 identical tiles, and a winning hand contains exactly one such pair.',
+      ),
     ],
   ),
 
@@ -1067,6 +1708,75 @@ final List<Lesson> defaultLessons = [
         correctIndex: 1,
         explanation:
             'A Kong itself does NOT add Faan. Its benefit is the replacement draw and that it can support other Faan hands (e.g. All Pongs). Faan comes from the hand pattern, not from the Kong declaration.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these are Kongs? Select all that apply.',
+        options: [
+          '{{s7}}{{s7}}{{s7}}{{s7}}',
+          '{{red}}{{red}}{{red}}{{red}}',
+          '{{m1}}{{m1}}{{m1}}',
+          '{{p4}}{{p5}}{{p6}}',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'A Kong is 4 identical tiles of any type, so four 7-Bamboo and four Red Dragons qualify, while three 1-Character is a Pong and {{p4}}{{p5}}{{p6}} is a Chow.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each Kong type to how it is formed.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Concealed Kong',
+            right: 'All 4 tiles drawn by you',
+          ),
+          QuestionPair(
+            left: 'Exposed Kong',
+            right: 'Completed by claiming a discard',
+          ),
+          QuestionPair(
+            left: 'Supplemental Kong',
+            right: '4th tile added to an existing Pong',
+          ),
+        ],
+        explanation:
+            'The three Kongs differ only in where the 4th tile comes from: your own draws, another player\'s discard, or upgrading a Pong you already exposed.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many Kongs does the 十八羅漢 (18 Arhats) hand require?',
+        options: ['2', '3', '4', '5'],
+        correctIndex: 2,
+        acceptedAnswers: ['4', 'four', '4 kongs'],
+        explanation:
+            '十八羅漢 is the four-Kong limit hand: 4 Kongs of 4 tiles each plus a pair makes 18 physical tiles.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'Select the tile that upgrades this Pong into a Kong: {{m7}}{{m7}}{{m7}}___',
+        options: ['m7', 'm8', 'm6', 'p7'],
+        correctIndex: 0,
+        tiles: const ['m7', 'm8', 'm6', 'p7'],
+        explanation:
+            'A Kong is 4 identical tiles, so adding the last {{m7}} turns the Pong into a supplemental Kong.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'A Kong is 4 tiles, so why does a hand with one Kong still count as a normal 4-meld hand?',
+        options: [
+          'Because the Kong replaces your pair',
+          'Because a Kong counts as one 3-tile meld and the replacement draw restores your hand size',
+          'Because Kongs are ignored when scoring structure',
+          'Because you discard one tile after declaring a Kong',
+        ],
+        correctIndex: 1,
+        explanation:
+            'A Kong counts as a single meld (3 tiles) for structure, and the replacement draw keeps your hand at the right size, so the hand is still 4 melds + 1 pair.',
       ),
     ],
   ),
@@ -1133,6 +1843,67 @@ final List<Lesson> defaultLessons = [
         explanation:
             'Cantonese Mahjong requires a minimum of 3 Faan to declare a win.',
       ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which of these are valid winning-hand structures? Select all that apply.',
+        options: [
+          '4 Chows + 1 Pair',
+          '2 Chows + 2 Pongs + 1 Pair',
+          '4 Pongs + 1 Kong',
+          '3 Pongs + 1 Pair',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'Any mix of 4 melds plus 1 pair wins, but 4 Pongs + 1 Kong is 5 melds with no pair and 3 Pongs + 1 Pair is only 11 tiles.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'You hold {{m1}}{{m2}}{{m3}} {{p4}}{{p5}}{{p6}} {{s7}}{{s8}}{{s9}} {{east}}{{east}}{{east}} {{m9}}. Select the tile that completes the win.',
+        options: ['m9', 'm8', 'p9', 'east'],
+        correctIndex: 0,
+        tiles: const ['m9', 'm8', 'p9', 'east'],
+        explanation:
+            'The hand already has 4 melds, so the 13th tile only needs to pair up: {{m9}}{{m9}} is the eyes and completes 14 tiles.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each structure term to its meaning.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 'Meld', right: 'A Chow, Pong or Kong'),
+          QuestionPair(left: 'Eyes', right: 'The one pair a hand needs'),
+          QuestionPair(
+            left: 'Kong',
+            right: '4 identical tiles counted as one meld',
+          ),
+        ],
+        explanation:
+            'Every winning hand is 4 melds of these three kinds plus the single pair known as the eyes.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'A hand of four Kongs plus a pair physically shows how many tiles?',
+        options: ['14', '15', '16', '18'],
+        correctIndex: 3,
+        acceptedAnswers: ['18', 'eighteen', '18 tiles'],
+        explanation:
+            'Each Kong adds one extra physical tile to the 14-tile frame, so 4 Kongs + 1 pair shows 18 tiles.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'Rank matters in a Chow: arrange these Character tiles from lowest to highest.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['m2', 'm5', 'm8'],
+        explanation:
+            'Character tiles run 1 to 9, so the ascending order is {{m2}}{{m5}}{{m8}} — the same reading order a Chow must follow.',
+      ),
     ],
   ),
 
@@ -1178,6 +1949,67 @@ final List<Lesson> defaultLessons = [
         correctIndex: 1,
         explanation:
             'A standard winning hand needs exactly 4 melds plus 1 pair.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each combination to its tile count.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 'Pair', right: '2 identical tiles'),
+          QuestionPair(left: 'Chow', right: '3 consecutive same-suit tiles'),
+          QuestionPair(left: 'Pong', right: '3 identical tiles'),
+          QuestionPair(left: 'Kong', right: '4 identical tiles'),
+        ],
+        explanation:
+            'The four building blocks are 2, 3, 3 and 4 tiles, and only the Kong\'s extra tile is absorbed by a replacement draw.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which statements are true? Select all that apply.',
+        options: [
+          'A Chow must stay within one suit',
+          'A Kong counts as one meld for hand structure',
+          'A pair of Dragons adds 1 Faan',
+          'Honor tiles can form a Chow',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'Chows never mix suits and a Kong is one meld, but a Dragon pair adds no Faan and honors cannot form runs at all.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'You hold {{s2}}{{s3}}{{s4}} {{p6}}{{p7}}{{p8}} {{m5}}{{m5}}{{m5}} {{west}}{{west}}{{west}} {{red}}. Select the tile that completes 4 melds + 1 pair.',
+        options: ['red', 'green', 'white', 'east'],
+        correctIndex: 0,
+        tiles: const ['red', 'green', 'white', 'east'],
+        explanation:
+            'With four melds already set, the lone {{red}} only needs a partner, so a second Red Dragon completes the eyes.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'Which of these is NOT a valid winning hand?',
+        options: [
+          '3 Chows + 1 Pong + 1 Pair',
+          '4 Pongs + 1 Pair',
+          '2 Chows + 1 Pong + 2 Pairs',
+          '1 Chow + 3 Pongs + 1 Pair',
+        ],
+        correctIndex: 2,
+        explanation:
+            'The third option is only 3 melds and two pairs, which is 13 tiles with the wrong shape, while the others are all 4 melds + 1 pair.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'How many Faan are needed to declare a win in Hong Kong mahjong?',
+        options: ['1', '2', '3', '5'],
+        correctIndex: 2,
+        acceptedAnswers: ['3', 'three', '3 faan'],
+        explanation:
+            'Three Faan is the minimum to win (三番起糊), and 10 Faan is the cap on any hand.',
       ),
     ],
   ),
@@ -1233,6 +2065,66 @@ final List<Lesson> defaultLessons = [
         options: ['Clockwise', 'Counter-clockwise', 'Random', 'Alphabetical'],
         correctIndex: 1,
         explanation: 'Seats go counter-clockwise: East → South → West → North.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these are true about the dealer (East)?',
+        options: [
+          'Takes the first turn of the hand',
+          'Starts with 14 tiles',
+          'Keeps the deal after a washout',
+          'Is paid double for winning',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'East starts with 14 tiles and discards first, while a washout still passes the deal on and the dealer gets no scoring bonus.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many rounds does a full game have?',
+        options: ['1', '2', '3', '4'],
+        correctIndex: 3,
+        acceptedAnswers: ['4', 'four', '4 rounds', 'four rounds'],
+        explanation:
+            'A full game runs four rounds: East, South, West and North.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each setup step with what it decides.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 'Dice roll', right: 'Where the wall is broken'),
+          QuestionPair(
+            left: 'Wind tile draw',
+            right: 'Which seat each player takes',
+          ),
+          QuestionPair(
+            left: 'Washout (流局)',
+            right: 'The deal still passes to the next player',
+          ),
+        ],
+        explanation:
+            'The dice only pick the break point, the wind draw fixes seats, and a washout rotates the deal.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'Rounds run East, South, West, North. Which Wind tile marks the second round?',
+        options: ['east', 'south', 'west', 'north'],
+        correctIndex: 1,
+        explanation: 'The South round is the second of the four rounds.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'Arrange the Wind tiles in seating order, starting from the dealer.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['east', 'south', 'west', 'north'],
+        explanation:
+            'Seats and turns run counter-clockwise: East, South, West, North.',
       ),
     ],
   ),
@@ -1295,6 +2187,76 @@ final List<Lesson> defaultLessons = [
         explanation:
             'Flower tiles are declared face-up immediately, and you draw replacement tiles.',
       ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which statements about the deal are correct?',
+        options: [
+          'Tiles are taken four at a time',
+          'Players go three times round before the single tile',
+          'The dealer finishes with 13 tiles',
+          'Flowers are kept hidden in the hand',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'The deal is four tiles three times round plus one each, the dealer holds 14, and flowers are shown.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many times does the deal go round taking four tiles?',
+        options: ['2', '3', '4', '5'],
+        correctIndex: 1,
+        acceptedAnswers: ['3', 'three', '3 times', 'three times'],
+        explanation:
+            'Three passes of four tiles give everyone 12 before the single tile.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each situation with what happens.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'You are dealt a Flower',
+            right: 'Show it and draw a replacement',
+          ),
+          QuestionPair(
+            left: 'You are the dealer',
+            right: 'You start by discarding',
+          ),
+          QuestionPair(
+            left: 'You are a non-dealer',
+            right: 'You wait with 13 tiles for your first draw',
+          ),
+          QuestionPair(
+            left: 'The wall is broken',
+            right: 'Dealing starts from that point',
+          ),
+        ],
+        explanation:
+            'Flowers leave the hand immediately, and only East begins by discarding because East already holds 14 tiles.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question: 'Which of these must be declared face-up and replaced?',
+        options: ['f_plum', 'm1', 'east', 'white'],
+        correctIndex: 0,
+        explanation:
+            'Flower tiles are declared and replaced; the other three stay in your hand.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'Where does a replacement tile for a Flower come from?',
+        options: [
+          'The back of the wall',
+          'The front of the wall',
+          'The discard pile',
+          'The player on your left',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Flower replacements are drawn from the back (end) of the wall.',
+      ),
     ],
   ),
 
@@ -1351,6 +2313,73 @@ final List<Lesson> defaultLessons = [
         options: ['Clockwise', 'Counter-clockwise', 'Random', 'Dealer decides'],
         correctIndex: 1,
         explanation: 'Turns proceed counter-clockwise around the table.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which are true during a normal turn?',
+        options: [
+          'You draw one tile from the wall',
+          'You temporarily hold 14 tiles',
+          'You discard one tile face-up',
+          'You may discard two tiles instead',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 2],
+        explanation: 'A turn is draw one, hold 14, then discard exactly one.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'You hold 14 tiles after drawing. How many must you discard?',
+        options: ['0', '1', '2', '3'],
+        correctIndex: 1,
+        acceptedAnswers: ['1', 'one', '1 tile', 'one tile'],
+        explanation: 'Discarding one tile returns your hand to 13.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each situation with what you do.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'You draw a tile you cannot use',
+            right: 'Discard it at the end of your turn',
+          ),
+          QuestionPair(
+            left: 'You draw your winning tile',
+            right: 'Declare the win instead of discarding',
+          ),
+          QuestionPair(
+            left: 'You declare a Kong',
+            right: 'Draw a replacement before discarding',
+          ),
+          QuestionPair(
+            left: 'The wall runs out',
+            right: 'The hand ends in a washout',
+          ),
+        ],
+        explanation:
+            'Drawing never forces a discard when you can win, and a Kong adds a replacement draw to the turn.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question: 'East has just discarded. Whose turn is next?',
+        options: ['south', 'west', 'north', 'east'],
+        correctIndex: 0,
+        explanation: 'Turns pass counter-clockwise, so South plays after East.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'Where are your discards placed?',
+        options: [
+          'Face-up in front of you, in order',
+          'Face-down in the centre',
+          'Back into the wall',
+          'Into the dealer\'s row',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Every player keeps a face-up row of discards, which is public information.',
       ),
     ],
   ),
@@ -1413,6 +2442,62 @@ final List<Lesson> defaultLessons = [
         correctIndex: 1,
         explanation:
             'After claiming a Chow, you reveal the sequence and then discard a tile.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which conditions must be met to call Chow?',
+        options: [
+          'You hold two suited tiles that complete a run',
+          'The discard comes from the player on your left',
+          'The completed run is three consecutive tiles of one suit',
+          'Any player at the table may feed your Chow',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 2],
+        explanation:
+            'A Chow is a suited run fed only by the player immediately before you.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question: 'You hold {{m4}}{{m5}}. Which discard completes a Chow?',
+        options: ['m3', 'm7', 'p3', 'east'],
+        correctIndex: 0,
+        explanation:
+            '{{m3}}{{m4}}{{m5}} is a run, while {{m7}} would need a {{m6}} you do not hold.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'Arrange these tiles into a Chow that uses your {{m3}} and {{m5}}.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['m3', 'm4', 'm5'],
+        explanation:
+            '{{m3}}{{m4}}{{m5}} is three consecutive tiles in one suit.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many tiles do you reveal when you call Chow?',
+        options: ['2', '3', '4', '5'],
+        correctIndex: 1,
+        acceptedAnswers: ['3', 'three', '3 tiles', 'three tiles'],
+        explanation:
+            'A Chow is a three-tile run shown face-up with the claimed discard.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question:
+            'Match the two tiles you hold with the discard you need for a Chow.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 's5 and s6', right: 's4 or s7'),
+          QuestionPair(left: 'm8 and m9', right: 'm7 only'),
+          QuestionPair(left: 'p1 and p2', right: 'p3 only'),
+          QuestionPair(left: 'east and east', right: 'No Chow is possible'),
+        ],
+        explanation:
+            'A run stays inside 1 to 9 in one suit, so 8-9 takes only 7, 1-2 takes only 3, and honour tiles cannot be chowed.',
       ),
     ],
   ),
@@ -1481,6 +2566,67 @@ final List<Lesson> defaultLessons = [
         explanation:
             'Exposed melds (from claiming) are generally worth less than concealed melds.',
       ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which are true about a Pong?',
+        options: [
+          'You may claim it from any player',
+          'It beats a Chow for the same discard',
+          'You discard one tile after revealing it',
+          'It gives you a replacement draw from the back of the wall',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 2],
+        explanation:
+            'Pong comes from any seat and outranks Chow; the replacement draw belongs to Kong.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question: 'You hold {{s7}}{{s7}}. Which discard completes a Pong?',
+        options: ['s7', 's6', 's8', 'p7'],
+        correctIndex: 0,
+        explanation:
+            'A Pong needs the identical tile; {{s6}} or {{s8}} would make a Chow and {{p7}} is another suit.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match what you hold with the claim it allows.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 'Two identical tiles', right: 'Pong'),
+          QuestionPair(left: 'Three identical tiles', right: 'Kong'),
+          QuestionPair(left: 'Two tiles one apart in one suit', right: 'Chow'),
+          QuestionPair(
+            left: 'Four melds and a pair worth 3+ faan',
+            right: 'Win',
+          ),
+        ],
+        explanation:
+            'Each claim is defined by how many tiles you already hold and whether they match or run.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'After calling Pong, how many tiles must you discard?',
+        options: ['0', '1', '2', '3'],
+        correctIndex: 1,
+        acceptedAnswers: ['1', 'one', '1 tile', 'one tile'],
+        explanation:
+            'Claiming takes you to 14 tiles, so one discard brings you back to 13.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'After your Pong, who plays next?',
+        options: [
+          'The player after you',
+          'The player who discarded',
+          'The dealer',
+          'The player across',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Play resumes from your seat, skipping the players in between.',
+      ),
     ],
   ),
 
@@ -1544,6 +2690,71 @@ final List<Lesson> defaultLessons = [
         correctIndex: 2,
         explanation:
             'Three types: Exposed Kong (claim discard), Concealed Kong (all from draws), Supplemental Kong (add to Pong).',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these are ways to make a Kong?',
+        options: [
+          'Claim a discard while holding three identical tiles',
+          'Draw all four identical tiles yourself',
+          'Add the fourth tile to an existing Pong',
+          'Claim a discard that matches two tiles in your hand',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 2],
+        explanation:
+            'The three Kong types are exposed, concealed and supplemental, while two matching tiles are only a Pong.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many identical tiles make a Kong?',
+        options: ['2', '3', '4', '5'],
+        correctIndex: 2,
+        acceptedAnswers: ['4', 'four', '4 tiles', 'four tiles'],
+        explanation: 'A Kong is a meld of four identical tiles.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each Kong type with how it is made.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Exposed Kong',
+            right: 'Claim the fourth tile from a discard',
+          ),
+          QuestionPair(left: 'Concealed Kong', right: 'Draw all four yourself'),
+          QuestionPair(
+            left: 'Supplemental Kong',
+            right: 'Add the fourth tile to your Pong',
+          ),
+          QuestionPair(
+            left: 'Replacement tile',
+            right: 'Taken from the back of the wall',
+          ),
+        ],
+        explanation:
+            'The three kinds differ in where the fourth tile comes from, and all of them take a replacement from the wall\'s end.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question: 'You hold {{red}}{{red}}{{red}}. Which discard may you Kong?',
+        options: ['red', 'green', 'white', 'east'],
+        correctIndex: 0,
+        explanation: 'A Kong needs the fourth copy of the identical tile.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'Why do you draw a replacement after declaring a Kong?',
+        options: [
+          'The Kong takes four tiles into one meld',
+          'The dealer awards a free tile',
+          'The wall owes you a Flower',
+          'You must replace the tile you discarded',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Four tiles become one meld, so the replacement keeps your hand at full size.',
       ),
     ],
   ),
@@ -1609,6 +2820,65 @@ final List<Lesson> defaultLessons = [
         explanation:
             'Without the minimum 3 Faan, you cannot declare a win even with a complete hand structure.',
       ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these are valid ways to win?',
+        options: [
+          'Drawing your winning tile from the wall',
+          'Claiming a discard that completes your hand',
+          'Reaching at least 3 faan',
+          'Claiming any discard that completes a pair',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 2],
+        explanation:
+            'You win by self-draw or by claiming a discard, and only with 3 faan or more.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'What is the faan cap, however big the hand?',
+        options: ['5', '8', '10', '13'],
+        correctIndex: 2,
+        acceptedAnswers: ['10', 'ten', '10 faan', 'ten faan'],
+        explanation: 'Every hand counts as at most 10 faan under these rules.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match how the hand ends with who pays.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Discard win (出銃)',
+            right: 'The discarder pays the full value',
+          ),
+          QuestionPair(
+            left: 'Self-draw (自摸)',
+            right: 'Each of the other three pays half value',
+          ),
+          QuestionPair(left: 'Washout (流局)', right: 'No points are exchanged'),
+        ],
+        explanation:
+            '半銃制 means the discarder pays in full, while a self-draw is split in half across the three other players.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'You hold {{m1}}{{m2}} and need one tile to win. Which discard completes your run?',
+        options: ['m3', 'm4', 'p3', 'east'],
+        correctIndex: 0,
+        explanation:
+            '{{m1}}{{m2}} waits only on {{m3}}, because a run cannot wrap past 9.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You self-draw a 4-faan hand. How much do you collect in total?',
+        options: ['8', '16', '24', '32'],
+        correctIndex: 2,
+        explanation:
+            'At 4 faan a discard win pays 16, so self-draw pays each player 8 for 24 in total.',
+      ),
     ],
   ),
 
@@ -1663,6 +2933,69 @@ final List<Lesson> defaultLessons = [
         tiles: ['red', 'east', 's1'],
         explanation:
             'Win (highest priority) → Pong/Kong (middle) → Chow (lowest priority).',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which claims may you make from any player\'s discard?',
+        options: ['Chow', 'Pong', 'Kong', 'Win'],
+        correctIndex: 1,
+        correctIndexes: [1, 2, 3],
+        explanation:
+            'Only Chow is limited to the player on your left; the other claims may come from any seat.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each stage of the hand with its rule.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 'Deal', right: 'The dealer starts with 14 tiles'),
+          QuestionPair(
+            left: 'Normal turn',
+            right: 'Draw one tile, then discard one',
+          ),
+          QuestionPair(
+            left: 'Kong',
+            right: 'The replacement comes from the back of the wall',
+          ),
+          QuestionPair(
+            left: 'Wall exhausted',
+            right: 'Washout, with no points exchanged',
+          ),
+        ],
+        explanation:
+            'The flow runs deal, draw and discard, claim, then win or washout.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'A discard win at 6 faan pays how many points?',
+        options: ['24', '32', '48', '64'],
+        correctIndex: 1,
+        acceptedAnswers: ['32', 'thirty-two', '32 points'],
+        explanation: 'The 半銃制 table pays 32 for a 6-faan discard win.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'You hold {{p8}}{{p9}} and the player on your left discards. Which tile may you Chow?',
+        options: ['p7', 'p6', 's9', 'east'],
+        correctIndex: 0,
+        explanation:
+            '{{p8}}{{p9}} waits only on {{p7}}, since a run cannot go past 9.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You need one tile for a 3-faan win; the player across needs the same tile for a Pong. Who gets it?',
+        options: [
+          'The player across, because Pong is a claim',
+          'You, because a win outranks every claim',
+          'Whoever calls first',
+          'Nobody; the tile is dead',
+        ],
+        correctIndex: 1,
+        explanation:
+            'A declared win beats Kong, Pong and Chow on the same discard.',
       ),
     ],
   ),
@@ -1730,6 +3063,60 @@ final List<Lesson> defaultLessons = [
         explanation:
             'Dragon triplets, flowers and self-draw all score Faan. Having exactly 13 tiles is just the normal hand size between turns.',
       ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'A hand is worth 2 Faan. How many more Faan do you need to reach the 3-Faan minimum?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['1', 'one', '1 faan', 'one faan'],
+        explanation: '2 Faan is exactly one short of the 3-Faan minimum.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which statements about Faan scoring are correct?',
+        options: [
+          'You need at least 3 Faan to win',
+          '10 Faan is the cap, and every limit hand (例牌) counts as 10 Faan',
+          'A 6-Faan hand won on a discard (出銃) is paid 32',
+          'Each extra Faan doubles the payout',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 2],
+        explanation:
+            'Payouts rise 8, 16, 24, 32, 48, 64, 96, 128 — they do not double with every Faan.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each pattern to its Faan value.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 'Self-draw (自摸)', right: '1 Faan'),
+          QuestionPair(left: 'Mixed One Suit (混一色)', right: '3 Faan'),
+          QuestionPair(left: 'Pure One Suit (清一色)', right: '7 Faan'),
+          QuestionPair(left: 'Thirteen Orphans (十三么)', right: '10 Faan'),
+        ],
+        explanation:
+            'These are the Gary values: 自摸 1, 混一色 3, 清一色 7, and 十三么 is a limit hand at 10.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You win a 3-Faan hand on a discard (出銃). How much does the discarder pay?',
+        options: ['4', '8', '12', '16'],
+        correctIndex: 1,
+        explanation: 'In 半銃制 the discarder alone pays the full 8 at 3 Faan.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'A limit hand (例牌) counts as 10 Faan and is won on a discard. How much is paid?',
+        options: ['64', '96', '128', '192'],
+        correctIndex: 2,
+        explanation:
+            '10 Faan on a discard is 128; 192 is the total collected on a self-draw, not a discard.',
+      ),
     ],
   ),
 
@@ -1786,6 +3173,67 @@ final List<Lesson> defaultLessons = [
         correctIndex: 1,
         explanation:
             'All Chows alone is only 1 Faan. You need additional Faan (like self-draw) to reach the 3-Faan minimum.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'Which of these tiles could NOT appear in a Mixed One Suit (混一色) hand built on Characters plus honor tiles?',
+        options: ['p5', 'm5', 'east', 'red'],
+        correctIndex: 0,
+        explanation:
+            '混一色 uses only one suit plus honors, so any Dot tile breaks the pattern.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'Arrange these three tiles into a valid Chow (sequence) — the building block of All Chows (平糊).',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['s7', 's8', 's9'],
+        explanation:
+            'A Chow is three consecutive tiles of the same suit, here 7-8-9 of Bamboo.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each hand shape to its name.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 'Four Chows and a pair', right: 'All Chows (平糊)'),
+          QuestionPair(
+            left: 'Four triplets and a pair, no Chows',
+            right: 'All Pongs (對對糊)',
+          ),
+          QuestionPair(
+            left: 'One suit plus honor tiles',
+            right: 'Mixed One Suit (混一色)',
+          ),
+        ],
+        explanation:
+            'These are the three bread-and-butter shapes: 平糊, 對對糊 and 混一色.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many Faan is Mixed One Suit (混一色) worth on its own?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['3', 'three', '3 faan', 'three faan'],
+        explanation:
+            '混一色 is a 3-Faan pattern, so it meets the minimum by itself.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'All Pongs (對對糊) and Mixed One Suit (混一色) are each worth 3 Faan. What does that mean for you?',
+        options: [
+          'Either one alone meets the 3-Faan minimum',
+          'They must be combined to reach 3 Faan',
+          'They cancel each other out',
+          'They only count if the hand is concealed',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Each is a 3-Faan pattern in its own right, so either one alone can be declared.',
       ),
     ],
   ),
@@ -1845,6 +3293,62 @@ final List<Lesson> defaultLessons = [
         explanation:
             'South matches your seat wind (1 Faan) but not the prevailing wind (East round). Total: 1 Faan.',
       ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'You are East seat in the East round. Which of these Pongs score Faan for you?',
+        options: [
+          '{{red}}{{red}}{{red}}',
+          '{{east}}{{east}}{{east}}',
+          '{{south}}{{south}}{{south}}',
+          '{{white}}{{white}}{{white}}',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 3],
+        explanation:
+            'Red and White dragons score 1 each and East matches both your seat wind and the round wind, while South matches neither.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question:
+            'Match each dragon pattern to its total value with the dragon triplets counted.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 'One dragon triplet', right: '1 Faan'),
+          QuestionPair(left: 'Small Three Dragons (小三元)', right: '5 Faan'),
+          QuestionPair(left: 'Big Three Dragons (大三元)', right: '8 Faan'),
+        ],
+        explanation:
+            '小三元 is 3 Faan plus its two dragon triplets (5); 大三元 is 5 plus three (8).',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'You are East seat in the East round. Which of these triplets is worth 2 Faan?',
+        options: ['east', 'south', 'red', 'north'],
+        correctIndex: 0,
+        explanation:
+            'Only the East triplet matches both your seat wind and the round wind, scoring 1 + 1.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'Your hand has two dragon triplets and the third dragon as the pair. Counting the 小三元 pattern and the two dragon triplets, the total is ___ Faan.',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['5', 'five', '5 faan', 'five faan'],
+        explanation:
+            '小三元 is 3 Faan and the two dragon triplets add 2 more, for 5.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'How many Faan does Big Three Dragons (大三元) score in total?',
+        options: ['3', '5', '8', '10'],
+        correctIndex: 2,
+        explanation:
+            'The 大三元 pattern is 5 Faan and the three dragon triplets add 3 more, for 8.',
+      ),
     ],
   ),
 
@@ -1901,6 +3405,68 @@ final List<Lesson> defaultLessons = [
         explanation:
             '1 (Self-draw) + 1 (Concealed) + 1 (Dragon Pong) = 3 Faan. Minimum reached!',
       ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'Self-draw (自摸) and Concealed Hand (門前清) are worth 1 Faan each. Using just these two, the total is ___ Faan.',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['2', 'two', '2 faan', 'two faan'],
+        explanation: '1 + 1 = 2 Faan from the winning method alone.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these leave your hand still concealed (門前清)?',
+        options: [
+          'You called Chow once',
+          'You called Pong once',
+          'You never called Chow, Pong or Kong',
+          'You built the whole hand from your own draws',
+        ],
+        correctIndex: 2,
+        correctIndexes: [2, 3],
+        explanation:
+            'Any call — Chow, Pong or Kong — breaks 門前清; only a fully self-built hand keeps it.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each winning method to what happened.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: '搶槓 (Robbing the Kong)',
+            right:
+                'You win on the tile an opponent adds to a Pong to make a Kong',
+          ),
+          QuestionPair(
+            left: '槓上自摸 (Kong replacement draw)',
+            right: 'You win on the replacement tile drawn after a Kong',
+          ),
+          QuestionPair(
+            left: '海底撈月 (Last tile)',
+            right: 'You win on the final tile of the wall',
+          ),
+        ],
+        explanation:
+            'All three are 1-Faan winning-method bonuses in the Gary rules.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'How much is 搶槓 (robbing the Kong) worth?',
+        options: ['1 Faan', '2 Faan', '3 Faan', '5 Faan'],
+        correctIndex: 0,
+        explanation: '搶槓 is a 1-Faan winning-method bonus.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'A 3-Faan hand is won by self-draw. How much does each opponent pay?',
+        options: ['4', '8', '12', '16'],
+        correctIndex: 0,
+        explanation:
+            '3 Faan pays 8 on a discard, so on a self-draw each of the three players pays half — 4.',
+      ),
     ],
   ),
 
@@ -1953,6 +3519,62 @@ final List<Lesson> defaultLessons = [
         explanation:
             'South\'s flowers are Summer+Orchid. {{f_spring}} belongs to East, so South gets 0 Faan from it (just draw a replacement).',
       ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each seat to its two flowers.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 'East', right: 'Spring & Plum'),
+          QuestionPair(left: 'South', right: 'Summer & Orchid'),
+          QuestionPair(left: 'West', right: 'Autumn & Chrysanthemum'),
+          QuestionPair(left: 'North', right: 'Winter & Bamboo'),
+        ],
+        explanation:
+            'Seat flowers follow the numbers 1-4: East 1, South 2, West 3, North 4.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'Arrange the four seat winds in the order numbered 1 to 4 for flower assignment.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['east', 'south', 'west', 'north'],
+        explanation: 'The seat numbering is East 1, South 2, West 3, North 4.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'You are West seat. Which of these flowers is your 正花 (matching flower)?',
+        options: ['f_autumn', 'f_spring', 'f_summer', 'f_bamboo'],
+        correctIndex: 0,
+        explanation:
+            'West\'s flowers are Autumn and Chrysanthemum, so only {{f_autumn}} scores for West.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'East seat holds all four flower tiles: {{f_plum}} {{f_orchid}} {{f_chrys}} {{f_bamboo}}. Counting 一台花 and East\'s own flower, how many Faan do these four tiles give?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['2', 'two', '2 faan', 'two faan'],
+        explanation:
+            '一台花 is 1 Faan and East\'s matching {{f_plum}} adds 1 more, for 2.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'You are South seat. Which of these give you Faan?',
+        options: [
+          'Holding {{f_summer}}',
+          'Holding {{f_orchid}}',
+          'Holding {{f_spring}}',
+          'Having no flowers at all',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 3],
+        explanation:
+            'South\'s flowers are Summer and Orchid, 無花 is worth 1 Faan, and Spring belongs to East so it gives South nothing.',
+      ),
     ],
   ),
 
@@ -1999,6 +3621,77 @@ final List<Lesson> defaultLessons = [
         correctIndex: 2,
         explanation:
             'A Wind Pong matching both seat and prevailing wind gives 2 Faan — the most from a single Pong.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these are worth 1 Faan?',
+        options: [
+          'Self-draw (自摸)',
+          'Concealed hand (門前清)',
+          'No Flowers (無花)',
+          'All Pongs (對對糊)',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 2],
+        explanation: '自摸, 門前清 and 無花 are 1 Faan each; 對對糊 is 3 Faan.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each pattern to its Faan value.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 'All Chows (平糊)', right: '1 Faan'),
+          QuestionPair(left: 'Mixed One Suit (混一色)', right: '3 Faan'),
+          QuestionPair(
+            left: 'Small Three Dragons (小三元, dragons counted)',
+            right: '5 Faan',
+          ),
+          QuestionPair(
+            left: 'Eighteen Arhats (十八羅漢, four Kongs)',
+            right: '10 Faan',
+          ),
+        ],
+        explanation:
+            '平糊 is 1, 混一色 3, 小三元 with its two dragon triplets 5, and 十八羅漢 is a limit hand at 10.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'A hand scores 8 Faan and is won by self-draw. Each of the three opponents pays ___ points.',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['32', 'thirty-two', 'thirty two'],
+        explanation:
+            '8 Faan pays 64 on a discard, so each opponent pays half — 32.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Your hand is worth 12 Faan but it is a limit hand (例牌). How is it scored?',
+        options: [
+          'As 10 Faan',
+          'As 12 Faan',
+          'As 8 Faan',
+          'It cannot be declared',
+        ],
+        correctIndex: 0,
+        explanation:
+            '10 Faan is the cap and every limit hand counts as exactly 10.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Two players each reach 3 Faan — one wins on a discard, one by self-draw. Which collects more in total?',
+        options: [
+          'The discard winner, 8',
+          'The self-draw winner, 12 in total',
+          'They collect the same',
+          'Whichever player is dealer collects more',
+        ],
+        correctIndex: 1,
+        explanation:
+            '出銃 pays 8 from one player, while 自摸 collects 4 from each of three players — 12 in total.',
       ),
     ],
   ),

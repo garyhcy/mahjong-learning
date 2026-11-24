@@ -1,0 +1,385 @@
+{
+  "1-1": [
+    {
+      "type": "fillBlank",
+      "question": "How many tiles are in a set that has no Flower tiles?",
+      "options": ["108", "120", "136", "144"],
+      "correctIndex": 2,
+      "acceptedAnswers": ["136", "136 tiles", "one hundred thirty-six"],
+      "explanation": "144 tiles minus the 8 Flower tiles leaves 136."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which of these belong to a standard mahjong tile set? (Select all that apply)",
+      "options": [
+        "Suited tiles (Characters, Circles, Bamboo)",
+        "Wind tiles",
+        "Dragon tiles",
+        "Flower tiles",
+        "Poker cards"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1, 2, 3],
+      "explanation": "The set is 108 suited + 16 Wind + 12 Dragon + 8 Flower tiles; playing cards are not part of it."
+    },
+    {
+      "type": "matching",
+      "question": "Match each tile group to its total in a 144-tile set.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "Suited tiles", "right": "108" },
+        { "left": "Wind tiles", "right": "16" },
+        { "left": "Dragon tiles", "right": "12" },
+        { "left": "Flower tiles", "right": "8" }
+      ],
+      "explanation": "108 + 16 + 12 + 8 = 144 tiles."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Select the honor tile.",
+      "options": ["red", "m5", "p5", "s5"],
+      "correctIndex": 0,
+      "tiles": ["m5", "p5", "s5", "red", "green", "white", "east", "south"],
+      "explanation": "{{red}} is a Dragon, and Dragons are honor tiles; the other three options are suited tiles."
+    },
+    {
+      "type": "singleChoice",
+      "question": "How many different tile faces are in a full 144-tile set?",
+      "options": ["34", "36", "42", "44"],
+      "correctIndex": 2,
+      "explanation": "27 suited numbers + 4 Winds + 3 Dragons + 8 Flowers = 42 distinct tiles."
+    }
+  ],
+  "1-2": [
+    {
+      "type": "fillBlank",
+      "question": "How many Character tiles are in a complete set?",
+      "options": ["9", "24", "36", "48"],
+      "correctIndex": 2,
+      "acceptedAnswers": ["36", "36 tiles", "thirty-six"],
+      "explanation": "9 ranks × 4 copies each = 36 Character tiles."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which of these are Character (Wan) tiles? (Select all that apply)",
+      "options": ["{{m1}}", "{{p1}}", "{{m5}}", "{{s5}}", "{{m9}}"],
+      "correctIndex": 0,
+      "correctIndexes": [0, 2, 4],
+      "explanation": "m1, m5 and m9 are Characters; p1 is a Circle and s5 is Bamboo."
+    },
+    {
+      "type": "tileOrdering",
+      "question": "Put these Character tiles in ascending order.",
+      "options": [],
+      "correctIndex": 0,
+      "tiles": ["m2", "m6", "m9"],
+      "explanation": "Characters run 1 to 9, so {{m2}} comes before {{m6}} and {{m9}}."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Which tile completes the run {{m7}} {{m8}} ___ ?",
+      "options": ["m9", "m6", "m5", "p9"],
+      "correctIndex": 0,
+      "tiles": ["m9", "m6", "m5", "p9", "m1", "m7", "s9", "p8"],
+      "explanation": "{{m7}} {{m8}} needs {{m9}} to make the run 7-8-9 in Characters."
+    },
+    {
+      "type": "matching",
+      "question": "Match each tile marker to its tile family.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "m1", "right": "Characters (Wan)" },
+        { "left": "p1", "right": "Circles (Tong)" },
+        { "left": "s1", "right": "Bamboo (Suo)" },
+        { "left": "east", "right": "Wind" }
+      ],
+      "explanation": "m = Characters, p = Circles, s = Bamboo; east is a Wind, not a suit."
+    }
+  ],
+  "1-3": [
+    {
+      "type": "fillBlank",
+      "question": "How many dots does the 9 Circles tile show?",
+      "options": ["3", "6", "9", "12"],
+      "correctIndex": 2,
+      "acceptedAnswers": ["9", "nine", "9 dots"],
+      "explanation": "A Circle tile shows as many dots as its number, so 9 Circles has 9 dots."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which of these are Circle (Tong) tiles? (Select all that apply)",
+      "options": ["{{p2}}", "{{m2}}", "{{p7}}", "{{s7}}", "{{p9}}"],
+      "correctIndex": 0,
+      "correctIndexes": [0, 2, 4],
+      "explanation": "p2, p7 and p9 are Circles; m2 is a Character and s7 is Bamboo."
+    },
+    {
+      "type": "tileOrdering",
+      "question": "Put these Circle tiles in descending order (highest first).",
+      "options": [],
+      "correctIndex": 0,
+      "tiles": ["p8", "p4", "p1"],
+      "explanation": "Descending means highest first: {{p8}} then {{p4}} then {{p1}}."
+    },
+    {
+      "type": "matching",
+      "question": "Match each Circle tile to its dot count.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "p1", "right": "1 dot" },
+        { "left": "p5", "right": "5 dots" },
+        { "left": "p9", "right": "9 dots" }
+      ],
+      "explanation": "Circle tiles are numbered by the count of dots on the face."
+    },
+    {
+      "type": "singleChoice",
+      "question": "In Cantonese, the Circles suit is called...",
+      "options": ["Tong (筒)", "Wan (萬)", "Suo (索)", "Faan (番)"],
+      "correctIndex": 0,
+      "explanation": "Circles are Tong (筒), Characters are Wan (萬) and Bamboo are Suo (索)."
+    }
+  ],
+  "1-4": [
+    {
+      "type": "fillBlank",
+      "question": "How many Bamboo tiles are in a complete set?",
+      "options": ["9", "27", "36", "54"],
+      "correctIndex": 2,
+      "acceptedAnswers": ["36", "36 tiles", "thirty-six"],
+      "explanation": "9 ranks × 4 copies each = 36 Bamboo tiles."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which of these are Bamboo (Suo) tiles? (Select all that apply)",
+      "options": ["{{s3}}", "{{m3}}", "{{s6}}", "{{p6}}", "{{s9}}"],
+      "correctIndex": 0,
+      "correctIndexes": [0, 2, 4],
+      "explanation": "s3, s6 and s9 are Bamboo; m3 is a Character and p6 is a Circle."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Select the tile that is NOT a Bamboo tile.",
+      "options": ["s4", "s8", "p8", "s2"],
+      "correctIndex": 2,
+      "tiles": ["s4", "s8", "p8", "s2", "m4", "p4", "east", "s6"],
+      "explanation": "{{p8}} is a Circle; s4, s8 and s2 are all Bamboo."
+    },
+    {
+      "type": "matching",
+      "question": "Match each Bamboo tile to its rank.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "s1", "right": "1 Bamboo (the bird)" },
+        { "left": "s5", "right": "5 Bamboo" },
+        { "left": "s9", "right": "9 Bamboo" }
+      ],
+      "explanation": "Bamboo tiles run 1 to 9, and the 1 Bamboo is drawn as a bird."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Which three suits make up the 108 suited tiles?",
+      "options": [
+        "Characters, Circles and Bamboo",
+        "Winds, Dragons and Flowers",
+        "Characters, Winds and Dragons",
+        "Circles, Bamboo and Flowers"
+      ],
+      "correctIndex": 0,
+      "explanation": "Only Characters, Circles and Bamboo are suited; Winds, Dragons and Flowers are not."
+    }
+  ],
+  "1-5": [
+    {
+      "type": "fillBlank",
+      "question": "How many copies of each Wind tile are in a set?",
+      "options": ["1", "2", "4", "8"],
+      "correctIndex": 2,
+      "acceptedAnswers": ["4", "four", "4 copies"],
+      "explanation": "Each Wind has 4 copies, just like every suited tile."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which of these are Wind tiles? (Select all that apply)",
+      "options": ["{{east}}", "{{red}}", "{{south}}", "{{green}}", "{{north}}"],
+      "correctIndex": 0,
+      "correctIndexes": [0, 2, 4],
+      "explanation": "East, South and North are Winds; red and green are Dragons."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Select the Wind that comes right after East in seating order.",
+      "options": ["south", "west", "north", "east"],
+      "correctIndex": 0,
+      "tiles": ["east", "south", "west", "north", "red", "green", "white", "m1"],
+      "explanation": "Seating order runs East, South, West, North, so {{south}} follows East."
+    },
+    {
+      "type": "matching",
+      "question": "Match each Wind to its seat number.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "East", "right": "Seat 1" },
+        { "left": "South", "right": "Seat 2" },
+        { "left": "West", "right": "Seat 3" },
+        { "left": "North", "right": "Seat 4" }
+      ],
+      "explanation": "Seats are numbered in order: East 1, South 2, West 3, North 4."
+    },
+    {
+      "type": "singleChoice",
+      "question": "You are South and the round wind is South. Your South triplet is worth how much?",
+      "options": ["0 Faan", "1 Faan", "2 Faan", "3 Faan"],
+      "correctIndex": 2,
+      "explanation": "A Wind triplet scores 1 Faan for seat wind and 1 Faan for round wind, so they double to 2."
+    }
+  ],
+  "1-6": [
+    {
+      "type": "fillBlank",
+      "question": "How many different Dragon tiles are there?",
+      "options": ["2", "3", "4", "6"],
+      "correctIndex": 1,
+      "acceptedAnswers": ["3", "three", "3 dragons"],
+      "explanation": "Red, Green and White make 3 Dragons, each with 4 copies."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which of these are Dragon tiles? (Select all that apply)",
+      "options": ["{{red}}", "{{east}}", "{{green}}", "{{white}}", "{{north}}"],
+      "correctIndex": 0,
+      "correctIndexes": [0, 2, 3],
+      "explanation": "Red, Green and White are Dragons; east and north are Winds."
+    },
+    {
+      "type": "matching",
+      "question": "Match each Dragon to its Chinese name.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "Red Dragon", "right": "紅中" },
+        { "left": "Green Dragon", "right": "發財" },
+        { "left": "White Dragon", "right": "白板" }
+      ],
+      "explanation": "The three Dragons are 紅中 (red), 發財 (green) and 白板 (white)."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Select a tile that can never be part of a sequence.",
+      "options": ["east", "m1", "p5", "s9"],
+      "correctIndex": 0,
+      "tiles": ["east", "m1", "p5", "s9", "red", "m5", "p1", "s5"],
+      "explanation": "Only suited tiles form runs; an honor like {{east}} cannot."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Triplets of all three Dragons make which hand?",
+      "options": [
+        "Small Three Dragons (小三元)",
+        "Large Three Dragons (大三元)",
+        "All Honors (字一色)",
+        "Mixed One Suit (混一色)"
+      ],
+      "correctIndex": 1,
+      "explanation": "Large Three Dragons is 5 Faan, plus 3 Faan from the Dragon triplets, for 8 Faan in total."
+    }
+  ],
+  "1-7": [
+    {
+      "type": "fillBlank",
+      "question": "How many copies of each Flower tile are in a set?",
+      "options": ["1", "2", "4", "8"],
+      "correctIndex": 0,
+      "acceptedAnswers": ["1", "one", "1 copy"],
+      "explanation": "There are 8 Flowers and each one exists only once, so 1 copy each."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which of these are Flower tiles? (Select all that apply)",
+      "options": ["{{f_spring}}", "{{f_plum}}", "{{east}}", "{{f_chrys}}", "{{red}}"],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1, 3],
+      "explanation": "Spring, Plum and Chrysanthemum are Flowers; east is a Wind and red is a Dragon."
+    },
+    {
+      "type": "matching",
+      "question": "Match each seat to its two flowers.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "East", "right": "Spring + Plum" },
+        { "left": "South", "right": "Summer + Orchid" },
+        { "left": "West", "right": "Autumn + Chrysanthemum" },
+        { "left": "North", "right": "Winter + Bamboo" }
+      ],
+      "explanation": "Each seat owns one Season and one Plant: East 1, South 2, West 3, North 4."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Select the Flower that belongs to the South seat.",
+      "options": ["f_orchid", "f_plum", "f_chrys", "f_bamboo"],
+      "correctIndex": 0,
+      "tiles": ["f_spring", "f_summer", "f_autumn", "f_winter", "f_plum", "f_orchid", "f_chrys", "f_bamboo"],
+      "explanation": "South's flowers are Summer and Orchid, so {{f_orchid}} is South's flower."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Collecting all four Seasons or all four Plants is worth how much?",
+      "options": ["0 Faan", "1 Faan", "3 Faan", "5 Faan"],
+      "correctIndex": 1,
+      "explanation": "A complete set of four Seasons or four Plants (一台花) is 1 Faan, and matching seat flowers still count separately."
+    }
+  ],
+  "1-8": [
+    {
+      "type": "fillBlank",
+      "question": "How many honor tiles (Winds plus Dragons) are in a set?",
+      "options": ["19", "24", "28", "32"],
+      "correctIndex": 2,
+      "acceptedAnswers": ["28", "28 tiles", "twenty-eight"],
+      "explanation": "16 Wind tiles + 12 Dragon tiles = 28 honor tiles."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which of these are honor tiles? (Select all that apply)",
+      "options": ["{{east}}", "{{m1}}", "{{red}}", "{{white}}", "{{s9}}"],
+      "correctIndex": 0,
+      "correctIndexes": [0, 2, 3],
+      "explanation": "Winds and Dragons are honors; m1 and s9 are suited tiles."
+    },
+    {
+      "type": "matching",
+      "question": "Match each tile to its family.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "m5", "right": "Characters" },
+        { "left": "p5", "right": "Circles" },
+        { "left": "s5", "right": "Bamboo" },
+        { "left": "white", "right": "Dragon" }
+      ],
+      "explanation": "The letter in the tile id names the family: m Characters, p Circles, s Bamboo; white is a Dragon."
+    },
+    {
+      "type": "tileOrdering",
+      "question": "Arrange the Winds in seating order, starting from East.",
+      "options": [],
+      "correctIndex": 0,
+      "tiles": ["east", "south", "west", "north"],
+      "explanation": "Play moves East, South, West, North around the table."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Select the tile that scores 1 Faan as a triplet on its own.",
+      "options": ["red", "m5", "p5", "s5"],
+      "correctIndex": 0,
+      "tiles": ["red", "green", "white", "m5", "p5", "s5", "east", "north"],
+      "explanation": "A Dragon triplet is 1 Faan on its own, while a suited triplet has no separate Faan."
+    }
+  ]
+}

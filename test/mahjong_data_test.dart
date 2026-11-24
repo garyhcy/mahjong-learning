@@ -74,4 +74,17 @@ void main() {
     expect(count(QuizType.matching), greaterThanOrEqualTo(2));
     expect(count(QuizType.multiChoice), greaterThanOrEqualTo(2));
   });
+
+  test('Stage 1-4 lessons carry 8-12 questions with 2+ types', () {
+    const targetStages = {'stage1', 'stage2', 'stage3', 'stage4'};
+    final lessons = allLessonsData.where((l) => targetStages.contains(l.stageId));
+    expect(lessons, isNotEmpty);
+    for (final lesson in lessons) {
+      final label = '${lesson.id} ${lesson.title}';
+      expect(lesson.questions.length, inInclusiveRange(8, 12), reason: label);
+      final types = lesson.questions.map((q) => q.type).toSet();
+      expect(types.length, greaterThanOrEqualTo(2),
+          reason: '$label has only ${types.map((t) => t.name).join(", ")}');
+    }
+  });
 }

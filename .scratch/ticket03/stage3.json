@@ -1,0 +1,412 @@
+{
+  "3-1": [
+    {
+      "type": "multiChoice",
+      "question": "Which of these are true about the dealer (East)?",
+      "options": [
+        "Takes the first turn of the hand",
+        "Starts with 14 tiles",
+        "Keeps the deal after a washout",
+        "Is paid double for winning"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1],
+      "explanation": "East starts with 14 tiles and discards first, while a washout still passes the deal on and the dealer gets no scoring bonus."
+    },
+    {
+      "type": "fillBlank",
+      "question": "How many rounds does a full game have?",
+      "options": ["1", "2", "3", "4"],
+      "correctIndex": 3,
+      "acceptedAnswers": ["4", "four", "4 rounds", "four rounds"],
+      "explanation": "A full game runs four rounds: East, South, West and North."
+    },
+    {
+      "type": "matching",
+      "question": "Match each setup step with what it decides.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "Dice roll", "right": "Where the wall is broken" },
+        { "left": "Wind tile draw", "right": "Which seat each player takes" },
+        { "left": "Washout (流局)", "right": "The deal still passes to the next player" }
+      ],
+      "explanation": "The dice only pick the break point, the wind draw fixes seats, and a washout rotates the deal."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Rounds run East, South, West, North. Which Wind tile marks the second round?",
+      "options": ["east", "south", "west", "north"],
+      "correctIndex": 1,
+      "explanation": "The South round is the second of the four rounds."
+    },
+    {
+      "type": "tileOrdering",
+      "question": "Arrange the Wind tiles in seating order, starting from the dealer.",
+      "options": [],
+      "correctIndex": 0,
+      "tiles": ["east", "south", "west", "north"],
+      "explanation": "Seats and turns run counter-clockwise: East, South, West, North."
+    }
+  ],
+  "3-2": [
+    {
+      "type": "multiChoice",
+      "question": "Which statements about the deal are correct?",
+      "options": [
+        "Tiles are taken four at a time",
+        "Players go three times round before the single tile",
+        "The dealer finishes with 13 tiles",
+        "Flowers are kept hidden in the hand"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1],
+      "explanation": "The deal is four tiles three times round plus one each, the dealer holds 14, and flowers are shown."
+    },
+    {
+      "type": "fillBlank",
+      "question": "How many times does the deal go round taking four tiles?",
+      "options": ["2", "3", "4", "5"],
+      "correctIndex": 1,
+      "acceptedAnswers": ["3", "three", "3 times", "three times"],
+      "explanation": "Three passes of four tiles give everyone 12 before the single tile."
+    },
+    {
+      "type": "matching",
+      "question": "Match each situation with what happens.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "You are dealt a Flower", "right": "Show it and draw a replacement" },
+        { "left": "You are the dealer", "right": "You start by discarding" },
+        { "left": "You are a non-dealer", "right": "You wait with 13 tiles for your first draw" },
+        { "left": "The wall is broken", "right": "Dealing starts from that point" }
+      ],
+      "explanation": "Flowers leave the hand immediately, and only East begins by discarding because East already holds 14 tiles."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Which of these must be declared face-up and replaced?",
+      "options": ["f_plum", "m1", "east", "white"],
+      "correctIndex": 0,
+      "explanation": "Flower tiles are declared and replaced; the other three stay in your hand."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Where does a replacement tile for a Flower come from?",
+      "options": ["The back of the wall", "The front of the wall", "The discard pile", "The player on your left"],
+      "correctIndex": 0,
+      "explanation": "Flower replacements are drawn from the back (end) of the wall."
+    }
+  ],
+  "3-3": [
+    {
+      "type": "multiChoice",
+      "question": "Which are true during a normal turn?",
+      "options": [
+        "You draw one tile from the wall",
+        "You temporarily hold 14 tiles",
+        "You discard one tile face-up",
+        "You may discard two tiles instead"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1, 2],
+      "explanation": "A turn is draw one, hold 14, then discard exactly one."
+    },
+    {
+      "type": "fillBlank",
+      "question": "You hold 14 tiles after drawing. How many must you discard?",
+      "options": ["0", "1", "2", "3"],
+      "correctIndex": 1,
+      "acceptedAnswers": ["1", "one", "1 tile", "one tile"],
+      "explanation": "Discarding one tile returns your hand to 13."
+    },
+    {
+      "type": "matching",
+      "question": "Match each situation with what you do.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "You draw a tile you cannot use", "right": "Discard it at the end of your turn" },
+        { "left": "You draw your winning tile", "right": "Declare the win instead of discarding" },
+        { "left": "You declare a Kong", "right": "Draw a replacement before discarding" },
+        { "left": "The wall runs out", "right": "The hand ends in a washout" }
+      ],
+      "explanation": "Drawing never forces a discard when you can win, and a Kong adds a replacement draw to the turn."
+    },
+    {
+      "type": "tileSelection",
+      "question": "East has just discarded. Whose turn is next?",
+      "options": ["south", "west", "north", "east"],
+      "correctIndex": 0,
+      "explanation": "Turns pass counter-clockwise, so South plays after East."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Where are your discards placed?",
+      "options": [
+        "Face-up in front of you, in order",
+        "Face-down in the centre",
+        "Back into the wall",
+        "Into the dealer's row"
+      ],
+      "correctIndex": 0,
+      "explanation": "Every player keeps a face-up row of discards, which is public information."
+    }
+  ],
+  "3-4": [
+    {
+      "type": "multiChoice",
+      "question": "Which conditions must be met to call Chow?",
+      "options": [
+        "You hold two suited tiles that complete a run",
+        "The discard comes from the player on your left",
+        "The completed run is three consecutive tiles of one suit",
+        "Any player at the table may feed your Chow"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1, 2],
+      "explanation": "A Chow is a suited run fed only by the player immediately before you."
+    },
+    {
+      "type": "tileSelection",
+      "question": "You hold {{m4}}{{m5}}. Which discard completes a Chow?",
+      "options": ["m3", "m7", "p3", "east"],
+      "correctIndex": 0,
+      "explanation": "{{m3}}{{m4}}{{m5}} is a run, while {{m7}} would need a {{m6}} you do not hold."
+    },
+    {
+      "type": "tileOrdering",
+      "question": "Arrange these tiles into a Chow that uses your {{m3}} and {{m5}}.",
+      "options": [],
+      "correctIndex": 0,
+      "tiles": ["m3", "m4", "m5"],
+      "explanation": "{{m3}}{{m4}}{{m5}} is three consecutive tiles in one suit."
+    },
+    {
+      "type": "fillBlank",
+      "question": "How many tiles do you reveal when you call Chow?",
+      "options": ["2", "3", "4", "5"],
+      "correctIndex": 1,
+      "acceptedAnswers": ["3", "three", "3 tiles", "three tiles"],
+      "explanation": "A Chow is a three-tile run shown face-up with the claimed discard."
+    },
+    {
+      "type": "matching",
+      "question": "Match the two tiles you hold with the discard you need for a Chow.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "s5 and s6", "right": "s4 or s7" },
+        { "left": "m8 and m9", "right": "m7 only" },
+        { "left": "p1 and p2", "right": "p3 only" },
+        { "left": "east and east", "right": "No Chow is possible" }
+      ],
+      "explanation": "A run stays inside 1 to 9 in one suit, so 8-9 takes only 7, 1-2 takes only 3, and honour tiles cannot be chowed."
+    }
+  ],
+  "3-5": [
+    {
+      "type": "multiChoice",
+      "question": "Which are true about a Pong?",
+      "options": [
+        "You may claim it from any player",
+        "It beats a Chow for the same discard",
+        "You discard one tile after revealing it",
+        "It gives you a replacement draw from the back of the wall"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1, 2],
+      "explanation": "Pong comes from any seat and outranks Chow; the replacement draw belongs to Kong."
+    },
+    {
+      "type": "tileSelection",
+      "question": "You hold {{s7}}{{s7}}. Which discard completes a Pong?",
+      "options": ["s7", "s6", "s8", "p7"],
+      "correctIndex": 0,
+      "explanation": "A Pong needs the identical tile; {{s6}} or {{s8}} would make a Chow and {{p7}} is another suit."
+    },
+    {
+      "type": "matching",
+      "question": "Match what you hold with the claim it allows.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "Two identical tiles", "right": "Pong" },
+        { "left": "Three identical tiles", "right": "Kong" },
+        { "left": "Two tiles one apart in one suit", "right": "Chow" },
+        { "left": "Four melds and a pair worth 3+ faan", "right": "Win" }
+      ],
+      "explanation": "Each claim is defined by how many tiles you already hold and whether they match or run."
+    },
+    {
+      "type": "fillBlank",
+      "question": "After calling Pong, how many tiles must you discard?",
+      "options": ["0", "1", "2", "3"],
+      "correctIndex": 1,
+      "acceptedAnswers": ["1", "one", "1 tile", "one tile"],
+      "explanation": "Claiming takes you to 14 tiles, so one discard brings you back to 13."
+    },
+    {
+      "type": "singleChoice",
+      "question": "After your Pong, who plays next?",
+      "options": ["The player after you", "The player who discarded", "The dealer", "The player across"],
+      "correctIndex": 0,
+      "explanation": "Play resumes from your seat, skipping the players in between."
+    }
+  ],
+  "3-6": [
+    {
+      "type": "multiChoice",
+      "question": "Which of these are ways to make a Kong?",
+      "options": [
+        "Claim a discard while holding three identical tiles",
+        "Draw all four identical tiles yourself",
+        "Add the fourth tile to an existing Pong",
+        "Claim a discard that matches two tiles in your hand"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1, 2],
+      "explanation": "The three Kong types are exposed, concealed and supplemental, while two matching tiles are only a Pong."
+    },
+    {
+      "type": "fillBlank",
+      "question": "How many identical tiles make a Kong?",
+      "options": ["2", "3", "4", "5"],
+      "correctIndex": 2,
+      "acceptedAnswers": ["4", "four", "4 tiles", "four tiles"],
+      "explanation": "A Kong is a meld of four identical tiles."
+    },
+    {
+      "type": "matching",
+      "question": "Match each Kong type with how it is made.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "Exposed Kong", "right": "Claim the fourth tile from a discard" },
+        { "left": "Concealed Kong", "right": "Draw all four yourself" },
+        { "left": "Supplemental Kong", "right": "Add the fourth tile to your Pong" },
+        { "left": "Replacement tile", "right": "Taken from the back of the wall" }
+      ],
+      "explanation": "The three kinds differ in where the fourth tile comes from, and all of them take a replacement from the wall's end."
+    },
+    {
+      "type": "tileSelection",
+      "question": "You hold {{red}}{{red}}{{red}}. Which discard may you Kong?",
+      "options": ["red", "green", "white", "east"],
+      "correctIndex": 0,
+      "explanation": "A Kong needs the fourth copy of the identical tile."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Why do you draw a replacement after declaring a Kong?",
+      "options": [
+        "The Kong takes four tiles into one meld",
+        "The dealer awards a free tile",
+        "The wall owes you a Flower",
+        "You must replace the tile you discarded"
+      ],
+      "correctIndex": 0,
+      "explanation": "Four tiles become one meld, so the replacement keeps your hand at full size."
+    }
+  ],
+  "3-7": [
+    {
+      "type": "multiChoice",
+      "question": "Which of these are valid ways to win?",
+      "options": [
+        "Drawing your winning tile from the wall",
+        "Claiming a discard that completes your hand",
+        "Reaching at least 3 faan",
+        "Claiming any discard that completes a pair"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1, 2],
+      "explanation": "You win by self-draw or by claiming a discard, and only with 3 faan or more."
+    },
+    {
+      "type": "fillBlank",
+      "question": "What is the faan cap, however big the hand?",
+      "options": ["5", "8", "10", "13"],
+      "correctIndex": 2,
+      "acceptedAnswers": ["10", "ten", "10 faan", "ten faan"],
+      "explanation": "Every hand counts as at most 10 faan under these rules."
+    },
+    {
+      "type": "matching",
+      "question": "Match how the hand ends with who pays.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "Discard win (出銃)", "right": "The discarder pays the full value" },
+        { "left": "Self-draw (自摸)", "right": "Each of the other three pays half value" },
+        { "left": "Washout (流局)", "right": "No points are exchanged" }
+      ],
+      "explanation": "半銃制 means the discarder pays in full, while a self-draw is split in half across the three other players."
+    },
+    {
+      "type": "tileSelection",
+      "question": "You hold {{m1}}{{m2}} and need one tile to win. Which discard completes your run?",
+      "options": ["m3", "m4", "p3", "east"],
+      "correctIndex": 0,
+      "explanation": "{{m1}}{{m2}} waits only on {{m3}}, because a run cannot wrap past 9."
+    },
+    {
+      "type": "singleChoice",
+      "question": "You self-draw a 4-faan hand. How much do you collect in total?",
+      "options": ["8", "16", "24", "32"],
+      "correctIndex": 2,
+      "explanation": "At 4 faan a discard win pays 16, so self-draw pays each player 8 for 24 in total."
+    }
+  ],
+  "3-8": [
+    {
+      "type": "multiChoice",
+      "question": "Which claims may you make from any player's discard?",
+      "options": ["Chow", "Pong", "Kong", "Win"],
+      "correctIndex": 1,
+      "correctIndexes": [1, 2, 3],
+      "explanation": "Only Chow is limited to the player on your left; the other claims may come from any seat."
+    },
+    {
+      "type": "matching",
+      "question": "Match each stage of the hand with its rule.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "Deal", "right": "The dealer starts with 14 tiles" },
+        { "left": "Normal turn", "right": "Draw one tile, then discard one" },
+        { "left": "Kong", "right": "The replacement comes from the back of the wall" },
+        { "left": "Wall exhausted", "right": "Washout, with no points exchanged" }
+      ],
+      "explanation": "The flow runs deal, draw and discard, claim, then win or washout."
+    },
+    {
+      "type": "fillBlank",
+      "question": "A discard win at 6 faan pays how many points?",
+      "options": ["24", "32", "48", "64"],
+      "correctIndex": 1,
+      "acceptedAnswers": ["32", "thirty-two", "32 points"],
+      "explanation": "The 半銃制 table pays 32 for a 6-faan discard win."
+    },
+    {
+      "type": "tileSelection",
+      "question": "You hold {{p8}}{{p9}} and the player on your left discards. Which tile may you Chow?",
+      "options": ["p7", "p6", "s9", "east"],
+      "correctIndex": 0,
+      "explanation": "{{p8}}{{p9}} waits only on {{p7}}, since a run cannot go past 9."
+    },
+    {
+      "type": "singleChoice",
+      "question": "You need one tile for a 3-faan win; the player across needs the same tile for a Pong. Who gets it?",
+      "options": [
+        "The player across, because Pong is a claim",
+        "You, because a win outranks every claim",
+        "Whoever calls first",
+        "Nobody; the tile is dead"
+      ],
+      "correctIndex": 1,
+      "explanation": "A declared win beats Kong, Pong and Chow on the same discard."
+    }
+  ]
+}

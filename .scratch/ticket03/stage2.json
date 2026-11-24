@@ -1,0 +1,307 @@
+{
+  "2-1": [
+    {
+      "type": "multiChoice",
+      "question": "Which of these are valid Sequences (Chow)? Select all that apply.",
+      "options": ["{{m4}}{{m5}}{{m6}}", "{{p2}}{{p3}}{{p4}}", "{{s8}}{{s9}}{{s1}}", "{{m6}}{{p7}}{{s8}}"],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1],
+      "explanation": "A Chow is 3 consecutive tiles in one suit, so {{s8}}{{s9}}{{s1}} fails because sequences do not wrap around and {{m6}}{{p7}}{{s8}} mixes three suits."
+    },
+    {
+      "type": "matching",
+      "question": "Match each three-tile group to what it is.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "{{s3}}{{s4}}{{s5}}", "right": "Valid Sequence"},
+        {"left": "{{s3}}{{s5}}{{s7}}", "right": "Not a sequence (gap)"},
+        {"left": "{{m9}}{{m1}}{{m2}}", "right": "Not a sequence (wraps)"},
+        {"left": "{{east}}{{south}}{{west}}", "right": "Not a sequence (honors)"}
+      ],
+      "explanation": "Consecutive same-suit tiles make a Chow; a gap breaks the run, 9-1-2 wraps around the end, and honor tiles have no numbers at all."
+    },
+    {
+      "type": "fillBlank",
+      "question": "How many tiles are in one Sequence (Chow)?",
+      "options": ["2", "3", "4", "5"],
+      "correctIndex": 1,
+      "acceptedAnswers": ["3", "three", "3 tiles"],
+      "explanation": "A Chow is exactly 3 consecutive tiles, which is why four Chows plus a pair fill the 14-tile winning hand."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Select the middle tile that completes this Sequence: {{m4}}___{{m6}}",
+      "options": ["m3", "m5", "m7", "m8"],
+      "correctIndex": 1,
+      "tiles": ["m3", "m5", "m7", "m8"],
+      "explanation": "{{m4}}{{m5}}{{m6}} is the only run through both given tiles, so {{m5}} is the one tile that fits in the gap."
+    },
+    {
+      "type": "tileOrdering",
+      "question": "Arrange these tiles into the highest possible valid Sequence.",
+      "options": [],
+      "correctIndex": 0,
+      "tiles": ["m7", "m8", "m9"],
+      "explanation": "7-8-9 is the highest Chow in any suit, because 8-9-1 would wrap around and is never allowed."
+    }
+  ],
+  "2-2": [
+    {
+      "type": "multiChoice",
+      "question": "Which of these are valid Pongs (Triplets)? Select all that apply.",
+      "options": ["{{west}}{{west}}{{west}}", "{{s9}}{{s9}}{{s9}}", "{{m2}}{{m3}}{{m4}}", "{{red}}{{green}}{{white}}"],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1],
+      "explanation": "A Pong is 3 identical tiles of any type, so the three Wests and three 9-Bamboo both count, while {{m2}}{{m3}}{{m4}} is a Chow and the three different Dragons are not identical."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Select the tile that makes a Pong out of your pair, not a Chow: {{p7}}{{p7}}___",
+      "options": ["p7", "p6", "p8", "s7"],
+      "correctIndex": 0,
+      "tiles": ["p7", "p6", "p8", "s7"],
+      "explanation": "A Pong needs 3 identical tiles, so the pair needs a third {{p7}}; {{p6}} or {{p8}} would not complete any meld."
+    },
+    {
+      "type": "fillBlank",
+      "question": "How many identical tiles are needed to make a Pong?",
+      "options": ["2", "3", "4", "5"],
+      "correctIndex": 1,
+      "acceptedAnswers": ["3", "three", "3 tiles"],
+      "explanation": "A Pong is exactly 3 identical tiles, while a 4th copy of the same tile would make it a Kong instead."
+    },
+    {
+      "type": "matching",
+      "question": "Match each Pong term to its meaning.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "Pong", "right": "3 identical tiles"},
+        {"left": "Concealed Pong", "right": "All 3 tiles drawn by you"},
+        {"left": "Exposed Pong", "right": "Completed by claiming a discard"}
+      ],
+      "explanation": "A Pong is 3 identical tiles, and it is concealed when you drew all three yourself but exposed when the third came from another player's discard."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Why is {{east}}{{east}}{{east}} a valid Pong but {{east}}{{south}}{{west}} is not?",
+      "options": [
+        "East is a Dragon tile",
+        "Honor tiles have no numbers, so only identical copies can form a meld",
+        "Winds may only be used in pairs",
+        "Because East is the dealer"
+      ],
+      "correctIndex": 1,
+      "explanation": "Winds and Dragons carry no rank, so they can never line up as consecutive tiles and only identical copies can form a Pong."
+    }
+  ],
+  "2-3": [
+    {
+      "type": "matching",
+      "question": "Match each hand part to how many tiles it uses.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "Pair (eyes)", "right": "2 identical tiles"},
+        {"left": "Chow", "right": "3 consecutive same-suit tiles"},
+        {"left": "Pong", "right": "3 identical tiles"},
+        {"left": "Kong", "right": "4 identical tiles"}
+      ],
+      "explanation": "The pair is the only 2-tile unit; Chow and Pong both use 3 tiles and a Kong uses 4, yet each meld still counts as 3 for hand structure."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Select the tile that completes this pair: {{p3}}___",
+      "options": ["p3", "p4", "p2", "m3"],
+      "correctIndex": 0,
+      "tiles": ["p3", "p4", "p2", "m3"],
+      "explanation": "A pair is 2 identical tiles, so {{p3}}{{p3}} is the pair; {{p2}} or {{p4}} would only start a run."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which of these can serve as the pair (eyes) of a winning hand? Select all that apply.",
+      "options": ["{{west}}{{west}}", "{{red}}{{red}}", "{{m3}}{{m4}}", "{{east}}{{south}}"],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1],
+      "explanation": "Any two identical tiles can be the eyes, so a West pair and a Red Dragon pair both work, but {{m3}}{{m4}} and {{east}}{{south}} are not identical."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Which statement about the pair is correct?",
+      "options": [
+        "A hand may hold two pairs if it has only three melds",
+        "A hand with 4 melds and 2 pairs is a valid win",
+        "A standard win is 4 melds plus exactly 1 pair",
+        "The pair must always be a suited tile"
+      ],
+      "correctIndex": 2,
+      "explanation": "The standard hand is 4 melds + exactly 1 pair = 14 tiles, so an extra pair leaves the hand one meld short."
+    },
+    {
+      "type": "fillBlank",
+      "question": "How many tiles are in a Pair (eyes)?",
+      "options": ["1", "2", "3", "4"],
+      "correctIndex": 1,
+      "acceptedAnswers": ["2", "two", "2 tiles"],
+      "explanation": "A pair is 2 identical tiles, and a winning hand contains exactly one such pair."
+    }
+  ],
+  "2-4": [
+    {
+      "type": "multiChoice",
+      "question": "Which of these are Kongs? Select all that apply.",
+      "options": ["{{s7}}{{s7}}{{s7}}{{s7}}", "{{red}}{{red}}{{red}}{{red}}", "{{m1}}{{m1}}{{m1}}", "{{p4}}{{p5}}{{p6}}"],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1],
+      "explanation": "A Kong is 4 identical tiles of any type, so four 7-Bamboo and four Red Dragons qualify, while three 1-Character is a Pong and {{p4}}{{p5}}{{p6}} is a Chow."
+    },
+    {
+      "type": "matching",
+      "question": "Match each Kong type to how it is formed.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "Concealed Kong", "right": "All 4 tiles drawn by you"},
+        {"left": "Exposed Kong", "right": "Completed by claiming a discard"},
+        {"left": "Supplemental Kong", "right": "4th tile added to an existing Pong"}
+      ],
+      "explanation": "The three Kongs differ only in where the 4th tile comes from: your own draws, another player's discard, or upgrading a Pong you already exposed."
+    },
+    {
+      "type": "fillBlank",
+      "question": "How many Kongs does the 十八羅漢 (18 Arhats) hand require?",
+      "options": ["2", "3", "4", "5"],
+      "correctIndex": 2,
+      "acceptedAnswers": ["4", "four", "4 kongs"],
+      "explanation": "十八羅漢 is the four-Kong limit hand: 4 Kongs of 4 tiles each plus a pair makes 18 physical tiles."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Select the tile that upgrades this Pong into a Kong: {{m7}}{{m7}}{{m7}}___",
+      "options": ["m7", "m8", "m6", "p7"],
+      "correctIndex": 0,
+      "tiles": ["m7", "m8", "m6", "p7"],
+      "explanation": "A Kong is 4 identical tiles, so adding the last {{m7}} turns the Pong into a supplemental Kong."
+    },
+    {
+      "type": "singleChoice",
+      "question": "A Kong is 4 tiles, so why does a hand with one Kong still count as a normal 4-meld hand?",
+      "options": [
+        "Because the Kong replaces your pair",
+        "Because a Kong counts as one 3-tile meld and the replacement draw restores your hand size",
+        "Because Kongs are ignored when scoring structure",
+        "Because you discard one tile after declaring a Kong"
+      ],
+      "correctIndex": 1,
+      "explanation": "A Kong counts as a single meld (3 tiles) for structure, and the replacement draw keeps your hand at the right size, so the hand is still 4 melds + 1 pair."
+    }
+  ],
+  "2-5": [
+    {
+      "type": "multiChoice",
+      "question": "Which of these are valid winning-hand structures? Select all that apply.",
+      "options": [
+        "4 Chows + 1 Pair",
+        "2 Chows + 2 Pongs + 1 Pair",
+        "4 Pongs + 1 Kong",
+        "3 Pongs + 1 Pair"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1],
+      "explanation": "Any mix of 4 melds plus 1 pair wins, but 4 Pongs + 1 Kong is 5 melds with no pair and 3 Pongs + 1 Pair is only 11 tiles."
+    },
+    {
+      "type": "tileSelection",
+      "question": "You hold {{m1}}{{m2}}{{m3}} {{p4}}{{p5}}{{p6}} {{s7}}{{s8}}{{s9}} {{east}}{{east}}{{east}} {{m9}}. Select the tile that completes the win.",
+      "options": ["m9", "m8", "p9", "east"],
+      "correctIndex": 0,
+      "tiles": ["m9", "m8", "p9", "east"],
+      "explanation": "The hand already has 4 melds, so the 13th tile only needs to pair up: {{m9}}{{m9}} is the eyes and completes 14 tiles."
+    },
+    {
+      "type": "matching",
+      "question": "Match each structure term to its meaning.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "Meld", "right": "A Chow, Pong or Kong"},
+        {"left": "Eyes", "right": "The one pair a hand needs"},
+        {"left": "Kong", "right": "4 identical tiles counted as one meld"}
+      ],
+      "explanation": "Every winning hand is 4 melds of these three kinds plus the single pair known as the eyes."
+    },
+    {
+      "type": "fillBlank",
+      "question": "A hand of four Kongs plus a pair physically shows how many tiles?",
+      "options": ["14", "15", "16", "18"],
+      "correctIndex": 3,
+      "acceptedAnswers": ["18", "eighteen", "18 tiles"],
+      "explanation": "Each Kong adds one extra physical tile to the 14-tile frame, so 4 Kongs + 1 pair shows 18 tiles."
+    },
+    {
+      "type": "tileOrdering",
+      "question": "Rank matters in a Chow: arrange these Character tiles from lowest to highest.",
+      "options": [],
+      "correctIndex": 0,
+      "tiles": ["m2", "m5", "m8"],
+      "explanation": "Character tiles run 1 to 9, so the ascending order is {{m2}}{{m5}}{{m8}} — the same reading order a Chow must follow."
+    }
+  ],
+  "2-6": [
+    {
+      "type": "matching",
+      "question": "Match each combination to its tile count.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "Pair", "right": "2 identical tiles"},
+        {"left": "Chow", "right": "3 consecutive same-suit tiles"},
+        {"left": "Pong", "right": "3 identical tiles"},
+        {"left": "Kong", "right": "4 identical tiles"}
+      ],
+      "explanation": "The four building blocks are 2, 3, 3 and 4 tiles, and only the Kong's extra tile is absorbed by a replacement draw."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which statements are true? Select all that apply.",
+      "options": [
+        "A Chow must stay within one suit",
+        "A Kong counts as one meld for hand structure",
+        "A pair of Dragons adds 1 Faan",
+        "Honor tiles can form a Chow"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1],
+      "explanation": "Chows never mix suits and a Kong is one meld, but a Dragon pair adds no Faan and honors cannot form runs at all."
+    },
+    {
+      "type": "tileSelection",
+      "question": "You hold {{s2}}{{s3}}{{s4}} {{p6}}{{p7}}{{p8}} {{m5}}{{m5}}{{m5}} {{west}}{{west}}{{west}} {{red}}. Select the tile that completes 4 melds + 1 pair.",
+      "options": ["red", "green", "white", "east"],
+      "correctIndex": 0,
+      "tiles": ["red", "green", "white", "east"],
+      "explanation": "With four melds already set, the lone {{red}} only needs a partner, so a second Red Dragon completes the eyes."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Which of these is NOT a valid winning hand?",
+      "options": [
+        "3 Chows + 1 Pong + 1 Pair",
+        "4 Pongs + 1 Pair",
+        "2 Chows + 1 Pong + 2 Pairs",
+        "1 Chow + 3 Pongs + 1 Pair"
+      ],
+      "correctIndex": 2,
+      "explanation": "The third option is only 3 melds and two pairs, which is 13 tiles with the wrong shape, while the others are all 4 melds + 1 pair."
+    },
+    {
+      "type": "fillBlank",
+      "question": "How many Faan are needed to declare a win in Hong Kong mahjong?",
+      "options": ["1", "2", "3", "5"],
+      "correctIndex": 2,
+      "acceptedAnswers": ["3", "three", "3 faan"],
+      "explanation": "Three Faan is the minimum to win (三番起糊), and 10 Faan is the cap on any hand."
+    }
+  ]
+}
