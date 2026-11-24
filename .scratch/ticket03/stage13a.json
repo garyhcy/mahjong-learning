@@ -1,0 +1,338 @@
+{
+  "13-1": {
+    "title": "Small Three Dragons",
+    "subtitle": "Two dragon triplets plus a dragon pair",
+    "dialogues": [
+      {
+        "speaker": "mj",
+        "text": "Small Three Dragons 小三元 looks bigger than it pays. Two dragons arrive as triplets, and the third dragon becomes your pair."
+      },
+      {
+        "speaker": "mj",
+        "text": "The pattern itself is 3 faan. Each of those two dragon triplets still counts 1 faan on top, so the hand settles at 5."
+      },
+      {
+        "speaker": "you",
+        "text": "So {{red}}{{red}}{{red}} and {{green}}{{green}}{{green}}, with {{white}}{{white}} sitting as the eyes?"
+      },
+      {
+        "speaker": "mj",
+        "text": "Exactly. Notice the pair earns nothing extra, because dragon eyes are still just eyes."
+      },
+      {
+        "speaker": "mj",
+        "text": "Five faan pays 24 from a discarder. Respectable, but nowhere near the 10-faan ceiling."
+      }
+    ],
+    "questions": [
+      {
+        "type": "singleChoice",
+        "question": "How many dragon triplets does Small Three Dragons 小三元 require?",
+        "options": ["One", "Two", "Three", "Four"],
+        "correctIndex": 1,
+        "explanation": "小三元 uses two dragons as triplets; the third dragon is kept as the pair, which is exactly what makes it small."
+      },
+      {
+        "type": "fillBlank",
+        "question": "Small Three Dragons 小三元 is worth how many faan before the two dragon triplets are added?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": ["3", "three", "3 faan", "three faan"],
+        "explanation": "The pattern alone is 3 faan, and the dragon triplets are counted afterwards as separate 1-faan items."
+      },
+      {
+        "type": "singleChoice",
+        "question": "In 小三元, what is the third dragon used for?",
+        "options": ["A kong", "The pair that becomes the eyes", "A chow", "A flower replacement"],
+        "correctIndex": 1,
+        "explanation": "The remaining dragon is paired and used as the eyes; if all three dragons were triplets the hand would be 大三元."
+      },
+      {
+        "type": "multiChoice",
+        "question": "Which statements about Small Three Dragons 小三元 are true?",
+        "options": [
+          "Two of the three dragons form triplets",
+          "The third dragon forms the pair",
+          "The dragon pair used as eyes adds another faan",
+          "All three dragons form triplets"
+        ],
+        "correctIndex": 0,
+        "correctIndexes": [0, 1],
+        "explanation": "Two triplets plus a dragon pair is the shape. The pair is only the eyes and earns no faan, and three dragon triplets would be 大三元."
+      },
+      {
+        "type": "tileSelection",
+        "question": "Your hand already holds {{red}}{{red}}{{red}} and {{green}}{{green}}{{green}}. Which tile has to be the pair for 小三元?",
+        "options": ["white", "east", "m5", "s7"],
+        "correctIndex": 0,
+        "explanation": "With 紅中 and 發財 already spent on triplets, only 白板 is left to sit as the dragon pair."
+      },
+      {
+        "type": "matching",
+        "question": "Match each part of a dragon hand to what it is worth.",
+        "options": [],
+        "correctIndex": 0,
+        "pairs": [
+          {
+            "left": "Two dragon triplets plus one dragon pair",
+            "right": "小三元, 5 faan in total"
+          },
+          {
+            "left": "All three dragons as triplets",
+            "right": "大三元, 8 faan in total"
+          },
+          {
+            "left": "A dragon pair sitting as the eyes",
+            "right": "No faan on its own"
+          }
+        ],
+        "explanation": "The two dragon triplets each add 1 faan to the 3-faan pattern, while the pair is only the eyes and is never scored."
+      },
+      {
+        "type": "fillBlank",
+        "question": "Counting the pattern and both dragon triplets, Small Three Dragons 小三元 collects how many faan in total?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": ["5", "five", "5 faan", "five faan"],
+        "explanation": "3 faan for the pattern plus 1 faan for each dragon triplet gives 5 faan."
+      },
+      {
+        "type": "singleChoice",
+        "question": "A 5-faan hand is won on a discard. How much does the discarder pay?",
+        "options": ["8", "16", "24", "32"],
+        "correctIndex": 2,
+        "explanation": "On the payment table 5 faan is 24 points from the discarder, who pays the whole amount alone."
+      }
+    ]
+  },
+  "13-2": {
+    "title": "Great Three Dragons",
+    "subtitle": "All three dragons, and who pays",
+    "dialogues": [
+      {
+        "speaker": "mj",
+        "text": "Great Three Dragons 大三元 is the louder cousin: all three dragons come as triplets, so no dragon is left for the pair."
+      },
+      {
+        "speaker": "mj",
+        "text": "The pattern is 5 faan, and the three dragon triplets add 3 more, which makes 8."
+      },
+      {
+        "speaker": "you",
+        "text": "Eight faan. And there is a payment rule attached to this one, right?"
+      },
+      {
+        "speaker": "mj",
+        "text": "There is. 大三元包 means the player who fed you the third dragon triplet pays your whole self-draw on their own."
+      },
+      {
+        "speaker": "mj",
+        "text": "The exception: if that third triplet was a concealed kong, nobody supplied it, so the self-draw goes back to the normal three-way split."
+      }
+    ],
+    "questions": [
+      {
+        "type": "tileSelection",
+        "question": "You hold {{red}}{{red}}{{red}} and {{green}}{{green}}{{green}}. Which tile must you now collect a triplet of to reach Great Three Dragons 大三元?",
+        "options": ["white", "east", "m1", "s9"],
+        "correctIndex": 0,
+        "explanation": "大三元 needs all three dragons as triplets, so the missing third dragon is 白板."
+      },
+      {
+        "type": "singleChoice",
+        "question": "With all three dragons used as triplets, what serves as the eyes in 大三元?",
+        "options": [
+          "A dragon pair",
+          "Any other pair, for example a number tile pair",
+          "A single dragon tile",
+          "No pair is needed"
+        ],
+        "correctIndex": 1,
+        "explanation": "All three dragons are spent on triplets, so the eyes must come from somewhere else in the hand."
+      },
+      {
+        "type": "singleChoice",
+        "question": "What is Great Three Dragons 大三元 worth before the three dragon triplets are counted?",
+        "options": ["3 faan", "5 faan", "8 faan", "10 faan"],
+        "correctIndex": 1,
+        "explanation": "The pattern is 5 faan on its own, and the dragon triplets are added as separate 1-faan items."
+      },
+      {
+        "type": "fillBlank",
+        "question": "Adding the three dragon triplets to the pattern, 大三元 collects how many faan in total?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": ["8", "eight", "8 faan", "eight faan"],
+        "explanation": "5 faan for the pattern plus 1 faan for each of the three dragon triplets makes 8 faan."
+      },
+      {
+        "type": "singleChoice",
+        "question": "Under 大三元包, who pays when the winner self-draws?",
+        "options": [
+          "All three opponents, split evenly",
+          "The player who supplied the third dragon triplet",
+          "The dealer, whatever seat they hold",
+          "The player who discarded the first dragon tile"
+        ],
+        "correctIndex": 1,
+        "explanation": "The 包 liability lands on the single player whose deal completed the third dragon triplet, and they pay the entire self-draw."
+      },
+      {
+        "type": "singleChoice",
+        "question": "When does the 大三元包 liability not apply?",
+        "options": [
+          "When the third dragon triplet was completed as a concealed kong",
+          "When the hand wins on a discard",
+          "When the winner happens to be the dealer",
+          "When the third dragon triplet was exposed"
+        ],
+        "correctIndex": 0,
+        "explanation": "A concealed kong is built from the winner's own tiles, so nobody supplied the third set and the self-draw is shared normally."
+      },
+      {
+        "type": "multiChoice",
+        "question": "Which statements about Great Three Dragons 大三元 are true?",
+        "options": [
+          "The pattern alone is 5 faan",
+          "The three dragon triplets add 3 faan",
+          "It is a 10-faan limit hand",
+          "It needs a dragon pair for its eyes"
+        ],
+        "correctIndex": 0,
+        "correctIndexes": [0, 1],
+        "explanation": "5 plus 3 makes 8 faan, which sits below the 10-faan ceiling, and no dragon is left over for the pair."
+      },
+      {
+        "type": "matching",
+        "question": "Match each situation to the correct outcome.",
+        "options": [],
+        "correctIndex": 0,
+        "pairs": [
+          {
+            "left": "Two dragon triplets and one dragon pair",
+            "right": "小三元, 5 faan in total"
+          },
+          {
+            "left": "Third dragon triplet completed by a discard",
+            "right": "The supplier of that triplet pays the whole self-draw"
+          },
+          {
+            "left": "Third dragon triplet made as a concealed kong",
+            "right": "No one pays the self-draw alone, all three share it"
+          }
+        ],
+        "explanation": "The count and the payment liability both follow from how the third dragon triplet was completed."
+      }
+    ]
+  },
+  "13-3": {
+    "title": "Small Four Winds",
+    "subtitle": "Three wind triplets, one wind pair",
+    "dialogues": [
+      {
+        "speaker": "mj",
+        "text": "Now the winds. Small Four Winds 小四喜 is a limit hand, so it is worth a flat 10 faan."
+      },
+      {
+        "speaker": "mj",
+        "text": "Three winds form triplets and the fourth wind waits as your pair: four winds, three sets."
+      },
+      {
+        "speaker": "you",
+        "text": "Like {{east}}{{east}}{{east}}, {{south}}{{south}}{{south}}, {{west}}{{west}}{{west}} and {{north}}{{north}} for the eyes?"
+      },
+      {
+        "speaker": "mj",
+        "text": "That is the shape. Because 10 is the ceiling, your 自摸 or your seat wind cannot push it any higher."
+      },
+      {
+        "speaker": "mj",
+        "text": "Turn that spare {{north}}{{north}} into a triplet and you have 大四喜, still 10 faan, so there is no reward for the extra work."
+      }
+    ],
+    "questions": [
+      {
+        "type": "singleChoice",
+        "question": "How many wind triplets does Small Four Winds 小四喜 need?",
+        "options": ["One", "Two", "Three", "Four"],
+        "correctIndex": 2,
+        "explanation": "Three winds are triplets or kongs, and the fourth wind is left over to form the pair."
+      },
+      {
+        "type": "singleChoice",
+        "question": "What role does the fourth wind play in 小四喜?",
+        "options": ["It becomes the pair, the eyes", "It is discarded", "It joins a chow", "It forms a fourth triplet"],
+        "correctIndex": 0,
+        "explanation": "Four winds but only three sets: the leftover wind pairs up and serves as the eyes."
+      },
+      {
+        "type": "singleChoice",
+        "question": "How much is Small Four Winds 小四喜 worth?",
+        "options": ["5 faan", "8 faan", "10 faan, the limit", "13 faan"],
+        "correctIndex": 2,
+        "explanation": "小四喜 is an 例牌 hand, and every limit hand is scored as a flat 10 faan."
+      },
+      {
+        "type": "multiChoice",
+        "question": "Which statements about Small Four Winds 小四喜 are true?",
+        "options": [
+          "Only three of the four winds count as triplets",
+          "The fourth wind is the pair",
+          "It is capped at 10 faan",
+          "The wind pair used as eyes adds 2 faan on top"
+        ],
+        "correctIndex": 0,
+        "correctIndexes": [0, 1, 2],
+        "explanation": "Three wind triplets plus a wind pair is the shape and the hand is limited to 10 faan; the pair is only the eyes and adds nothing."
+      },
+      {
+        "type": "tileSelection",
+        "question": "Your hand shows {{east}}{{east}}{{east}}, {{south}}{{south}}{{south}} and {{west}}{{west}}{{west}}. Which tile must be the pair for 小四喜?",
+        "options": ["north", "red", "m3", "p8"],
+        "correctIndex": 0,
+        "explanation": "東, 南 and 西 are already used as triplets, so 北 is the only wind left to pair up."
+      },
+      {
+        "type": "matching",
+        "question": "Match each hand shape to its name and value.",
+        "options": [],
+        "correctIndex": 0,
+        "pairs": [
+          {
+            "left": "Three wind triplets plus a wind pair",
+            "right": "小四喜, 10 faan"
+          },
+          {
+            "left": "Four wind triplets",
+            "right": "大四喜, also 10 faan"
+          },
+          {
+            "left": "Three dragon triplets",
+            "right": "大三元, 8 faan"
+          }
+        ],
+        "explanation": "The extra wind triplet upgrades the name but not the score, because both four-wind hands are limit hands."
+      },
+      {
+        "type": "fillBlank",
+        "question": "On a self-draw, a 10-faan hand collects how many points from each of the other three players?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": ["64", "sixty-four", "sixty four", "64 points"],
+        "explanation": "The top row of the payment table is 128 from a discarder and 64 from each player on a self-draw."
+      },
+      {
+        "type": "singleChoice",
+        "question": "A 小四喜 hand also has 自摸 and a seat wind. How is it scored?",
+        "options": [
+          "10 faan plus the other faan",
+          "A flat 10 faan, because that is the ceiling",
+          "13 faan",
+          "8 faan"
+        ],
+        "correctIndex": 1,
+        "explanation": "Limit hands are flat 10 faan, so 自摸 and wind faan are not added on top."
+      }
+    ]
+  }
+}

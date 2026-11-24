@@ -479,7 +479,7 @@ class GameState extends ChangeNotifier with FriendsMixin {
     if (_speedChallengeWins >= 10) {
       _unlockedAchievements.add('speed_demon');
     }
-    // #22 explorer: complete all 17 course types (12 stages + 5 practice modes)
+    // #22 explorer: complete every course type (all stages + 5 practice modes)
     if (_isExplorerComplete()) {
       _unlockedAchievements.add('explorer');
     }
@@ -513,7 +513,7 @@ class GameState extends ChangeNotifier with FriendsMixin {
   }
 
   bool _isExplorerComplete() {
-    // 12 Learning Stages completed at least once
+    // Every Learning Stage completed at least once
     final stagesComplete = _stages.isNotEmpty &&
         _stages.every((s) => s.completedLessons >= 1);
     if (!stagesComplete) return false;

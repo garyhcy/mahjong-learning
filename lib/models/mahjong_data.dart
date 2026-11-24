@@ -339,10 +339,18 @@ final List<LearningStage> defaultStages = [
     color: const Color(0xFFFF6F00),
     lessonCount: 5,
   ),
+  LearningStage(
+    id: 'stage13',
+    title: 'Limit Hands',
+    subtitle: 'The hands that cap the table at 10 faan',
+    icon: Icons.local_fire_department_rounded,
+    color: const Color(0xFFB71C1C),
+    lessonCount: 9,
+  ),
 ];
 
 // ═══════════════════════════════════════════════════════
-//  Complete Curriculum (12 Stages, 70 Lessons)
+//  Complete Curriculum (13 Stages, 79 Lessons)
 // ═══════════════════════════════════════════════════════
 
 final List<Lesson> allLessonsData = defaultLessons;
@@ -9355,6 +9363,1216 @@ final List<Lesson> defaultLessons = [
         correctIndex: 0,
         explanation:
             'Four sets are already complete, so {{p9}} pairs up to form the eyes and keeps the hand 清一色.',
+      ),
+    ],
+  ),
+  // ═══════════════════════════════════
+  //  STAGE 13: Limit Hands (9 lessons)
+  // ═══════════════════════════════════
+  Lesson(
+    id: '13-1',
+    stageId: 'stage13',
+    title: 'Small Three Dragons',
+    subtitle: 'Two dragon triplets plus a dragon pair',
+    dialogues: [
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Small Three Dragons 小三元 looks bigger than it pays. Two dragons arrive as triplets, and the third dragon becomes your pair.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'The pattern itself is 3 faan. Each of those two dragon triplets still counts 1 faan on top, so the hand settles at 5.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text:
+            'So {{red}}{{red}}{{red}} and {{green}}{{green}}{{green}}, with {{white}}{{white}} sitting as the eyes?',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Exactly. Notice the pair earns nothing extra, because dragon eyes are still just eyes.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Five faan pays 24 from a discarder. Respectable, but nowhere near the 10-faan ceiling.',
+      ),
+    ],
+    questions: [
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'How many dragon triplets does Small Three Dragons 小三元 require?',
+        options: ['One', 'Two', 'Three', 'Four'],
+        correctIndex: 1,
+        explanation:
+            '小三元 uses two dragons as triplets; the third dragon is kept as the pair, which is exactly what makes it small.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'Small Three Dragons 小三元 is worth how many faan before the two dragon triplets are added?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['3', 'three', '3 faan', 'three faan'],
+        explanation:
+            'The pattern alone is 3 faan, and the dragon triplets are counted afterwards as separate 1-faan items.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'In 小三元, what is the third dragon used for?',
+        options: [
+          'A kong',
+          'The pair that becomes the eyes',
+          'A chow',
+          'A flower replacement',
+        ],
+        correctIndex: 1,
+        explanation:
+            'The remaining dragon is paired and used as the eyes; if all three dragons were triplets the hand would be 大三元.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which statements about Small Three Dragons 小三元 are true?',
+        options: [
+          'Two of the three dragons form triplets',
+          'The third dragon forms the pair',
+          'The dragon pair used as eyes adds another faan',
+          'All three dragons form triplets',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'Two triplets plus a dragon pair is the shape. The pair is only the eyes and earns no faan, and three dragon triplets would be 大三元.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'Your hand already holds {{red}}{{red}}{{red}} and {{green}}{{green}}{{green}}. Which tile has to be the pair for 小三元?',
+        options: ['white', 'east', 'm5', 's7'],
+        correctIndex: 0,
+        explanation:
+            'With 紅中 and 發財 already spent on triplets, only 白板 is left to sit as the dragon pair.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each part of a dragon hand to what it is worth.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Two dragon triplets plus one dragon pair',
+            right: '小三元, 5 faan in total',
+          ),
+          QuestionPair(
+            left: 'All three dragons as triplets',
+            right: '大三元, 8 faan in total',
+          ),
+          QuestionPair(
+            left: 'A dragon pair sitting as the eyes',
+            right: 'No faan on its own',
+          ),
+        ],
+        explanation:
+            'The two dragon triplets each add 1 faan to the 3-faan pattern, while the pair is only the eyes and is never scored.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'Counting the pattern and both dragon triplets, Small Three Dragons 小三元 collects how many faan in total?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['5', 'five', '5 faan', 'five faan'],
+        explanation:
+            '3 faan for the pattern plus 1 faan for each dragon triplet gives 5 faan.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'A 5-faan hand is won on a discard. How much does the discarder pay?',
+        options: ['8', '16', '24', '32'],
+        correctIndex: 2,
+        explanation:
+            'On the payment table 5 faan is 24 points from the discarder, who pays the whole amount alone.',
+      ),
+    ],
+  ),
+  Lesson(
+    id: '13-2',
+    stageId: 'stage13',
+    title: 'Great Three Dragons',
+    subtitle: 'All three dragons, and who pays',
+    dialogues: [
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Great Three Dragons 大三元 is the louder cousin: all three dragons come as triplets, so no dragon is left for the pair.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'The pattern is 5 faan, and the three dragon triplets add 3 more, which makes 8.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text:
+            'Eight faan. And there is a payment rule attached to this one, right?',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'There is. 大三元包 means the player who fed you the third dragon triplet pays your whole self-draw on their own.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'The exception: if that third triplet was a concealed kong, nobody supplied it, so the self-draw goes back to the normal three-way split.',
+      ),
+    ],
+    questions: [
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'You hold {{red}}{{red}}{{red}} and {{green}}{{green}}{{green}}. Which tile must you now collect a triplet of to reach Great Three Dragons 大三元?',
+        options: ['white', 'east', 'm1', 's9'],
+        correctIndex: 0,
+        explanation:
+            '大三元 needs all three dragons as triplets, so the missing third dragon is 白板.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'With all three dragons used as triplets, what serves as the eyes in 大三元?',
+        options: [
+          'A dragon pair',
+          'Any other pair, for example a number tile pair',
+          'A single dragon tile',
+          'No pair is needed',
+        ],
+        correctIndex: 1,
+        explanation:
+            'All three dragons are spent on triplets, so the eyes must come from somewhere else in the hand.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'What is Great Three Dragons 大三元 worth before the three dragon triplets are counted?',
+        options: ['3 faan', '5 faan', '8 faan', '10 faan'],
+        correctIndex: 1,
+        explanation:
+            'The pattern is 5 faan on its own, and the dragon triplets are added as separate 1-faan items.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'Adding the three dragon triplets to the pattern, 大三元 collects how many faan in total?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['8', 'eight', '8 faan', 'eight faan'],
+        explanation:
+            '5 faan for the pattern plus 1 faan for each of the three dragon triplets makes 8 faan.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'Under 大三元包, who pays when the winner self-draws?',
+        options: [
+          'All three opponents, split evenly',
+          'The player who supplied the third dragon triplet',
+          'The dealer, whatever seat they hold',
+          'The player who discarded the first dragon tile',
+        ],
+        correctIndex: 1,
+        explanation:
+            'The 包 liability lands on the single player whose deal completed the third dragon triplet, and they pay the entire self-draw.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'When does the 大三元包 liability not apply?',
+        options: [
+          'When the third dragon triplet was completed as a concealed kong',
+          'When the hand wins on a discard',
+          'When the winner happens to be the dealer',
+          'When the third dragon triplet was exposed',
+        ],
+        correctIndex: 0,
+        explanation:
+            'A concealed kong is built from the winner\'s own tiles, so nobody supplied the third set and the self-draw is shared normally.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which statements about Great Three Dragons 大三元 are true?',
+        options: [
+          'The pattern alone is 5 faan',
+          'The three dragon triplets add 3 faan',
+          'It is a 10-faan limit hand',
+          'It needs a dragon pair for its eyes',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            '5 plus 3 makes 8 faan, which sits below the 10-faan ceiling, and no dragon is left over for the pair.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each situation to the correct outcome.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Two dragon triplets and one dragon pair',
+            right: '小三元, 5 faan in total',
+          ),
+          QuestionPair(
+            left: 'Third dragon triplet completed by a discard',
+            right: 'The supplier of that triplet pays the whole self-draw',
+          ),
+          QuestionPair(
+            left: 'Third dragon triplet made as a concealed kong',
+            right: 'No one pays the self-draw alone, all three share it',
+          ),
+        ],
+        explanation:
+            'The count and the payment liability both follow from how the third dragon triplet was completed.',
+      ),
+    ],
+  ),
+  Lesson(
+    id: '13-3',
+    stageId: 'stage13',
+    title: 'Small Four Winds',
+    subtitle: 'Three wind triplets, one wind pair',
+    dialogues: [
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Now the winds. Small Four Winds 小四喜 is a limit hand, so it is worth a flat 10 faan.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Three winds form triplets and the fourth wind waits as your pair: four winds, three sets.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text:
+            'Like {{east}}{{east}}{{east}}, {{south}}{{south}}{{south}}, {{west}}{{west}}{{west}} and {{north}}{{north}} for the eyes?',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'That is the shape. Because 10 is the ceiling, your 自摸 or your seat wind cannot push it any higher.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Turn that spare {{north}}{{north}} into a triplet and you have 大四喜, still 10 faan, so there is no reward for the extra work.',
+      ),
+    ],
+    questions: [
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'How many wind triplets does Small Four Winds 小四喜 need?',
+        options: ['One', 'Two', 'Three', 'Four'],
+        correctIndex: 2,
+        explanation:
+            'Three winds are triplets or kongs, and the fourth wind is left over to form the pair.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'What role does the fourth wind play in 小四喜?',
+        options: [
+          'It becomes the pair, the eyes',
+          'It is discarded',
+          'It joins a chow',
+          'It forms a fourth triplet',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Four winds but only three sets: the leftover wind pairs up and serves as the eyes.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'How much is Small Four Winds 小四喜 worth?',
+        options: ['5 faan', '8 faan', '10 faan, the limit', '13 faan'],
+        correctIndex: 2,
+        explanation:
+            '小四喜 is an 例牌 hand, and every limit hand is scored as a flat 10 faan.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which statements about Small Four Winds 小四喜 are true?',
+        options: [
+          'Only three of the four winds count as triplets',
+          'The fourth wind is the pair',
+          'It is capped at 10 faan',
+          'The wind pair used as eyes adds 2 faan on top',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 2],
+        explanation:
+            'Three wind triplets plus a wind pair is the shape and the hand is limited to 10 faan; the pair is only the eyes and adds nothing.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'Your hand shows {{east}}{{east}}{{east}}, {{south}}{{south}}{{south}} and {{west}}{{west}}{{west}}. Which tile must be the pair for 小四喜?',
+        options: ['north', 'red', 'm3', 'p8'],
+        correctIndex: 0,
+        explanation:
+            '東, 南 and 西 are already used as triplets, so 北 is the only wind left to pair up.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each hand shape to its name and value.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Three wind triplets plus a wind pair',
+            right: '小四喜, 10 faan',
+          ),
+          QuestionPair(left: 'Four wind triplets', right: '大四喜, also 10 faan'),
+          QuestionPair(left: 'Three dragon triplets', right: '大三元, 8 faan'),
+        ],
+        explanation:
+            'The extra wind triplet upgrades the name but not the score, because both four-wind hands are limit hands.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'On a self-draw, a 10-faan hand collects how many points from each of the other three players?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['64', 'sixty-four', 'sixty four', '64 points'],
+        explanation:
+            'The top row of the payment table is 128 from a discarder and 64 from each player on a self-draw.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'A 小四喜 hand also has 自摸 and a seat wind. How is it scored?',
+        options: [
+          '10 faan plus the other faan',
+          'A flat 10 faan, because that is the ceiling',
+          '13 faan',
+          '8 faan',
+        ],
+        correctIndex: 1,
+        explanation:
+            'Limit hands are flat 10 faan, so 自摸 and wind faan are not added on top.',
+      ),
+    ],
+  ),
+  Lesson(
+    id: '13-4',
+    stageId: 'stage13',
+    title: 'Great Four Winds',
+    subtitle: 'All four winds at once',
+    dialogues: [
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Great Four Winds 大四喜 is the loudest hand at the table: you collect all four winds as pungs, and everyone can see it coming.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'It is a limit hand, so it is flat 10 Faan. Even with 門前清 or 自摸 on top, the score stays at 10.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text: 'So the extra Faan are simply lost? That feels harsh.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'That is the deal with every 例牌. 10 Faan is the ceiling, so you build for the shape, not the extras.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Small Four Winds 小四喜 keeps one wind as the pair. Great Four Winds turns that pair into the fourth pung, and that one pung is the whole difference.',
+      ),
+    ],
+    questions: [
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Great Four Winds 大四喜 is a limit hand. How many Faan does it score?',
+        options: ['3 Faan', '5 Faan', '7 Faan', '10 Faan'],
+        correctIndex: 3,
+        explanation:
+            'Every 例牌 is counted as 10 Faan, and Great Four Winds is one of them.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'A Great Four Winds hand also happens to be 門前清. How many Faan does the whole hand score?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['10', 'ten', '10 faan', 'ten faan', '10 points'],
+        explanation:
+            '10 Faan is the ceiling, so extra Faan such as 門前清 are not added on top of a limit hand.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which statements about Great Four Winds 大四喜 are true?',
+        options: [
+          'All four winds appear as pungs or kongs',
+          'It is scored as a limit hand of 10 Faan',
+          'The fourth wind is used as the pair',
+          'Extra Faan are added on top of the 10',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'Four wind pungs or kongs make the hand, and like every limit hand it is capped at 10 Faan; the pair is an ordinary pair, not a wind.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'In Small Four Winds 小四喜 the fourth wind is used as the pair. What does Great Four Winds 大四喜 do instead?',
+        options: [
+          'It uses the fourth wind as a pung as well',
+          'It drops the pair completely',
+          'It uses two wind pairs',
+          'It counts only three winds',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Small Four Winds is three wind pungs plus a wind pair; Great Four Winds upgrades that pair into the fourth pung.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each hand to its shape.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Great Four Winds 大四喜',
+            right: 'Four wind pungs, pair from another tile',
+          ),
+          QuestionPair(
+            left: 'Small Four Winds 小四喜',
+            right: 'Three wind pungs, one wind pair as the eyes',
+          ),
+          QuestionPair(
+            left: 'All Pungs 對對糊',
+            right: 'Four pungs, winds optional, not a limit hand',
+          ),
+        ],
+        explanation:
+            'The number of wind pungs separates the two Four Winds hands, while 對對糊 asks for four pungs and says nothing about winds.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'You hold pungs of {{east}}, {{south}} and {{west}}, plus a pair of {{m5}}. Which tile would upgrade this hand into Great Four Winds?',
+        options: ['north', 'red', 'm5', 'white'],
+        correctIndex: 0,
+        explanation:
+            'The fourth wind is the only missing pung, and {{north}} is the one tile that adds a wind pung here.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Your Great Four Winds hand wins by self-draw. What does each of the three opponents pay?',
+        options: ['32', '64', '128', '192'],
+        correctIndex: 1,
+        explanation:
+            '10 Faan on a self-draw pays 64 from each player, and the limit cap means the 自摸 Faan adds nothing extra.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'Arrange the four wind tiles in seat order, starting with East.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['east', 'south', 'west', 'north'],
+        explanation:
+            'Seat order runs East, South, West, North, which is also the order the winds rotate from hand to hand.',
+      ),
+    ],
+  ),
+  Lesson(
+    id: '13-5',
+    stageId: 'stage13',
+    title: 'All Concealed Triplets',
+    subtitle: 'Four hidden pungs',
+    dialogues: [
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'All Concealed Triplets 坎坎糊 means four pungs you completed yourself, with nobody helping you by discarding into them.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text: 'So I cannot claim even one tile from another player?',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Exactly. Four concealed pungs plus a pair is a 10 Faan limit hand, and it grows quietly while everyone else shows their melds.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Two traps: no kongs are allowed at all, and the wait decides whether a discard is allowed to finish the hand.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text:
+            'Then I need to know which waits can take a discard and which ones cannot.',
+      ),
+    ],
+    questions: [
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'All Concealed Triplets 坎坎糊 is a limit hand. How many Faan is it worth?',
+        options: ['3 Faan', '5 Faan', '7 Faan', '10 Faan'],
+        correctIndex: 3,
+        explanation:
+            '坎坎糊 is one of the 例牌, and every limit hand counts as 10 Faan.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these are true requirements for 坎坎糊?',
+        options: [
+          'Four concealed pungs',
+          'No kongs anywhere in the hand',
+          'At least one claimed pung',
+          'The pair must be a wind pair',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'Four pungs you never claimed, and not one kong; a claimed pung or a kong both break the shape, and the pair can be any tile.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'Why does a single kong disqualify 坎坎糊?',
+        options: [
+          'A kong is not a concealed pung, so the hand no longer has four concealed triplets',
+          'A kong always breaks 門前清 as well',
+          'Kongs are only allowed in 十八羅漢',
+          'A kong makes the hand too many tiles to score',
+        ],
+        correctIndex: 0,
+        explanation:
+            '坎坎糊 is defined as four concealed pungs; a kong is a different meld, so the required pattern is simply not there.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'Your four pungs are already concealed and you hold a lone {{s7}} as the eye wait. Which of these discards can you win on for 坎坎糊?',
+        options: ['s7', 'm3', 'east', 'p2'],
+        correctIndex: 0,
+        explanation:
+            'On a single wait the four pungs are already complete and concealed, so the discard only pairs the eyes and the hand still counts.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'A two-pair wait (對碰) cannot take a discard for 坎坎糊. It must be won by ___.',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: [
+          'self-draw',
+          'self draw',
+          'selfdraw',
+          'a self-draw',
+          'drawing it yourself',
+        ],
+        explanation:
+            'Winning a two-pair wait on a discard means the last pung is claimed, so that pung is no longer concealed.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each wait or shape to what it allows.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Single wait 單吊 on the pair',
+            right: 'May win on a discard',
+          ),
+          QuestionPair(left: 'Two-pair wait 對碰', right: 'Must be a self-draw'),
+          QuestionPair(
+            left: 'One kong in the hand',
+            right: 'Disqualifies 坎坎糊 entirely',
+          ),
+        ],
+        explanation:
+            'The wait decides whether a claimed tile would break concealment, and any kong removes the hand from 坎坎糊 altogether.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'How does 坎坎糊 differ from All Pungs 對對糊 (3 Faan)?',
+        options: [
+          '坎坎糊 requires all four pungs to be concealed',
+          '坎坎糊 allows chows as well',
+          '對對糊 is the higher limit hand',
+          '坎坎糊 allows exactly one kong',
+        ],
+        correctIndex: 0,
+        explanation:
+            '對對糊 only asks for four pungs; 坎坎糊 asks for pungs nobody helped you make, which is why it jumps to a limit hand.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'You win 坎坎糊 on a discard. How much does the discarder pay?',
+        options: ['24', '64', '128', '192'],
+        correctIndex: 2,
+        explanation:
+            'A 10 Faan hand on a discard pays 128, and the discarder pays the whole amount alone.',
+      ),
+    ],
+  ),
+  Lesson(
+    id: '13-6',
+    stageId: 'stage13',
+    title: 'Eighteen Arhats',
+    subtitle: 'Four kongs in one hand',
+    dialogues: [
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Eighteen Arhats 十八羅漢 is the hand with four kongs. Four kongs plus a pair is 18 tiles, and that is where the name comes from.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text:
+            'So the kongs just sit in front of me while I keep drawing replacement tiles?',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Exactly, and any mix counts: exposed kongs, concealed kongs, even an added kong on a pung you already had.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text:
+            'That sounds like the exact opposite of 坎坎糊, which allows no kongs at all.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Precisely. One hand demands four kongs, the other forbids even one, and both are 10 Faan limit hands.',
+      ),
+    ],
+    questions: [
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'How many kongs must a hand hold to score Eighteen Arhats 十八羅漢?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['4', 'four', '4 kongs', 'four kongs'],
+        explanation:
+            'Four kongs plus the pair fill the hand, and that is what the name counts.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Eighteen Arhats 十八羅漢 is a limit hand. How many Faan does it score?',
+        options: ['5 Faan', '7 Faan', '10 Faan', '13 Faan'],
+        correctIndex: 2,
+        explanation:
+            'Like every 例牌 it counts as 10 Faan, whatever else the hand contains.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'Why is the hand called Eighteen Arhats 十八羅漢?',
+        options: [
+          'Four kongs are 16 tiles and the pair adds 2, making 18 tiles',
+          'It needs eighteen different tile types',
+          'It is worth eighteen Faan',
+          'It must be won on the eighteenth draw',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Four kongs hold 16 tiles and the pair adds 2, so the finished hand is literally eighteen tiles.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these kongs count toward the four in 十八羅漢?',
+        options: [
+          'A concealed kong',
+          'An exposed kong claimed from a discard',
+          'An added kong on an existing pung',
+          'A concealed pung',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 2],
+        explanation:
+            'Every kind of kong qualifies, concealed, exposed or added; a pung is not a kong, so it adds nothing to the count.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each hand to the pung shape it requires.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Eighteen Arhats 十八羅漢',
+            right: 'Four kongs, exposed or concealed',
+          ),
+          QuestionPair(
+            left: 'All Concealed Triplets 坎坎糊',
+            right: 'Four concealed pungs and no kongs',
+          ),
+          QuestionPair(
+            left: 'All Pungs 對對糊',
+            right: 'Four pungs, kongs allowed, 3 Faan',
+          ),
+        ],
+        explanation:
+            'The kong count is the dividing line between these three pung-shaped hands.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'Three of your melds are already kongs and the fourth is a pung of {{p8}}. Which tile turns that pung into your fourth kong?',
+        options: ['p8', 's8', 'm8', 'white'],
+        correctIndex: 0,
+        explanation:
+            'Drawing the fourth {{p8}} upgrades the pung into a kong, and the hand then holds four kongs.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You hold four concealed kongs and a pair. Which limit hand does this score?',
+        options: [
+          '十八羅漢 only, because kongs rule out 坎坎糊',
+          'Both 十八羅漢 and 坎坎糊',
+          '坎坎糊 only',
+          'Neither, because a concealed kong is not a real kong',
+        ],
+        correctIndex: 0,
+        explanation:
+            '坎坎糊 requires four concealed pungs and forbids kongs, so a hand full of kongs can only be 十八羅漢.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'Your 十八羅漢 wins by self-draw. What does each opponent pay?',
+        options: ['32', '64', '128', '192'],
+        correctIndex: 1,
+        explanation:
+            '10 Faan on a self-draw is 64 from each of the three players, and the cap keeps the total there.',
+      ),
+    ],
+  ),
+  Lesson(
+    id: '13-7',
+    stageId: 'stage13',
+    title: 'Heavenly Hand',
+    subtitle: 'Winning on the dealt hand',
+    dialogues: [
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Today we meet the luckiest hand in mahjong: 天糊 Heavenly Hand. The dealer looks at the fourteen tiles just dealt and the hand is already complete.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text: 'So the dealer wins before anyone even discards?',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Exactly. No draws, no discards, no calls — just the dealt hand. It is a limit hand, so it counts as 10 faan.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'One trap: if the dealer declares a concealed kong first, the win is no longer 天糊. The hand no longer comes straight from the deal.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text: 'Got it — the deal itself has to be the winning hand.',
+      ),
+    ],
+    questions: [
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'Who is the only player who can win 天糊 Heavenly Hand?',
+        options: [
+          'The dealer',
+          'Any non-dealer who is waiting after the deal',
+          'The player to the dealer\'s right',
+          'Any player who has not discarded yet',
+        ],
+        correctIndex: 0,
+        explanation:
+            '天糊 belongs to the dealer: the fourteen tiles dealt at the start of the hand must already be a winning hand.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'When exactly does 天糊 happen?',
+        options: [
+          'On the dealt fourteen tiles, before any tile is discarded',
+          'On the dealer\'s first drawn tile after the deal',
+          'On the first discard the dealer makes',
+          'On the dealer\'s second turn',
+        ],
+        correctIndex: 0,
+        explanation:
+            'No turn is played at all — the deal is the win, so nothing may be drawn, discarded or called first.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many faan is 天糊 worth?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['10', 'ten', '10 faan', 'ten faan', '10 points'],
+        explanation:
+            '天糊 is one of the limit hands, so it is always scored at the 10 faan ceiling.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which statements about 天糊 are correct?',
+        options: [
+          'Only the dealer can win it',
+          'It is won on the tiles dealt at the start of the hand',
+          'A declared concealed kong cancels it',
+          'A non-dealer can win it if their dealt hand is complete',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 2],
+        explanation:
+            'A complete dealt hand for a non-dealer is not 天糊 — 天糊 is the dealer\'s alone; the other three statements are true.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each term to what it means for 天糊.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: '天糊 Heavenly Hand',
+            right: 'Dealer wins on the fourteen dealt tiles',
+          ),
+          QuestionPair(
+            left: '暗槓 concealed kong',
+            right: 'Declaring one before the win cancels 天糊',
+          ),
+          QuestionPair(
+            left: '10 faan limit',
+            right: 'The value of the hand however the tiles fell',
+          ),
+        ],
+        explanation:
+            'The deal supplies the win, so any action such as a kong means the hand is no longer the hand that was dealt.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'The dealer is dealt a complete hand but first declares a concealed kong, then wins on the replacement tile. What is the result?',
+        options: [
+          'Still 天糊, because the hand was dealt complete',
+          'Not 天糊; it is an ordinary win after the kong',
+          'The hand is void and must be thrown away',
+          'It becomes 地糊 instead',
+        ],
+        correctIndex: 1,
+        explanation:
+            'Once the dealer declares a kong the win no longer comes straight from the dealt hand, so only the normal faan apply.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'The dealer is dealt thirteen tiles and is waiting only on {{p3}}. Which tile must the fourteenth dealt tile be for 天糊?',
+        options: ['p3', 'p4', 'm3', 'east'],
+        correctIndex: 0,
+        explanation:
+            '天糊 needs the dealt hand to be complete, so the last dealt tile has to be the exact tile the thirteen tiles were waiting on.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'A player wins 天糊 by self-draw. How many points does each of the other three players pay?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['64', 'sixty-four', '64 points', 'sixty four'],
+        explanation:
+            'At 10 faan a self-draw pays 64 from each player, so the winner collects 192 in total.',
+      ),
+    ],
+  ),
+  Lesson(
+    id: '13-8',
+    stageId: 'stage13',
+    title: 'Earthly Hand',
+    subtitle: 'Winning on the dealer\'s first discard',
+    dialogues: [
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            '地糊 Earthly Hand is the non-dealer\'s version of that dream: thirteen dealt tiles that are already waiting.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text: 'And then I just need the dealer\'s first discard?',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Exactly — the dealer\'s very first discard, before you call anything. It is a limit hand, 10 faan.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Two things kill it: the dealer declares a concealed kong first, or you call a meld before the win.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text: 'Stay silent, stay dealt, and grab that first discard.',
+      ),
+    ],
+    questions: [
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'Who can win 地糊 Earthly Hand?',
+        options: [
+          'A non-dealer whose dealt hand is already waiting',
+          'The dealer on the dealt tiles',
+          'Any player after the first discard',
+          'The player who discards first',
+        ],
+        correctIndex: 0,
+        explanation:
+            '地糊 is a non-dealer\'s hand: the thirteen dealt tiles must already be in tenpai, waiting for one tile.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'Which tile must complete a 地糊?',
+        options: [
+          'The dealer\'s very first discard',
+          'Any discard during the first rotation',
+          'A tile the player draws themselves',
+          'A tile taken from the wall after a kong',
+        ],
+        correctIndex: 0,
+        explanation:
+            'The win comes from the dealer\'s first discard and nothing else — a later discard is just an ordinary win.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many faan is 地糊 worth?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['10', 'ten', '10 faan', 'ten faan', '10 points'],
+        explanation:
+            '地糊 is a limit hand, so it is scored at the 10 faan ceiling.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these are required for 地糊?',
+        options: [
+          'The winner is a non-dealer',
+          'The thirteen dealt tiles are already waiting',
+          'The winner calls no meld before the win',
+          'The winner may call a Chow before claiming the win',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 2],
+        explanation:
+            'Calling a meld would mean the hand is no longer the dealt hand, so 地糊 needs the thirteen dealt tiles untouched.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each hand or situation to its result.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: '天糊 Heavenly Hand',
+            right: 'Dealer wins on the fourteen dealt tiles',
+          ),
+          QuestionPair(
+            left: '地糊 Earthly Hand',
+            right: 'Non-dealer wins on the dealer\'s first discard',
+          ),
+          QuestionPair(
+            left: 'Dealer\'s concealed kong before the first discard',
+            right: '地糊 is no longer available',
+          ),
+        ],
+        explanation:
+            'Both hands come from the deal, but only 地糊 depends on the dealer\'s first discard staying the first discard.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'A non-dealer is dealt thirteen tiles waiting only on {{s7}}. Which tile must the dealer discard first for 地糊?',
+        options: ['s7', 's6', 's8', 'p7'],
+        correctIndex: 0,
+        explanation:
+            'The dealt hand is already waiting on one tile, and 地糊 needs that exact tile to be the dealer\'s first discard.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'The dealer declares a concealed kong, then makes the first discard. A waiting non-dealer claims it. What happens?',
+        options: [
+          'It is still 地糊',
+          'It is not 地糊; it is an ordinary discard win',
+          'The claim is illegal',
+          'It becomes 天糊',
+        ],
+        correctIndex: 1,
+        explanation:
+            'The rules say the dealer\'s concealed kong cancels 地糊, because that discard no longer comes straight after the deal.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'A non-dealer wins 地糊 on the dealer\'s first discard. How many points does the dealer pay?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: [
+          '128',
+          'one hundred and twenty-eight',
+          '128 points',
+          'one hundred and twenty eight',
+        ],
+        explanation:
+            '地糊 is 10 faan and it is a discard win, so the discarder — the dealer — pays the full 128 alone.',
+      ),
+    ],
+  ),
+  Lesson(
+    id: '13-9',
+    stageId: 'stage13',
+    title: 'Nine Gates',
+    subtitle: '1112345678999 in one suit',
+    dialogues: [
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            '九蓮寶燈 Nine Gates looks like a straight line: 1112345678999 of one suit, plus one extra tile of that same suit.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text:
+            'That is thirteen tiles already. So the base hand waits on every tile of the suit?',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Yes — all nine. That is why it is called nine gates, and it counts as 10 faan.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'The hand must be fully concealed. On a self-draw you simply win; on a discard you must be calling 九扉 nine gates.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text:
+            'Same suit, no melds, and call 九扉 if someone else throws the tile.',
+      ),
+    ],
+    questions: [
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'What is the shape of a 九蓮寶燈 Nine Gates hand?',
+        options: [
+          '1112345678999 of one suit plus one more tile of the same suit',
+          'Four triplets and a pair of honours',
+          'Thirteen different terminals and honours',
+          'Two sequences of the same suit plus a pair',
+        ],
+        correctIndex: 0,
+        explanation:
+            'The whole hand is one suit: the run of 1112345678999 with any single extra tile of that same suit.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which requirements must a 九蓮寶燈 hand meet?',
+        options: [
+          'All tiles come from one suit',
+          'The hand is fully concealed',
+          'The base pattern 1112345678999 is present plus one extra tile of that suit',
+          'At least one honour triplet is included',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 2],
+        explanation:
+            'Honours are impossible in Nine Gates — the hand is a single suit, held without any open meld.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'How many different tiles does the thirteen-tile Nine Gates base 1112345678999 wait on?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['9', 'nine', '9 tiles', 'nine tiles', 'all nine'],
+        explanation:
+            'Any tile from 1 to 9 of that suit completes the pattern, which is exactly where the name nine gates comes from.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'How many faan is 九蓮寶燈 worth?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['10', 'ten', '10 faan', 'ten faan', '10 points'],
+        explanation:
+            'Nine Gates is a limit hand, so it is scored at the 10 faan ceiling rather than adding more faan on top.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'The winning tile is thrown by another player. What must the winner have called?',
+        options: [
+          '九扉 nine gates',
+          'A concealed kong',
+          'Nothing — a discard win needs no call',
+          'An open Chow to prove the suit',
+        ],
+        correctIndex: 0,
+        explanation:
+            'A discard win only counts if the player is calling nine gates (九扉); self-draw needs no such declaration.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'The player completes the 1112345678999 pattern plus the extra tile by self-draw. What else is required?',
+        options: [
+          'Nothing extra — the completed pattern wins',
+          'A 九扉 declaration first',
+          'An open meld to prove the suit',
+          'A kong of the extra tile',
+        ],
+        correctIndex: 0,
+        explanation:
+            'On a self-draw, completing the pattern is enough — the 九扉 call matters only when the tile is discarded by someone else.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'A player\'s hand is built on {{m1}}{{m1}}{{m1}}{{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{m7}}{{m8}}{{m9}}{{m9}}{{m9}}. Which of these may be the extra fourteenth tile?',
+        options: ['m5', 'p5', 's5', 'east'],
+        correctIndex: 0,
+        explanation:
+            'Nine Gates allows one suit only, so the extra tile must be a Character tile like the rest of the hand.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Before winning, the player called a Chow to complete a run. Can the hand still be 九蓮寶燈?',
+        options: [
+          'Yes, if the tiles still form 1112345678999',
+          'No — the hand must be fully concealed',
+          'Yes, but only on a self-draw',
+          'Only if the Chow was in the same suit',
+        ],
+        correctIndex: 1,
+        explanation:
+            'Nine Gates requires a fully concealed hand, so any open meld rules it out even if the tiles look right.',
       ),
     ],
   ),

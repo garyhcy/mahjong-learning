@@ -1,0 +1,420 @@
+{
+  "13-4": {
+    "title": "Great Four Winds",
+    "subtitle": "All four winds at once",
+    "dialogues": [
+      {
+        "speaker": "mj",
+        "text": "Great Four Winds 大四喜 is the loudest hand at the table: you collect all four winds as pungs, and everyone can see it coming."
+      },
+      {
+        "speaker": "mj",
+        "text": "It is a limit hand, so it is flat 10 Faan. Even with 門前清 or 自摸 on top, the score stays at 10."
+      },
+      {
+        "speaker": "you",
+        "text": "So the extra Faan are simply lost? That feels harsh."
+      },
+      {
+        "speaker": "mj",
+        "text": "That is the deal with every 例牌. 10 Faan is the ceiling, so you build for the shape, not the extras."
+      },
+      {
+        "speaker": "mj",
+        "text": "Small Four Winds 小四喜 keeps one wind as the pair. Great Four Winds turns that pair into the fourth pung, and that one pung is the whole difference."
+      }
+    ],
+    "questions": [
+      {
+        "type": "singleChoice",
+        "question": "Great Four Winds 大四喜 is a limit hand. How many Faan does it score?",
+        "options": [
+          "3 Faan",
+          "5 Faan",
+          "7 Faan",
+          "10 Faan"
+        ],
+        "correctIndex": 3,
+        "explanation": "Every 例牌 is counted as 10 Faan, and Great Four Winds is one of them."
+      },
+      {
+        "type": "fillBlank",
+        "question": "A Great Four Winds hand also happens to be 門前清. How many Faan does the whole hand score?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": [
+          "10",
+          "ten",
+          "10 faan",
+          "ten faan",
+          "10 points"
+        ],
+        "explanation": "10 Faan is the ceiling, so extra Faan such as 門前清 are not added on top of a limit hand."
+      },
+      {
+        "type": "multiChoice",
+        "question": "Which statements about Great Four Winds 大四喜 are true?",
+        "options": [
+          "All four winds appear as pungs or kongs",
+          "It is scored as a limit hand of 10 Faan",
+          "The fourth wind is used as the pair",
+          "Extra Faan are added on top of the 10"
+        ],
+        "correctIndex": 0,
+        "correctIndexes": [
+          0,
+          1
+        ],
+        "explanation": "Four wind pungs or kongs make the hand, and like every limit hand it is capped at 10 Faan; the pair is an ordinary pair, not a wind."
+      },
+      {
+        "type": "singleChoice",
+        "question": "In Small Four Winds 小四喜 the fourth wind is used as the pair. What does Great Four Winds 大四喜 do instead?",
+        "options": [
+          "It uses the fourth wind as a pung as well",
+          "It drops the pair completely",
+          "It uses two wind pairs",
+          "It counts only three winds"
+        ],
+        "correctIndex": 0,
+        "explanation": "Small Four Winds is three wind pungs plus a wind pair; Great Four Winds upgrades that pair into the fourth pung."
+      },
+      {
+        "type": "matching",
+        "question": "Match each hand to its shape.",
+        "options": [],
+        "correctIndex": 0,
+        "pairs": [
+          {
+            "left": "Great Four Winds 大四喜",
+            "right": "Four wind pungs, pair from another tile"
+          },
+          {
+            "left": "Small Four Winds 小四喜",
+            "right": "Three wind pungs, one wind pair as the eyes"
+          },
+          {
+            "left": "All Pungs 對對糊",
+            "right": "Four pungs, winds optional, not a limit hand"
+          }
+        ],
+        "explanation": "The number of wind pungs separates the two Four Winds hands, while 對對糊 asks for four pungs and says nothing about winds."
+      },
+      {
+        "type": "tileSelection",
+        "question": "You hold pungs of {{east}}, {{south}} and {{west}}, plus a pair of {{m5}}. Which tile would upgrade this hand into Great Four Winds?",
+        "options": [
+          "north",
+          "red",
+          "m5",
+          "white"
+        ],
+        "correctIndex": 0,
+        "explanation": "The fourth wind is the only missing pung, and {{north}} is the one tile that adds a wind pung here."
+      },
+      {
+        "type": "singleChoice",
+        "question": "Your Great Four Winds hand wins by self-draw. What does each of the three opponents pay?",
+        "options": [
+          "32",
+          "64",
+          "128",
+          "192"
+        ],
+        "correctIndex": 1,
+        "explanation": "10 Faan on a self-draw pays 64 from each player, and the limit cap means the 自摸 Faan adds nothing extra."
+      },
+      {
+        "type": "tileOrdering",
+        "question": "Arrange the four wind tiles in seat order, starting with East.",
+        "options": [],
+        "correctIndex": 0,
+        "tiles": [
+          "east",
+          "south",
+          "west",
+          "north"
+        ],
+        "explanation": "Seat order runs East, South, West, North, which is also the order the winds rotate from hand to hand."
+      }
+    ]
+  },
+  "13-5": {
+    "title": "All Concealed Triplets",
+    "subtitle": "Four hidden pungs",
+    "dialogues": [
+      {
+        "speaker": "mj",
+        "text": "All Concealed Triplets 坎坎糊 means four pungs you completed yourself, with nobody helping you by discarding into them."
+      },
+      {
+        "speaker": "you",
+        "text": "So I cannot claim even one tile from another player?"
+      },
+      {
+        "speaker": "mj",
+        "text": "Exactly. Four concealed pungs plus a pair is a 10 Faan limit hand, and it grows quietly while everyone else shows their melds."
+      },
+      {
+        "speaker": "mj",
+        "text": "Two traps: no kongs are allowed at all, and the wait decides whether a discard is allowed to finish the hand."
+      },
+      {
+        "speaker": "you",
+        "text": "Then I need to know which waits can take a discard and which ones cannot."
+      }
+    ],
+    "questions": [
+      {
+        "type": "singleChoice",
+        "question": "All Concealed Triplets 坎坎糊 is a limit hand. How many Faan is it worth?",
+        "options": [
+          "3 Faan",
+          "5 Faan",
+          "7 Faan",
+          "10 Faan"
+        ],
+        "correctIndex": 3,
+        "explanation": "坎坎糊 is one of the 例牌, and every limit hand counts as 10 Faan."
+      },
+      {
+        "type": "multiChoice",
+        "question": "Which of these are true requirements for 坎坎糊?",
+        "options": [
+          "Four concealed pungs",
+          "No kongs anywhere in the hand",
+          "At least one claimed pung",
+          "The pair must be a wind pair"
+        ],
+        "correctIndex": 0,
+        "correctIndexes": [
+          0,
+          1
+        ],
+        "explanation": "Four pungs you never claimed, and not one kong; a claimed pung or a kong both break the shape, and the pair can be any tile."
+      },
+      {
+        "type": "singleChoice",
+        "question": "Why does a single kong disqualify 坎坎糊?",
+        "options": [
+          "A kong is not a concealed pung, so the hand no longer has four concealed triplets",
+          "A kong always breaks 門前清 as well",
+          "Kongs are only allowed in 十八羅漢",
+          "A kong makes the hand too many tiles to score"
+        ],
+        "correctIndex": 0,
+        "explanation": "坎坎糊 is defined as four concealed pungs; a kong is a different meld, so the required pattern is simply not there."
+      },
+      {
+        "type": "tileSelection",
+        "question": "Your four pungs are already concealed and you hold a lone {{s7}} as the eye wait. Which of these discards can you win on for 坎坎糊?",
+        "options": [
+          "s7",
+          "m3",
+          "east",
+          "p2"
+        ],
+        "correctIndex": 0,
+        "explanation": "On a single wait the four pungs are already complete and concealed, so the discard only pairs the eyes and the hand still counts."
+      },
+      {
+        "type": "fillBlank",
+        "question": "A two-pair wait (對碰) cannot take a discard for 坎坎糊. It must be won by ___.",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": [
+          "self-draw",
+          "self draw",
+          "selfdraw",
+          "a self-draw",
+          "drawing it yourself"
+        ],
+        "explanation": "Winning a two-pair wait on a discard means the last pung is claimed, so that pung is no longer concealed."
+      },
+      {
+        "type": "matching",
+        "question": "Match each wait or shape to what it allows.",
+        "options": [],
+        "correctIndex": 0,
+        "pairs": [
+          {
+            "left": "Single wait 單吊 on the pair",
+            "right": "May win on a discard"
+          },
+          {
+            "left": "Two-pair wait 對碰",
+            "right": "Must be a self-draw"
+          },
+          {
+            "left": "One kong in the hand",
+            "right": "Disqualifies 坎坎糊 entirely"
+          }
+        ],
+        "explanation": "The wait decides whether a claimed tile would break concealment, and any kong removes the hand from 坎坎糊 altogether."
+      },
+      {
+        "type": "singleChoice",
+        "question": "How does 坎坎糊 differ from All Pungs 對對糊 (3 Faan)?",
+        "options": [
+          "坎坎糊 requires all four pungs to be concealed",
+          "坎坎糊 allows chows as well",
+          "對對糊 is the higher limit hand",
+          "坎坎糊 allows exactly one kong"
+        ],
+        "correctIndex": 0,
+        "explanation": "對對糊 only asks for four pungs; 坎坎糊 asks for pungs nobody helped you make, which is why it jumps to a limit hand."
+      },
+      {
+        "type": "singleChoice",
+        "question": "You win 坎坎糊 on a discard. How much does the discarder pay?",
+        "options": [
+          "24",
+          "64",
+          "128",
+          "192"
+        ],
+        "correctIndex": 2,
+        "explanation": "A 10 Faan hand on a discard pays 128, and the discarder pays the whole amount alone."
+      }
+    ]
+  },
+  "13-6": {
+    "title": "Eighteen Arhats",
+    "subtitle": "Four kongs in one hand",
+    "dialogues": [
+      {
+        "speaker": "mj",
+        "text": "Eighteen Arhats 十八羅漢 is the hand with four kongs. Four kongs plus a pair is 18 tiles, and that is where the name comes from."
+      },
+      {
+        "speaker": "you",
+        "text": "So the kongs just sit in front of me while I keep drawing replacement tiles?"
+      },
+      {
+        "speaker": "mj",
+        "text": "Exactly, and any mix counts: exposed kongs, concealed kongs, even an added kong on a pung you already had."
+      },
+      {
+        "speaker": "you",
+        "text": "That sounds like the exact opposite of 坎坎糊, which allows no kongs at all."
+      },
+      {
+        "speaker": "mj",
+        "text": "Precisely. One hand demands four kongs, the other forbids even one, and both are 10 Faan limit hands."
+      }
+    ],
+    "questions": [
+      {
+        "type": "fillBlank",
+        "question": "How many kongs must a hand hold to score Eighteen Arhats 十八羅漢?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": [
+          "4",
+          "four",
+          "4 kongs",
+          "four kongs"
+        ],
+        "explanation": "Four kongs plus the pair fill the hand, and that is what the name counts."
+      },
+      {
+        "type": "singleChoice",
+        "question": "Eighteen Arhats 十八羅漢 is a limit hand. How many Faan does it score?",
+        "options": [
+          "5 Faan",
+          "7 Faan",
+          "10 Faan",
+          "13 Faan"
+        ],
+        "correctIndex": 2,
+        "explanation": "Like every 例牌 it counts as 10 Faan, whatever else the hand contains."
+      },
+      {
+        "type": "singleChoice",
+        "question": "Why is the hand called Eighteen Arhats 十八羅漢?",
+        "options": [
+          "Four kongs are 16 tiles and the pair adds 2, making 18 tiles",
+          "It needs eighteen different tile types",
+          "It is worth eighteen Faan",
+          "It must be won on the eighteenth draw"
+        ],
+        "correctIndex": 0,
+        "explanation": "Four kongs hold 16 tiles and the pair adds 2, so the finished hand is literally eighteen tiles."
+      },
+      {
+        "type": "multiChoice",
+        "question": "Which of these kongs count toward the four in 十八羅漢?",
+        "options": [
+          "A concealed kong",
+          "An exposed kong claimed from a discard",
+          "An added kong on an existing pung",
+          "A concealed pung"
+        ],
+        "correctIndex": 0,
+        "correctIndexes": [
+          0,
+          1,
+          2
+        ],
+        "explanation": "Every kind of kong qualifies, concealed, exposed or added; a pung is not a kong, so it adds nothing to the count."
+      },
+      {
+        "type": "matching",
+        "question": "Match each hand to the pung shape it requires.",
+        "options": [],
+        "correctIndex": 0,
+        "pairs": [
+          {
+            "left": "Eighteen Arhats 十八羅漢",
+            "right": "Four kongs, exposed or concealed"
+          },
+          {
+            "left": "All Concealed Triplets 坎坎糊",
+            "right": "Four concealed pungs and no kongs"
+          },
+          {
+            "left": "All Pungs 對對糊",
+            "right": "Four pungs, kongs allowed, 3 Faan"
+          }
+        ],
+        "explanation": "The kong count is the dividing line between these three pung-shaped hands."
+      },
+      {
+        "type": "tileSelection",
+        "question": "Three of your melds are already kongs and the fourth is a pung of {{p8}}. Which tile turns that pung into your fourth kong?",
+        "options": [
+          "p8",
+          "s8",
+          "m8",
+          "white"
+        ],
+        "correctIndex": 0,
+        "explanation": "Drawing the fourth {{p8}} upgrades the pung into a kong, and the hand then holds four kongs."
+      },
+      {
+        "type": "singleChoice",
+        "question": "You hold four concealed kongs and a pair. Which limit hand does this score?",
+        "options": [
+          "十八羅漢 only, because kongs rule out 坎坎糊",
+          "Both 十八羅漢 and 坎坎糊",
+          "坎坎糊 only",
+          "Neither, because a concealed kong is not a real kong"
+        ],
+        "correctIndex": 0,
+        "explanation": "坎坎糊 requires four concealed pungs and forbids kongs, so a hand full of kongs can only be 十八羅漢."
+      },
+      {
+        "type": "singleChoice",
+        "question": "Your 十八羅漢 wins by self-draw. What does each opponent pay?",
+        "options": [
+          "32",
+          "64",
+          "128",
+          "192"
+        ],
+        "correctIndex": 1,
+        "explanation": "10 Faan on a self-draw is 64 from each of the three players, and the cap keeps the total there."
+      }
+    ]
+  }
+}

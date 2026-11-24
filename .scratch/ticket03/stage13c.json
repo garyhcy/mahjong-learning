@@ -1,0 +1,228 @@
+{
+  "13-7": {
+    "title": "Heavenly Hand",
+    "subtitle": "Winning on the dealt hand",
+    "dialogues": [
+      {"speaker": "mj", "text": "Today we meet the luckiest hand in mahjong: 天糊 Heavenly Hand. The dealer looks at the fourteen tiles just dealt and the hand is already complete."},
+      {"speaker": "you", "text": "So the dealer wins before anyone even discards?"},
+      {"speaker": "mj", "text": "Exactly. No draws, no discards, no calls — just the dealt hand. It is a limit hand, so it counts as 10 faan."},
+      {"speaker": "mj", "text": "One trap: if the dealer declares a concealed kong first, the win is no longer 天糊. The hand no longer comes straight from the deal."},
+      {"speaker": "you", "text": "Got it — the deal itself has to be the winning hand."}
+    ],
+    "questions": [
+      {
+        "type": "singleChoice",
+        "question": "Who is the only player who can win 天糊 Heavenly Hand?",
+        "options": ["The dealer", "Any non-dealer who is waiting after the deal", "The player to the dealer's right", "Any player who has not discarded yet"],
+        "correctIndex": 0,
+        "explanation": "天糊 belongs to the dealer: the fourteen tiles dealt at the start of the hand must already be a winning hand."
+      },
+      {
+        "type": "singleChoice",
+        "question": "When exactly does 天糊 happen?",
+        "options": ["On the dealt fourteen tiles, before any tile is discarded", "On the dealer's first drawn tile after the deal", "On the first discard the dealer makes", "On the dealer's second turn"],
+        "correctIndex": 0,
+        "explanation": "No turn is played at all — the deal is the win, so nothing may be drawn, discarded or called first."
+      },
+      {
+        "type": "fillBlank",
+        "question": "How many faan is 天糊 worth?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": ["10", "ten", "10 faan", "ten faan", "10 points"],
+        "explanation": "天糊 is one of the limit hands, so it is always scored at the 10 faan ceiling."
+      },
+      {
+        "type": "multiChoice",
+        "question": "Which statements about 天糊 are correct?",
+        "options": ["Only the dealer can win it", "It is won on the tiles dealt at the start of the hand", "A declared concealed kong cancels it", "A non-dealer can win it if their dealt hand is complete"],
+        "correctIndex": 0,
+        "correctIndexes": [0, 1, 2],
+        "explanation": "A complete dealt hand for a non-dealer is not 天糊 — 天糊 is the dealer's alone; the other three statements are true."
+      },
+      {
+        "type": "matching",
+        "question": "Match each term to what it means for 天糊.",
+        "options": [],
+        "correctIndex": 0,
+        "pairs": [
+          {"left": "天糊 Heavenly Hand", "right": "Dealer wins on the fourteen dealt tiles"},
+          {"left": "暗槓 concealed kong", "right": "Declaring one before the win cancels 天糊"},
+          {"left": "10 faan limit", "right": "The value of the hand however the tiles fell"}
+        ],
+        "explanation": "The deal supplies the win, so any action such as a kong means the hand is no longer the hand that was dealt."
+      },
+      {
+        "type": "singleChoice",
+        "question": "The dealer is dealt a complete hand but first declares a concealed kong, then wins on the replacement tile. What is the result?",
+        "options": ["Still 天糊, because the hand was dealt complete", "Not 天糊; it is an ordinary win after the kong", "The hand is void and must be thrown away", "It becomes 地糊 instead"],
+        "correctIndex": 1,
+        "explanation": "Once the dealer declares a kong the win no longer comes straight from the dealt hand, so only the normal faan apply."
+      },
+      {
+        "type": "tileSelection",
+        "question": "The dealer is dealt thirteen tiles and is waiting only on {{p3}}. Which tile must the fourteenth dealt tile be for 天糊?",
+        "options": ["p3", "p4", "m3", "east"],
+        "correctIndex": 0,
+        "explanation": "天糊 needs the dealt hand to be complete, so the last dealt tile has to be the exact tile the thirteen tiles were waiting on."
+      },
+      {
+        "type": "fillBlank",
+        "question": "A player wins 天糊 by self-draw. How many points does each of the other three players pay?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": ["64", "sixty-four", "64 points", "sixty four"],
+        "explanation": "At 10 faan a self-draw pays 64 from each player, so the winner collects 192 in total."
+      }
+    ]
+  },
+  "13-8": {
+    "title": "Earthly Hand",
+    "subtitle": "Winning on the dealer's first discard",
+    "dialogues": [
+      {"speaker": "mj", "text": "地糊 Earthly Hand is the non-dealer's version of that dream: thirteen dealt tiles that are already waiting."},
+      {"speaker": "you", "text": "And then I just need the dealer's first discard?"},
+      {"speaker": "mj", "text": "Exactly — the dealer's very first discard, before you call anything. It is a limit hand, 10 faan."},
+      {"speaker": "mj", "text": "Two things kill it: the dealer declares a concealed kong first, or you call a meld before the win."},
+      {"speaker": "you", "text": "Stay silent, stay dealt, and grab that first discard."}
+    ],
+    "questions": [
+      {
+        "type": "singleChoice",
+        "question": "Who can win 地糊 Earthly Hand?",
+        "options": ["A non-dealer whose dealt hand is already waiting", "The dealer on the dealt tiles", "Any player after the first discard", "The player who discards first"],
+        "correctIndex": 0,
+        "explanation": "地糊 is a non-dealer's hand: the thirteen dealt tiles must already be in tenpai, waiting for one tile."
+      },
+      {
+        "type": "singleChoice",
+        "question": "Which tile must complete a 地糊?",
+        "options": ["The dealer's very first discard", "Any discard during the first rotation", "A tile the player draws themselves", "A tile taken from the wall after a kong"],
+        "correctIndex": 0,
+        "explanation": "The win comes from the dealer's first discard and nothing else — a later discard is just an ordinary win."
+      },
+      {
+        "type": "fillBlank",
+        "question": "How many faan is 地糊 worth?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": ["10", "ten", "10 faan", "ten faan", "10 points"],
+        "explanation": "地糊 is a limit hand, so it is scored at the 10 faan ceiling."
+      },
+      {
+        "type": "multiChoice",
+        "question": "Which of these are required for 地糊?",
+        "options": ["The winner is a non-dealer", "The thirteen dealt tiles are already waiting", "The winner calls no meld before the win", "The winner may call a Chow before claiming the win"],
+        "correctIndex": 0,
+        "correctIndexes": [0, 1, 2],
+        "explanation": "Calling a meld would mean the hand is no longer the dealt hand, so 地糊 needs the thirteen dealt tiles untouched."
+      },
+      {
+        "type": "matching",
+        "question": "Match each hand or situation to its result.",
+        "options": [],
+        "correctIndex": 0,
+        "pairs": [
+          {"left": "天糊 Heavenly Hand", "right": "Dealer wins on the fourteen dealt tiles"},
+          {"left": "地糊 Earthly Hand", "right": "Non-dealer wins on the dealer's first discard"},
+          {"left": "Dealer's concealed kong before the first discard", "right": "地糊 is no longer available"}
+        ],
+        "explanation": "Both hands come from the deal, but only 地糊 depends on the dealer's first discard staying the first discard."
+      },
+      {
+        "type": "tileSelection",
+        "question": "A non-dealer is dealt thirteen tiles waiting only on {{s7}}. Which tile must the dealer discard first for 地糊?",
+        "options": ["s7", "s6", "s8", "p7"],
+        "correctIndex": 0,
+        "explanation": "The dealt hand is already waiting on one tile, and 地糊 needs that exact tile to be the dealer's first discard."
+      },
+      {
+        "type": "singleChoice",
+        "question": "The dealer declares a concealed kong, then makes the first discard. A waiting non-dealer claims it. What happens?",
+        "options": ["It is still 地糊", "It is not 地糊; it is an ordinary discard win", "The claim is illegal", "It becomes 天糊"],
+        "correctIndex": 1,
+        "explanation": "The rules say the dealer's concealed kong cancels 地糊, because that discard no longer comes straight after the deal."
+      },
+      {
+        "type": "fillBlank",
+        "question": "A non-dealer wins 地糊 on the dealer's first discard. How many points does the dealer pay?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": ["128", "one hundred and twenty-eight", "128 points", "one hundred and twenty eight"],
+        "explanation": "地糊 is 10 faan and it is a discard win, so the discarder — the dealer — pays the full 128 alone."
+      }
+    ]
+  },
+  "13-9": {
+    "title": "Nine Gates",
+    "subtitle": "1112345678999 in one suit",
+    "dialogues": [
+      {"speaker": "mj", "text": "九蓮寶燈 Nine Gates looks like a straight line: 1112345678999 of one suit, plus one extra tile of that same suit."},
+      {"speaker": "you", "text": "That is thirteen tiles already. So the base hand waits on every tile of the suit?"},
+      {"speaker": "mj", "text": "Yes — all nine. That is why it is called nine gates, and it counts as 10 faan."},
+      {"speaker": "mj", "text": "The hand must be fully concealed. On a self-draw you simply win; on a discard you must be calling 九扉 nine gates."},
+      {"speaker": "you", "text": "Same suit, no melds, and call 九扉 if someone else throws the tile."}
+    ],
+    "questions": [
+      {
+        "type": "singleChoice",
+        "question": "What is the shape of a 九蓮寶燈 Nine Gates hand?",
+        "options": ["1112345678999 of one suit plus one more tile of the same suit", "Four triplets and a pair of honours", "Thirteen different terminals and honours", "Two sequences of the same suit plus a pair"],
+        "correctIndex": 0,
+        "explanation": "The whole hand is one suit: the run of 1112345678999 with any single extra tile of that same suit."
+      },
+      {
+        "type": "multiChoice",
+        "question": "Which requirements must a 九蓮寶燈 hand meet?",
+        "options": ["All tiles come from one suit", "The hand is fully concealed", "The base pattern 1112345678999 is present plus one extra tile of that suit", "At least one honour triplet is included"],
+        "correctIndex": 0,
+        "correctIndexes": [0, 1, 2],
+        "explanation": "Honours are impossible in Nine Gates — the hand is a single suit, held without any open meld."
+      },
+      {
+        "type": "fillBlank",
+        "question": "How many different tiles does the thirteen-tile Nine Gates base 1112345678999 wait on?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": ["9", "nine", "9 tiles", "nine tiles", "all nine"],
+        "explanation": "Any tile from 1 to 9 of that suit completes the pattern, which is exactly where the name nine gates comes from."
+      },
+      {
+        "type": "fillBlank",
+        "question": "How many faan is 九蓮寶燈 worth?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": ["10", "ten", "10 faan", "ten faan", "10 points"],
+        "explanation": "Nine Gates is a limit hand, so it is scored at the 10 faan ceiling rather than adding more faan on top."
+      },
+      {
+        "type": "singleChoice",
+        "question": "The winning tile is thrown by another player. What must the winner have called?",
+        "options": ["九扉 nine gates", "A concealed kong", "Nothing — a discard win needs no call", "An open Chow to prove the suit"],
+        "correctIndex": 0,
+        "explanation": "A discard win only counts if the player is calling nine gates (九扉); self-draw needs no such declaration."
+      },
+      {
+        "type": "singleChoice",
+        "question": "The player completes the 1112345678999 pattern plus the extra tile by self-draw. What else is required?",
+        "options": ["Nothing extra — the completed pattern wins", "A 九扉 declaration first", "An open meld to prove the suit", "A kong of the extra tile"],
+        "correctIndex": 0,
+        "explanation": "On a self-draw, completing the pattern is enough — the 九扉 call matters only when the tile is discarded by someone else."
+      },
+      {
+        "type": "tileSelection",
+        "question": "A player's hand is built on {{m1}}{{m1}}{{m1}}{{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{m7}}{{m8}}{{m9}}{{m9}}{{m9}}. Which of these may be the extra fourteenth tile?",
+        "options": ["m5", "p5", "s5", "east"],
+        "correctIndex": 0,
+        "explanation": "Nine Gates allows one suit only, so the extra tile must be a Character tile like the rest of the hand."
+      },
+      {
+        "type": "singleChoice",
+        "question": "Before winning, the player called a Chow to complete a run. Can the hand still be 九蓮寶燈?",
+        "options": ["Yes, if the tiles still form 1112345678999", "No — the hand must be fully concealed", "Yes, but only on a self-draw", "Only if the Chow was in the same suit"],
+        "correctIndex": 1,
+        "explanation": "Nine Gates requires a fully concealed hand, so any open meld rules it out even if the tiles look right."
+      }
+    ]
+  }
+}
