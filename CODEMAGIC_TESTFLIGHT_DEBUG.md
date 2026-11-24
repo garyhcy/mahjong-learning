@@ -20,7 +20,7 @@
 
 ## 二、已知事實（不需再問 Gary）
 
-### 帳號與簽名（AGENTS.md 11.1 節已確認）
+### 帳號與簽名（docs/PROJECT_NOTES.md 第 4 節已確認）
 
 | 項目 | 值 |
 | --- | --- |
@@ -88,7 +88,7 @@ artifacts: build/ios/ipa/*.ipa
 - **Gary 補充**：新 profile（含 capabilities）已上傳 Codemagic dashboard 並選用，但 build 仍失敗
 - **疑點**：`ios_signing` automatic 模式可能不使用 dashboard 手動上傳的 profile
 
-### 2026-07-20（12:20 之後，AGENTS.md 11.1 記載）- 重新 build 成功
+### 2026-07-20（12:20 之後，docs/PROJECT_NOTES.md 第 4 節記載）- 重新 build 成功
 - Profile UUID `bdf586ef-...` 成功用於 target Runner（Debug/Profile/Release configurations）
 - App Store provisioning profile 已 regenerate，含 Push + Apple Sign-In
 - 新 profile 已上傳 Codemagic dashboard 替換舊 profile
@@ -178,12 +178,12 @@ artifacts: build/ios/ipa/*.ipa
 
 | 方向 | 排除原因 |
 | --- | --- |
-| Profile 缺 capabilities | AGENTS.md 11.1 已確認新 profile 含 Push + Apple Sign-In |
+| Profile 缺 capabilities | docs/PROJECT_NOTES.md 第 4 節已確認新 profile 含 Push + Apple Sign-In |
 | Certificate private key 遺失 | 已解決（Codemagic 持有） |
 | Paid Apps Agreement 未生效 | Gary 確認 Active |
 | Apple Developer Program 未啟用 | 已啟用 |
 | artifacts 路徑不符 | publishing SUCCESS 代表有 artifacts 可上傳 |
-| Bundle ID 不匹配 | AGENTS.md 已確認統一 com.ludi.teach |
+| Bundle ID 不匹配 | docs/PROJECT_NOTES.md 已確認統一 com.ludi.teach |
 
 ---
 
