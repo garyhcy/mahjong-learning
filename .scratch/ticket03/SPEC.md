@@ -64,3 +64,12 @@ Run:
 python3 -c "import json;d=json.load(open('.scratch/ticket03/stage<N>.json'));print({k:len(v) for k,v in d.items()})"
 ```
 Every lesson must have exactly 5 entries.
+
+
+## Gary rulings added 2026-11-24 (override ambiguity in the rules reference)
+- **一台花 = 2 Faan in total** (a complete set of four Seasons OR four Plants). Do NOT add the
+  matching seat flower on top of it. A single matching seat flower is still 1 Faan when you do
+  not hold the complete set.
+- **暗槓 (concealed kong) does NOT break 門前清.** Only a claimed chow/pong/exposed kong does.
+- 3 Faan minimum, 10 Faan cap (limit hands = 10), 半銃制 payment table as in
+  `docs/GARY_RULES_REFERENCE.md`.

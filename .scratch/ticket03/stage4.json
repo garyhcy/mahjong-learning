@@ -5,7 +5,12 @@
       "question": "A hand is worth 2 Faan. How many more Faan do you need to reach the 3-Faan minimum?",
       "options": [],
       "correctIndex": 0,
-      "acceptedAnswers": ["1", "one", "1 faan", "one faan"],
+      "acceptedAnswers": [
+        "1",
+        "one",
+        "1 faan",
+        "one faan"
+      ],
       "explanation": "2 Faan is exactly one short of the 3-Faan minimum."
     },
     {
@@ -18,7 +23,11 @@
         "Each extra Faan doubles the payout"
       ],
       "correctIndex": 0,
-      "correctIndexes": [0, 1, 2],
+      "correctIndexes": [
+        0,
+        1,
+        2
+      ],
       "explanation": "Payouts rise 8, 16, 24, 32, 48, 64, 96, 128 — they do not double with every Faan."
     },
     {
@@ -27,24 +36,46 @@
       "options": [],
       "correctIndex": 0,
       "pairs": [
-        {"left": "Self-draw (自摸)", "right": "1 Faan"},
-        {"left": "Mixed One Suit (混一色)", "right": "3 Faan"},
-        {"left": "Pure One Suit (清一色)", "right": "7 Faan"},
-        {"left": "Thirteen Orphans (十三么)", "right": "10 Faan"}
+        {
+          "left": "Self-draw (自摸)",
+          "right": "1 Faan"
+        },
+        {
+          "left": "Mixed One Suit (混一色)",
+          "right": "3 Faan"
+        },
+        {
+          "left": "Pure One Suit (清一色)",
+          "right": "7 Faan"
+        },
+        {
+          "left": "Thirteen Orphans (十三么)",
+          "right": "10 Faan"
+        }
       ],
       "explanation": "These are the Gary values: 自摸 1, 混一色 3, 清一色 7, and 十三么 is a limit hand at 10."
     },
     {
       "type": "singleChoice",
       "question": "You win a 3-Faan hand on a discard (出銃). How much does the discarder pay?",
-      "options": ["4", "8", "12", "16"],
+      "options": [
+        "4",
+        "8",
+        "12",
+        "16"
+      ],
       "correctIndex": 1,
       "explanation": "In 半銃制 the discarder alone pays the full 8 at 3 Faan."
     },
     {
       "type": "singleChoice",
       "question": "A limit hand (例牌) counts as 10 Faan and is won on a discard. How much is paid?",
-      "options": ["64", "96", "128", "192"],
+      "options": [
+        "64",
+        "96",
+        "128",
+        "192"
+      ],
       "correctIndex": 2,
       "explanation": "10 Faan on a discard is 128; 192 is the total collected on a self-draw, not a discard."
     }
@@ -53,7 +84,12 @@
     {
       "type": "tileSelection",
       "question": "Which of these tiles could NOT appear in a Mixed One Suit (混一色) hand built on Characters plus honor tiles?",
-      "options": ["p5", "m5", "east", "red"],
+      "options": [
+        "p5",
+        "m5",
+        "east",
+        "red"
+      ],
       "correctIndex": 0,
       "explanation": "混一色 uses only one suit plus honors, so any Dot tile breaks the pattern."
     },
@@ -62,7 +98,11 @@
       "question": "Arrange these three tiles into a valid Chow (sequence) — the building block of All Chows (平糊).",
       "options": [],
       "correctIndex": 0,
-      "tiles": ["s7", "s8", "s9"],
+      "tiles": [
+        "s7",
+        "s8",
+        "s9"
+      ],
       "explanation": "A Chow is three consecutive tiles of the same suit, here 7-8-9 of Bamboo."
     },
     {
@@ -71,9 +111,18 @@
       "options": [],
       "correctIndex": 0,
       "pairs": [
-        {"left": "Four Chows and a pair", "right": "All Chows (平糊)"},
-        {"left": "Four triplets and a pair, no Chows", "right": "All Pongs (對對糊)"},
-        {"left": "One suit plus honor tiles", "right": "Mixed One Suit (混一色)"}
+        {
+          "left": "Four Chows and a pair",
+          "right": "All Chows (平糊)"
+        },
+        {
+          "left": "Four triplets and a pair, no Chows",
+          "right": "All Pongs (對對糊)"
+        },
+        {
+          "left": "One suit plus honor tiles",
+          "right": "Mixed One Suit (混一色)"
+        }
       ],
       "explanation": "These are the three bread-and-butter shapes: 平糊, 對對糊 and 混一色."
     },
@@ -82,7 +131,12 @@
       "question": "How many Faan is Mixed One Suit (混一色) worth on its own?",
       "options": [],
       "correctIndex": 0,
-      "acceptedAnswers": ["3", "three", "3 faan", "three faan"],
+      "acceptedAnswers": [
+        "3",
+        "three",
+        "3 faan",
+        "three faan"
+      ],
       "explanation": "混一色 is a 3-Faan pattern, so it meets the minimum by itself."
     },
     {
@@ -102,9 +156,18 @@
     {
       "type": "multiChoice",
       "question": "You are East seat in the East round. Which of these Pongs score Faan for you?",
-      "options": ["{{red}}{{red}}{{red}}", "{{east}}{{east}}{{east}}", "{{south}}{{south}}{{south}}", "{{white}}{{white}}{{white}}"],
+      "options": [
+        "{{red}}{{red}}{{red}}",
+        "{{east}}{{east}}{{east}}",
+        "{{south}}{{south}}{{south}}",
+        "{{white}}{{white}}{{white}}"
+      ],
       "correctIndex": 0,
-      "correctIndexes": [0, 1, 3],
+      "correctIndexes": [
+        0,
+        1,
+        3
+      ],
       "explanation": "Red and White dragons score 1 each and East matches both your seat wind and the round wind, while South matches neither."
     },
     {
@@ -113,16 +176,30 @@
       "options": [],
       "correctIndex": 0,
       "pairs": [
-        {"left": "One dragon triplet", "right": "1 Faan"},
-        {"left": "Small Three Dragons (小三元)", "right": "5 Faan"},
-        {"left": "Big Three Dragons (大三元)", "right": "8 Faan"}
+        {
+          "left": "One dragon triplet",
+          "right": "1 Faan"
+        },
+        {
+          "left": "Small Three Dragons (小三元)",
+          "right": "5 Faan"
+        },
+        {
+          "left": "Big Three Dragons (大三元)",
+          "right": "8 Faan"
+        }
       ],
       "explanation": "小三元 is 3 Faan plus its two dragon triplets (5); 大三元 is 5 plus three (8)."
     },
     {
       "type": "tileSelection",
       "question": "You are East seat in the East round. Which of these triplets is worth 2 Faan?",
-      "options": ["east", "south", "red", "north"],
+      "options": [
+        "east",
+        "south",
+        "red",
+        "north"
+      ],
       "correctIndex": 0,
       "explanation": "Only the East triplet matches both your seat wind and the round wind, scoring 1 + 1."
     },
@@ -131,13 +208,23 @@
       "question": "Your hand has two dragon triplets and the third dragon as the pair. Counting the 小三元 pattern and the two dragon triplets, the total is ___ Faan.",
       "options": [],
       "correctIndex": 0,
-      "acceptedAnswers": ["5", "five", "5 faan", "five faan"],
+      "acceptedAnswers": [
+        "5",
+        "five",
+        "5 faan",
+        "five faan"
+      ],
       "explanation": "小三元 is 3 Faan and the two dragon triplets add 2 more, for 5."
     },
     {
       "type": "singleChoice",
       "question": "How many Faan does Big Three Dragons (大三元) score in total?",
-      "options": ["3", "5", "8", "10"],
+      "options": [
+        "3",
+        "5",
+        "8",
+        "10"
+      ],
       "correctIndex": 2,
       "explanation": "The 大三元 pattern is 5 Faan and the three dragon triplets add 3 more, for 8."
     }
@@ -148,7 +235,12 @@
       "question": "Self-draw (自摸) and Concealed Hand (門前清) are worth 1 Faan each. Using just these two, the total is ___ Faan.",
       "options": [],
       "correctIndex": 0,
-      "acceptedAnswers": ["2", "two", "2 faan", "two faan"],
+      "acceptedAnswers": [
+        "2",
+        "two",
+        "2 faan",
+        "two faan"
+      ],
       "explanation": "1 + 1 = 2 Faan from the winning method alone."
     },
     {
@@ -161,7 +253,10 @@
         "You built the whole hand from your own draws"
       ],
       "correctIndex": 2,
-      "correctIndexes": [2, 3],
+      "correctIndexes": [
+        2,
+        3
+      ],
       "explanation": "Any call — Chow, Pong or Kong — breaks 門前清; only a fully self-built hand keeps it."
     },
     {
@@ -170,23 +265,42 @@
       "options": [],
       "correctIndex": 0,
       "pairs": [
-        {"left": "搶槓 (Robbing the Kong)", "right": "You win on the tile an opponent adds to a Pong to make a Kong"},
-        {"left": "槓上自摸 (Kong replacement draw)", "right": "You win on the replacement tile drawn after a Kong"},
-        {"left": "海底撈月 (Last tile)", "right": "You win on the final tile of the wall"}
+        {
+          "left": "搶槓 (Robbing the Kong)",
+          "right": "You win on the tile an opponent adds to a Pong to make a Kong"
+        },
+        {
+          "left": "槓上自摸 (Kong replacement draw)",
+          "right": "You win on the replacement tile drawn after a Kong"
+        },
+        {
+          "left": "海底撈月 (Last tile)",
+          "right": "You win on the final tile of the wall"
+        }
       ],
       "explanation": "All three are 1-Faan winning-method bonuses in the Gary rules."
     },
     {
       "type": "singleChoice",
       "question": "How much is 搶槓 (robbing the Kong) worth?",
-      "options": ["1 Faan", "2 Faan", "3 Faan", "5 Faan"],
+      "options": [
+        "1 Faan",
+        "2 Faan",
+        "3 Faan",
+        "5 Faan"
+      ],
       "correctIndex": 0,
       "explanation": "搶槓 is a 1-Faan winning-method bonus."
     },
     {
       "type": "singleChoice",
       "question": "A 3-Faan hand is won by self-draw. How much does each opponent pay?",
-      "options": ["4", "8", "12", "16"],
+      "options": [
+        "4",
+        "8",
+        "12",
+        "16"
+      ],
       "correctIndex": 0,
       "explanation": "3 Faan pays 8 on a discard, so on a self-draw each of the three players pays half — 4."
     }
@@ -198,10 +312,22 @@
       "options": [],
       "correctIndex": 0,
       "pairs": [
-        {"left": "East", "right": "Spring & Plum"},
-        {"left": "South", "right": "Summer & Orchid"},
-        {"left": "West", "right": "Autumn & Chrysanthemum"},
-        {"left": "North", "right": "Winter & Bamboo"}
+        {
+          "left": "East",
+          "right": "Spring & Plum"
+        },
+        {
+          "left": "South",
+          "right": "Summer & Orchid"
+        },
+        {
+          "left": "West",
+          "right": "Autumn & Chrysanthemum"
+        },
+        {
+          "left": "North",
+          "right": "Winter & Bamboo"
+        }
       ],
       "explanation": "Seat flowers follow the numbers 1-4: East 1, South 2, West 3, North 4."
     },
@@ -210,30 +336,54 @@
       "question": "Arrange the four seat winds in the order numbered 1 to 4 for flower assignment.",
       "options": [],
       "correctIndex": 0,
-      "tiles": ["east", "south", "west", "north"],
+      "tiles": [
+        "east",
+        "south",
+        "west",
+        "north"
+      ],
       "explanation": "The seat numbering is East 1, South 2, West 3, North 4."
     },
     {
       "type": "tileSelection",
       "question": "You are West seat. Which of these flowers is your 正花 (matching flower)?",
-      "options": ["f_autumn", "f_spring", "f_summer", "f_bamboo"],
+      "options": [
+        "f_autumn",
+        "f_spring",
+        "f_summer",
+        "f_bamboo"
+      ],
       "correctIndex": 0,
       "explanation": "West's flowers are Autumn and Chrysanthemum, so only {{f_autumn}} scores for West."
     },
     {
       "type": "fillBlank",
-      "question": "East seat holds all four flower tiles: {{f_plum}} {{f_orchid}} {{f_chrys}} {{f_bamboo}}. Counting 一台花 and East's own flower, how many Faan do these four tiles give?",
+      "question": "East seat holds all four flower tiles: {{f_plum}} {{f_orchid}} {{f_chrys}} {{f_bamboo}}. How many Faan is that as 一台花?",
       "options": [],
       "correctIndex": 0,
-      "acceptedAnswers": ["2", "two", "2 faan", "two faan"],
-      "explanation": "一台花 is 1 Faan and East's matching {{f_plum}} adds 1 more, for 2."
+      "acceptedAnswers": [
+        "2",
+        "two",
+        "2 faan",
+        "two faan"
+      ],
+      "explanation": "一台花 counts as 2 Faan in total; the seat flower is not added on top of it."
     },
     {
       "type": "multiChoice",
       "question": "You are South seat. Which of these give you Faan?",
-      "options": ["Holding {{f_summer}}", "Holding {{f_orchid}}", "Holding {{f_spring}}", "Having no flowers at all"],
+      "options": [
+        "Holding {{f_summer}}",
+        "Holding {{f_orchid}}",
+        "Holding {{f_spring}}",
+        "Having no flowers at all"
+      ],
       "correctIndex": 0,
-      "correctIndexes": [0, 1, 3],
+      "correctIndexes": [
+        0,
+        1,
+        3
+      ],
       "explanation": "South's flowers are Summer and Orchid, 無花 is worth 1 Faan, and Spring belongs to East so it gives South nothing."
     }
   ],
@@ -241,9 +391,18 @@
     {
       "type": "multiChoice",
       "question": "Which of these are worth 1 Faan?",
-      "options": ["Self-draw (自摸)", "Concealed hand (門前清)", "No Flowers (無花)", "All Pongs (對對糊)"],
+      "options": [
+        "Self-draw (自摸)",
+        "Concealed hand (門前清)",
+        "No Flowers (無花)",
+        "All Pongs (對對糊)"
+      ],
       "correctIndex": 0,
-      "correctIndexes": [0, 1, 2],
+      "correctIndexes": [
+        0,
+        1,
+        2
+      ],
       "explanation": "自摸, 門前清 and 無花 are 1 Faan each; 對對糊 is 3 Faan."
     },
     {
@@ -252,10 +411,22 @@
       "options": [],
       "correctIndex": 0,
       "pairs": [
-        {"left": "All Chows (平糊)", "right": "1 Faan"},
-        {"left": "Mixed One Suit (混一色)", "right": "3 Faan"},
-        {"left": "Small Three Dragons (小三元, dragons counted)", "right": "5 Faan"},
-        {"left": "Eighteen Arhats (十八羅漢, four Kongs)", "right": "10 Faan"}
+        {
+          "left": "All Chows (平糊)",
+          "right": "1 Faan"
+        },
+        {
+          "left": "Mixed One Suit (混一色)",
+          "right": "3 Faan"
+        },
+        {
+          "left": "Small Three Dragons (小三元, dragons counted)",
+          "right": "5 Faan"
+        },
+        {
+          "left": "Eighteen Arhats (十八羅漢, four Kongs)",
+          "right": "10 Faan"
+        }
       ],
       "explanation": "平糊 is 1, 混一色 3, 小三元 with its two dragon triplets 5, and 十八羅漢 is a limit hand at 10."
     },
@@ -264,13 +435,22 @@
       "question": "A hand scores 8 Faan and is won by self-draw. Each of the three opponents pays ___ points.",
       "options": [],
       "correctIndex": 0,
-      "acceptedAnswers": ["32", "thirty-two", "thirty two"],
+      "acceptedAnswers": [
+        "32",
+        "thirty-two",
+        "thirty two"
+      ],
       "explanation": "8 Faan pays 64 on a discard, so each opponent pays half — 32."
     },
     {
       "type": "singleChoice",
       "question": "Your hand is worth 12 Faan but it is a limit hand (例牌). How is it scored?",
-      "options": ["As 10 Faan", "As 12 Faan", "As 8 Faan", "It cannot be declared"],
+      "options": [
+        "As 10 Faan",
+        "As 12 Faan",
+        "As 8 Faan",
+        "It cannot be declared"
+      ],
       "correctIndex": 0,
       "explanation": "10 Faan is the cap and every limit hand counts as exactly 10."
     },

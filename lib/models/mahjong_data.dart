@@ -1046,7 +1046,7 @@ final List<Lesson> defaultLessons = [
       DialogueMessage(
         speaker: 'mj',
         text:
-            'Flowers are bonus tiles! When you draw one, place it face-up and draw a replacement. Each MATCHING flower for your seat (正花/門風花) = 1 Faan. Non-matching flowers give 0 Faan individually, BUT collecting a complete set of 4 Seasons OR 4 Plants = 1 Faan (一台花). Also, having NO flowers at all = 1 Faan (無花)!',
+            'Flowers are bonus tiles! When you draw one, place it face-up and draw a replacement. Each MATCHING flower for your seat (正花/門風花) = 1 Faan. Non-matching flowers give 0 Faan individually. Collecting a complete set of 4 Seasons OR 4 Plants (一台花) = 2 Faan on its own, with no extra seat-flower Faan on top. Also, having NO flowers at all = 1 Faan (無花)!',
       ),
       DialogueMessage(
         speaker: 'mj',
@@ -1147,10 +1147,10 @@ final List<Lesson> defaultLessons = [
         type: QuizType.singleChoice,
         question:
             'Collecting all four Seasons or all four Plants is worth how much?',
-        options: ['0 Faan', '1 Faan', '3 Faan', '5 Faan'],
+        options: ['1 Faan', '2 Faan', '3 Faan', '5 Faan'],
         correctIndex: 1,
         explanation:
-            'A complete set of four Seasons or four Plants (一台花) is 1 Faan, and matching seat flowers still count separately.',
+            'A complete set of four Seasons or four Plants (一台花) counts as 2 Faan in total; seat flowers are not added on top.',
       ),
     ],
   ),
@@ -3554,12 +3554,12 @@ final List<Lesson> defaultLessons = [
       QuizQuestion(
         type: QuizType.fillBlank,
         question:
-            'East seat holds all four flower tiles: {{f_plum}} {{f_orchid}} {{f_chrys}} {{f_bamboo}}. Counting 一台花 and East\'s own flower, how many Faan do these four tiles give?',
+            'East seat holds all four flower tiles: {{f_plum}} {{f_orchid}} {{f_chrys}} {{f_bamboo}}. How many Faan is that as 一台花?',
         options: const [],
         correctIndex: 0,
         acceptedAnswers: ['2', 'two', '2 faan', 'two faan'],
         explanation:
-            '一台花 is 1 Faan and East\'s matching {{f_plum}} adds 1 more, for 2.',
+            '一台花 counts as 2 Faan in total; the seat flower is not added on top of it.',
       ),
       QuizQuestion(
         type: QuizType.multiChoice,
