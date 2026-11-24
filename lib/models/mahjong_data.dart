@@ -6650,6 +6650,82 @@ final List<Lesson> defaultLessons = [
         explanation:
             'Discarding one Bamboo early then keeping all others is a classic bluff pattern for a Bamboo flush!',
       ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'You are building a Bamboo flush around {{s3}}, {{s4}} and {{s5}}. Which tile is the best turn-one decoy to make opponents think Bamboo is dead to you?',
+        options: ['s9', 's4', 's5', 'm2'],
+        correctIndex: 0,
+        explanation:
+            '{{s9}} is spare Bamboo, so throwing it early sells the false signal without touching the run you actually need.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'What does a successful decoy discard actually buy you? (Select all that apply)',
+        options: [
+          'Opponents treat your real suit as safe and throw it to you',
+          'You get claim chances on the tiles you need',
+          'A guaranteed win in that round',
+          'Extra faan on the scoring table',
+          'Protection from being robbed on a kong',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'A bluff only changes what opponents believe is safe, which creates claim chances but guarantees no win and scores nothing by itself.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question:
+            'Match each discard pattern to the deception or intent it suggests.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'One Bamboo on turn 1, then never again',
+            right: 'A Bamboo-flush bluff in progress',
+          ),
+          QuestionPair(
+            left: 'Discards look too tidy for the story they tell',
+            right: 'Possibly a counter-bluff',
+          ),
+          QuestionPair(
+            left: 'Claims melds early and often',
+            right: 'Fast hand that hides little',
+          ),
+          QuestionPair(
+            left: 'Throws only tiles already seen on the table',
+            right: 'Folding instead of building',
+          ),
+        ],
+        explanation:
+            'Each pattern is read from the information the player releases, so an unusually clean story is itself a warning sign.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'Early discards are the strongest signal because players throw the tiles they are sure they will ___ need.',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['not', 'never'],
+        explanation:
+            'Players shed what they are certain is useless first, so a turn-one discard is read as real information about their hand.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'An opponent\'s discards look almost too perfect for the flush they seem to be abandoning. What does the lesson advise?',
+        options: [
+          'Trust the pattern completely',
+          'Question the pattern, because it may be a counter-bluff',
+          'Ignore all of their discards',
+          'Assume they have no plan at all',
+        ],
+        correctIndex: 1,
+        explanation:
+            'Experienced players treat a suspiciously clean discard pattern as possible deception rather than proof.',
+      ),
     ],
   ),
 
@@ -6717,6 +6793,75 @@ final List<Lesson> defaultLessons = [
         correctIndex: 1,
         explanation:
             'Holding 3 copies means only 1 remains — the opponent can never get 3 for a Pong!',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You declare a concealed kong of {{m5}} while the rest of your hand is untouched. What happens to 門前清?',
+        options: [
+          'It is lost, like any kong',
+          'It is kept, because a concealed kong does not break it',
+          'It is upgraded to 3 faan',
+          'It is kept only if you win by self-draw',
+        ],
+        correctIndex: 1,
+        explanation:
+            'Only a claimed chow, pong or exposed kong breaks 門前清, so a concealed kong leaves the 1 faan intact.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which kong statements are correct under these rules? (Select all that apply)',
+        options: [
+          'A kong by itself scores no faan',
+          'Robbing a kong (搶槓) scores 1 faan',
+          'Every kong breaks 門前清',
+          'Each kong adds 1 faan to the hand',
+          'A kong self-draw (槓上自摸) scores 1 faan',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 4],
+        explanation:
+            'Kongs are not a scoring pattern on their own; only 搶槓 and 槓上自摸 add 1 faan, and a concealed kong keeps 門前清.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each kong type to what it costs you or exposes.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Concealed kong (暗槓)',
+            right: 'Stays face-down and keeps 門前清',
+          ),
+          QuestionPair(left: 'Added kong (加槓)', right: 'Can be robbed for 搶槓'),
+          QuestionPair(
+            left: 'Exposed kong (明槓)',
+            right: 'Claimed from a discard, breaking 門前清',
+          ),
+        ],
+        explanation:
+            'Whether a kong is claimed is exactly what decides if it leaks information, invites a rob and kills 門前清.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'You kong all four copies of {{m5}}. How many copies are left for opponents to use in a chow or pong?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['0', 'zero', 'none', 'no copies'],
+        explanation:
+            'Only four copies of a tile exist, so a kong of all four removes that tile from everyone else\'s options.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'You have konged all four {{m8}} and two {{red}} have already been discarded. Order these tiles by copies still unaccounted for, fewest first: {{m8}}, {{red}}, {{p3}}.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['m8', 'red', 'p3'],
+        explanation:
+            'All four {{m8}} are accounted for, two {{red}} are gone so two remain, and no {{p3}} has been seen so four remain.',
       ),
     ],
   ),
@@ -6788,6 +6933,85 @@ final List<Lesson> defaultLessons = [
         explanation:
             'A conservative player switching to safe discards likely means they\'re folding — their hand didn\'t develop well.',
       ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each playing style to the tell that gives it away.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Aggressive',
+            right: 'Calls Pong or Chow on the first tile offered',
+          ),
+          QuestionPair(
+            left: 'Conservative',
+            right: 'Stays concealed and builds one big hand',
+          ),
+          QuestionPair(
+            left: 'Adaptive',
+            right: 'Rebuilds the plan around each starting hand',
+          ),
+          QuestionPair(
+            left: 'Folding',
+            right: 'Throws only tiles already proved safe',
+          ),
+        ],
+        explanation:
+            'Style shows up in how quickly a player claims and how long they stay concealed, which is what you profile.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which of these are fair evidence for profiling an opponent? (Select all that apply)',
+        options: [
+          'How quickly they claim melds when a tile is offered',
+          'Whether they keep the hand concealed deep into the round',
+          'How many flowers they were dealt',
+          'Their behaviour in the previous round only',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'Style is visible in claiming and concealing, while flowers say nothing about hand shape and last round\'s behaviour can be stale.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'A player who changes plan to suit each starting hand is described as ___.',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['adaptive', 'adaptable', 'adaptive player'],
+        explanation:
+            'That flexibility is the defining trait of the adaptive profile, which makes them the hardest to read.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'An opponent who had been calling melds all round suddenly stops and throws only seen tiles. What should your read be based on?',
+        options: [
+          'Their play from the first two rounds',
+          'Their pattern within the current round',
+          'Their seat position',
+          'Their total score',
+        ],
+        correctIndex: 1,
+        explanation:
+            'Against an adaptive player the current round\'s discards carry the information, not the history you already profiled.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Why is a conservative player most dangerous late in the round?',
+        options: [
+          'They always hold a limit hand',
+          'Their hand is still hidden, so you cannot read their wait',
+          'They discard more tiles than anyone else',
+          'They win ties against aggressive players',
+        ],
+        correctIndex: 1,
+        explanation:
+            'A player who never claims reveals almost nothing, so by the late round you still cannot tell which tiles they need.',
+      ),
     ],
   ),
 
@@ -6856,6 +7080,80 @@ final List<Lesson> defaultLessons = [
         explanation:
             'Speed up when you\'re close to winning — finish before opponents can catch up or improve their hands.',
       ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which situations call for deliberately slowing the game? (Select all that apply)',
+        options: [
+          'You are ahead on points and a draw keeps your lead',
+          'An opponent looks close to a hand you cannot defend against',
+          'You are one tile from winning',
+          'You are behind and must catch up',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'Slowing protects a lead and starves a dangerous hand, while being close to winning or far behind both call for speed.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'Every claim replaces one of your draws. If you claim three melds, how many fewer draws do you personally take from the wall?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['3', 'three', '3 draws', 'three draws'],
+        explanation:
+            'A chow or pong is taken instead of a draw, so three claims cost you three draws and shorten the round.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each table read to the pace decision it calls for.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'A cheap win is one meld away',
+            right: 'Claim the meld and close the round',
+          ),
+          QuestionPair(
+            left: 'Your hand still needs several tiles',
+            right: 'Decline claims and keep drawing',
+          ),
+          QuestionPair(
+            left: 'You lead and the wall is thin',
+            right: 'Let the round die on a draw',
+          ),
+        ],
+        explanation:
+            'Pace follows what each outcome is worth to you, so the same wall can be raced or starved.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'Why exactly does claiming a discard shorten the round?',
+        options: [
+          'It burns one of your flowers',
+          'You take the discard instead of drawing, so the wall empties sooner',
+          'It forces the dealer to pay',
+          'It removes the claimed tile from the wall',
+        ],
+        correctIndex: 1,
+        explanation:
+            'A claim uses an opponent\'s discard rather than a fresh wall tile, so fewer draws remain in the round.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'The wall runs out with no winner. What happens to the dealer?',
+        options: [
+          'The dealer repeats as dealer',
+          'There is no repeat, so the deal passes on',
+          'The dealer pays every other player',
+          'The dealer draws one extra tile to settle it',
+        ],
+        correctIndex: 1,
+        explanation:
+            'A drawn round is not a dealer repeat under these rules, so no 連莊 follows.',
+      ),
     ],
   ),
 
@@ -6912,6 +7210,81 @@ final List<Lesson> defaultLessons = [
         tiles: ['m1', 'east', 's5'],
         explanation:
             'Concealed Kong (face-down, least info) → Supplemental Kong (adds to known Pong) → Exposed Kong (all face-up, most info).',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'You hold Bamboo and honour tiles and want 混一色 for 3 faan. Which of these tiles must stay out of the hand?',
+        options: ['p5', 's5', 'east', 'red'],
+        correctIndex: 0,
+        explanation:
+            '混一色 allows one suit plus honour tiles only, so any Circle tile breaks it.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'You must discard to an opponent who threw {{m4}} this round and has not drawn since, threw {{p8}} last round, and has never seen {{s6}}. Order the three from safest to most dangerous.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['m4', 'p8', 's6'],
+        explanation:
+            'A tile they discarded this round before drawing again is absolutely safe, one from an earlier round only relatively safe, and an unseen tile is unread.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each stage 9 tactic to what it is for.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Decoy discard',
+            right: 'Selling a suit you do not actually want',
+          ),
+          QuestionPair(
+            left: 'Delayed kong',
+            right: 'Choosing when to take the replacement draw',
+          ),
+          QuestionPair(
+            left: 'Rapid claims',
+            right: 'Ending the round before rivals improve',
+          ),
+          QuestionPair(
+            left: 'Profile reading',
+            right: 'Predicting which hand an opponent is building',
+          ),
+        ],
+        explanation:
+            'Deception, kong timing, tempo and profiling are four levers on the same information the table shares.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which statements are true under these rules? (Select all that apply)',
+        options: [
+          'A hand must reach 3 faan to win',
+          'A concealed kong does not break 門前清',
+          'Being robbed on a kong is paid by the robbed player alone, as 包自摸',
+          'The dealer receives a 50% bonus when winning',
+          'Each extra faan doubles the payment',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 2],
+        explanation:
+            'There is no dealer bonus and payments step 8, 16, 24, 32 rather than doubling, while the other three match the rules reference.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You lead by 60 points with six wall tiles left and an opponent has three exposed melds. What is the best play?',
+        options: [
+          'Claim any meld to finish first',
+          'Kong for extra replacement draws',
+          'Fold, stop claiming, and let the wall run out',
+          'Throw middle tiles to bait a claim',
+        ],
+        correctIndex: 2,
+        explanation:
+            'A draw preserves the lead, and every claim would hand a dangerous opponent more turns before the wall dies.',
       ),
     ],
   ),
@@ -6980,6 +7353,77 @@ final List<Lesson> defaultLessons = [
         correctIndex: 2,
         explanation:
             'With 3 copies visible, no one can Pong the 4th. It can only complete a sequence — relatively safe.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Turn 14. Which of these factors make a tile more dangerous to discard?',
+        options: [
+          'It is a fresh middle tile that nobody has thrown',
+          'The target opponent threw it themselves earlier this rotation',
+          'It is an honour tile that has not appeared at all yet',
+          'Three of its four copies are already visible',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 2],
+        explanation:
+            'Fresh middles and completely unseen honours are the two live dangers; a tile the target already threw, or one with three copies visible, is much safer.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'Turn 15. You hold {{p1}}, {{m5}}, {{red}} and {{s6}}, and three copies of {{p1}} are already visible on the table. Which discard is least likely to deal in?',
+        options: ['p1', 'm5', 'red', 's6'],
+        correctIndex: 0,
+        tiles: const ['p1', 'm5', 'red', 's6'],
+        explanation:
+            'With three copies of {{p1}} visible nobody can Pong the last one, and a terminal only ever fits 1-2-3, so it is the safest of the four.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each situation to the correct danger reading.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Fresh {{m5}} on turn 15',
+            right: 'Highest danger: three sequences plus a pair',
+          ),
+          QuestionPair(
+            left: 'Fresh {{red}} on turn 15',
+            right: 'Dangerous mainly through a Pong',
+          ),
+          QuestionPair(
+            left: '{{p1}} with three copies already visible',
+            right: 'Lowest danger: only 1-2-3 can use it',
+          ),
+          QuestionPair(
+            left: '{{s8}} the target threw, then drew again',
+            right: 'Relatively safe: their hand may have changed',
+          ),
+        ],
+        explanation:
+            'Danger comes from how many uses a tile has and whether the target can still build on it after drawing again.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'Order these tiles from the fewest to the most numbered sequences each can complete.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['east', 'p1', 'm5'],
+        explanation:
+            '{{east}} completes no sequence, {{p1}} only 1-2-3, and {{m5}} three of them, which is exactly why fresh middles are the most dangerous discards.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'How many different numbered sequences can {{m5}} complete? Answer with a number.',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['3', 'three', '3 sequences'],
+        explanation:
+            '{{m5}} fits 3-4-5, 4-5-6 and 5-6-7, the widest sequence coverage of any rank.',
       ),
     ],
   ),
@@ -7050,6 +7494,85 @@ final List<Lesson> defaultLessons = [
         explanation:
             'When behind, you need high-value wins. A Dragon wait with extra Faan can close the gap.',
       ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'You are leading by 50 points with two hands left. Which choices protect that lead?',
+        options: [
+          'Folding a hopeless hand instead of chasing a win',
+          'Taking a draw rather than risking a dangerous discard',
+          'Pushing for a limit hand with a fresh middle tile',
+          'Ignoring the scoreboard and playing every hand the same way',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'When ahead, the cheapest way to keep the lead is defence: fold hopeless hands and accept draws instead of feeding a big hand.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'In 半銃制 scoring, a 3-Faan hand won on a discard pays the discarder how many points?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['8', 'eight', '8 points'],
+        explanation:
+            'The 3-Faan row of the payment table is 8 points on a discard and 4 per player on a self-draw.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each score position to the plan it calls for.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Leading by 50 with two hands left',
+            right: 'Protect the lead and accept draws',
+          ),
+          QuestionPair(
+            left: 'Trailing by 60 with two hands left',
+            right: 'Chase 5-Faan or better hands',
+          ),
+          QuestionPair(
+            left: 'Level with three hands left',
+            right: 'Build efficiently and let opponents err',
+          ),
+          QuestionPair(
+            left: 'Trailing by 8 with the last hand',
+            right: 'One 3-Faan win on a discard is enough',
+          ),
+        ],
+        explanation:
+            'The same hand is worth playing differently depending on the gap, because a 3-Faan discard win alone pays 8 points.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You are exactly 24 points behind with one hand left. A 5-Faan win on a discard pays 24 points. What is true?',
+        options: [
+          'A 5-Faan discard win ties it, and a 5-Faan self-draw wins it outright',
+          'Only a 10-Faan limit hand can help',
+          'You must fold because the gap cannot be closed',
+          'A 3-Faan self-draw ties it',
+        ],
+        correctIndex: 0,
+        explanation:
+            '5 Faan pays 24 on a discard and 36 in total on a self-draw (12 from each player), while a 3-Faan self-draw totals only 12.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You are leading by 30 with one hand left. Why is chasing a limit hand the wrong plan?',
+        options: [
+          'You chase points you do not need while risking 128 on one bad discard',
+          'Limit hands are not allowed when you are leading',
+          'A limit hand pays only 8 points',
+          'The dealer would collect double from you',
+        ],
+        correctIndex: 0,
+        explanation:
+            'A dealt-in limit hand costs 128 points, far more than the lead you are protecting for a win you do not need.',
+      ),
     ],
   ),
 
@@ -7118,6 +7641,77 @@ final List<Lesson> defaultLessons = [
         explanation:
             'Folding is a sign of mastery! Knowing when NOT to play is just as important as knowing when to push.',
       ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'By which turn should you seriously consider folding if you still have no complete melds? Answer with the turn number.',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['8', 'eight', 'turn 8', '8th'],
+        explanation:
+            'With no complete meld by around turn 8 the hand is too far behind, so defence becomes worth more than the small chance of winning.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'You have decided to fold. The opponent has already thrown {{p3}} and their hand is live. Order these tiles from the safest discard to the most dangerous.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['p3', 'red', 'm4'],
+        explanation:
+            '{{p3}} is proven safe, {{red}} can only be Ponged, and {{m4}} is a fresh middle that serves sequences and Pong alike.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which of these are signs that your hand is hopeless and should be folded?',
+        options: [
+          'Still no complete melds by turn 8',
+          'Most tiles are isolated with no pair and no neighbour',
+          'Two exposed melds and a pair by turn 6',
+          'You are one tile from a 5-Faan wait on turn 12',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'No melds late and a hand full of isolated tiles both mean the win is too far away, while the other two describe healthy hands.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each signal to the folding response it calls for.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'No complete melds by turn 8',
+            right: 'Stop chasing and start folding',
+          ),
+          QuestionPair(
+            left: 'Opponent shows three exposed melds on turn 12',
+            right: 'Discard only proven-safe tiles',
+          ),
+          QuestionPair(
+            left: '5% chance to win but 30% chance to deal in',
+            right: 'Fold, because the maths favours defence',
+          ),
+        ],
+        explanation:
+            'Folding is a decision driven by evidence: your own hand shape, the opponent\'s melds, and the risk-to-reward estimate.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You estimate a 5% chance of winning this hand and a 30% chance of dealing into a big hand. What should you do?',
+        options: [
+          'Keep pushing for the win',
+          'Fold and discard only tiles already proven safe',
+          'Call every Chow that is offered',
+          'Discard honour tiles only',
+        ],
+        correctIndex: 1,
+        explanation:
+            'When the chance of dealing in far outweighs the chance of winning, folding saves points over the long run.',
+      ),
     ],
   ),
 
@@ -7184,6 +7778,78 @@ final List<Lesson> defaultLessons = [
         explanation:
             'Push when you\'re behind and need to win this hand to stay competitive. The risk is justified.',
       ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which situations justify the self-draw-only option in the last four turns?',
+        options: [
+          'Your wait is strong but every tile in your hand is dangerous to throw',
+          'You are 20 points behind, your wait is live, but your safe tiles are running out',
+          'You are 60 points behind and must win this hand',
+          'You have no winning wait at all',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'Self-draw only keeps a live wait while refusing to feed the table; with no wait you fold, and when you must win you push.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question:
+            'Match each end-game option to the situation that calls for it.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Push',
+            right: 'You are trailing and this hand must be won',
+          ),
+          QuestionPair(
+            left: 'Fold',
+            right: 'You are leading and cannot afford to deal in',
+          ),
+          QuestionPair(
+            left: 'Self-draw only',
+            right: 'Your wait is good but your discards are all dangerous',
+          ),
+        ],
+        explanation:
+            'Each of the three end-game options trades risk for reward differently, so the score position and the safety of your hand pick the option.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'Turn 16, four tiles left in the wall. The player on your left discarded {{p9}} on the previous turn and has not drawn since. Which discard is absolutely safe against them?',
+        options: ['p9', 'm5', 'white', 's5'],
+        correctIndex: 0,
+        tiles: const ['p9', 'm5', 'white', 's5'],
+        explanation:
+            'A tile discarded in the current rotation is absolutely safe until that player draws again, and they have not drawn since.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'With 4 tiles left in the wall, how many more draws remain in the hand? Answer with a number.',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['4', 'four', '4 draws'],
+        explanation:
+            'Each draw takes one tile from the wall, so 4 tiles left means only 4 more draws for the whole table.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Your wait is live but every tile you hold is dangerous to discard. Which end-game option keeps the wait without throwing danger?',
+        options: [
+          'Push',
+          'Fold',
+          'Self-draw only',
+          'Claim any Chow that is offered',
+        ],
+        correctIndex: 2,
+        explanation:
+            'Self-draw only keeps the wait alive while you discard safely, so the win can still arrive without feeding an opponent.',
+      ),
     ],
   ),
 
@@ -7241,6 +7907,80 @@ final List<Lesson> defaultLessons = [
         correctIndex: 1,
         explanation:
             'Advanced players know when to fold, when to play safe, and when winning isn\'t worth the risk.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these are correct risk-management decisions?',
+        options: [
+          'Folding a hopeless hand on turn 9',
+          'Pushing with a fresh {{m5}} on turn 16 while leading by 40',
+          'Taking a draw when a win would need a dangerous discard',
+          'Chasing a limit hand when a 3-Faan win already takes the lead',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 2],
+        explanation:
+            'Both correct choices refuse risk the score does not require; the other two gamble with points the player does not need.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each Stage 10 skill to the example that shows it.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Danger assessment',
+            right: 'Counting the sequences a fresh middle tile completes',
+          ),
+          QuestionPair(
+            left: 'Score-based decision',
+            right: 'Folding because a draw already keeps your lead',
+          ),
+          QuestionPair(
+            left: 'Folding',
+            right: 'Discarding only tiles the opponent has already thrown',
+          ),
+          QuestionPair(
+            left: 'End-game timing',
+            right: 'Checking the wall count before deciding to push',
+          ),
+        ],
+        explanation:
+            'Every Stage 10 skill is a different input to the same question: does the reward justify this risk right now?',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'You are leading by 30 with the last hand and 6 tiles left in the wall. Three copies of {{white}} are already visible and you hold the fourth. Which discard is safest?',
+        options: ['white', 'm5', 'red', 's5'],
+        correctIndex: 0,
+        tiles: const ['white', 'm5', 'red', 's5'],
+        explanation:
+            'Nobody can Pong the last {{white}} and a dragon cannot be sequenced, so it is the safest discard in the hand.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'In 半銃制, a 7-Faan hand won by self-draw pays how much in total from the other three players?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['72', 'seventy-two', 'seventy two', '72 points'],
+        explanation:
+            '7 Faan is 48 on a discard, so each of the three players pays 24 for a total of 72 on a self-draw.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Dealing into a 10-Faan limit hand costs the discarder 128 points. What does that imply for risk management?',
+        options: [
+          'One bad discard can cost more than several small wins earn',
+          'Limit hands are too rare to consider',
+          'You should fold every hand from the first turn',
+          'The dealer pays half of it',
+        ],
+        correctIndex: 0,
+        explanation:
+            'At 128 points a single dealt-in limit hand dwarfs several 3-Faan wins, which is why late danger assessment matters more than speed.',
       ),
     ],
   ),
@@ -7310,6 +8050,81 @@ final List<Lesson> defaultLessons = [
         explanation:
             'Isolated honors (not part of pairs or potential Pongs) are usually discarded first as they have the least meld potential.',
       ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'You are sizing up an opening 13-tile hand before choosing a direction. Which counts are worth making?',
+        options: [
+          'How many pairs you hold',
+          'How many tiles already sit in a run shape',
+          'How many completely isolated tiles you hold',
+          'How many Faan your finished hand will score',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 2],
+        explanation:
+            'Pairs, run shapes and isolated tiles decide which directions are even possible, while the final Faan value is unknown at the start.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'This 13-tile hand is {{m1}}{{m3}}{{m4}}{{p2}}{{p2}}{{p6}}{{p7}}{{s5}}{{s6}}{{s7}}{{east}}{{red}}{{white}}. How many tiles are completely isolated (no pair, no neighbour within two ranks)?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['3', 'three', '3 tiles'],
+        explanation:
+            '{{east}}, {{red}} and {{white}} have no partner and no neighbour, so they are the first tiles to leave.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question:
+            'Match each opening hand shape to the direction it best supports.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Eight Bamboo tiles plus three honour tiles',
+            right: 'Mixed One Suit, 3 Faan',
+          ),
+          QuestionPair(
+            left: 'Four separate pairs spread over three suits',
+            right: 'All Pongs, 3 Faan',
+          ),
+          QuestionPair(
+            left: 'Eleven tiles in one suit and two unrelated tiles',
+            right: 'Full Flush, 7 Faan',
+          ),
+          QuestionPair(
+            left: 'Four finished runs plus a pair',
+            right: 'All Chows, 1 Faan',
+          ),
+        ],
+        explanation:
+            'The shapes point to the direction: pairs feed Pongs, one long suit feeds flush hands, and finished runs point to 平糊.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'Your hand is {{s2}}{{s3}}{{s4}}{{s5}}{{s6}}{{s7}}{{s8}}{{east}}{{east}}{{red}}{{m1}}{{p9}}{{p9}} and you are steering toward Mixed One Suit. Which tile should leave first?',
+        options: ['{{m1}}', '{{red}}', '{{p9}}', '{{east}}'],
+        correctIndex: 0,
+        explanation:
+            'Mixed One Suit keeps one suit plus honours, so the lone tile in an abandoned suit goes first while {{red}} and both pairs still hold meld potential.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You hold {{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{p7}}{{p8}}{{p9}}{{s4}}{{s4}}{{s9}}{{east}}{{red}}. How many complete melds do you already have?',
+        options: [
+          'Two melds, with two more to complete',
+          'Three melds, with one more to complete',
+          'One meld, with three more to complete',
+          'Four melds, so the hand is already complete',
+        ],
+        correctIndex: 0,
+        explanation:
+            '{{m2}}{{m3}}{{m4}} and {{p7}}{{p8}}{{p9}} are complete, while {{m5}}{{m6}} is only a shape and {{s4}}{{s4}} is the pair.',
+      ),
     ],
   ),
 
@@ -7378,6 +8193,85 @@ final List<Lesson> defaultLessons = [
         correctIndex: 1,
         explanation:
             'Pivot when draws clearly point to a better direction — but only if it\'s a clear improvement, not just different.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Turn 8. You are not going to win this hand. Which moves fit a defensive plan?',
+        options: [
+          'Accept that the hand is lost and aim to pay nothing',
+          'Discard a tile that the dangerous opponent threw this round, before their next draw',
+          'Push for a bigger hand to catch up on points',
+          'Call every meld you can to change your luck',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'Under 半銃制 the discarder pays the whole amount alone, so a hand you cannot win is best played purely to avoid dealing in.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'An opponent has called two Pongs by turn 7. How many more melds must they complete before the hand can win?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['2', 'two', '2 melds'],
+        explanation:
+            'A winning hand is four melds plus a pair, so two exposed Pongs still leave two melds to go.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each mid-game situation to the priority that fits it.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Three melds and a pair in hand by turn 6',
+            right: 'Push for the win now',
+          ),
+          QuestionPair(
+            left: 'One meld and no connected shapes by turn 8',
+            right: 'Switch to defence',
+          ),
+          QuestionPair(
+            left: 'An opponent with three exposed melds barely discards',
+            right: 'Treat their discards as dangerous',
+          ),
+          QuestionPair(
+            left: 'A draw turns a pair into the triplet you wanted',
+            right: 'Commit to the direction it opens',
+          ),
+        ],
+        explanation:
+            'Mid-game choices follow the clock: a live hand gets pushed, a dead one gets folded, and a heavy opponent gets respect.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Turn 9. You are one tile from ready, but the wait is the closed shape {{p4}}{{p6}} and the wall is thinning. What is the honest read?',
+        options: [
+          'You are close, but a one-tile wait may never arrive, so widening it is worth a small cost',
+          'You should fold immediately because the wait is closed',
+          'A closed wait is as good as a two-sided wait',
+          'You should break the pair to stay flexible',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Being one tile from ready only pays if the tile is live, and a closed wait has at most four copies against up to eight for a two-sided wait.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Turn 7. You are collecting Circles for 混一色 and notice nine Circle tiles already on the table. What does that change?',
+        options: [
+          'The flush is weaker, because those copies can no longer be drawn',
+          'The flush is stronger, because other players are helping you',
+          'Nothing, since visible tiles matter only for defence',
+          'You must switch to another suit immediately',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Every visible copy is one fewer left in the wall, so a heavily exposed suit has fewer tiles left to finish the hand.',
       ),
     ],
   ),
@@ -7449,6 +8343,80 @@ final List<Lesson> defaultLessons = [
         explanation:
             'Calling Chow on Bamboo reveals your flush strategy! Opponents will stop discarding Bamboo. Usually better to pass.',
       ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which of these are good reasons to PASS on a tile you could claim?',
+        options: [
+          'Calling would drop 門前清, worth 1 Faan',
+          'The call would expose the suit you are collecting',
+          'You hold two dragons and the third one is discarded',
+          'The call would replace a two-sided wait with a closed wait',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 3],
+        explanation:
+            'Passing protects Faan and information, and the dragon case is the opposite one because that claim is worth taking.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each claim decision to its main cost or gain.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Pong a discarded dragon while holding two',
+            right: '1 Faan gained, suit still hidden',
+          ),
+          QuestionPair(
+            left: 'Chow into the suit of your flush',
+            right: 'Your suit direction is revealed',
+          ),
+          QuestionPair(
+            left: 'Chow on your third turn with a concealed hand',
+            right: '門前清 lost for 1 Faan',
+          ),
+          QuestionPair(
+            left: 'Pass on a tile that would complete your third meld',
+            right: 'Hand stays concealed but slower',
+          ),
+        ],
+        explanation:
+            'Every claim trades something: Faan, information, or speed, so the decision is which of those you can best afford.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'You hold two dragons and Pong the third when it is discarded. How many Faan is that triplet worth?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['1', 'one', '1 faan'],
+        explanation:
+            'A triplet of dragons is 1 Faan, which is why the lesson says to take it when it is offered.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'Your hand is {{red}}{{red}}{{east}}{{east}}{{m2}}{{m3}}{{m4}}{{p5}}{{p6}}{{p7}}{{s3}}{{s4}}{{s9}}. An opponent discards one of the tiles below. Which claim is worth taking?',
+        options: ['{{red}}', '{{p8}}', '{{m1}}', '{{s9}}'],
+        correctIndex: 0,
+        explanation:
+            'The dragon Pong adds 1 Faan and says nothing about your suit, while {{p8}} and {{m1}} would break a finished meld and {{s9}} cannot be claimed at all.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You are playing a concealed hand and hold {{p5}}{{p5}}{{p5}}{{p5}}. Declaring a concealed kong costs you 門前清?',
+        options: [
+          'No, a concealed kong keeps 門前清 intact',
+          'Yes, every kong counts as a claim on the table',
+          'Yes, kongs and pongs both break it',
+          'Only exposed kongs are allowed in a concealed hand',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Only a claimed chow, pong or exposed kong breaks 門前清, and an ankan is not a claim.',
+      ),
     ],
   ),
 
@@ -7506,6 +8474,64 @@ final List<Lesson> defaultLessons = [
         correctIndex: 2,
         explanation:
             '{{m2}}{{m3}}{{m4}}, {{p4}}{{p5}}{{p6}}, and {{s2}}{{s3}}{{s4}} — 3 complete melds! One more + pair to win.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'The sample hand holds {{s3}}{{s4}} as a two-sided wait. Arrange its winning tiles from lowest to highest.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['s2', 's5'],
+        explanation:
+            '{{s3}}{{s4}} accepts {{s2}} for {{s2}}{{s3}}{{s4}} and {{s5}} for {{s3}}{{s4}}{{s5}}.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'Your hand is {{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{m7}}{{p2}}{{p3}}{{s5}}{{s6}}{{s7}}{{east}}{{east}}{{red}}. Which tile should you discard?',
+        options: ['{{red}}', '{{p2}}', '{{east}}', '{{m5}}'],
+        correctIndex: 0,
+        explanation:
+            '{{red}} is the only tile with no pair and no neighbour, so cutting it leaves three melds, the pair {{east}}{{east}} and the {{p2}}{{p3}} wait.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'In the sample opening hand {{m2}}{{m3}}{{m5}}{{m5}}{{p1}}{{p4}}{{p5}}{{p6}}{{s3}}{{s4}}{{s7}}{{east}}{{red}}, how many tiles are completely isolated?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['4', 'four', '4 tiles'],
+        explanation:
+            '{{p1}}, {{s7}}, {{east}} and {{red}} have no pair and no neighbour, which is why the lesson discards them before touching any shape.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Three melds are finished and {{m5}}{{m5}} is the pair. Which statements are true from here?',
+        options: [
+          'One more meld plus the pair finishes the hand',
+          'The pair {{m5}}{{m5}} scores Faan on its own',
+          'Every discard from here should weigh what the other three players show',
+          'Breaking the pair to chase 清一色 is the efficient move',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 2],
+        explanation:
+            'The pair is only the eye and adds no Faan, so the remaining work is a fourth meld played with the whole table in view.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Why does the lesson steer this sample hand toward All Chows rather than Mixed One Suit?',
+        options: [
+          'Its shapes sit in all three suits, so honour-free runs are the cheapest route',
+          'All Chows always scores more than Mixed One Suit',
+          'Mixed One Suit requires a pair of dragons',
+          'All Chows needs only three melds',
+        ],
+        correctIndex: 0,
+        explanation:
+            'With usable shapes in three suits, chasing one suit would throw most of the hand away, and 平糊 arrives far sooner even at 1 Faan.',
       ),
     ],
   ),
@@ -7565,6 +8591,80 @@ final List<Lesson> defaultLessons = [
         correctIndex: 1,
         explanation:
             'Count remaining tiles for each direction. The path with more available tiles is more likely to succeed!',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which habits hold up across a whole simulated hand?',
+        options: [
+          'Plan three discards ahead, not just the current one',
+          'Count the tiles still unseen before committing to a wait',
+          'Always chase the highest-Faan hand on the table',
+          'Re-scan all three opponents before every discard',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 3],
+        explanation:
+            'Planning, counting outs and reading the table compound over a hand, while chasing the biggest hand ignores whether it can still arrive.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question:
+            'Match each moment of a hand to the question that should drive it.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Opening 13 tiles',
+            right: 'Which directions do these shapes support?',
+          ),
+          QuestionPair(
+            left: 'Turns 5 to 10',
+            right: 'Am I still on track, and how fast is the table?',
+          ),
+          QuestionPair(
+            left: 'Each discard after turn 10',
+            right: 'What can this tile deal in to?',
+          ),
+          QuestionPair(
+            left: 'Before claiming any tile',
+            right: 'What does this call cost in Faan and information?',
+          ),
+        ],
+        explanation:
+            'Each phase of a hand has one governing question, and mixing them up is how plans go wrong.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'You win a limit hand (例牌) on a discard. How many points does the discarder pay?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['128', '128 points'],
+        explanation:
+            'Every limit hand counts as 10 Faan, and 10 Faan on a discard pays 128.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question: 'Which is the strongest reason to abandon a plan mid-hand?',
+        options: [
+          'The tiles the plan needs are nearly all visible on the table',
+          'You have drawn badly for one turn',
+          'The plan would score less than 10 Faan',
+          'An opponent called a meld',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Visible tiles cannot be drawn, so a plan whose tiles are gone has no outs left however good it looked at the start.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'The hand holds {{p7}}{{p8}}. Arrange the two tiles that complete it from lowest to highest.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['p6', 'p9'],
+        explanation:
+            '{{p7}}{{p8}} accepts {{p6}} and {{p9}}, and counting both ends is how a wait\'s outs are measured.',
       ),
     ],
   ),
@@ -7631,6 +8731,77 @@ final List<Lesson> defaultLessons = [
         correctIndex: 1,
         explanation:
             'Quick scan of all opponents\' exposed melds and recent discards helps you avoid dangerous discards.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Three opponents are at the table. Which of these are real danger signals that should slow your discards?',
+        options: [
+          'They have three exposed melds',
+          'They have stopped discarding one suit entirely',
+          'Their score is the highest at the table',
+          'They are the dealer',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'Meld count and a suit that suddenly disappears are the reliable danger signals; score and dealer status do not make a hand closer to winning.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'The 十二章包 rule makes a player liable once an opponent has how many exposed melds?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['4', 'four', '4 melds', 'four melds'],
+        explanation:
+            'Four exposed melds is 十二章, and the player who supplied the fourth meld pays the self-draw.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question:
+            'Match each observation about an opponent to the conclusion it supports.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Three exposed melds, none of them honours',
+            right: 'Their hand is nearly complete, so their discards are risky',
+          ),
+          QuestionPair(
+            left: 'Four different honour tiles already discarded',
+            right: 'Honours are probably not what they are collecting',
+          ),
+          QuestionPair(
+            left: 'No Circle tile discarded for two rounds',
+            right: 'Circles may be the suit they are collecting',
+          ),
+        ],
+        explanation:
+            'Meld count measures how close they are, while the tiles they stop throwing show what they still need.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'The player to your right discarded {{p5}} earlier this rotation and has not drawn since. Which tile can you throw at them with certainty?',
+        options: ['p5', 's3', 'east', 'm8'],
+        correctIndex: 0,
+        explanation:
+            'A tile that opponent discarded earlier in the same rotation is absolutely safe against them until they draw again.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'A tile discarded by an opponent stops being absolutely safe as soon as...',
+        options: [
+          'they draw another tile',
+          'the same tile is discarded by a second player',
+          'they call Pong on a different tile',
+          'the wall drops below twenty tiles',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Once that opponent draws again their hand may have changed, so the tile is only relatively safe from then on.',
       ),
     ],
   ),
@@ -7701,6 +8872,76 @@ final List<Lesson> defaultLessons = [
         explanation:
             'Compare expected risk vs expected reward. Push when reward exceeds risk, fold when it doesn\'t.',
       ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You are one tile from a 5-Faan hand and far behind. Dealing in would cost you 24 points; a self-draw win at 5 Faan collects 12 from each of the three players. Which is the correct push-or-fold test?',
+        options: [
+          'Push — 36 points of reward outweighs the 24-point risk',
+          'Fold — any risk is too much when you are trailing',
+          'Fold — 24 points is more than the 12 you collect from one player',
+          'Push — but only if you happen to be the dealer',
+        ],
+        correctIndex: 0,
+        explanation:
+            'A 5-Faan self-draw collects 12 from each of three players for 36 total, which is more than the 24 you lose by dealing in.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'Dealing into a 7-Faan hand by discard costs you how many points?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['48', 'forty-eight', 'forty eight'],
+        explanation:
+            'On the payment table 7 Faan paid by discard is 48 points, all of it from the discarder.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these argue for folding in a pressure spot?',
+        options: [
+          'Your hand is still three tiles from ready',
+          'Two opponents each have two exposed melds',
+          'Your hand is worth 8 Faan and is already ready',
+          'You are far behind and need a big hand',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'A distant hand against two dangerous opponents means small reward and risk doubled, which is the classic fold.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each pressure situation to the better action.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Ready on a 10-Faan hand, moderate risk, far behind',
+            right: 'Push',
+          ),
+          QuestionPair(
+            left: 'Mediocre hand, two opponents on two exposed melds each',
+            right: 'Fold',
+          ),
+          QuestionPair(
+            left: 'Four hands left and you lead by 40 points',
+            right: 'Protect the lead',
+          ),
+        ],
+        explanation:
+            'The push-or-fold test is reward against risk, so a thin hand facing two threats folds while a big hand late in the session pushes.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'Against an opponent collecting Circles: they discarded {{s9}} earlier this rotation and have not drawn since, they discarded {{east}} two rounds ago, and {{m5}} has never appeared from them. Rank these from safest to most dangerous to discard.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['s9', 'east', 'm5'],
+        explanation:
+            '{{s9}} is absolutely safe this rotation, {{east}} is only relatively safe because they have drawn since, and {{m5}} is unverified.',
+      ),
     ],
   ),
 
@@ -7767,6 +9008,81 @@ final List<Lesson> defaultLessons = [
         correctIndex: 1,
         explanation:
             'The weakest player makes predictable mistakes — discarding dangerously, calling melds unnecessarily, or failing to read the table.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'A table is playing loose and everyone pushes. Which adjustments are right?',
+        options: [
+          'Play tighter and fold marginal hands',
+          'Let them deal into each other while you wait',
+          'Race them with a bigger hand every hand',
+          'Copy their aggression so they respect you',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'At a loose table patience wins: the aggressive players supply the mistakes and the payments.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each table type to the correct adjustment.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Tight table, everyone folds early',
+            right: 'Build bigger hands more freely',
+          ),
+          QuestionPair(
+            left: 'Loose table, everyone pushes',
+            right: 'Play tighter and wait',
+          ),
+          QuestionPair(
+            left: 'Mixed table',
+            right: 'Win from the weakest player\'s discards',
+          ),
+        ],
+        explanation:
+            'The tighter the table the more room you have to build, and the looser it is the more you should let others take the risks.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'However loose or tight the table, a hand must be worth at least how many Faan before it may win?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['3', 'three', '3 faan', 'three faan'],
+        explanation:
+            'Three Faan is the minimum under 半銃制, so a two-Faan shape is not a legal win at any table.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'At a mixed table, which opponent is most likely the strongest player?',
+        options: [
+          'The one who folds accurately and rarely deals in',
+          'The one with the highest score so far',
+          'The one who calls Pong most often',
+          'The one who discards fastest',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Scores swing on single hands, but accurate folding and few deal-ins is a reliable sign of a strong player.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'At a mixed table, where should most of your winning tiles come from?',
+        options: [
+          'The weakest player\'s discards',
+          'The strongest player\'s discards',
+          'Your own draws only',
+          'Whichever player discards fastest',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Aim your hand at the player most likely to throw what you need, and the weakest player gives the most.',
       ),
     ],
   ),
@@ -7837,6 +9153,76 @@ final List<Lesson> defaultLessons = [
         explanation:
             'With a lead and few hands left, protect it! Play balanced — don\'t take unnecessary risks.',
       ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'A full session is four rounds of four hands each. How many hands is that in total?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['16', 'sixteen', '16 hands', 'sixteen hands'],
+        explanation:
+            'One round of four hands per seat wind, four rounds, makes sixteen hands in a session.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these are signs of tilt?',
+        options: [
+          'Chasing a loss by throwing obviously dangerous tiles',
+          'Speeding up and skipping the scan of opponents\' melds',
+          'Folding a marginal hand on purpose',
+          'Taking a breath after a lost hand',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'Tilt shows up as reckless aggression and lost routine, not as a deliberate fold or a calm reset.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each session situation to the correct response.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Just dealt in for 8 Faan',
+            right: 'Reset and play your normal game',
+          ),
+          QuestionPair(
+            left: 'Leading by 40 points with four hands left',
+            right: 'Protect the lead with balanced play',
+          ),
+          QuestionPair(
+            left: 'Twelfth hand, concentration slipping',
+            right: 'Slow down and re-check the table each turn',
+          ),
+        ],
+        explanation:
+            'Session management is about holding your normal decisions steady — no chasing, no recklessness with a lead, no sloppy late hands.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You are 96 points behind with four hands left. What does the payment table say about that deficit?',
+        options: [
+          'Nothing can recover 96 points, so push every hand',
+          'One 10-Faan hand paid by discard (128 points) would cover the whole deficit',
+          'You need two 10-Faan self-draws to catch up',
+          'Only a limit hand can help, and only by 96 points',
+        ],
+        correctIndex: 1,
+        explanation:
+            'A 10-Faan discard collects 128 points, so the deficit is one big hand and can be recovered without reckless play.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'A session runs four rounds. Arrange the round winds in the order they are played.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['east', 'south', 'west', 'north'],
+        explanation:
+            'A session goes East, South, West, then North round, four hands in each.',
+      ),
     ],
   ),
 
@@ -7905,6 +9291,70 @@ final List<Lesson> defaultLessons = [
         correctIndex: 1,
         explanation:
             'The real learning starts now! Take your knowledge to the table and enjoy the game. You\'re ready!',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Which of these hands falls below the 3-Faan minimum and could not be declared a win?',
+        options: [
+          '平糊 won on a discard, closed hand, no flowers',
+          '平糊 won on a discard after one exposed Chow, no flowers',
+          '平糊 won by self-draw, closed hand, one non-matching flower',
+          '對對糊 won on a discard, open hand, no flowers',
+        ],
+        correctIndex: 1,
+        explanation:
+            '平糊 1 plus 無花 1 is only 2 Faan, and the exposed Chow means 門前清 cannot be counted either.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question: 'A limit hand (例牌) is scored as how many Faan?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['10', 'ten', '10 faan', 'ten faan'],
+        explanation:
+            'Limit hands are all scored as 10 Faan, the cap of the 半銃制 table.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which of these statements about Gary\'s rulings are correct?',
+        options: [
+          'A complete set of four Seasons scores 2 Faan in total',
+          'A concealed Kong does not break 門前清',
+          'The matching seat flower is added on top of the 一台花 2 Faan',
+          'An exposed Kong leaves 門前清 intact',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1],
+        explanation:
+            'A full flower set is 2 Faan with no seat flower on top, and only claimed Chows, Pongs or exposed Kongs break a closed hand.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each winning hand to its Faan value.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: '清一色', right: '7 Faan'),
+          QuestionPair(
+            left: '大三元, with the three dragon triplets counted',
+            right: '8 Faan',
+          ),
+          QuestionPair(left: '平糊', right: '1 Faan'),
+          QuestionPair(left: '一台花, complete set', right: '2 Faan'),
+        ],
+        explanation:
+            '清一色 is 7, 大三元 with 三元牌 counted is 8, 平糊 is 1, and a complete flower set is 2.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'Your 13 tiles are {{p2}}{{p3}}{{p4}} {{p6}}{{p7}}{{p8}} {{p1}}{{p1}}{{p1}} {{p5}}{{p6}}{{p7}} {{p9}}. Which tile completes the hand?',
+        options: ['p9', 'p5', 'm9', 'east'],
+        correctIndex: 0,
+        explanation:
+            'Four sets are already complete, so {{p9}} pairs up to form the eyes and keeps the hand 清一色.',
       ),
     ],
   ),

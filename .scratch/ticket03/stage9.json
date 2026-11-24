@@ -1,0 +1,289 @@
+{
+  "9-1": [
+    {
+      "type": "tileSelection",
+      "question": "You are building a Bamboo flush around {{s3}}, {{s4}} and {{s5}}. Which tile is the best turn-one decoy to make opponents think Bamboo is dead to you?",
+      "options": ["s9", "s4", "s5", "m2"],
+      "correctIndex": 0,
+      "explanation": "{{s9}} is spare Bamboo, so throwing it early sells the false signal without touching the run you actually need."
+    },
+    {
+      "type": "multiChoice",
+      "question": "What does a successful decoy discard actually buy you? (Select all that apply)",
+      "options": [
+        "Opponents treat your real suit as safe and throw it to you",
+        "You get claim chances on the tiles you need",
+        "A guaranteed win in that round",
+        "Extra faan on the scoring table",
+        "Protection from being robbed on a kong"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1],
+      "explanation": "A bluff only changes what opponents believe is safe, which creates claim chances but guarantees no win and scores nothing by itself."
+    },
+    {
+      "type": "matching",
+      "question": "Match each discard pattern to the deception or intent it suggests.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "One Bamboo on turn 1, then never again", "right": "A Bamboo-flush bluff in progress"},
+        {"left": "Discards look too tidy for the story they tell", "right": "Possibly a counter-bluff"},
+        {"left": "Claims melds early and often", "right": "Fast hand that hides little"},
+        {"left": "Throws only tiles already seen on the table", "right": "Folding instead of building"}
+      ],
+      "explanation": "Each pattern is read from the information the player releases, so an unusually clean story is itself a warning sign."
+    },
+    {
+      "type": "fillBlank",
+      "question": "Early discards are the strongest signal because players throw the tiles they are sure they will ___ need.",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["not", "never"],
+      "explanation": "Players shed what they are certain is useless first, so a turn-one discard is read as real information about their hand."
+    },
+    {
+      "type": "singleChoice",
+      "question": "An opponent's discards look almost too perfect for the flush they seem to be abandoning. What does the lesson advise?",
+      "options": [
+        "Trust the pattern completely",
+        "Question the pattern, because it may be a counter-bluff",
+        "Ignore all of their discards",
+        "Assume they have no plan at all"
+      ],
+      "correctIndex": 1,
+      "explanation": "Experienced players treat a suspiciously clean discard pattern as possible deception rather than proof."
+    }
+  ],
+  "9-2": [
+    {
+      "type": "singleChoice",
+      "question": "You declare a concealed kong of {{m5}} while the rest of your hand is untouched. What happens to 門前清?",
+      "options": [
+        "It is lost, like any kong",
+        "It is kept, because a concealed kong does not break it",
+        "It is upgraded to 3 faan",
+        "It is kept only if you win by self-draw"
+      ],
+      "correctIndex": 1,
+      "explanation": "Only a claimed chow, pong or exposed kong breaks 門前清, so a concealed kong leaves the 1 faan intact."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which kong statements are correct under these rules? (Select all that apply)",
+      "options": [
+        "A kong by itself scores no faan",
+        "Robbing a kong (搶槓) scores 1 faan",
+        "Every kong breaks 門前清",
+        "Each kong adds 1 faan to the hand",
+        "A kong self-draw (槓上自摸) scores 1 faan"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1, 4],
+      "explanation": "Kongs are not a scoring pattern on their own; only 搶槓 and 槓上自摸 add 1 faan, and a concealed kong keeps 門前清."
+    },
+    {
+      "type": "matching",
+      "question": "Match each kong type to what it costs you or exposes.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "Concealed kong (暗槓)", "right": "Stays face-down and keeps 門前清"},
+        {"left": "Added kong (加槓)", "right": "Can be robbed for 搶槓"},
+        {"left": "Exposed kong (明槓)", "right": "Claimed from a discard, breaking 門前清"}
+      ],
+      "explanation": "Whether a kong is claimed is exactly what decides if it leaks information, invites a rob and kills 門前清."
+    },
+    {
+      "type": "fillBlank",
+      "question": "You kong all four copies of {{m5}}. How many copies are left for opponents to use in a chow or pong?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["0", "zero", "none", "no copies"],
+      "explanation": "Only four copies of a tile exist, so a kong of all four removes that tile from everyone else's options."
+    },
+    {
+      "type": "tileOrdering",
+      "question": "You have konged all four {{m8}} and two {{red}} have already been discarded. Order these tiles by copies still unaccounted for, fewest first: {{m8}}, {{red}}, {{p3}}.",
+      "options": [],
+      "correctIndex": 0,
+      "tiles": ["m8", "red", "p3"],
+      "explanation": "All four {{m8}} are accounted for, two {{red}} are gone so two remain, and no {{p3}} has been seen so four remain."
+    }
+  ],
+  "9-3": [
+    {
+      "type": "matching",
+      "question": "Match each playing style to the tell that gives it away.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "Aggressive", "right": "Calls Pong or Chow on the first tile offered"},
+        {"left": "Conservative", "right": "Stays concealed and builds one big hand"},
+        {"left": "Adaptive", "right": "Rebuilds the plan around each starting hand"},
+        {"left": "Folding", "right": "Throws only tiles already proved safe"}
+      ],
+      "explanation": "Style shows up in how quickly a player claims and how long they stay concealed, which is what you profile."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which of these are fair evidence for profiling an opponent? (Select all that apply)",
+      "options": [
+        "How quickly they claim melds when a tile is offered",
+        "Whether they keep the hand concealed deep into the round",
+        "How many flowers they were dealt",
+        "Their behaviour in the previous round only"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1],
+      "explanation": "Style is visible in claiming and concealing, while flowers say nothing about hand shape and last round's behaviour can be stale."
+    },
+    {
+      "type": "fillBlank",
+      "question": "A player who changes plan to suit each starting hand is described as ___.",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["adaptive", "adaptable", "adaptive player"],
+      "explanation": "That flexibility is the defining trait of the adaptive profile, which makes them the hardest to read."
+    },
+    {
+      "type": "singleChoice",
+      "question": "An opponent who had been calling melds all round suddenly stops and throws only seen tiles. What should your read be based on?",
+      "options": [
+        "Their play from the first two rounds",
+        "Their pattern within the current round",
+        "Their seat position",
+        "Their total score"
+      ],
+      "correctIndex": 1,
+      "explanation": "Against an adaptive player the current round's discards carry the information, not the history you already profiled."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Why is a conservative player most dangerous late in the round?",
+      "options": [
+        "They always hold a limit hand",
+        "Their hand is still hidden, so you cannot read their wait",
+        "They discard more tiles than anyone else",
+        "They win ties against aggressive players"
+      ],
+      "correctIndex": 1,
+      "explanation": "A player who never claims reveals almost nothing, so by the late round you still cannot tell which tiles they need."
+    }
+  ],
+  "9-4": [
+    {
+      "type": "multiChoice",
+      "question": "Which situations call for deliberately slowing the game? (Select all that apply)",
+      "options": [
+        "You are ahead on points and a draw keeps your lead",
+        "An opponent looks close to a hand you cannot defend against",
+        "You are one tile from winning",
+        "You are behind and must catch up"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1],
+      "explanation": "Slowing protects a lead and starves a dangerous hand, while being close to winning or far behind both call for speed."
+    },
+    {
+      "type": "fillBlank",
+      "question": "Every claim replaces one of your draws. If you claim three melds, how many fewer draws do you personally take from the wall?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["3", "three", "3 draws", "three draws"],
+      "explanation": "A chow or pong is taken instead of a draw, so three claims cost you three draws and shorten the round."
+    },
+    {
+      "type": "matching",
+      "question": "Match each table read to the pace decision it calls for.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "A cheap win is one meld away", "right": "Claim the meld and close the round"},
+        {"left": "Your hand still needs several tiles", "right": "Decline claims and keep drawing"},
+        {"left": "You lead and the wall is thin", "right": "Let the round die on a draw"}
+      ],
+      "explanation": "Pace follows what each outcome is worth to you, so the same wall can be raced or starved."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Why exactly does claiming a discard shorten the round?",
+      "options": [
+        "It burns one of your flowers",
+        "You take the discard instead of drawing, so the wall empties sooner",
+        "It forces the dealer to pay",
+        "It removes the claimed tile from the wall"
+      ],
+      "correctIndex": 1,
+      "explanation": "A claim uses an opponent's discard rather than a fresh wall tile, so fewer draws remain in the round."
+    },
+    {
+      "type": "singleChoice",
+      "question": "The wall runs out with no winner. What happens to the dealer?",
+      "options": [
+        "The dealer repeats as dealer",
+        "There is no repeat, so the deal passes on",
+        "The dealer pays every other player",
+        "The dealer draws one extra tile to settle it"
+      ],
+      "correctIndex": 1,
+      "explanation": "A drawn round is not a dealer repeat under these rules, so no 連莊 follows."
+    }
+  ],
+  "9-5": [
+    {
+      "type": "tileSelection",
+      "question": "You hold Bamboo and honour tiles and want 混一色 for 3 faan. Which of these tiles must stay out of the hand?",
+      "options": ["p5", "s5", "east", "red"],
+      "correctIndex": 0,
+      "explanation": "混一色 allows one suit plus honour tiles only, so any Circle tile breaks it."
+    },
+    {
+      "type": "tileOrdering",
+      "question": "You must discard to an opponent who threw {{m4}} this round and has not drawn since, threw {{p8}} last round, and has never seen {{s6}}. Order the three from safest to most dangerous.",
+      "options": [],
+      "correctIndex": 0,
+      "tiles": ["m4", "p8", "s6"],
+      "explanation": "A tile they discarded this round before drawing again is absolutely safe, one from an earlier round only relatively safe, and an unseen tile is unread."
+    },
+    {
+      "type": "matching",
+      "question": "Match each stage 9 tactic to what it is for.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "Decoy discard", "right": "Selling a suit you do not actually want"},
+        {"left": "Delayed kong", "right": "Choosing when to take the replacement draw"},
+        {"left": "Rapid claims", "right": "Ending the round before rivals improve"},
+        {"left": "Profile reading", "right": "Predicting which hand an opponent is building"}
+      ],
+      "explanation": "Deception, kong timing, tempo and profiling are four levers on the same information the table shares."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which statements are true under these rules? (Select all that apply)",
+      "options": [
+        "A hand must reach 3 faan to win",
+        "A concealed kong does not break 門前清",
+        "Being robbed on a kong is paid by the robbed player alone, as 包自摸",
+        "The dealer receives a 50% bonus when winning",
+        "Each extra faan doubles the payment"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1, 2],
+      "explanation": "There is no dealer bonus and payments step 8, 16, 24, 32 rather than doubling, while the other three match the rules reference."
+    },
+    {
+      "type": "singleChoice",
+      "question": "You lead by 60 points with six wall tiles left and an opponent has three exposed melds. What is the best play?",
+      "options": [
+        "Claim any meld to finish first",
+        "Kong for extra replacement draws",
+        "Fold, stop claiming, and let the wall run out",
+        "Throw middle tiles to bait a claim"
+      ],
+      "correctIndex": 2,
+      "explanation": "A draw preserves the lead, and every claim would hand a dangerous opponent more turns before the wall dies."
+    }
+  ]
+}

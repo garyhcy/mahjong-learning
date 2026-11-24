@@ -1,0 +1,275 @@
+{
+  "10-1": [
+    {
+      "type": "multiChoice",
+      "question": "Turn 14. Which of these factors make a tile more dangerous to discard?",
+      "options": [
+        "It is a fresh middle tile that nobody has thrown",
+        "The target opponent threw it themselves earlier this rotation",
+        "It is an honour tile that has not appeared at all yet",
+        "Three of its four copies are already visible"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 2],
+      "explanation": "Fresh middles and completely unseen honours are the two live dangers; a tile the target already threw, or one with three copies visible, is much safer."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Turn 15. You hold {{p1}}, {{m5}}, {{red}} and {{s6}}, and three copies of {{p1}} are already visible on the table. Which discard is least likely to deal in?",
+      "options": ["p1", "m5", "red", "s6"],
+      "correctIndex": 0,
+      "tiles": ["p1", "m5", "red", "s6"],
+      "explanation": "With three copies of {{p1}} visible nobody can Pong the last one, and a terminal only ever fits 1-2-3, so it is the safest of the four."
+    },
+    {
+      "type": "matching",
+      "question": "Match each situation to the correct danger reading.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "Fresh {{m5}} on turn 15", "right": "Highest danger: three sequences plus a pair"},
+        {"left": "Fresh {{red}} on turn 15", "right": "Dangerous mainly through a Pong"},
+        {"left": "{{p1}} with three copies already visible", "right": "Lowest danger: only 1-2-3 can use it"},
+        {"left": "{{s8}} the target threw, then drew again", "right": "Relatively safe: their hand may have changed"}
+      ],
+      "explanation": "Danger comes from how many uses a tile has and whether the target can still build on it after drawing again."
+    },
+    {
+      "type": "tileOrdering",
+      "question": "Order these tiles from the fewest to the most numbered sequences each can complete.",
+      "options": [],
+      "correctIndex": 0,
+      "tiles": ["east", "p1", "m5"],
+      "explanation": "{{east}} completes no sequence, {{p1}} only 1-2-3, and {{m5}} three of them, which is exactly why fresh middles are the most dangerous discards."
+    },
+    {
+      "type": "fillBlank",
+      "question": "How many different numbered sequences can {{m5}} complete? Answer with a number.",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["3", "three", "3 sequences"],
+      "explanation": "{{m5}} fits 3-4-5, 4-5-6 and 5-6-7, the widest sequence coverage of any rank."
+    }
+  ],
+  "10-2": [
+    {
+      "type": "multiChoice",
+      "question": "You are leading by 50 points with two hands left. Which choices protect that lead?",
+      "options": [
+        "Folding a hopeless hand instead of chasing a win",
+        "Taking a draw rather than risking a dangerous discard",
+        "Pushing for a limit hand with a fresh middle tile",
+        "Ignoring the scoreboard and playing every hand the same way"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1],
+      "explanation": "When ahead, the cheapest way to keep the lead is defence: fold hopeless hands and accept draws instead of feeding a big hand."
+    },
+    {
+      "type": "fillBlank",
+      "question": "In 半銃制 scoring, a 3-Faan hand won on a discard pays the discarder how many points?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["8", "eight", "8 points"],
+      "explanation": "The 3-Faan row of the payment table is 8 points on a discard and 4 per player on a self-draw."
+    },
+    {
+      "type": "matching",
+      "question": "Match each score position to the plan it calls for.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "Leading by 50 with two hands left", "right": "Protect the lead and accept draws"},
+        {"left": "Trailing by 60 with two hands left", "right": "Chase 5-Faan or better hands"},
+        {"left": "Level with three hands left", "right": "Build efficiently and let opponents err"},
+        {"left": "Trailing by 8 with the last hand", "right": "One 3-Faan win on a discard is enough"}
+      ],
+      "explanation": "The same hand is worth playing differently depending on the gap, because a 3-Faan discard win alone pays 8 points."
+    },
+    {
+      "type": "singleChoice",
+      "question": "You are exactly 24 points behind with one hand left. A 5-Faan win on a discard pays 24 points. What is true?",
+      "options": [
+        "A 5-Faan discard win ties it, and a 5-Faan self-draw wins it outright",
+        "Only a 10-Faan limit hand can help",
+        "You must fold because the gap cannot be closed",
+        "A 3-Faan self-draw ties it"
+      ],
+      "correctIndex": 0,
+      "explanation": "5 Faan pays 24 on a discard and 36 in total on a self-draw (12 from each player), while a 3-Faan self-draw totals only 12."
+    },
+    {
+      "type": "singleChoice",
+      "question": "You are leading by 30 with one hand left. Why is chasing a limit hand the wrong plan?",
+      "options": [
+        "You chase points you do not need while risking 128 on one bad discard",
+        "Limit hands are not allowed when you are leading",
+        "A limit hand pays only 8 points",
+        "The dealer would collect double from you"
+      ],
+      "correctIndex": 0,
+      "explanation": "A dealt-in limit hand costs 128 points, far more than the lead you are protecting for a win you do not need."
+    }
+  ],
+  "10-3": [
+    {
+      "type": "fillBlank",
+      "question": "By which turn should you seriously consider folding if you still have no complete melds? Answer with the turn number.",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["8", "eight", "turn 8", "8th"],
+      "explanation": "With no complete meld by around turn 8 the hand is too far behind, so defence becomes worth more than the small chance of winning."
+    },
+    {
+      "type": "tileOrdering",
+      "question": "You have decided to fold. The opponent has already thrown {{p3}} and their hand is live. Order these tiles from the safest discard to the most dangerous.",
+      "options": [],
+      "correctIndex": 0,
+      "tiles": ["p3", "red", "m4"],
+      "explanation": "{{p3}} is proven safe, {{red}} can only be Ponged, and {{m4}} is a fresh middle that serves sequences and Pong alike."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which of these are signs that your hand is hopeless and should be folded?",
+      "options": [
+        "Still no complete melds by turn 8",
+        "Most tiles are isolated with no pair and no neighbour",
+        "Two exposed melds and a pair by turn 6",
+        "You are one tile from a 5-Faan wait on turn 12"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1],
+      "explanation": "No melds late and a hand full of isolated tiles both mean the win is too far away, while the other two describe healthy hands."
+    },
+    {
+      "type": "matching",
+      "question": "Match each signal to the folding response it calls for.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "No complete melds by turn 8", "right": "Stop chasing and start folding"},
+        {"left": "Opponent shows three exposed melds on turn 12", "right": "Discard only proven-safe tiles"},
+        {"left": "5% chance to win but 30% chance to deal in", "right": "Fold, because the maths favours defence"}
+      ],
+      "explanation": "Folding is a decision driven by evidence: your own hand shape, the opponent's melds, and the risk-to-reward estimate."
+    },
+    {
+      "type": "singleChoice",
+      "question": "You estimate a 5% chance of winning this hand and a 30% chance of dealing into a big hand. What should you do?",
+      "options": [
+        "Keep pushing for the win",
+        "Fold and discard only tiles already proven safe",
+        "Call every Chow that is offered",
+        "Discard honour tiles only"
+      ],
+      "correctIndex": 1,
+      "explanation": "When the chance of dealing in far outweighs the chance of winning, folding saves points over the long run."
+    }
+  ],
+  "10-4": [
+    {
+      "type": "multiChoice",
+      "question": "Which situations justify the self-draw-only option in the last four turns?",
+      "options": [
+        "Your wait is strong but every tile in your hand is dangerous to throw",
+        "You are 20 points behind, your wait is live, but your safe tiles are running out",
+        "You are 60 points behind and must win this hand",
+        "You have no winning wait at all"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1],
+      "explanation": "Self-draw only keeps a live wait while refusing to feed the table; with no wait you fold, and when you must win you push."
+    },
+    {
+      "type": "matching",
+      "question": "Match each end-game option to the situation that calls for it.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "Push", "right": "You are trailing and this hand must be won"},
+        {"left": "Fold", "right": "You are leading and cannot afford to deal in"},
+        {"left": "Self-draw only", "right": "Your wait is good but your discards are all dangerous"}
+      ],
+      "explanation": "Each of the three end-game options trades risk for reward differently, so the score position and the safety of your hand pick the option."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Turn 16, four tiles left in the wall. The player on your left discarded {{p9}} on the previous turn and has not drawn since. Which discard is absolutely safe against them?",
+      "options": ["p9", "m5", "white", "s5"],
+      "correctIndex": 0,
+      "tiles": ["p9", "m5", "white", "s5"],
+      "explanation": "A tile discarded in the current rotation is absolutely safe until that player draws again, and they have not drawn since."
+    },
+    {
+      "type": "fillBlank",
+      "question": "With 4 tiles left in the wall, how many more draws remain in the hand? Answer with a number.",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["4", "four", "4 draws"],
+      "explanation": "Each draw takes one tile from the wall, so 4 tiles left means only 4 more draws for the whole table."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Your wait is live but every tile you hold is dangerous to discard. Which end-game option keeps the wait without throwing danger?",
+      "options": ["Push", "Fold", "Self-draw only", "Claim any Chow that is offered"],
+      "correctIndex": 2,
+      "explanation": "Self-draw only keeps the wait alive while you discard safely, so the win can still arrive without feeding an opponent."
+    }
+  ],
+  "10-5": [
+    {
+      "type": "multiChoice",
+      "question": "Which of these are correct risk-management decisions?",
+      "options": [
+        "Folding a hopeless hand on turn 9",
+        "Pushing with a fresh {{m5}} on turn 16 while leading by 40",
+        "Taking a draw when a win would need a dangerous discard",
+        "Chasing a limit hand when a 3-Faan win already takes the lead"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 2],
+      "explanation": "Both correct choices refuse risk the score does not require; the other two gamble with points the player does not need."
+    },
+    {
+      "type": "matching",
+      "question": "Match each Stage 10 skill to the example that shows it.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "Danger assessment", "right": "Counting the sequences a fresh middle tile completes"},
+        {"left": "Score-based decision", "right": "Folding because a draw already keeps your lead"},
+        {"left": "Folding", "right": "Discarding only tiles the opponent has already thrown"},
+        {"left": "End-game timing", "right": "Checking the wall count before deciding to push"}
+      ],
+      "explanation": "Every Stage 10 skill is a different input to the same question: does the reward justify this risk right now?"
+    },
+    {
+      "type": "tileSelection",
+      "question": "You are leading by 30 with the last hand and 6 tiles left in the wall. Three copies of {{white}} are already visible and you hold the fourth. Which discard is safest?",
+      "options": ["white", "m5", "red", "s5"],
+      "correctIndex": 0,
+      "tiles": ["white", "m5", "red", "s5"],
+      "explanation": "Nobody can Pong the last {{white}} and a dragon cannot be sequenced, so it is the safest discard in the hand."
+    },
+    {
+      "type": "fillBlank",
+      "question": "In 半銃制, a 7-Faan hand won by self-draw pays how much in total from the other three players?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["72", "seventy-two", "seventy two", "72 points"],
+      "explanation": "7 Faan is 48 on a discard, so each of the three players pays 24 for a total of 72 on a self-draw."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Dealing into a 10-Faan limit hand costs the discarder 128 points. What does that imply for risk management?",
+      "options": [
+        "One bad discard can cost more than several small wins earn",
+        "Limit hands are too rare to consider",
+        "You should fold every hand from the first turn",
+        "The dealer pays half of it"
+      ],
+      "correctIndex": 0,
+      "explanation": "At 128 points a single dealt-in limit hand dwarfs several 3-Faan wins, which is why late danger assessment matters more than speed."
+    }
+  ]
+}

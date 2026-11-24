@@ -1,0 +1,316 @@
+{
+  "12-1": [
+    {
+      "type": "multiChoice",
+      "question": "Three opponents are at the table. Which of these are real danger signals that should slow your discards?",
+      "options": [
+        "They have three exposed melds",
+        "They have stopped discarding one suit entirely",
+        "Their score is the highest at the table",
+        "They are the dealer"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1],
+      "explanation": "Meld count and a suit that suddenly disappears are the reliable danger signals; score and dealer status do not make a hand closer to winning."
+    },
+    {
+      "type": "fillBlank",
+      "question": "The 十二章包 rule makes a player liable once an opponent has how many exposed melds?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["4", "four", "4 melds", "four melds"],
+      "explanation": "Four exposed melds is 十二章, and the player who supplied the fourth meld pays the self-draw."
+    },
+    {
+      "type": "matching",
+      "question": "Match each observation about an opponent to the conclusion it supports.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {
+          "left": "Three exposed melds, none of them honours",
+          "right": "Their hand is nearly complete, so their discards are risky"
+        },
+        {
+          "left": "Four different honour tiles already discarded",
+          "right": "Honours are probably not what they are collecting"
+        },
+        {
+          "left": "No Circle tile discarded for two rounds",
+          "right": "Circles may be the suit they are collecting"
+        }
+      ],
+      "explanation": "Meld count measures how close they are, while the tiles they stop throwing show what they still need."
+    },
+    {
+      "type": "tileSelection",
+      "question": "The player to your right discarded {{p5}} earlier this rotation and has not drawn since. Which tile can you throw at them with certainty?",
+      "options": ["p5", "s3", "east", "m8"],
+      "correctIndex": 0,
+      "explanation": "A tile that opponent discarded earlier in the same rotation is absolutely safe against them until they draw again."
+    },
+    {
+      "type": "singleChoice",
+      "question": "A tile discarded by an opponent stops being absolutely safe as soon as...",
+      "options": [
+        "they draw another tile",
+        "the same tile is discarded by a second player",
+        "they call Pong on a different tile",
+        "the wall drops below twenty tiles"
+      ],
+      "correctIndex": 0,
+      "explanation": "Once that opponent draws again their hand may have changed, so the tile is only relatively safe from then on."
+    }
+  ],
+  "12-2": [
+    {
+      "type": "singleChoice",
+      "question": "You are one tile from a 5-Faan hand and far behind. Dealing in would cost you 24 points; a self-draw win at 5 Faan collects 12 from each of the three players. Which is the correct push-or-fold test?",
+      "options": [
+        "Push — 36 points of reward outweighs the 24-point risk",
+        "Fold — any risk is too much when you are trailing",
+        "Fold — 24 points is more than the 12 you collect from one player",
+        "Push — but only if you happen to be the dealer"
+      ],
+      "correctIndex": 0,
+      "explanation": "A 5-Faan self-draw collects 12 from each of three players for 36 total, which is more than the 24 you lose by dealing in."
+    },
+    {
+      "type": "fillBlank",
+      "question": "Dealing into a 7-Faan hand by discard costs you how many points?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["48", "forty-eight", "forty eight"],
+      "explanation": "On the payment table 7 Faan paid by discard is 48 points, all of it from the discarder."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which of these argue for folding in a pressure spot?",
+      "options": [
+        "Your hand is still three tiles from ready",
+        "Two opponents each have two exposed melds",
+        "Your hand is worth 8 Faan and is already ready",
+        "You are far behind and need a big hand"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1],
+      "explanation": "A distant hand against two dangerous opponents means small reward and risk doubled, which is the classic fold."
+    },
+    {
+      "type": "matching",
+      "question": "Match each pressure situation to the better action.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {
+          "left": "Ready on a 10-Faan hand, moderate risk, far behind",
+          "right": "Push"
+        },
+        {
+          "left": "Mediocre hand, two opponents on two exposed melds each",
+          "right": "Fold"
+        },
+        {
+          "left": "Four hands left and you lead by 40 points",
+          "right": "Protect the lead"
+        }
+      ],
+      "explanation": "The push-or-fold test is reward against risk, so a thin hand facing two threats folds while a big hand late in the session pushes."
+    },
+    {
+      "type": "tileOrdering",
+      "question": "Against an opponent collecting Circles: they discarded {{s9}} earlier this rotation and have not drawn since, they discarded {{east}} two rounds ago, and {{m5}} has never appeared from them. Rank these from safest to most dangerous to discard.",
+      "options": [],
+      "correctIndex": 0,
+      "tiles": ["s9", "east", "m5"],
+      "explanation": "{{s9}} is absolutely safe this rotation, {{east}} is only relatively safe because they have drawn since, and {{m5}} is unverified."
+    }
+  ],
+  "12-3": [
+    {
+      "type": "multiChoice",
+      "question": "A table is playing loose and everyone pushes. Which adjustments are right?",
+      "options": [
+        "Play tighter and fold marginal hands",
+        "Let them deal into each other while you wait",
+        "Race them with a bigger hand every hand",
+        "Copy their aggression so they respect you"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1],
+      "explanation": "At a loose table patience wins: the aggressive players supply the mistakes and the payments."
+    },
+    {
+      "type": "matching",
+      "question": "Match each table type to the correct adjustment.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {
+          "left": "Tight table, everyone folds early",
+          "right": "Build bigger hands more freely"
+        },
+        {
+          "left": "Loose table, everyone pushes",
+          "right": "Play tighter and wait"
+        },
+        {
+          "left": "Mixed table",
+          "right": "Win from the weakest player's discards"
+        }
+      ],
+      "explanation": "The tighter the table the more room you have to build, and the looser it is the more you should let others take the risks."
+    },
+    {
+      "type": "fillBlank",
+      "question": "However loose or tight the table, a hand must be worth at least how many Faan before it may win?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["3", "three", "3 faan", "three faan"],
+      "explanation": "Three Faan is the minimum under 半銃制, so a two-Faan shape is not a legal win at any table."
+    },
+    {
+      "type": "singleChoice",
+      "question": "At a mixed table, which opponent is most likely the strongest player?",
+      "options": [
+        "The one who folds accurately and rarely deals in",
+        "The one with the highest score so far",
+        "The one who calls Pong most often",
+        "The one who discards fastest"
+      ],
+      "correctIndex": 0,
+      "explanation": "Scores swing on single hands, but accurate folding and few deal-ins is a reliable sign of a strong player."
+    },
+    {
+      "type": "singleChoice",
+      "question": "At a mixed table, where should most of your winning tiles come from?",
+      "options": [
+        "The weakest player's discards",
+        "The strongest player's discards",
+        "Your own draws only",
+        "Whichever player discards fastest"
+      ],
+      "correctIndex": 0,
+      "explanation": "Aim your hand at the player most likely to throw what you need, and the weakest player gives the most."
+    }
+  ],
+  "12-4": [
+    {
+      "type": "fillBlank",
+      "question": "A full session is four rounds of four hands each. How many hands is that in total?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["16", "sixteen", "16 hands", "sixteen hands"],
+      "explanation": "One round of four hands per seat wind, four rounds, makes sixteen hands in a session."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which of these are signs of tilt?",
+      "options": [
+        "Chasing a loss by throwing obviously dangerous tiles",
+        "Speeding up and skipping the scan of opponents' melds",
+        "Folding a marginal hand on purpose",
+        "Taking a breath after a lost hand"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1],
+      "explanation": "Tilt shows up as reckless aggression and lost routine, not as a deliberate fold or a calm reset."
+    },
+    {
+      "type": "matching",
+      "question": "Match each session situation to the correct response.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {
+          "left": "Just dealt in for 8 Faan",
+          "right": "Reset and play your normal game"
+        },
+        {
+          "left": "Leading by 40 points with four hands left",
+          "right": "Protect the lead with balanced play"
+        },
+        {
+          "left": "Twelfth hand, concentration slipping",
+          "right": "Slow down and re-check the table each turn"
+        }
+      ],
+      "explanation": "Session management is about holding your normal decisions steady — no chasing, no recklessness with a lead, no sloppy late hands."
+    },
+    {
+      "type": "singleChoice",
+      "question": "You are 96 points behind with four hands left. What does the payment table say about that deficit?",
+      "options": [
+        "Nothing can recover 96 points, so push every hand",
+        "One 10-Faan hand paid by discard (128 points) would cover the whole deficit",
+        "You need two 10-Faan self-draws to catch up",
+        "Only a limit hand can help, and only by 96 points"
+      ],
+      "correctIndex": 1,
+      "explanation": "A 10-Faan discard collects 128 points, so the deficit is one big hand and can be recovered without reckless play."
+    },
+    {
+      "type": "tileOrdering",
+      "question": "A session runs four rounds. Arrange the round winds in the order they are played.",
+      "options": [],
+      "correctIndex": 0,
+      "tiles": ["east", "south", "west", "north"],
+      "explanation": "A session goes East, South, West, then North round, four hands in each."
+    }
+  ],
+  "12-5": [
+    {
+      "type": "singleChoice",
+      "question": "Which of these hands falls below the 3-Faan minimum and could not be declared a win?",
+      "options": [
+        "平糊 won on a discard, closed hand, no flowers",
+        "平糊 won on a discard after one exposed Chow, no flowers",
+        "平糊 won by self-draw, closed hand, one non-matching flower",
+        "對對糊 won on a discard, open hand, no flowers"
+      ],
+      "correctIndex": 1,
+      "explanation": "平糊 1 plus 無花 1 is only 2 Faan, and the exposed Chow means 門前清 cannot be counted either."
+    },
+    {
+      "type": "fillBlank",
+      "question": "A limit hand (例牌) is scored as how many Faan?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["10", "ten", "10 faan", "ten faan"],
+      "explanation": "Limit hands are all scored as 10 Faan, the cap of the 半銃制 table."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Which of these statements about Gary's rulings are correct?",
+      "options": [
+        "A complete set of four Seasons scores 2 Faan in total",
+        "A concealed Kong does not break 門前清",
+        "The matching seat flower is added on top of the 一台花 2 Faan",
+        "An exposed Kong leaves 門前清 intact"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1],
+      "explanation": "A full flower set is 2 Faan with no seat flower on top, and only claimed Chows, Pongs or exposed Kongs break a closed hand."
+    },
+    {
+      "type": "matching",
+      "question": "Match each winning hand to its Faan value.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        {"left": "清一色", "right": "7 Faan"},
+        {"left": "大三元, with the three dragon triplets counted", "right": "8 Faan"},
+        {"left": "平糊", "right": "1 Faan"},
+        {"left": "一台花, complete set", "right": "2 Faan"}
+      ],
+      "explanation": "清一色 is 7, 大三元 with 三元牌 counted is 8, 平糊 is 1, and a complete flower set is 2."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Your 13 tiles are {{p2}}{{p3}}{{p4}} {{p6}}{{p7}}{{p8}} {{p1}}{{p1}}{{p1}} {{p5}}{{p6}}{{p7}} {{p9}}. Which tile completes the hand?",
+      "options": ["p9", "p5", "m9", "east"],
+      "correctIndex": 0,
+      "explanation": "Four sets are already complete, so {{p9}} pairs up to form the eyes and keeps the hand 清一色."
+    }
+  ]
+}

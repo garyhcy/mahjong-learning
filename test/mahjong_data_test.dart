@@ -75,10 +75,10 @@ void main() {
     expect(count(QuizType.multiChoice), greaterThanOrEqualTo(2));
   });
 
-  test('Stage 1-8 lessons carry 8-12 questions with 2+ types', () {
+  test('Stage 1-12 lessons carry 8-12 questions with 2+ types', () {
     const targetStages = {
-      'stage1', 'stage2', 'stage3', 'stage4',
-      'stage5', 'stage6', 'stage7', 'stage8',
+      'stage1', 'stage2', 'stage3', 'stage4', 'stage5', 'stage6',
+      'stage7', 'stage8', 'stage9', 'stage10', 'stage11', 'stage12',
     };
     final lessons = allLessonsData.where((l) => targetStages.contains(l.stageId));
     expect(lessons, isNotEmpty);

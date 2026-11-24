@@ -1,0 +1,278 @@
+{
+  "11-1": [
+    {
+      "type": "multiChoice",
+      "question": "You are sizing up an opening 13-tile hand before choosing a direction. Which counts are worth making?",
+      "options": [
+        "How many pairs you hold",
+        "How many tiles already sit in a run shape",
+        "How many completely isolated tiles you hold",
+        "How many Faan your finished hand will score"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1, 2],
+      "explanation": "Pairs, run shapes and isolated tiles decide which directions are even possible, while the final Faan value is unknown at the start."
+    },
+    {
+      "type": "fillBlank",
+      "question": "This 13-tile hand is {{m1}}{{m3}}{{m4}}{{p2}}{{p2}}{{p6}}{{p7}}{{s5}}{{s6}}{{s7}}{{east}}{{red}}{{white}}. How many tiles are completely isolated (no pair, no neighbour within two ranks)?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["3", "three", "3 tiles"],
+      "explanation": "{{east}}, {{red}} and {{white}} have no partner and no neighbour, so they are the first tiles to leave."
+    },
+    {
+      "type": "matching",
+      "question": "Match each opening hand shape to the direction it best supports.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "Eight Bamboo tiles plus three honour tiles", "right": "Mixed One Suit, 3 Faan" },
+        { "left": "Four separate pairs spread over three suits", "right": "All Pongs, 3 Faan" },
+        { "left": "Eleven tiles in one suit and two unrelated tiles", "right": "Full Flush, 7 Faan" },
+        { "left": "Four finished runs plus a pair", "right": "All Chows, 1 Faan" }
+      ],
+      "explanation": "The shapes point to the direction: pairs feed Pongs, one long suit feeds flush hands, and finished runs point to 平糊."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Your hand is {{s2}}{{s3}}{{s4}}{{s5}}{{s6}}{{s7}}{{s8}}{{east}}{{east}}{{red}}{{m1}}{{p9}}{{p9}} and you are steering toward Mixed One Suit. Which tile should leave first?",
+      "options": ["{{m1}}", "{{red}}", "{{p9}}", "{{east}}"],
+      "correctIndex": 0,
+      "explanation": "Mixed One Suit keeps one suit plus honours, so the lone tile in an abandoned suit goes first while {{red}} and both pairs still hold meld potential."
+    },
+    {
+      "type": "singleChoice",
+      "question": "You hold {{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{p7}}{{p8}}{{p9}}{{s4}}{{s4}}{{s9}}{{east}}{{red}}. How many complete melds do you already have?",
+      "options": [
+        "Two melds, with two more to complete",
+        "Three melds, with one more to complete",
+        "One meld, with three more to complete",
+        "Four melds, so the hand is already complete"
+      ],
+      "correctIndex": 0,
+      "explanation": "{{m2}}{{m3}}{{m4}} and {{p7}}{{p8}}{{p9}} are complete, while {{m5}}{{m6}} is only a shape and {{s4}}{{s4}} is the pair."
+    }
+  ],
+  "11-2": [
+    {
+      "type": "multiChoice",
+      "question": "Turn 8. You are not going to win this hand. Which moves fit a defensive plan?",
+      "options": [
+        "Accept that the hand is lost and aim to pay nothing",
+        "Discard a tile that the dangerous opponent threw this round, before their next draw",
+        "Push for a bigger hand to catch up on points",
+        "Call every meld you can to change your luck"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1],
+      "explanation": "Under 半銃制 the discarder pays the whole amount alone, so a hand you cannot win is best played purely to avoid dealing in."
+    },
+    {
+      "type": "fillBlank",
+      "question": "An opponent has called two Pongs by turn 7. How many more melds must they complete before the hand can win?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["2", "two", "2 melds"],
+      "explanation": "A winning hand is four melds plus a pair, so two exposed Pongs still leave two melds to go."
+    },
+    {
+      "type": "matching",
+      "question": "Match each mid-game situation to the priority that fits it.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "Three melds and a pair in hand by turn 6", "right": "Push for the win now" },
+        { "left": "One meld and no connected shapes by turn 8", "right": "Switch to defence" },
+        { "left": "An opponent with three exposed melds barely discards", "right": "Treat their discards as dangerous" },
+        { "left": "A draw turns a pair into the triplet you wanted", "right": "Commit to the direction it opens" }
+      ],
+      "explanation": "Mid-game choices follow the clock: a live hand gets pushed, a dead one gets folded, and a heavy opponent gets respect."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Turn 9. You are one tile from ready, but the wait is the closed shape {{p4}}{{p6}} and the wall is thinning. What is the honest read?",
+      "options": [
+        "You are close, but a one-tile wait may never arrive, so widening it is worth a small cost",
+        "You should fold immediately because the wait is closed",
+        "A closed wait is as good as a two-sided wait",
+        "You should break the pair to stay flexible"
+      ],
+      "correctIndex": 0,
+      "explanation": "Being one tile from ready only pays if the tile is live, and a closed wait has at most four copies against up to eight for a two-sided wait."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Turn 7. You are collecting Circles for 混一色 and notice nine Circle tiles already on the table. What does that change?",
+      "options": [
+        "The flush is weaker, because those copies can no longer be drawn",
+        "The flush is stronger, because other players are helping you",
+        "Nothing, since visible tiles matter only for defence",
+        "You must switch to another suit immediately"
+      ],
+      "correctIndex": 0,
+      "explanation": "Every visible copy is one fewer left in the wall, so a heavily exposed suit has fewer tiles left to finish the hand."
+    }
+  ],
+  "11-3": [
+    {
+      "type": "multiChoice",
+      "question": "Which of these are good reasons to PASS on a tile you could claim?",
+      "options": [
+        "Calling would drop 門前清, worth 1 Faan",
+        "The call would expose the suit you are collecting",
+        "You hold two dragons and the third one is discarded",
+        "The call would replace a two-sided wait with a closed wait"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1, 3],
+      "explanation": "Passing protects Faan and information, and the dragon case is the opposite one because that claim is worth taking."
+    },
+    {
+      "type": "matching",
+      "question": "Match each claim decision to its main cost or gain.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "Pong a discarded dragon while holding two", "right": "1 Faan gained, suit still hidden" },
+        { "left": "Chow into the suit of your flush", "right": "Your suit direction is revealed" },
+        { "left": "Chow on your third turn with a concealed hand", "right": "門前清 lost for 1 Faan" },
+        { "left": "Pass on a tile that would complete your third meld", "right": "Hand stays concealed but slower" }
+      ],
+      "explanation": "Every claim trades something: Faan, information, or speed, so the decision is which of those you can best afford."
+    },
+    {
+      "type": "fillBlank",
+      "question": "You hold two dragons and Pong the third when it is discarded. How many Faan is that triplet worth?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["1", "one", "1 faan"],
+      "explanation": "A triplet of dragons is 1 Faan, which is why the lesson says to take it when it is offered."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Your hand is {{red}}{{red}}{{east}}{{east}}{{m2}}{{m3}}{{m4}}{{p5}}{{p6}}{{p7}}{{s3}}{{s4}}{{s9}}. An opponent discards one of the tiles below. Which claim is worth taking?",
+      "options": ["{{red}}", "{{p8}}", "{{m1}}", "{{s9}}"],
+      "correctIndex": 0,
+      "explanation": "The dragon Pong adds 1 Faan and says nothing about your suit, while {{p8}} and {{m1}} would break a finished meld and {{s9}} cannot be claimed at all."
+    },
+    {
+      "type": "singleChoice",
+      "question": "You are playing a concealed hand and hold {{p5}}{{p5}}{{p5}}{{p5}}. Declaring a concealed kong costs you 門前清?",
+      "options": [
+        "No, a concealed kong keeps 門前清 intact",
+        "Yes, every kong counts as a claim on the table",
+        "Yes, kongs and pongs both break it",
+        "Only exposed kongs are allowed in a concealed hand"
+      ],
+      "correctIndex": 0,
+      "explanation": "Only a claimed chow, pong or exposed kong breaks 門前清, and an ankan is not a claim."
+    }
+  ],
+  "11-4": [
+    {
+      "type": "tileOrdering",
+      "question": "The sample hand holds {{s3}}{{s4}} as a two-sided wait. Arrange its winning tiles from lowest to highest.",
+      "options": [],
+      "correctIndex": 0,
+      "tiles": ["s2", "s5"],
+      "explanation": "{{s3}}{{s4}} accepts {{s2}} for {{s2}}{{s3}}{{s4}} and {{s5}} for {{s3}}{{s4}}{{s5}}."
+    },
+    {
+      "type": "tileSelection",
+      "question": "Your hand is {{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{m7}}{{p2}}{{p3}}{{s5}}{{s6}}{{s7}}{{east}}{{east}}{{red}}. Which tile should you discard?",
+      "options": ["{{red}}", "{{p2}}", "{{east}}", "{{m5}}"],
+      "correctIndex": 0,
+      "explanation": "{{red}} is the only tile with no pair and no neighbour, so cutting it leaves three melds, the pair {{east}}{{east}} and the {{p2}}{{p3}} wait."
+    },
+    {
+      "type": "fillBlank",
+      "question": "In the sample opening hand {{m2}}{{m3}}{{m5}}{{m5}}{{p1}}{{p4}}{{p5}}{{p6}}{{s3}}{{s4}}{{s7}}{{east}}{{red}}, how many tiles are completely isolated?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["4", "four", "4 tiles"],
+      "explanation": "{{p1}}, {{s7}}, {{east}} and {{red}} have no pair and no neighbour, which is why the lesson discards them before touching any shape."
+    },
+    {
+      "type": "multiChoice",
+      "question": "Three melds are finished and {{m5}}{{m5}} is the pair. Which statements are true from here?",
+      "options": [
+        "One more meld plus the pair finishes the hand",
+        "The pair {{m5}}{{m5}} scores Faan on its own",
+        "Every discard from here should weigh what the other three players show",
+        "Breaking the pair to chase 清一色 is the efficient move"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 2],
+      "explanation": "The pair is only the eye and adds no Faan, so the remaining work is a fourth meld played with the whole table in view."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Why does the lesson steer this sample hand toward All Chows rather than Mixed One Suit?",
+      "options": [
+        "Its shapes sit in all three suits, so honour-free runs are the cheapest route",
+        "All Chows always scores more than Mixed One Suit",
+        "Mixed One Suit requires a pair of dragons",
+        "All Chows needs only three melds"
+      ],
+      "correctIndex": 0,
+      "explanation": "With usable shapes in three suits, chasing one suit would throw most of the hand away, and 平糊 arrives far sooner even at 1 Faan."
+    }
+  ],
+  "11-5": [
+    {
+      "type": "multiChoice",
+      "question": "Which habits hold up across a whole simulated hand?",
+      "options": [
+        "Plan three discards ahead, not just the current one",
+        "Count the tiles still unseen before committing to a wait",
+        "Always chase the highest-Faan hand on the table",
+        "Re-scan all three opponents before every discard"
+      ],
+      "correctIndex": 0,
+      "correctIndexes": [0, 1, 3],
+      "explanation": "Planning, counting outs and reading the table compound over a hand, while chasing the biggest hand ignores whether it can still arrive."
+    },
+    {
+      "type": "matching",
+      "question": "Match each moment of a hand to the question that should drive it.",
+      "options": [],
+      "correctIndex": 0,
+      "pairs": [
+        { "left": "Opening 13 tiles", "right": "Which directions do these shapes support?" },
+        { "left": "Turns 5 to 10", "right": "Am I still on track, and how fast is the table?" },
+        { "left": "Each discard after turn 10", "right": "What can this tile deal in to?" },
+        { "left": "Before claiming any tile", "right": "What does this call cost in Faan and information?" }
+      ],
+      "explanation": "Each phase of a hand has one governing question, and mixing them up is how plans go wrong."
+    },
+    {
+      "type": "fillBlank",
+      "question": "You win a limit hand (例牌) on a discard. How many points does the discarder pay?",
+      "options": [],
+      "correctIndex": 0,
+      "acceptedAnswers": ["128", "128 points"],
+      "explanation": "Every limit hand counts as 10 Faan, and 10 Faan on a discard pays 128."
+    },
+    {
+      "type": "singleChoice",
+      "question": "Which is the strongest reason to abandon a plan mid-hand?",
+      "options": [
+        "The tiles the plan needs are nearly all visible on the table",
+        "You have drawn badly for one turn",
+        "The plan would score less than 10 Faan",
+        "An opponent called a meld"
+      ],
+      "correctIndex": 0,
+      "explanation": "Visible tiles cannot be drawn, so a plan whose tiles are gone has no outs left however good it looked at the start."
+    },
+    {
+      "type": "tileOrdering",
+      "question": "The hand holds {{p7}}{{p8}}. Arrange the two tiles that complete it from lowest to highest.",
+      "options": [],
+      "correctIndex": 0,
+      "tiles": ["p6", "p9"],
+      "explanation": "{{p7}}{{p8}} accepts {{p6}} and {{p9}}, and counting both ends is how a wait's outs are measured."
+    }
+  ]
+}
