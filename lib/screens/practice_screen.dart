@@ -7,6 +7,7 @@ import '../services/app_i18n.dart';
 import 'practice/tile_recognition_screen.dart';
 import 'practice/tile_matching_screen.dart';
 import 'learn_screen.dart';
+import 'wrong_answers_screen.dart';
 import 'practice/sequence_sorting_screen.dart';
 import 'practice/rules_quiz_screen.dart';
 import 'practice/speed_challenge_screen.dart';
@@ -115,6 +116,11 @@ class _PracticeContent extends StatelessWidget {
                       game.startWrongAnswerReview();
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => const LearnScreen(),
+                      ));
+                    },
+                    onViewAll: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => const WrongAnswersScreen(),
                       ));
                     },
                   ),
@@ -783,8 +789,10 @@ class _RecentActivityList extends StatelessWidget {
 class _WrongAnswerPracticeCard extends StatelessWidget {
   final int count;
   final VoidCallback onTap;
+  final VoidCallback onViewAll;
 
-  const _WrongAnswerPracticeCard({required this.count, required this.onTap});
+  const _WrongAnswerPracticeCard(
+      {required this.count, required this.onTap, required this.onViewAll});
 
   @override
   Widget build(BuildContext context) {
@@ -826,6 +834,20 @@ class _WrongAnswerPracticeCard extends StatelessWidget {
                       style: GoogleFonts.nunito(
                           fontSize: 12,
                           color: const Color(0xFFE57373))),
+                  GestureDetector(
+                    onTap: onViewAll,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 6),
+                      child: Text(
+                        'See all $count',
+                        style: GoogleFonts.nunito(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w800,
+                            color: const Color(0xFFC62828),
+                            decoration: TextDecoration.underline),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

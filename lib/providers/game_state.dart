@@ -93,6 +93,8 @@ class GameState extends ChangeNotifier with FriendsMixin {
   // ── Review mode ──
   bool _isReviewMode = false;
   List<QuizQuestion> _reviewQuestions = [];
+  /// Wrong-answer entry that each review question came from (parallel list).
+  final List<WrongAnswer> _reviewSources = [];
   int _reviewCorrectCount = 0;
   // Track per-question result for review: index → true/false
   final Map<int, bool> _reviewResults = {};
@@ -996,6 +998,7 @@ class GameState extends ChangeNotifier with FriendsMixin {
 
     // Collect unique questions from wrong answers
     _reviewQuestions = [];
+    _reviewSources.clear();
     for (final wa in _wrongAnswers) {
       final lesson = allLessonsData.firstWhere(
         (l) => l.id == wa.lessonId,
@@ -1005,6 +1008,7 @@ class GameState extends ChangeNotifier with FriendsMixin {
         final q = lesson.localizedQuestions[wa.questionIndex];
         if (!_reviewQuestions.contains(q)) {
           _reviewQuestions.add(q);
+          _reviewSources.add(wa);
         }
       }
     }
@@ -1035,6 +1039,14 @@ class GameState extends ChangeNotifier with FriendsMixin {
     if (isCorrect) {
       _reviewCorrectCount++;
       _correctAnswers++;
+      // Gary 2026-11-24 (D1a): a question answered correctly once leaves the
+      // wrong-answer book, so reviewing actually reduces the backlog.
+      if (_currentQuestionIndex < _reviewSources.length) {
+        final src = _reviewSources[_currentQuestionIndex];
+        _wrongAnswers.removeWhere((wa) =>
+            wa.lessonId == src.lessonId &&
+            wa.questionIndex == src.questionIndex);
+      }
     }
 
     if (_currentQuestionIndex < _reviewQuestions.length - 1) {
@@ -1045,6 +1057,16 @@ class GameState extends ChangeNotifier with FriendsMixin {
     _persist();
     notifyListeners();
     return isCorrect;
+  }
+
+  /// Remove a single entry from the wrong-answer book.
+  void removeWrongAnswer(String lessonId, int questionIndex) {
+    final before = _wrongAnswers.length;
+    _wrongAnswers.removeWhere((wa) =>
+        wa.lessonId == lessonId && wa.questionIndex == questionIndex);
+    if (_wrongAnswers.length == before) return;
+    _persist();
+    notifyListeners();
   }
 
   /// Clear wrong answers

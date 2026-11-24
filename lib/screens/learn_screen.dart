@@ -42,6 +42,9 @@ class _LearnScreenState extends State<LearnScreen> {
   // Matching answers: left item -> chosen right item
   Map<String, String> _matches = {};
 
+  // Lesson intro card (shown before the dialogue starts) — Gary 2026-11-24 D3a
+  bool _showLessonIntro = false;
+
   // Quiz feedback state
   bool? _feedbackCorrect;
   bool _feedbackActive = false;
@@ -377,13 +380,16 @@ class _LearnScreenState extends State<LearnScreen> {
             lesson.id, () => GlobalKey());
         final completed = game.isLessonCompleted(lesson.id);
         final unlocked = game.isLessonUnlocked(lesson.id);
+        final bestAccuracy = game.getLessonBestAccuracy(lesson.id);
+        // Gary 2026-11-24 (D2a): a crown means a perfect run, check means done.
+        final crowned = completed && bestAccuracy >= 100;
         final isCurrent = game.lastLessonId == lesson.id && !completed;
 
         return Padding(
           key: key,
           padding: const EdgeInsets.only(bottom: 10),
           child: GestureDetector(
-            onTap: unlocked ? () => game.loadLesson(lesson.id) : null,
+            onTap: unlocked ? () => _openLesson(game, lesson.id) : null,
             child: Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
@@ -408,7 +414,9 @@ class _LearnScreenState extends State<LearnScreen> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: completed
-                          ? const Color(0xFF2E7D32)
+                          ? (crowned
+                              ? const Color(0xFFF9A825)
+                              : const Color(0xFF2E7D32))
                           : isCurrent
                               ? const Color(0xFF4CAF50)
                               : unlocked
@@ -421,8 +429,12 @@ class _LearnScreenState extends State<LearnScreen> {
                     ),
                     child: Center(
                       child: completed
-                          ? const Icon(Icons.check_rounded,
-                              color: Colors.white, size: 18)
+                          ? Icon(
+                              crowned
+                                  ? Icons.workspace_premium_rounded
+                                  : Icons.check_rounded,
+                              color: Colors.white,
+                              size: crowned ? 20 : 18)
                           : isCurrent
                               ? Text('▶',
                                   style: GoogleFonts.nunito(
@@ -525,29 +537,37 @@ class _LearnScreenState extends State<LearnScreen> {
           ],
         ),
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              stageColor.withAlpha(8),
-              Colors.white,
+      body: GestureDetector(
+        // Gary 2026-11-24 (P1): the whole lesson body advances the dialogue,
+        // not just the narrow dialogue column on the left.
+        behavior: HitTestBehavior.opaque,
+        onTap: _canAdvanceDialogue(game) ? () => _advanceDialogue(game) : null,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                stageColor.withAlpha(8),
+                Colors.white,
+              ],
+            ),
+          ),
+          child: Column(
+            children: [
+              Expanded(
+                child: game.quizFinished
+                    ? _buildQuizResult(game)
+                    : game.showFailure
+                        ? _buildFailureView(game)
+                        : game.dialogueIndex < game.dialogue.length
+                            ? (_showLessonIntro
+                                ? _buildLessonIntro(game)
+                                : _buildDialogueArea(game))
+                            : _buildQuizArea(game),
+              ),
             ],
           ),
-        ),
-        child: Column(
-          children: [
-            Expanded(
-              child: game.quizFinished
-                  ? _buildQuizResult(game)
-                  : game.showFailure
-                      ? _buildFailureView(game)
-                      : game.dialogueIndex < game.dialogue.length
-                          ? _buildDialogueArea(game)
-                          : _buildQuizArea(game),
-            ),
-          ],
         ),
       ),
     );
@@ -610,20 +630,179 @@ class _LearnScreenState extends State<LearnScreen> {
   }
 
   // ── Dialogue Area ──
+  /// Opens a lesson and shows the intro card first (Gary 2026-11-24 D3a).
+  void _openLesson(GameState game, String lessonId) {
+    setState(() {
+      _showLessonIntro = true;
+      _answerText = '';
+      _matches = {};
+      _selectedOptions.clear();
+    });
+    game.loadLesson(lessonId);
+  }
+
+  /// True while the lesson is showing a dialogue step that can be advanced.
+  bool _canAdvanceDialogue(GameState game) =>
+      !game.quizFinished &&
+      !game.showFailure &&
+      game.dialogueIndex < game.dialogue.length;
+
+  void _advanceDialogue(GameState game) {
+    if (!_canAdvanceDialogue(game)) return;
+    _audio.playTap();
+    final advanced = game.advanceDialogue();
+    if (!advanced) {
+      game.startQuiz(game.currentQuestions);
+    }
+  }
+
+  /// Mascot pose: keyword match wins, otherwise the poses rotate through the
+  /// lesson so the teacher does not freeze on one face (Gary 2026-11-24 P2).
+  MascotExpression _expressionFor(GameState game) {
+    final text = game.dialogue[game.dialogueIndex].text.toLowerCase();
+    final hasKeyword = text.contains('correct') ||
+        text.contains('well done') ||
+        text.contains('great') ||
+        text.contains('excellent') ||
+        text.contains('right') ||
+        text.contains('good') ||
+        text.contains('wrong') ||
+        text.contains('try again') ||
+        text.contains('not quite') ||
+        text.contains('incorrect') ||
+        text.contains('wow') ||
+        text.contains('amazing') ||
+        text.contains('think') ||
+        text.contains('strategy') ||
+        text.contains('proud') ||
+        text.contains('congrat');
+    if (hasKeyword) return _getMascotExpression(game.dialogue[game.dialogueIndex].text);
+    const rotation = <MascotExpression>[
+      MascotExpression.content,
+      MascotExpression.thinking,
+      MascotExpression.wink,
+      MascotExpression.excited,
+    ];
+    return rotation[game.dialogueIndex % rotation.length];
+  }
+
+  /// Lesson intro card — shown before the dialogue so a lesson never starts
+  /// by accident (Gary 2026-11-24 D3a).
+  Widget _buildLessonIntro(GameState game) {
+    final lesson = game.currentLesson;
+    final title = lesson?.localizedTitle ?? '';
+    final questionCount = game.currentQuestions.length;
+    final lessonId = game.currentLessonId;
+    final best = lessonId == null ? 0 : game.getLessonBestAccuracy(lessonId);
+
+    return Center(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
+        child: Container(
+          width: 460,
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: const Color(0xFFEEEEEE)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              MascotWidget(
+                size: MascotSize.medium.value,
+                expression: MascotExpression.content,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.nunito(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                  color: const Color(0xFF2D2D2D),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                '$questionCount questions',
+                style: GoogleFonts.nunito(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF757575),
+                ),
+              ),
+              if (best > 0) ...[
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFF8E1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    'Best so far: $best%',
+                    style: GoogleFonts.nunito(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFFF57F17),
+                    ),
+                  ),
+                ),
+              ],
+              const SizedBox(height: 20),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => setState(() => _showLessonIntro = false),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF58CC02),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
+                  child: Text(
+                    'Start',
+                    style: GoogleFonts.nunito(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 6),
+              GestureDetector(
+                onTap: () => setState(() {
+                  _showLessonIntro = false;
+                  _advanceDialogue(game);
+                }),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Text(
+                    'Skip the lesson intro',
+                    style: GoogleFonts.nunito(
+                      fontSize: 12,
+                      color: const Color(0xFF9E9E9E),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildDialogueArea(GameState game) {
     final msg = game.dialogue[game.dialogueIndex];
     final isSpeaker = msg.speaker == 'mj';
-    final expression = _getMascotExpression(msg.text);
+    final expression = _expressionFor(game);
 
-    return GestureDetector(
-      onTap: () {
-        _audio.playTap();
-        final advanced = game.advanceDialogue();
-        if (!advanced) {
-          game.startQuiz(game.currentQuestions);
-        }
-      },
-      child: Padding(
+    return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         child: TweenAnimationBuilder<double>(
           key: ValueKey(game.dialogueIndex),
@@ -704,7 +883,6 @@ class _LearnScreenState extends State<LearnScreen> {
             ],
           ),
         ),
-      ),
     );
   }
 
@@ -1059,7 +1237,7 @@ class _LearnScreenState extends State<LearnScreen> {
                             });
                             final nextId = game.getNextLessonId();
                             if (nextId != null) {
-                              game.loadLesson(nextId);
+                              _openLesson(game, nextId);
                             } else {
                               game.clearLesson();
                             }
@@ -1411,7 +1589,7 @@ class _LearnScreenState extends State<LearnScreen> {
                       });
                       final nextId = game.getNextLessonId();
                       if (nextId != null) {
-                        game.loadLesson(nextId);
+                        _openLesson(game, nextId);
                       } else {
                         game.clearLesson();
                       }
