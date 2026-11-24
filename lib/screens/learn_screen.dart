@@ -6,89 +6,14 @@ import 'package:provider/provider.dart';
 import '../providers/game_state.dart';
 import '../models/wrong_answer.dart';
 import '../models/mahjong_data.dart';
+import '../models/quiz_answer.dart';
 import '../widgets/mascot_widget.dart';
+import '../widgets/mahjong_tile.dart';
+import '../widgets/quiz/question_inputs.dart';
+import '../widgets/quiz/tile_markers.dart';
 import '../services/audio_service.dart';
 import '../services/app_i18n.dart';
 import 'paywall_screen.dart';
-
-/// ── MahjongTile widget ──
-class MahjongTile extends StatelessWidget {
-  final String tileId;
-  final double size;
-  final bool highlighted;
-  final bool? isCorrect;
-  final bool isDragging;
-
-  const MahjongTile({
-    super.key,
-    required this.tileId,
-    this.size = 64,
-    this.highlighted = false,
-    this.isCorrect,
-    this.isDragging = false,
-  });
-
-  Color get _borderColor {
-    if (isCorrect == true) return const Color(0xFF2E7D32);
-    if (isCorrect == false) return const Color(0xFF4CAF50);
-    if (highlighted) return const Color(0xFFE8B93E);
-    return const Color(0xFFE0D5C0);
-  }
-
-  double get _borderWidth {
-    if (isCorrect != null || highlighted) return 2.5;
-    return 1.5;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final effectiveSize = isDragging ? size * 1.1 : size;
-    final tileWidth = effectiveSize;
-    final tileHeight = effectiveSize * 4 / 3;
-
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
-      width: tileWidth,
-      height: tileHeight,
-      margin: const EdgeInsets.symmetric(horizontal: 2),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: _borderColor, width: _borderWidth),
-        boxShadow: isDragging
-            ? [
-                BoxShadow(
-                  color: Colors.black.withAlpha(40),
-                  blurRadius: 8,
-                  offset: const Offset(2, 4),
-                ),
-              ]
-            : [
-                BoxShadow(
-                  color: Colors.black.withAlpha(15),
-                  blurRadius: 3,
-                  offset: const Offset(1, 1),
-                ),
-              ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(5),
-        child: Image.asset(
-          'assets/tiles/$tileId.png',
-          fit: BoxFit.contain,
-          errorBuilder: (context, error, stackTrace) => Container(
-            color: const Color(0xFFFFF8F0),
-            child: Center(
-              child: Text(
-                tileId,
-                style: const TextStyle(fontSize: 11, color: Color(0xFFBDBDBD)),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 /// ── LearnScreen ──
 class LearnScreen extends StatefulWidget {
@@ -110,6 +35,12 @@ class _LearnScreenState extends State<LearnScreen> {
   // Tile ordering state
   List<String> _shuffledOrderingTiles = [];
   bool _orderingSubmitted = false;
+
+  // Fill-in-the-blank answer
+  String _answerText = '';
+
+  // Matching answers: left item -> chosen right item
+  Map<String, String> _matches = {};
 
   // Quiz feedback state
   bool? _feedbackCorrect;
@@ -778,48 +709,9 @@ class _LearnScreenState extends State<LearnScreen> {
   }
 
   /// Parse dialogue text, replacing {{tile_id}} markers with tile image widgets.
-  List<InlineSpan> _parseDialogueText(String text) {
-    final RegExp exp = RegExp(r'\{\{(.+?)\}\}');
-    final List<InlineSpan> spans = [];
-    int lastEnd = 0;
+  List<InlineSpan> _parseDialogueText(String text) =>
+      parseTileMarkers(text);
 
-    for (final match in exp.allMatches(text)) {
-      // Add text before this match
-      if (match.start > lastEnd) {
-        spans.add(TextSpan(
-          text: text.substring(lastEnd, match.start),
-          style: GoogleFonts.nunito(
-            fontSize: 15,
-            height: 1.5,
-            color: const Color(0xFF2D2D2D),
-          ),
-        ));
-      }
-
-      // Add tile image widget
-      final tileId = match.group(1)!;
-      spans.add(WidgetSpan(
-        alignment: PlaceholderAlignment.middle,
-        child: MahjongTile(tileId: tileId, size: 32),
-      ));
-
-      lastEnd = match.end;
-    }
-
-    // Add remaining text after last match
-    if (lastEnd < text.length) {
-      spans.add(TextSpan(
-        text: text.substring(lastEnd),
-        style: GoogleFonts.nunito(
-          fontSize: 15,
-          height: 1.5,
-          color: const Color(0xFF2D2D2D),
-        ),
-      ));
-    }
-
-    return spans;
-  }
 
   Widget _buildDialogueBubble(DialogueMessage msg) {
     return Column(
@@ -847,6 +739,58 @@ class _LearnScreenState extends State<LearnScreen> {
   }
 
   // ── Quiz Area ──
+  /// Collects the answer state and callbacks every question widget needs.
+  QuestionInputConfig _questionInputConfig(GameState game, QuizQuestion q) {
+    return QuestionInputConfig(
+      selected: _selectedOptions,
+      orderingTiles: _shuffledOrderingTiles,
+      answerText: _answerText,
+      matches: _matches,
+      feedbackActive: _feedbackActive,
+      feedbackCorrect: _feedbackCorrect,
+      pressedOption: _pressedOptionIndex,
+      onOptionTap: (idx) => setState(() {
+        if (q.type == QuizType.multiChoice) {
+          if (!_selectedOptions.add(idx)) {
+            _selectedOptions.remove(idx);
+          }
+        } else {
+          _selectedOptions
+            ..clear()
+            ..add(idx);
+        }
+      }),
+      onPressedOption: (idx) => setState(() => _pressedOptionIndex = idx),
+      onReorder: (oldIndex, newIndex) => setState(() {
+        final tile = _shuffledOrderingTiles.removeAt(oldIndex);
+        _shuffledOrderingTiles.insert(newIndex, tile);
+      }),
+      onTextChanged: (value) => setState(() => _answerText = value),
+      onMatch: (left, right) => setState(() => _matches[left] = right),
+      onSubmit: () => _submitForType(game, q),
+    );
+  }
+
+  /// Routes the submit to the handler that builds the right [QuizAnswer].
+  void _submitForType(GameState game, QuizQuestion q) {
+    switch (q.type) {
+      case QuizType.tileOrdering:
+        _submitTileOrdering(game, q);
+        break;
+      case QuizType.fillBlank:
+        _submitFillBlank(game, q);
+        break;
+      case QuizType.matching:
+        _submitMatching(game, q);
+        break;
+      case QuizType.singleChoice:
+      case QuizType.multiChoice:
+      case QuizType.tileSelection:
+        _submitMultiChoice(game, q);
+        break;
+    }
+  }
+
   Widget _buildQuizArea(GameState game) {
     if (game.currentQuestions.isEmpty) return const SizedBox.shrink();
 
@@ -910,578 +854,26 @@ class _LearnScreenState extends State<LearnScreen> {
           ),
           const SizedBox(height: 20),
 
-          // ── Render by question type ──
-          if (q.type == QuizType.tileOrdering)
-            _buildTileOrderingArea(game, q)
-          else if (q.type == QuizType.tileSelection)
-            _buildTileSelectionArea(game, q)
-          else
-            _buildMultiChoiceArea(game, q),
+          // ── Render by question type (one dispatch table, see
+          // buildQuestionInput) ──
+          buildQuestionInput(question: q, config: _questionInputConfig(game, q)),
         ],
       ),
     );
   }
 
-  // ── MultiChoice Area ──
-  Widget _buildMultiChoiceArea(GameState game, QuizQuestion q) {
-    return Column(
-      children: [
-        ...q.options.asMap().entries.map((entry) {
-          final idx = entry.key;
-          final option = entry.value;
-          final isSelected = _selectedOptions.contains(idx);
-
-          Color bgColor;
-          Color borderColor;
-
-          if (_feedbackActive) {
-            if (isSelected && _feedbackCorrect == true) {
-              bgColor = const Color(0xFFE8F5E9);
-              borderColor = const Color(0xFF2E7D32);
-            } else if (isSelected && _feedbackCorrect == false) {
-              bgColor = const Color(0xFFFFEBEE);
-              borderColor = const Color(0xFF4CAF50);
-            } else if (idx == q.correctIndex && _feedbackCorrect == false) {
-              // Show correct answer when wrong
-              bgColor = const Color(0xFFE8F5E9);
-              borderColor = const Color(0xFF2E7D32);
-            } else {
-              bgColor = Colors.white;
-              borderColor = const Color(0xFFE0E0E0);
-            }
-          } else {
-            bgColor = isSelected
-                ? const Color(0xFFE8F5E9)
-                : Colors.white;
-            borderColor = isSelected
-                ? const Color(0xFF4CAF50)
-                : const Color(0xFFE0E0E0);
-          }
-
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: AnimatedScale(
-              scale: _pressedOptionIndex == idx ? 0.98 : 1.0,
-              duration: const Duration(milliseconds: 100),
-              child: GestureDetector(
-                onTapDown: _feedbackActive
-                    ? null
-                    : (_) => setState(() => _pressedOptionIndex = idx),
-                onTapUp: _feedbackActive
-                    ? null
-                    : (_) => setState(() => _pressedOptionIndex = null),
-                onTapCancel: () =>
-                    setState(() => _pressedOptionIndex = null),
-                onTap: _feedbackActive
-                    ? null
-                    : () {
-                        setState(() {
-                          // P0 #2: multiChoice 為單選題，點擊即替換選擇，不允許複選
-                          _selectedOptions.clear();
-                          _selectedOptions.add(idx);
-                        });
-                      },
-                child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                width: double.infinity,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: bgColor,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(
-                    color: borderColor,
-                    width: isSelected || _feedbackActive ? 2 : 1,
-                  ),
-                  boxShadow: isSelected && !_feedbackActive
-                      ? [
-                          BoxShadow(
-                            color: const Color(0xFF4CAF50).withAlpha(20),
-                            blurRadius: 6,
-                            offset: const Offset(0, 2),
-                          ),
-                        ]
-                      : null,
-                ),
-                child: Stack(
-                  children: [
-                    // Decorative dot on top-right corner
-                    Positioned(
-                      right: 0,
-                      top: 0,
-                      child: Container(
-                        width: 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: isSelected
-                              ? const Color(0xFF4CAF50).withAlpha(40)
-                              : const Color(0xFFE0E0E0),
-                        ),
-                      ),
-                    ),
-                    Row(
-                      children: [
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      width: 22,
-                      height: 22,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: isSelected
-                            ? const Color(0xFF4CAF50)
-                            : Colors.transparent,
-                        border: Border.all(
-                          color: isSelected
-                              ? const Color(0xFF4CAF50)
-                              : const Color(0xFFBDBDBD),
-                          width: 2,
-                        ),
-                      ),
-                      child: isSelected
-                          ? const Icon(Icons.check_rounded,
-                              color: Colors.white, size: 14)
-                          : null,
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text.rich(
-                        TextSpan(children: _parseDialogueText(option)),
-                        style: GoogleFonts.nunito(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: _feedbackActive && !isSelected &&
-                                    idx != q.correctIndex
-                                ? const Color(0xFFBDBDBD)
-                                : const Color(0xFF2D2D2D)),
-                      ),
-                    ),
-                    if (_feedbackActive && idx == q.correctIndex)
-                      const Icon(Icons.check_circle_rounded,
-                          color: Color(0xFF2E7D32), size: 20),
-                    if (_feedbackActive &&
-                        isSelected &&
-                        _feedbackCorrect == false)
-                      const Icon(Icons.cancel_rounded,
-                          color: Color(0xFF4CAF50), size: 20),
-                  ],
-                ),
-                ],
-                ),
-              ),
-            ),
-          ),
-          );
-        }),
-        const SizedBox(height: 8),
-        // Submit button
-        SizedBox(
-          width: double.infinity,
-          height: 48,
-          child: ElevatedButton(
-            onPressed: _selectedOptions.isEmpty || _feedbackActive
-                ? null
-                : () => _submitMultiChoice(game, q),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF4CAF50),
-              disabledBackgroundColor: const Color(0xFFE0E0E0),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14)),
-            ),
-            child: Text('Submit Answer',
-                style: GoogleFonts.nunito(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white)),
-          ),
-        ),
-      ],
-    );
-  }
-
-  // ── Tile Selection Area ──
-  Widget _buildTileSelectionArea(GameState game, QuizQuestion q) {
-    // q.tiles unused in this builder
-    final options = q.options;
-
-    return Column(
-      children: [
-        // Option buttons
-        ...options.asMap().entries.map((entry) {
-          final idx = entry.key;
-          final option = entry.value;
-          final isSelected = _selectedOptions.contains(idx);
-
-          Color bgColor;
-          Color borderColor;
-
-          if (_feedbackActive) {
-            if (isSelected && _feedbackCorrect == true) {
-              bgColor = const Color(0xFFE8F5E9);
-              borderColor = const Color(0xFF2E7D32);
-            } else if (isSelected && _feedbackCorrect == false) {
-              bgColor = const Color(0xFFFFEBEE);
-              borderColor = const Color(0xFF4CAF50);
-            } else if (idx == q.correctIndex && _feedbackCorrect == false) {
-              bgColor = const Color(0xFFE8F5E9);
-              borderColor = const Color(0xFF2E7D32);
-            } else {
-              bgColor = Colors.white;
-              borderColor = const Color(0xFFE0E0E0);
-            }
-          } else {
-            bgColor = isSelected ? const Color(0xFFE8F5E9) : Colors.white;
-            borderColor =
-                isSelected ? const Color(0xFF4CAF50) : const Color(0xFFE0E0E0);
-          }
-
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: GestureDetector(
-              onTap: _feedbackActive
-                  ? null
-                  : () {
-                      setState(() {
-                        _selectedOptions.clear();
-                        _selectedOptions.add(idx);
-                      });
-                    },
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                width: double.infinity,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: bgColor,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: borderColor,
-                      width: isSelected || _feedbackActive ? 2 : 1),
-                ),
-                child: Row(
-                  children: [
-                    // Render MahjongTile for tile selection options
-                    MahjongTile(
-                      tileId: option,
-                      size: 84,
-                    ),
-                    const Spacer(),
-                    if (_feedbackActive && idx == q.correctIndex)
-                      const Icon(Icons.check_circle_rounded,
-                          color: Color(0xFF2E7D32), size: 20),
-                    if (_feedbackActive && isSelected &&
-                        _feedbackCorrect == false)
-                      const Icon(Icons.cancel_rounded,
-                          color: Color(0xFF4CAF50), size: 20),
-                  ],
-                ),
-              ),
-            ),
-          );
-        }),
-        const SizedBox(height: 8),
-        SizedBox(
-          width: double.infinity,
-          height: 48,
-          child: ElevatedButton(
-            onPressed: _selectedOptions.isEmpty || _feedbackActive
-                ? null
-                : () => _submitMultiChoice(game, q),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF4CAF50),
-              disabledBackgroundColor: const Color(0xFFE0E0E0),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14)),
-            ),
-            child: Text('Submit Answer',
-                style: GoogleFonts.nunito(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white)),
-          ),
-        ),
-      ],
-    );
-  }
-
-  // ── Tile Ordering Area ──
-  Widget _buildTileOrderingArea(GameState game, QuizQuestion q) {
-    final totalTiles = _shuffledOrderingTiles.length;
-    final tileSize = totalTiles <= 3 ? 88.0 : totalTiles <= 4 ? 80.0 : 72.0;
-
-    return Column(
-      children: [
-        // Instruction
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: const Color(0xFFFFF9E6),
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: const Color(0xFFE8B93E).withAlpha(80)),
-          ),
-          child: Row(
-            children: [
-              const Icon(Icons.drag_indicator_rounded,
-                  color: Color(0xFFE8B93E), size: 20),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  AppI18n.t('quiz.tileOrdering.instruction'),
-                  style: GoogleFonts.nunito(
-                    fontSize: 13,
-                    color: const Color(0xFF8D6E00),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 16),
-
-        // Draggable tile list
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: const Color(0xFFFFF5EC),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: const Color(0xFFE8D5C0)),
-          ),
-          child: _feedbackActive
-              ? _buildOrderingResult(q)
-              : ReorderableListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: _shuffledOrderingTiles.length,
-                  onReorderItem: (oldIndex, newIndex) {
-                    setState(() {
-                      final tile = _shuffledOrderingTiles.removeAt(oldIndex);
-                      _shuffledOrderingTiles.insert(newIndex, tile);
-                    });
-                  },
-                  proxyDecorator: (child, index, animation) {
-                    return AnimatedBuilder(
-                      animation: animation,
-                      builder: (context, child) {
-                        final scale = 1.0 + (animation.value * 0.08);
-                        return Transform.scale(
-                          scale: scale,
-                          child: Material(
-                            elevation: 6,
-                            borderRadius: BorderRadius.circular(8),
-                            shadowColor: Colors.black38,
-                            child: child,
-                          ),
-                        );
-                      },
-                      child: child,
-                    );
-                  },
-                  buildDefaultDragHandles: true,
-                  itemBuilder: (context, index) {
-                    final tile = _shuffledOrderingTiles[index];
-                    return Container(
-                      key: Key('tile_$tile'),
-                      margin: const EdgeInsets.symmetric(vertical: 4),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Order number
-                          Container(
-                            width: 28,
-                            height: 28,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF4CAF50),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Center(
-                              child: Text(
-                                '${index + 1}',
-                                style: GoogleFonts.nunito(
-                                  color: Colors.white,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          MahjongTile(
-                            tileId: tile,
-                            size: tileSize,
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-        ),
-
-        const SizedBox(height: 16),
-
-        // Submit button
-        SizedBox(
-          width: double.infinity,
-          height: 48,
-          child: ElevatedButton(
-            onPressed: _feedbackActive
-                ? null
-                : () => _submitTileOrdering(game, q),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF4CAF50),
-              disabledBackgroundColor: const Color(0xFFE0E0E0),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14)),
-            ),
-            child: Text(AppI18n.t('quiz.tileOrdering.submit'),
-                style: GoogleFonts.nunito(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white)),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildOrderingResult(QuizQuestion q) {
-    final correctOrder = q.tiles ?? [];
-    return Column(
-      children: List.generate(_shuffledOrderingTiles.length, (index) {
-        final userTile = _shuffledOrderingTiles[index];
-        final correctTile = correctOrder.length > index ? correctOrder[index] : '';
-        final isCorrect = userTile == correctTile;
-
-        return AnimatedContainer(
-          duration: const Duration(milliseconds: 400),
-          margin: const EdgeInsets.symmetric(vertical: 4),
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: isCorrect
-                ? const Color(0xFFE8F5E9)
-                : const Color(0xFFFFEBEE),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: isCorrect
-                  ? const Color(0xFF2E7D32)
-                  : const Color(0xFF4CAF50),
-              width: 2,
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 28,
-                height: 28,
-                decoration: BoxDecoration(
-                  color: isCorrect
-                      ? const Color(0xFF2E7D32)
-                      : const Color(0xFF4CAF50),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Center(
-                  child: Text(
-                    '${index + 1}',
-                    style: GoogleFonts.nunito(
-                      color: Colors.white,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              MahjongTile(
-                tileId: userTile,
-                size: 72,
-                isCorrect: isCorrect,
-              ),
-              if (!isCorrect) ...[
-                const SizedBox(width: 8),
-                const Icon(Icons.arrow_forward_rounded,
-                    size: 16, color: Color(0xFF757575)),
-                const SizedBox(width: 8),
-                MahjongTile(
-                  tileId: correctTile,
-                  size: 72,
-                  isCorrect: true,
-                ),
-              ],
-              const SizedBox(width: 10),
-              Icon(
-                isCorrect ? Icons.check_circle_rounded : Icons.cancel_rounded,
-                color: isCorrect
-                    ? const Color(0xFF2E7D32)
-                    : const Color(0xFF4CAF50),
-                size: 22,
-              ),
-            ],
-          ),
-        );
-      }),
-    );
-  }
-
-  // ── Submit handlers ──
-  void _submitMultiChoice(GameState game, QuizQuestion q) {
-    final selected = _selectedOptions.toList();
+  /// Single submit path for every question type.
+  ///
+  /// Correctness comes from `isQuizAnswerCorrect`, the same function the
+  /// provider uses, so the UI and the score can never disagree.
+  void _submitAnswer(GameState game, QuizQuestion q, QuizAnswer answer) {
+    final isCorrect = isQuizAnswerCorrect(q, answer);
+    final isOrdering = q.type == QuizType.tileOrdering;
 
     setState(() {
       _feedbackActive = true;
-
-      if (game.isReviewMode) {
-        _feedbackCorrect = selected.length == 1 &&
-            selected.first == q.correctIndex;
-      } else if (q.type == QuizType.multiChoice) {
-        _feedbackCorrect = selected.length == 1 &&
-            selected.first == q.correctIndex;
-      } else {
-        _feedbackCorrect = selected.isNotEmpty &&
-            selected.first == q.correctIndex;
-      }
-    });
-
-    if (_feedbackCorrect == true) {
-      _audio.playCorrect();
-      HapticFeedback.lightImpact();
-    } else {
-      _audio.playWrong();
-      HapticFeedback.heavyImpact();
-    }
-
-    Future.delayed(const Duration(milliseconds: 800), () {
-      if (!mounted) return;
-
-      if (game.isReviewMode) {
-        game.answerReviewQuestion(selected, null, q);
-      } else {
-        if (q.type == QuizType.multiChoice) {
-          game.answerMultiChoice(selected, q);
-        } else {
-          game.answerQuestion(selected.isNotEmpty ? selected.first : 0, q);
-        }
-      }
-
-      setState(() {
-        _selectedOptions.clear();
-        _feedbackCorrect = null;
-        _feedbackActive = false;
-        _shuffledOrderingTiles = [];
-        _orderingSubmitted = false;
-      });
-    });
-  }
-
-  void _submitTileOrdering(GameState game, QuizQuestion q) {
-    final userOrder = List<String>.from(_shuffledOrderingTiles);
-    final correctOrder = q.tiles ?? [];
-    bool isCorrect = userOrder.length == correctOrder.length &&
-        List.generate(
-            userOrder.length, (i) => userOrder[i] == correctOrder[i])
-            .every((e) => e);
-
-    setState(() {
-      _feedbackActive = true;
-      _orderingSubmitted = true;
       _feedbackCorrect = isCorrect;
+      if (isOrdering) _orderingSubmitted = true;
     });
 
     if (isCorrect) {
@@ -1492,23 +884,40 @@ class _LearnScreenState extends State<LearnScreen> {
       HapticFeedback.heavyImpact();
     }
 
-    Future.delayed(const Duration(milliseconds: 1200), () {
+    final delay = Duration(milliseconds: isOrdering ? 1200 : 800);
+    Future.delayed(delay, () {
       if (!mounted) return;
 
-      if (game.isReviewMode) {
-        game.answerReviewQuestion([], userOrder, q);
-      } else {
-        game.answerTileOrdering(userOrder, q);
-      }
+      game.submitAnswer(answer, q);
 
       setState(() {
         _selectedOptions.clear();
+        _answerText = '';
+        _matches = {};
         _feedbackCorrect = null;
         _feedbackActive = false;
         _shuffledOrderingTiles = [];
         _orderingSubmitted = false;
       });
     });
+  }
+
+  void _submitMultiChoice(GameState game, QuizQuestion q) {
+    final selected = _selectedOptions.toList();
+    _submitAnswer(game, q, QuizAnswer.choice(selected));
+  }
+
+  void _submitTileOrdering(GameState game, QuizQuestion q) {
+    _submitAnswer(game, q, QuizAnswer.ordering(
+        List<String>.from(_shuffledOrderingTiles)));
+  }
+
+  void _submitFillBlank(GameState game, QuizQuestion q) {
+    _submitAnswer(game, q, QuizAnswer.text(_answerText));
+  }
+
+  void _submitMatching(GameState game, QuizQuestion q) {
+    _submitAnswer(game, q, QuizAnswer.matching(Map<String, String>.from(_matches)));
   }
 
   // ── Quiz Result ──

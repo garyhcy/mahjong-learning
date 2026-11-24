@@ -6,6 +6,7 @@ import '../models/achievement_def.dart';
 import '../models/daily_task_def.dart';
 import '../models/wrong_answer.dart';
 import '../models/mahjong_data.dart';
+import '../models/quiz_answer.dart';
 import '../services/cloud_sync_service.dart';
 import '../services/firebase_service.dart';
 import '../services/progress_storage.dart';
@@ -589,38 +590,42 @@ class GameState extends ChangeNotifier with FriendsMixin {
 
   /// Single-choice answer (backward compatible)
   bool answerQuestion(int selectedIndex, QuizQuestion question) {
-    return _processAnswer([selectedIndex], null, question);
+    return submitAnswer(QuizAnswer.choice(<int>[selectedIndex]), question);
   }
 
   /// Multi-choice answer with multiple selected indices
   bool answerMultiChoice(List<int> selectedIndices, QuizQuestion question) {
-    return _processAnswer(selectedIndices, null, question);
+    return submitAnswer(QuizAnswer.choice(selectedIndices), question);
   }
 
   /// Tile ordering answer: userOrder is the list of tile codes in the user's order
   bool answerTileOrdering(List<String> userOrder, QuizQuestion question) {
-    return _processAnswer([], userOrder, question);
+    return submitAnswer(QuizAnswer.ordering(userOrder), question);
   }
 
-  bool _processAnswer(List<int> selectedIndices, List<String>? userOrder, QuizQuestion question) {
+  /// Fill-in-the-blank answer
+  bool answerFillBlank(String text, QuizQuestion question) {
+    return submitAnswer(QuizAnswer.text(text), question);
+  }
+
+  /// Matching answer: left item -> right item the user connected it to
+  bool answerMatching(Map<String, String> matches, QuizQuestion question) {
+    return submitAnswer(QuizAnswer.matching(matches), question);
+  }
+
+  /// Single entry point for every question type. Routes to review mode when the
+  /// quiz is a wrong-answer review.
+  bool submitAnswer(QuizAnswer answer, QuizQuestion question) {
+    if (_isReviewMode) return _processReviewAnswer(answer, question);
+    return _processAnswer(answer, question);
+  }
+
+  bool _processAnswer(QuizAnswer answer, QuizQuestion question) {
+    final selectedIndices = answer.selectedIndexes;
     // P9-01: 移除答題時回血，心心僅 app 啟動時跨日回血
     _resetDailyTasksIfNeeded();
 
-    bool isCorrect;
-    if (question.type == QuizType.tileOrdering && userOrder != null) {
-      // Compare user's order with correct order (tiles field)
-      final correctOrder = question.tiles ?? [];
-      isCorrect = _listEquals(userOrder, correctOrder);
-    } else if (question.type == QuizType.multiChoice) {
-      // Multi-select: compare selected indices with correct index
-      // For single-correct multi-choice, check if only the correct index is selected
-      isCorrect = selectedIndices.length == 1 &&
-          selectedIndices.first == question.correctIndex;
-    } else {
-      // Single choice (tileSelection or legacy)
-      isCorrect = selectedIndices.isNotEmpty &&
-          selectedIndices.first == question.correctIndex;
-    }
+    final isCorrect = isQuizAnswerCorrect(question, answer);
 
     if (isCorrect) {
       _correctAnswers++;
@@ -636,7 +641,7 @@ class GameState extends ChangeNotifier with FriendsMixin {
           lessonId: lessonId,
           questionIndex: qIndex >= 0 ? qIndex : _currentQuestionIndex,
           selectedIndices: selectedIndices,
-          userOrderJson: userOrder != null ? jsonEncode(userOrder) : null,
+          userOrderJson: jsonEncode(answer.toJson()),
         ));
       }
 
@@ -667,13 +672,6 @@ class GameState extends ChangeNotifier with FriendsMixin {
     return isCorrect;
   }
 
-  bool _listEquals(List<String> a, List<String> b) {
-    if (a.length != b.length) return false;
-    for (int i = 0; i < a.length; i++) {
-      if (a[i] != b[i]) return false;
-    }
-    return true;
-  }
 
   void _completeLesson() {
     if (_currentLessonId == null) return;
@@ -1026,20 +1024,12 @@ class GameState extends ChangeNotifier with FriendsMixin {
   }
 
   /// Answer in review mode
-  bool answerReviewQuestion(List<int> selectedIndices, List<String>? userOrder, QuizQuestion question) {
-    bool isCorrect;
-    if (question.type == QuizType.tileOrdering && userOrder != null) {
-      final correctOrder = question.tiles ?? [];
-      isCorrect = correctOrder.length == userOrder.length &&
-          List.generate(correctOrder.length, (i) => correctOrder[i] == userOrder[i])
-              .every((e) => e);
-    } else if (question.type == QuizType.multiChoice) {
-      isCorrect = selectedIndices.length == 1 &&
-          selectedIndices.first == question.correctIndex;
-    } else {
-      isCorrect = selectedIndices.isNotEmpty &&
-          selectedIndices.first == question.correctIndex;
-    }
+  bool answerReviewQuestion(QuizAnswer answer, QuizQuestion question) {
+    return _processReviewAnswer(answer, question);
+  }
+
+  bool _processReviewAnswer(QuizAnswer answer, QuizQuestion question) {
+    final isCorrect = isQuizAnswerCorrect(question, answer);
 
     _reviewResults[_currentQuestionIndex] = isCorrect;
     if (isCorrect) {
