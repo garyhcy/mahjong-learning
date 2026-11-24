@@ -4625,19 +4625,19 @@ final List<Lesson> defaultLessons = [
         ],
         correctIndex: 1,
         explanation:
-            'You can only Rob a Supplemental Kong (adding to an existing Pong), not Concealed or Exposed Kongs.',
+            'You can only Rob a Supplemental Kong (adding to an existing Pong) — not an Exposed Kong. The one exception is Thirteen Orphans, which may rob a Concealed Kong.',
       ),
       QuizQuestion(
         question: 'How is a robbed Kong paid?',
         options: [
-          'As a self-draw: every opponent pays',
-          'Only the player who declared the Kong pays',
+          'The player who declared the Kong pays the whole self-draw amount alone',
+          'Every opponent pays an equal share',
           'The dealer pays for the whole table',
           'Nothing extra is paid',
         ],
         correctIndex: 0,
         explanation:
-            '搶槓當自摸: the win is paid as a self-draw, so each opponent pays the self-draw amount rather than the declarer alone.',
+            '搶槓當包自摸: the player whose Kong was robbed pays the full self-draw total by himself, as if he had packed the hand.',
       ),
       QuizQuestion(
         type: QuizType.fillBlank,
