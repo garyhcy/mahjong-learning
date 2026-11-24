@@ -31,7 +31,21 @@ class GameState extends ChangeNotifier with FriendsMixin {
   String? _lastLessonDate;
   bool _isLoaded = false;
 
-  final List<LearningStage> _stages = defaultStages.map((s) => s).toList();
+  // Deep copy: LearningStage.isUnlocked/completedLessons are mutable, so
+  // sharing the instances in `defaultStages` would leak unlock state between
+  // GameState instances (and across tests / re-login).
+  final List<LearningStage> _stages = defaultStages
+      .map((s) => LearningStage(
+            id: s.id,
+            title: s.title,
+            subtitle: s.subtitle,
+            icon: s.icon,
+            color: s.color,
+            lessonCount: s.lessonCount,
+            isUnlocked: s.isUnlocked,
+            completedLessons: s.completedLessons,
+          ))
+      .toList();
 
   int _currentQuestionIndex = 0;
   int _correctAnswers = 0;
@@ -762,15 +776,24 @@ class GameState extends ChangeNotifier with FriendsMixin {
     }
   }
 
+  /// Duolingo-style progression: a stage unlocks when the previous stage has
+  /// been completed (all lessons done). Accuracy is shown to the learner but
+  /// never gates progression.
   void _updateStageUnlocks() {
     for (int i = 1; i < _stages.length; i++) {
       final prevStage = _stages[i - 1];
       final currentStage = _stages[i];
-      if (!currentStage.isUnlocked &&
-          getStageAccuracy(prevStage.id) >= 70) {
+      if (!currentStage.isUnlocked && _isStageCompleted(prevStage)) {
         currentStage.isUnlocked = true;
       }
     }
+  }
+
+  bool _isStageCompleted(LearningStage stage) {
+    final stageLessons =
+        allLessonsData.where((l) => l.stageId == stage.id).toList();
+    if (stageLessons.isEmpty) return false;
+    return stageLessons.every((l) => _lessonCompleted[l.id] == true);
   }
 
   bool isLessonUnlocked(String lessonId) {
@@ -806,7 +829,7 @@ class GameState extends ChangeNotifier with FriendsMixin {
     if (!stage.isUnlocked) {
       final stageIdx = _stages.indexWhere((s) => s.id == stage.id);
       if (stageIdx > 0) {
-        return 'Reach 70% accuracy in ${_stages[stageIdx - 1].localizedTitle} to unlock';
+        return 'Complete ${_stages[stageIdx - 1].localizedTitle} to unlock';
       }
       return 'Locked';
     }
@@ -911,7 +934,7 @@ class GameState extends ChangeNotifier with FriendsMixin {
       if (i == 0) {
         _stages[i].isUnlocked = true;
       } else {
-        _stages[i].isUnlocked = getStageAccuracy(_stages[i - 1].id) >= 70;
+        _stages[i].isUnlocked = _isStageCompleted(_stages[i - 1]);
       }
     }
     _persist();
@@ -1285,6 +1308,7 @@ class GameState extends ChangeNotifier with FriendsMixin {
         lastLessonDate: _lastLessonDate,
         hasSeenOnboarding: _hasSeenOnboarding,
         lessonCompleted: lessonCompletedSnapshot,
+        lessonBestAccuracy: Map<String, int>.from(_lessonBestAccuracy),
         nickname: _nickname,
         avatarEmoji: _avatarEmoji,
       );

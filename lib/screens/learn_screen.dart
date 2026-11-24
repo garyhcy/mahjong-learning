@@ -277,15 +277,14 @@ class _LearnScreenState extends State<LearnScreen> {
       final stage = entry.value;
       final key = _stageKeys.putIfAbsent(
           stage.id, () => GlobalKey());
-      final progress = stage.lessonCount > 0
-          ? stage.completedLessons / stage.lessonCount
+      // Completion of the previous stage drives the unlock (Duolingo-style).
+      final prevStage = stageIdx > 0 ? game.stages[stageIdx - 1] : null;
+      final prevCompleted = prevStage?.completedLessons ?? 0;
+      final prevTotal = prevStage?.lessonCount ?? 0;
+      final prevFullyDone = prevTotal > 0 && prevCompleted >= prevTotal;
+      final unlockProgress = prevTotal > 0
+          ? (prevCompleted / prevTotal).clamp(0.0, 1.0).toDouble()
           : 0.0;
-      final percent = (progress * 100).toInt();
-      // Accuracy of previous stage (used for locked stage display)
-      final prevAccuracy = stageIdx > 0
-          ? game.getStageAccuracy(game.stages[stageIdx - 1].id)
-          : 0;
-      final unlockProgress = (prevAccuracy / 70).clamp(0.0, 1.0);
 
       return Padding(
         key: key,
@@ -369,15 +368,11 @@ class _LearnScreenState extends State<LearnScreen> {
                           color: stage.color,
                         ),
                       ),
-                      Text('$percent%',
-                          style: GoogleFonts.nunito(
-                              fontSize: 11,
-                              color: const Color(0xFF9E9E9E))),
                     ] else ...[
                       Icon(Icons.lock_rounded,
                           size: 18, color: const Color(0xFFBDBDBD)),
                       const SizedBox(height: 4),
-                      Text('$prevAccuracy% / 70%',
+                      Text(prevTotal > 0 ? '$prevCompleted/$prevTotal' : '',
                           style: GoogleFonts.nunito(
                             fontSize: 11,
                             fontWeight: FontWeight.w700,
@@ -393,7 +388,7 @@ class _LearnScreenState extends State<LearnScreen> {
                             minHeight: 4,
                             backgroundColor: const Color(0xFFE0E0E0),
                             valueColor: AlwaysStoppedAnimation<Color>(
-                              prevAccuracy >= 70
+                              prevFullyDone
                                   ? const Color(0xFF4CAF50)
                                   : const Color(0xFFFFA726),
                             ),

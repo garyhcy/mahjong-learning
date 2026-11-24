@@ -47,6 +47,14 @@ class CloudSyncService {
         });
       }
 
+      final bestAccuracy = <String, int>{};
+      final rawBestAccuracy = data['lessonBestAccuracy'];
+      if (rawBestAccuracy is Map<String, dynamic>) {
+        rawBestAccuracy.forEach((key, value) {
+          if (value is num) bestAccuracy[key] = value.toInt();
+        });
+      }
+
       return SavedProgress(
         xp: (data['xp'] as num?)?.toInt() ?? 0,
         streak: (data['streak'] as num?)?.toInt() ?? 0,
@@ -56,6 +64,7 @@ class CloudSyncService {
         lastLessonDate: data['lastLessonDate'] as String?,
         hasSeenOnboarding: data['hasSeenOnboarding'] == true,
         lessonCompleted: lessons,
+        lessonBestAccuracy: bestAccuracy,
         nickname: (data['nickname'] as String?) ?? 'Player',
         avatarEmoji: (data['avatarEmoji'] as String?) ?? '🐼',
       );
@@ -74,6 +83,7 @@ class CloudSyncService {
     required String? lastLessonDate,
     required bool hasSeenOnboarding,
     required Map<String, bool> lessonCompleted,
+    Map<String, int> lessonBestAccuracy = const {},
     String nickname = 'Player',
     String avatarEmoji = '🐼',
   }) async {
@@ -92,6 +102,7 @@ class CloudSyncService {
         'lastLessonDate': lastLessonDate,
         'hasSeenOnboarding': hasSeenOnboarding,
         'lessonCompleted': lessonCompleted,
+        'lessonBestAccuracy': lessonBestAccuracy,
         'nickname': nickname,
         'avatarEmoji': avatarEmoji,
         'updatedAt': FieldValue.serverTimestamp(),
