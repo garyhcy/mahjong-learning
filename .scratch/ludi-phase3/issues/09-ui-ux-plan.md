@@ -35,3 +35,29 @@
 - D1 錯題簿：答對一次就移出 / 要連續兩次答對 / 永不移出（只增不減）？
 - D2 皇冠：只要 100% 全對才給，還是 ≥90% 都算（現時 3 星門檻係 90%）？
 - D3 開始頁樣式：(a) 整頁預覽卡帶「開始」掣 / (b) 對話第一句下方加「開始」掣 / (c) 唔需要。
+
+## 完成記錄（P1–P4，2026-11-24 至 25）
+
+Gary 決策：D1a（錯題答對一次即移出）、D2a（最佳正確率 100% 才皇冠）、D3a（整頁預覽卡＋「開始」掣）。
+
+### P1 全頁點擊＋三級圖案
+- body 包 `GestureDetector(behavior: HitTestBehavior.opaque)`；並修好 body `Container` 因無約束而 shrink-wrap 到對話泡泡寬的老問題（補 `width/height: double.infinity`）。
+- 完成圖案三級：`bestAccuracy >= 100` → `workspace_premium_rounded` 金冠；已完成 → 剔；未完成／鎖 → 鎖。
+- 吉祥物按句序輪替，關鍵字（答對／答錯）優先。
+
+### P2 課前預覽卡
+- `_showLessonIntro` + `_buildLessonIntro`：mascot、課程標題、`N questions`、`Best so far: X%`、「Start」、`Skip the lesson intro`；必須按 Start 才入對話。
+
+### P3 錯題簿清單頁
+- 新 `lib/screens/wrong_answers_screen.dart`：逐題列出（課名＋簡化題幹）、單題刪除、`Practise all N`。
+- `GameState._reviewSources` 記錄 review 題來源；答對即 `removeWhere(lessonId + questionIndex)` 移出錯題簿；另加 `removeWrongAnswer()`。
+- Practice 卡加 `See all N` 入口；新測試 `test/wrong_answer_book_test.dart`。
+
+### P4 Table Trail 地圖重做
+- 新 `lib/widgets/stage_map.dart`：stage 變麻雀牌（68×94），沿奶白氈布曲線排列，x 偏移 8 段週期（幅度上限 96px，地圖最寬 620）；completed＝象牙金冠、current＝stage color＋白色進度條＋旁邊撒嬌 panda、unlocked＝象牙牌＋stage color 邊、locked＝牌背斜紋＋鎖。
+- 連線：`CustomPainter` 畫 20px 奶白底帶，已完成段落實線、未完成虛線；入場 900ms stagger fade-up，`MediaQuery.disableAnimations` 時直接顯示。
+- 當前牌旁有 mascot（`IgnorePointer`，不影響點擊）；每張牌有 `Semantics(button, label: "N. Stage title")`。
+- Home `_buildLearningPath` 改用 `StageMap`；解鎖提示只顯示在「下一個未解鎖」那張，其餘顯示 `Locked`，減少重複噪音。
+- 單元 banner gradient 改用當前 stage 顏色（原本固定綠），crowns 仍按已完成 stage 數計。
+- Learn 的 stage 卡改牌形 icon（42×54）＋完成金冠＋`Cleared`，列表最寬 900 於桌面居中；lesson 列表沿用。
+- 新測試 `test/stage_map_test.dart`（3 個：渲染三態、locked callback、available callback）。注意測試用 `pump(Duration(seconds: 1))`，因 mascot 有持續動畫，`pumpAndSettle` 會 timeout。

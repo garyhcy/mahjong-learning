@@ -199,33 +199,38 @@ class _LearnScreenState extends State<LearnScreen> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 8),
-            Text(
-              'Choose Your Lesson',
-              style: GoogleFonts.nunito(
-                fontSize: 20,
-                fontWeight: FontWeight.w800,
-              ),
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 900),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 8),
+                Text(
+                  'Choose Your Lesson',
+                  style: GoogleFonts.nunito(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '${game.completedLessons} / ${game.stages.fold(0, (sum, s) => sum + s.lessonCount)} lessons completed',
+                  style: GoogleFonts.nunito(
+                    fontSize: 13,
+                    color: const Color(0xFF757575),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                if (_selectedStageId == null)
+                  ..._buildStageCards(game)
+                else
+                  ..._buildLessonCards(game),
+              ],
             ),
-            const SizedBox(height: 4),
-            Text(
-              '${game.completedLessons} / ${game.stages.fold(0, (sum, s) => sum + s.lessonCount)} lessons completed',
-              style: GoogleFonts.nunito(
-                fontSize: 13,
-                color: const Color(0xFF757575),
-              ),
-            ),
-            const SizedBox(height: 20),
-            if (_selectedStageId == null)
-              ..._buildStageCards(game)
-            else
-              ..._buildLessonCards(game),
-          ],
+          ),
         ),
       ),
     );
@@ -277,22 +282,44 @@ class _LearnScreenState extends State<LearnScreen> {
             child: Row(
               children: [
                 Container(
-                  width: 44,
-                  height: 44,
+                  width: 42,
+                  height: 54,
                   decoration: BoxDecoration(
                     color: stage.isUnlocked
-                        ? stage.color.withAlpha(25)
-                        : const Color(0xFFEEEEEE),
-                    shape: BoxShape.circle,
+                        ? const Color(0xFFFFFDF7)
+                        : const Color(0xFFF1EDE2),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: stage.isUnlocked
+                          ? stage.color.withAlpha(120)
+                          : const Color(0xFFD8D2C4),
+                      width: 1.6,
+                    ),
+                    boxShadow: stage.isUnlocked
+                        ? [
+                            BoxShadow(
+                              color: stage.color.withAlpha(22),
+                              blurRadius: 8,
+                              offset: const Offset(0, 3),
+                            ),
+                          ]
+                        : null,
                   ),
                   child: Center(
-                    child: Icon(
-                      stage.icon,
-                      color: stage.isUnlocked
-                          ? stage.color
-                          : const Color(0xFFBDBDBD),
-                      size: 20,
-                    ),
+                    child: stage.progress >= 1.0
+                        ? Image.asset(
+                            'assets/images/crown.png',
+                            width: 22,
+                            height: 22,
+                            fit: BoxFit.contain,
+                          )
+                        : Icon(
+                            stage.icon,
+                            color: stage.isUnlocked
+                                ? stage.color
+                                : const Color(0xFFB5AD9B),
+                            size: 21,
+                          ),
                   ),
                 ),
                 const SizedBox(width: 14),
@@ -327,10 +354,25 @@ class _LearnScreenState extends State<LearnScreen> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     if (stage.isUnlocked && stage.progress >= 1.0)
-                      const Icon(
-                        Icons.check_circle_rounded,
-                        color: Color(0xFF2E7D32),
-                        size: 22,
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image.asset(
+                            'assets/images/crown.png',
+                            width: 15,
+                            height: 15,
+                            fit: BoxFit.contain,
+                          ),
+                          const SizedBox(width: 3),
+                          Text(
+                            'Cleared',
+                            style: GoogleFonts.nunito(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w800,
+                              color: const Color(0xFFB07E12),
+                            ),
+                          ),
+                        ],
                       )
                     else if (stage.isUnlocked) ...[
                       Text(
