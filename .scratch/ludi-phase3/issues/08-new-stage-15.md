@@ -62,3 +62,24 @@
 **第二輪修正（Gary 選 B）：** 長題幹夾手牌時（15-1 Q1 有 13 隻牌），牌會在文字右側排滿並換行，最後兩隻東風獨立成一行，與手牌分離。新增 `splitTrailingHand()`（`lib/widgets/quiz/tile_markers.dart`）：題幹結尾若連續有 ≥3 個 `{{tile_id}}`，就把它們從文字抽出來，改為文字下方置中的 `Wrap`（每隻 36px、spacing／runSpacing 4）。少於 3 隻的句內引用（例如「waiting on {{p8}}」）維持 inline，不會被拆走。`test/prompt_layout_test.dart` 加 3 個 test（13 隻手牌抽出、2 隻句內引用不動、無 marker 原樣返回）；`flutter analyze` 0 error、`flutter test` 30/30。QA bundle 實機確認 Q1 變成「文字一行 + 13 隻牌整齊一行」。
 
 **第二輪部署：** commit `3f0de9b`；gh-pages `534ee92`；`main.dart.js` 3,885,422 bytes、sha256 前 16 位 `247a596c5876af39`，raw.githubusercontent 與 Pages CDN 均與本地 build 一致。
+
+## 實機驗收（第三輪，2026-11-25，Gary 選 A：補測其餘 5 課）
+
+用最新 main（`170eb5a` + StageMap）建暫存 QA worktree，只把 stage card 與 lesson card 的 onTap 解鎖（不入 commit），在 `127.0.0.1:8130` 以測試帳號登入，逐課由第 1 題做到第 8 題。
+
+| 課 | 完成 | 星 | 用時 | 題型覆蓋 |
+|---|---|---|---|---|
+| 15-2 Counting Outs | 8/8 | 3 | 08:56 | fillBlank ×3、singleChoice ×2、multiChoice、matching、tileSelection |
+| 15-3 Choosing the Discard | 8/8 | 3 | 16:36 | singleChoice ×2、fillBlank ×2、tileSelection、matching、tileOrdering、multiChoice |
+| 15-4 Reading the Table | 8/8 | 3 | 09:29 | singleChoice ×3、fillBlank、multiChoice、matching、tileSelection |
+| 15-5 Push or Fold | 8/8 | 3 | 04:39 | singleChoice ×4、fillBlank、multiChoice、matching、tileSelection |
+| 15-6 Graduation Challenge | 8/8 | 3 | 05:49 | fillBlank、multiChoice ×2、singleChoice ×3、tileSelection、matching |
+
+連同上一輪的 15-1，Stage 15 六課全部 8/8、3 星完成，XP 結算正常。
+
+**15-3 排序題（tileOrdering）今次證實可拖拽：**
+- 用 CDP 合成的 `dsh_browser_drag` 對 Flutter canvas 無效（上一輪的結論）。
+- 今次改用 XTEST 對 Xvfb `:99` 發真實 mouse press / 25 段 move / release，並由右側 drag handle 拖（`ReorderableListView` 的 `buildDefaultDragHandles: true`，handle 在每行最右的 ☰，不是拖牌面本身）。m6 由第 2 位成功拖到第 1 位，提交後 8/8。
+- 結論：**排序題產品功能正常**；之前的「拖不動」是自動化工具只發合成事件、且拖錯位置（牌面而非 handle），不是產品 bug。
+
+**備註：** QA bundle 會把完成度寫入測試帳號的 Firestore；正式帳號不受影響。Stage 15 在正式站仍按 Stage 14 完成度解鎖。
