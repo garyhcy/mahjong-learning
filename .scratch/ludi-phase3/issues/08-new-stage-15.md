@@ -57,6 +57,8 @@
 
 **驗收發現並已修的問題：** `ChoiceInput` 的牌面選項用 `MahjongTile(size: 84)`，令 tileSelection 每個選項變成 ~110px 高的巨型牌，四個選項已佔滿一屏、Submit 被推到摺線以下（要滾動才交卷）。已改為 `size: 48`（commit `d392290`）；`flutter analyze` 0 error、`flutter test` 27/27。
 
-**仍待改善（未改）：** 長題幹夾大量 `{{tile}}` 時（15-1 Q1 有 15 隻牌），牌會在文字右側排滿並換行，第二行兩隻東風會獨立成一行，視覺上與手牌分離。屬排版美觀問題，不影響作答。
-
 **修正後部署：** commit `d392290`；gh-pages `9014096`；`main.dart.js` 3,884,727 bytes、sha256 前 16 位 `d79c68a7aebf978d`，raw.githubusercontent 與 Pages CDN 均與本地 build 一致。
+
+**第二輪修正（Gary 選 B）：** 長題幹夾手牌時（15-1 Q1 有 13 隻牌），牌會在文字右側排滿並換行，最後兩隻東風獨立成一行，與手牌分離。新增 `splitTrailingHand()`（`lib/widgets/quiz/tile_markers.dart`）：題幹結尾若連續有 ≥3 個 `{{tile_id}}`，就把它們從文字抽出來，改為文字下方置中的 `Wrap`（每隻 36px、spacing／runSpacing 4）。少於 3 隻的句內引用（例如「waiting on {{p8}}」）維持 inline，不會被拆走。`test/prompt_layout_test.dart` 加 3 個 test（13 隻手牌抽出、2 隻句內引用不動、無 marker 原樣返回）；`flutter analyze` 0 error、`flutter test` 30/30。QA bundle 實機確認 Q1 變成「文字一行 + 13 隻牌整齊一行」。
+
+**第二輪部署：** commit `3f0de9b`；gh-pages `534ee92`；`main.dart.js` 3,885,422 bytes、sha256 前 16 位 `247a596c5876af39`，raw.githubusercontent 與 Pages CDN 均與本地 build 一致。
