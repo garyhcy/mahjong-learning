@@ -35,3 +35,28 @@
 **測試：** `flutter analyze` 0 error（88 個既有 warning/info）、`flutter test` 27/27。`test/mahjong_data_test.dart` 對全部 92 課檢查 8–12 題及 ≥2 題型。
 
 **Commit／部署：** `f8f8bf2`；gh-pages `1b622d3`；`main.dart.js` 3,884,727 bytes、sha256 前 16 位 `8153c8f38ccce4c2`，raw.githubusercontent 與 Pages CDN 均與本地 build 一致。
+
+## 實機驗收（2026-11-25，Gary 指定「測 Ticket 08」）
+
+因為 Stage 15 被 Stage 14 完成度鎖住，正式站無法直接進入，驗收用本機暫存 worktree 建一個「所有課程可點」的 QA bundle（只改 `_buildStageCards`／`_buildLessonCards` 的 onTap 條件，不入 commit），在 `127.0.0.1:8123` 跑。
+
+**15-1 Reading Your Waits 全 8 題逐題做過並全對：**
+
+| 題 | 題型 | 驗收點 | 結果 |
+|---|---|---|---|
+| 1 | fillBlank | 13 張手牌 + 只填數字 `3` | 正確、自動跳下一題 |
+| 2 | multiChoice | 牌面選項、可多選 m1/m4/m7 | 三個選中、提交正確 |
+| 3 | tileSelection | 牌面單選 p7 | 正確、需向下捲才見到 Submit |
+| 4 | singleChoice | 坎張英文＋中文標籤 | 正確 |
+| 5 | singleChoice | 邊張定義 | 正確 |
+| 6 | matching | 四行四配對，逐行點右邊 chip | 全部配對、提交正確 |
+| 7 | fillBlank | 單吊剩餘副本數 `3` | 正確 |
+| 8 | multiChoice | 十三么三個正確陳述 | 正確 |
+
+完成頁顯示 `+20 XP`、3 星、`04:59`，證明 Stage 15 的題目、驗證、計分、完成結算全鏈路正常。
+
+**驗收發現並已修的問題：** `ChoiceInput` 的牌面選項用 `MahjongTile(size: 84)`，令 tileSelection 每個選項變成 ~110px 高的巨型牌，四個選項已佔滿一屏、Submit 被推到摺線以下（要滾動才交卷）。已改為 `size: 48`（commit `d392290`）；`flutter analyze` 0 error、`flutter test` 27/27。
+
+**仍待改善（未改）：** 長題幹夾大量 `{{tile}}` 時（15-1 Q1 有 15 隻牌），牌會在文字右側排滿並換行，第二行兩隻東風會獨立成一行，視覺上與手牌分離。屬排版美觀問題，不影響作答。
+
+**修正後部署：** commit `d392290`；gh-pages `9014096`；`main.dart.js` 3,884,727 bytes、sha256 前 16 位 `d79c68a7aebf978d`，raw.githubusercontent 與 Pages CDN 均與本地 build 一致。
