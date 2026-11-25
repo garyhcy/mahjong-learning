@@ -101,4 +101,31 @@ void main() {
     await tester.tap(find.byIcon(Icons.school_rounded).last);
     expect(tapped?.id, 's2');
   });
+
+  testWidgets('fits a narrow phone without overflow', (tester) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: StageMap(
+            stages: [
+              _stage('s1', 'Basics', done: 8),
+              _stage('s2', 'Sequences', done: 2),
+              _stage('s3', 'Winning', unlocked: false),
+            ],
+            currentIndex: 1,
+            onStageTap: (_) {},
+            onLockedTap: (_) {},
+          ),
+        ),
+      ),
+    );
+    await tester.pump(const Duration(seconds: 1));
+
+    expect(tester.takeException(), isNull);
+    expect(find.text('Sequences'), findsOneWidget);
+  });
 }
