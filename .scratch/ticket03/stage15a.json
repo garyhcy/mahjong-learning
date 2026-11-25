@@ -1,0 +1,296 @@
+{
+  "15-1": {
+    "title": "Reading Your Waits",
+    "subtitle": "Name the tiles that would finish the hand",
+    "dialogues": [
+      {
+        "speaker": "mj",
+        "text": "Time to read a hand like a map. Thirteen tiles, one tile away from winning."
+      },
+      {
+        "speaker": "mj",
+        "text": "The tiles that would finish it are called your waits. Every wait has a name."
+      },
+      {
+        "speaker": "you",
+        "text": "So I just look at the shape and work out what fits?"
+      },
+      {
+        "speaker": "mj",
+        "text": "Exactly. Four melds and a pair. Find the hole, name the wait."
+      },
+      {
+        "speaker": "mj",
+        "text": "Get these automatic and you will see waits in your sleep."
+      }
+    ],
+    "questions": [
+      {
+        "type": "fillBlank",
+        "question": "This hand has three complete melds, one pair, and a partly built meld waiting for its last tile. How many different tiles would finish it? {{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{p5}}{{p6}}{{p7}}{{s3}}{{s4}}{{s5}}{{east}}{{east}}",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": [
+          "3",
+          "three",
+          "3 tiles",
+          "three tiles"
+        ],
+        "explanation": "You are waiting on m1, m4 and m7 — three different tiles, all of them one step from a meld."
+      },
+      {
+        "type": "multiChoice",
+        "question": "Which of these tiles would finish the hand below? {{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{p5}}{{p6}}{{p7}}{{s3}}{{s4}}{{s5}}{{east}}{{east}}",
+        "options": [
+          "{{m1}}",
+          "{{m4}}",
+          "{{p8}}",
+          "{{m7}}"
+        ],
+        "correctIndexes": [
+          0,
+          1,
+          3
+        ],
+        "correctIndex": 0,
+        "explanation": "m1 makes 123, m4 makes 234 with the m2 m3 already there, and m7 makes 567 with m5 m6. p8 completes nothing."
+      },
+      {
+        "type": "tileSelection",
+        "question": "You hold {{p8}}{{p9}} at the end of this hand. Which single tile would finish it? {{m1}}{{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{s2}}{{s3}}{{s4}}{{east}}{{east}}{{p8}}{{p9}}",
+        "options": [
+          "p7",
+          "p8",
+          "p6",
+          "m7"
+        ],
+        "correctIndex": 0,
+        "explanation": "Only p7 turns p8 p9 into 789. This is called an edge wait 邊張 because it sits at the end of the suit."
+      },
+      {
+        "type": "singleChoice",
+        "question": "The hand below is waiting on {{p8}} with {{p7}} and {{p9}} in hand. What is this wait called? {{m1}}{{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{s2}}{{s3}}{{s4}}{{east}}{{east}}{{p7}}{{p9}}",
+        "options": [
+          "Edge wait 邊張",
+          "Closed wait 坎張",
+          "Two-sided wait 兩面",
+          "Pair wait 單吊"
+        ],
+        "correctIndex": 1,
+        "explanation": "A tile sitting between two others, filling the gap, is a closed wait 坎張 — here p7 p9 waiting for p8."
+      },
+      {
+        "type": "singleChoice",
+        "question": "Look again at the hand waiting on {{p7}} with {{p8}}{{p9}}. Why is it called an edge wait 邊張 rather than a closed wait?",
+        "options": [
+          "Because the wait sits on the last possible tile of the suit",
+          "Because the winning tile is an honour",
+          "Because the pair is used as the eyes",
+          "Because two different tiles would finish it"
+        ],
+        "correctIndex": 0,
+        "explanation": "p8 p9 can only be finished by p7, at the very edge of the suit — a closed wait has a gap with tiles on both sides."
+      },
+      {
+        "type": "matching",
+        "question": "Match each wait to how it looks.",
+        "options": [],
+        "correctIndex": 0,
+        "pairs": [
+          {
+            "left": "Two-sided wait 兩面",
+            "right": "e.g. {{p5}}{{p6}} waiting on p4 or p7"
+          },
+          {
+            "left": "Edge wait 邊張",
+            "right": "e.g. {{p8}}{{p9}} waiting only on p7"
+          },
+          {
+            "left": "Closed wait 坎張",
+            "right": "e.g. {{p7}}{{p9}} waiting only on p8"
+          },
+          {
+            "left": "Pair wait 單吊",
+            "right": "One tile left, waiting to pair it"
+          }
+        ],
+        "explanation": "The four shapes cover almost every wait you will ever hold: two-sided, edge, closed and single."
+      },
+      {
+        "type": "fillBlank",
+        "question": "This hand is waiting on a single tile as its pair. How many copies of that tile can still be in play? {{m1}}{{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{s2}}{{s3}}{{s4}}{{p5}}{{p6}}{{p7}}{{red}}",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": [
+          "3",
+          "three",
+          "3 copies",
+          "three copies"
+        ],
+        "explanation": "You hold one red yourself, so the other three are still somewhere in the wall or in other hands."
+      },
+      {
+        "type": "multiChoice",
+        "question": "This is the thirteen orphans hand, one tile short. Which statements are true? {{m1}}{{m9}}{{p1}}{{p9}}{{s1}}{{s9}}{{east}}{{south}}{{west}}{{north}}{{red}}{{green}}{{white}}",
+        "options": [
+          "It waits on all thirteen orphan types",
+          "It waits on one specific tile only",
+          "Three copies of each winning tile are still live",
+          "Any of those tiles can finish it"
+        ],
+        "correctIndexes": [
+          0,
+          2,
+          3
+        ],
+        "correctIndex": 0,
+        "explanation": "Thirteen orphans waits on all thirteen ones, nines and honours; you already hold one of each, so three copies of every winning tile remain."
+      }
+    ]
+  },
+  "15-2": {
+    "title": "Counting Outs",
+    "subtitle": "How many tiles can actually save you",
+    "dialogues": [
+      {
+        "speaker": "mj",
+        "text": "A wait is worth nothing if every copy is already gone. Now we count."
+      },
+      {
+        "speaker": "mj",
+        "text": "Four of each tile exist. Subtract what you hold and what everyone has shown."
+      },
+      {
+        "speaker": "you",
+        "text": "So a wide wait can still be a dead wait?"
+      },
+      {
+        "speaker": "mj",
+        "text": "Exactly. Outs is the honest number, not the shape on paper."
+      },
+      {
+        "speaker": "mj",
+        "text": "Count outs before you count faan. It changes what you throw."
+      }
+    ],
+    "questions": [
+      {
+        "type": "fillBlank",
+        "question": "This hand is waiting on m1, m4 and m7. Counting every copy still in play, how many outs does it have? {{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{p5}}{{p6}}{{p7}}{{s3}}{{s4}}{{s5}}{{east}}{{east}}",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": [
+          "11",
+          "eleven",
+          "11 outs",
+          "eleven outs"
+        ],
+        "explanation": "Four m1, three m4 (you hold one) and four m7 make eleven live outs."
+      },
+      {
+        "type": "fillBlank",
+        "question": "Same hand, but two m4 and one m1 have already been discarded and are visible. How many outs are left? {{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{p5}}{{p6}}{{p7}}{{s3}}{{s4}}{{s5}}{{east}}{{east}}",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": [
+          "8",
+          "eight",
+          "8 outs",
+          "eight outs"
+        ],
+        "explanation": "Eleven minus three visible copies leaves eight; the shape did not change, only the supply did."
+      },
+      {
+        "type": "singleChoice",
+        "question": "This hand is waiting on p1 or p4. How many live copies does it have in total? {{m1}}{{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{m7}}{{m8}}{{m9}}{{p1}}{{p2}}{{p3}}{{p4}}",
+        "options": [
+          "4",
+          "6",
+          "8",
+          "11"
+        ],
+        "correctIndex": 1,
+        "explanation": "You hold one p1 and one p4, so three of each remain: six outs."
+      },
+      {
+        "type": "matching",
+        "question": "Match each hand to its number of live outs.",
+        "options": [],
+        "correctIndex": 0,
+        "pairs": [
+          {
+            "left": "Nine gates, one suit 1112345678999 {{m1}}{{m1}}{{m1}}{{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{m7}}{{m8}}{{m9}}{{m9}}{{m9}}",
+            "right": "23 outs"
+          },
+          {
+            "left": "Thirteen orphans, one tile short {{m1}}{{m9}}{{p1}}{{p9}}{{s1}}{{s9}}{{east}}{{south}}{{west}}{{north}}{{red}}{{green}}{{white}}",
+            "right": "39 outs"
+          },
+          {
+            "left": "Seven pairs, holding six pairs and a single",
+            "right": "3 outs"
+          },
+          {
+            "left": "The mixed hand waiting m1, m4, m7 {{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{p5}}{{p6}}{{p7}}{{s3}}{{s4}}{{s5}}{{east}}{{east}}",
+            "right": "11 outs"
+          }
+        ],
+        "explanation": "Nine gates waits on nine tiles, thirteen orphans on thirteen, one pair wait on three, and the mixed hand on eleven."
+      },
+      {
+        "type": "multiChoice",
+        "question": "Which statements about outs are true?",
+        "options": [
+          "Outs are the live copies of every tile that would finish your hand",
+          "A two-sided wait always has more outs than two single waits",
+          "Copies you hold yourself reduce the outs of that tile",
+          "Visible discards reduce your outs"
+        ],
+        "correctIndexes": [
+          0,
+          2,
+          3
+        ],
+        "correctIndex": 0,
+        "explanation": "Outs are live copies only. A two-sided wait is not automatically better than two separate single waits — you have to count."
+      },
+      {
+        "type": "singleChoice",
+        "question": "Hand one waits on two tiles with four copies each. Hand two waits on a single tile with three copies left. Which is the better wait?",
+        "options": [
+          "Hand one, with eight outs",
+          "Hand two, because a single wait is cleaner",
+          "They are equal",
+          "It depends only on faan"
+        ],
+        "correctIndex": 0,
+        "explanation": "Eight outs against three: the wider wait is roughly twice as likely to arrive, and nothing about the shape makes the single wait better."
+      },
+      {
+        "type": "fillBlank",
+        "question": "This nine gates hand waits on every tile of the same suit. How many live copies does that come to? {{m1}}{{m1}}{{m1}}{{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{m7}}{{m8}}{{m9}}{{m9}}{{m9}}",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": [
+          "23",
+          "twenty-three",
+          "twenty three",
+          "23 outs"
+        ],
+        "explanation": "Nine waits, with one of every tile already in hand: 9 x 4 minus the six duplicate copies you hold leaves 23."
+      },
+      {
+        "type": "tileSelection",
+        "question": "You hold {{p7}}{{p9}} and nothing else is showing on the table. Which tile, when it appears, completes your hand? {{m1}}{{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{s2}}{{s3}}{{s4}}{{east}}{{east}}{{p7}}{{p9}}",
+        "options": [
+          "p8",
+          "p7",
+          "p9",
+          "p6"
+        ],
+        "correctIndex": 0,
+        "explanation": "p8 fills the gap between p7 and p9 — four copies are live, so it is four outs."
+      }
+    ]
+  }
+}

@@ -355,10 +355,18 @@ final List<LearningStage> defaultStages = [
     color: const Color(0xFF6A1B9A),
     lessonCount: 7,
   ),
+  LearningStage(
+    id: 'stage15',
+    title: 'Table Sense',
+    subtitle: 'Read the waits, count the outs, pick the discard',
+    icon: Icons.psychology_alt_rounded,
+    color: const Color(0xFF00838F),
+    lessonCount: 6,
+  ),
 ];
 
 // ═══════════════════════════════════════════════════════
-//  Complete Curriculum (14 Stages, 86 Lessons)
+//  Complete Curriculum (15 Stages, 92 Lessons)
 // ═══════════════════════════════════════════════════════
 
 final List<Lesson> allLessonsData = defaultLessons;
@@ -11543,6 +11551,848 @@ final List<Lesson> defaultLessons = [
         ],
         explanation:
             '13 faan is over the ceiling, so it is priced as 10 faan: 64 from each of three players, 192 in total.',
+      ),
+    ],
+  ),
+  // ═══════════════════════════════════
+  //  STAGE 15: Table Sense (6 lessons)
+  // ═══════════════════════════════════
+  Lesson(
+    id: '15-1',
+    stageId: 'stage15',
+    title: 'Reading Your Waits',
+    subtitle: 'Name the tiles that would finish the hand',
+    dialogues: [
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Time to read a hand like a map. Thirteen tiles, one tile away from winning.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'The tiles that would finish it are called your waits. Every wait has a name.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text: 'So I just look at the shape and work out what fits?',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text: 'Exactly. Four melds and a pair. Find the hole, name the wait.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text: 'Get these automatic and you will see waits in your sleep.',
+      ),
+    ],
+    questions: [
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'This hand has three complete melds, one pair, and a partly built meld waiting for its last tile. How many different tiles would finish it? {{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{p5}}{{p6}}{{p7}}{{s3}}{{s4}}{{s5}}{{east}}{{east}}',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['3', 'three', '3 tiles', 'three tiles'],
+        explanation:
+            'You are waiting on m1, m4 and m7 — three different tiles, all of them one step from a meld.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which of these tiles would finish the hand below? {{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{p5}}{{p6}}{{p7}}{{s3}}{{s4}}{{s5}}{{east}}{{east}}',
+        options: ['{{m1}}', '{{m4}}', '{{p8}}', '{{m7}}'],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 3],
+        explanation:
+            'm1 makes 123, m4 makes 234 with the m2 m3 already there, and m7 makes 567 with m5 m6. p8 completes nothing.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'You hold {{p8}}{{p9}} at the end of this hand. Which single tile would finish it? {{m1}}{{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{s2}}{{s3}}{{s4}}{{east}}{{east}}{{p8}}{{p9}}',
+        options: ['p7', 'p8', 'p6', 'm7'],
+        correctIndex: 0,
+        explanation:
+            'Only p7 turns p8 p9 into 789. This is called an edge wait 邊張 because it sits at the end of the suit.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'The hand below is waiting on {{p8}} with {{p7}} and {{p9}} in hand. What is this wait called? {{m1}}{{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{s2}}{{s3}}{{s4}}{{east}}{{east}}{{p7}}{{p9}}',
+        options: [
+          'Edge wait 邊張',
+          'Closed wait 坎張',
+          'Two-sided wait 兩面',
+          'Pair wait 單吊',
+        ],
+        correctIndex: 1,
+        explanation:
+            'A tile sitting between two others, filling the gap, is a closed wait 坎張 — here p7 p9 waiting for p8.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Look again at the hand waiting on {{p7}} with {{p8}}{{p9}}. Why is it called an edge wait 邊張 rather than a closed wait?',
+        options: [
+          'Because the wait sits on the last possible tile of the suit',
+          'Because the winning tile is an honour',
+          'Because the pair is used as the eyes',
+          'Because two different tiles would finish it',
+        ],
+        correctIndex: 0,
+        explanation:
+            'p8 p9 can only be finished by p7, at the very edge of the suit — a closed wait has a gap with tiles on both sides.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each wait to how it looks.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Two-sided wait 兩面',
+            right: 'e.g. {{p5}}{{p6}} waiting on p4 or p7',
+          ),
+          QuestionPair(
+            left: 'Edge wait 邊張',
+            right: 'e.g. {{p8}}{{p9}} waiting only on p7',
+          ),
+          QuestionPair(
+            left: 'Closed wait 坎張',
+            right: 'e.g. {{p7}}{{p9}} waiting only on p8',
+          ),
+          QuestionPair(
+            left: 'Pair wait 單吊',
+            right: 'One tile left, waiting to pair it',
+          ),
+        ],
+        explanation:
+            'The four shapes cover almost every wait you will ever hold: two-sided, edge, closed and single.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'This hand is waiting on a single tile as its pair. How many copies of that tile can still be in play? {{m1}}{{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{s2}}{{s3}}{{s4}}{{p5}}{{p6}}{{p7}}{{red}}',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['3', 'three', '3 copies', 'three copies'],
+        explanation:
+            'You hold one red yourself, so the other three are still somewhere in the wall or in other hands.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'This is the thirteen orphans hand, one tile short. Which statements are true? {{m1}}{{m9}}{{p1}}{{p9}}{{s1}}{{s9}}{{east}}{{south}}{{west}}{{north}}{{red}}{{green}}{{white}}',
+        options: [
+          'It waits on all thirteen orphan types',
+          'It waits on one specific tile only',
+          'Three copies of each winning tile are still live',
+          'Any of those tiles can finish it',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 2, 3],
+        explanation:
+            'Thirteen orphans waits on all thirteen ones, nines and honours; you already hold one of each, so three copies of every winning tile remain.',
+      ),
+    ],
+  ),
+  Lesson(
+    id: '15-2',
+    stageId: 'stage15',
+    title: 'Counting Outs',
+    subtitle: 'How many tiles can actually save you',
+    dialogues: [
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'A wait is worth nothing if every copy is already gone. Now we count.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Four of each tile exist. Subtract what you hold and what everyone has shown.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text: 'So a wide wait can still be a dead wait?',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text: 'Exactly. Outs is the honest number, not the shape on paper.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text: 'Count outs before you count faan. It changes what you throw.',
+      ),
+    ],
+    questions: [
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'This hand is waiting on m1, m4 and m7. Counting every copy still in play, how many outs does it have? {{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{p5}}{{p6}}{{p7}}{{s3}}{{s4}}{{s5}}{{east}}{{east}}',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['11', 'eleven', '11 outs', 'eleven outs'],
+        explanation:
+            'Four m1, three m4 (you hold one) and four m7 make eleven live outs.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'Same hand, but two m4 and one m1 have already been discarded and are visible. How many outs are left? {{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{p5}}{{p6}}{{p7}}{{s3}}{{s4}}{{s5}}{{east}}{{east}}',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['8', 'eight', '8 outs', 'eight outs'],
+        explanation:
+            'Eleven minus three visible copies leaves eight; the shape did not change, only the supply did.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'This hand is waiting on p1 or p4. How many live copies does it have in total? {{m1}}{{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{m7}}{{m8}}{{m9}}{{p1}}{{p2}}{{p3}}{{p4}}',
+        options: ['4', '6', '8', '11'],
+        correctIndex: 1,
+        explanation:
+            'You hold one p1 and one p4, so three of each remain: six outs.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each hand to its number of live outs.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left:
+                'Nine gates, one suit 1112345678999 {{m1}}{{m1}}{{m1}}{{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{m7}}{{m8}}{{m9}}{{m9}}{{m9}}',
+            right: '23 outs',
+          ),
+          QuestionPair(
+            left:
+                'Thirteen orphans, one tile short {{m1}}{{m9}}{{p1}}{{p9}}{{s1}}{{s9}}{{east}}{{south}}{{west}}{{north}}{{red}}{{green}}{{white}}',
+            right: '39 outs',
+          ),
+          QuestionPair(
+            left: 'Seven pairs, holding six pairs and a single',
+            right: '3 outs',
+          ),
+          QuestionPair(
+            left:
+                'The mixed hand waiting m1, m4, m7 {{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{p5}}{{p6}}{{p7}}{{s3}}{{s4}}{{s5}}{{east}}{{east}}',
+            right: '11 outs',
+          ),
+        ],
+        explanation:
+            'Nine gates waits on nine tiles, thirteen orphans on thirteen, one pair wait on three, and the mixed hand on eleven.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which statements about outs are true?',
+        options: [
+          'Outs are the live copies of every tile that would finish your hand',
+          'A two-sided wait always has more outs than two single waits',
+          'Copies you hold yourself reduce the outs of that tile',
+          'Visible discards reduce your outs',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 2, 3],
+        explanation:
+            'Outs are live copies only. A two-sided wait is not automatically better than two separate single waits — you have to count.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Hand one waits on two tiles with four copies each. Hand two waits on a single tile with three copies left. Which is the better wait?',
+        options: [
+          'Hand one, with eight outs',
+          'Hand two, because a single wait is cleaner',
+          'They are equal',
+          'It depends only on faan',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Eight outs against three: the wider wait is roughly twice as likely to arrive, and nothing about the shape makes the single wait better.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'This nine gates hand waits on every tile of the same suit. How many live copies does that come to? {{m1}}{{m1}}{{m1}}{{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{m7}}{{m8}}{{m9}}{{m9}}{{m9}}',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['23', 'twenty-three', 'twenty three', '23 outs'],
+        explanation:
+            'Nine waits, with one of every tile already in hand: 9 x 4 minus the six duplicate copies you hold leaves 23.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'You hold {{p7}}{{p9}} and nothing else is showing on the table. Which tile, when it appears, completes your hand? {{m1}}{{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{s2}}{{s3}}{{s4}}{{east}}{{east}}{{p7}}{{p9}}',
+        options: ['p8', 'p7', 'p9', 'p6'],
+        correctIndex: 0,
+        explanation:
+            'p8 fills the gap between p7 and p9 — four copies are live, so it is four outs.',
+      ),
+    ],
+  ),
+  Lesson(
+    id: '15-3',
+    stageId: 'stage15',
+    title: 'Choosing the Discard',
+    subtitle: 'Which tile keeps the most hand alive',
+    dialogues: [
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Fourteen tiles, and one of them has to go. The tile you throw decides which thirteen you keep, and those thirteen decide your wait.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'So never throw the tile that merely looks ugly. Name every tile that would finish the hand, then count the live copies of each.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text: 'And two different discards can both leave me waiting?',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Often. From the same fourteen tiles, one discard can leave eleven live tiles and another only four.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Read what the discard breaks. A spare tile sitting inside a run usually costs you the least.',
+      ),
+    ],
+    questions: [
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'These fourteen tiles: {{m2}}{{m4}}{{m5}}{{m6}}{{m7}}{{m8}}{{p6}}{{p7}}{{p8}}{{s2}}{{s3}}{{s4}}{{east}}{{east}}. Which discard keeps the most outs?',
+        options: ['The m2', 'The m5', 'The m8', 'An east'],
+        correctIndex: 0,
+        explanation:
+            'Throwing the loose m2 leaves m4 m5 m6 m7 m8, which finishes on m3, m6 or m9 for eleven live copies. Throwing the m5 or the m8 leaves only the closed wait on m3, worth four.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'Same hand again: {{m2}}{{m4}}{{m5}}{{m6}}{{m7}}{{m8}}{{p6}}{{p7}}{{p8}}{{s2}}{{s3}}{{s4}}{{east}}{{east}}. After you throw the m2, how many live tiles can still finish the hand?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['11', 'eleven', '11 outs', 'eleven outs', '11 tiles'],
+        explanation:
+            'You wait on m3, m6 and m9, and you already hold one m6: four plus three plus four makes eleven.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'This fourteen-tile hand: {{m2}}{{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{p3}}{{p4}}{{p5}}{{s7}}{{s8}}{{s9}}{{east}}{{east}}. Which tile is the best discard?',
+        options: ['m2', 'm3', 'm6', 'p3'],
+        correctIndex: 0,
+        explanation:
+            'Throwing one m2 keeps m2 m3 m4 m5 m6, waiting on m1, m4 and m7 for eleven outs. Throwing the m3 or the m6 breaks that block into a two-pair wait worth only four.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question:
+            'Take this hand: {{m2}}{{m3}}{{m4}}{{m5}}{{m5}}{{m6}}{{p2}}{{p3}}{{p4}}{{s6}}{{s7}}{{s8}}{{east}}{{east}}. Match each discard to the live tiles it leaves you.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(left: 'Throw the m5', right: '11 live tiles'),
+          QuestionPair(left: 'Throw the m2', right: '7 live tiles'),
+          QuestionPair(left: 'Throw the m6', right: '4 live tiles'),
+          QuestionPair(
+            left: 'Throw an east',
+            right: '0 live tiles, the hand stops waiting',
+          ),
+        ],
+        explanation:
+            'The m5 is the spare tile inside the run, throwing the m2 leaves the two-sided wait on m4 and m7, throwing the m6 leaves only the m5 and east pair wait, and dropping an east leaves no wait at all.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You hold {{m2}}{{m3}}{{m4}}{{m5}}{{m5}}{{m6}}{{p2}}{{p3}}{{p4}}{{s6}}{{s7}}{{s8}}{{east}}{{east}}. Two players at the table argue over the m2 and the m6. Which discard is better?',
+        options: [
+          'The m2, because it leaves seven live tiles against four and both discards keep the hand waiting',
+          'The m6, because a pair wait is tidier than a two-sided wait',
+          'Either one, since both cost the same number of outs',
+          'Neither, because this hand can never reach a wait',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Throwing the m2 leaves the two-sided wait on m4 and m7 for seven live tiles. Throwing the m6 leaves the two-pair wait on m5 and east for four, and you are holding both of those pairs.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'Back to {{m2}}{{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{p3}}{{p4}}{{p5}}{{s7}}{{s8}}{{s9}}{{east}}{{east}}. If you throw one m3 instead, you end up waiting on the m2 and the east. How many live tiles is that wait?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['4', 'four', '4 outs', 'four outs', '4 tiles'],
+        explanation:
+            'You are already holding two m2 and two east, so only two copies of each remain in the game: four in total.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileOrdering,
+        question:
+            'With {{m2}}{{m3}}{{m4}}{{m5}}{{m5}}{{m6}}{{p2}}{{p3}}{{p4}}{{s6}}{{s7}}{{s8}}{{east}}{{east}} in front of you, put these three discards in order from the fewest live tiles left to the most.',
+        options: const [],
+        correctIndex: 0,
+        tiles: const ['m6', 'm2', 'm5'],
+        explanation:
+            'Throwing the m6 leaves four live tiles, throwing the m2 leaves seven, and throwing the spare m5 leaves eleven.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which of these statements about choosing a discard are true?',
+        options: [
+          'You count the live copies of every tile that would finish the hand, not just the number of different waits',
+          'A two-sided wait normally leaves more outs than a closed wait',
+          'Throwing a tile out of a pair always costs you more outs than throwing one out of a run',
+          'A discard that leaves the hand no longer waiting keeps zero outs',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 3],
+        explanation:
+            'The spare tile inside a run is often the cheapest discard there is, so that pair statement is false. The other three are exactly how the counting works.',
+      ),
+    ],
+  ),
+  Lesson(
+    id: '15-4',
+    stageId: 'stage15',
+    title: 'Reading the Table',
+    subtitle: 'Danger is what they have shown you',
+    dialogues: [
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Your outs are only half the story. The other half is what the other three players have already shown you.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'An exposed pung names a suit. A kong takes four copies out of the game. A player who throws nothing but pin for three rounds is telling you pin is not what he needs.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text:
+            'So the same hand can want a different tile at a different table?',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Same fourteen tiles, different table, different right answer. That is the whole lesson.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'And when a big hand is sitting opposite you, fewer outs on a tile that has already passed him is the better trade.',
+      ),
+    ],
+    questions: [
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'The player across the table has two character pungs exposed and has thrown nothing but pin and bamboo for the last four rounds. What does that tell you?',
+        options: [
+          'Characters are the suit he is collecting, so a live character tile is the dangerous discard',
+          'Characters are safe, because he already has two pungs of them',
+          'He has given up on characters, so character tiles are the safe ones',
+          'His discard pile says nothing, only his exposed melds count',
+        ],
+        correctIndex: 0,
+        explanation:
+            'His exposed pungs name his suit, and a player who throws everything else is locked into that one suit, so his winning tiles live in it. That is the one suit you should not be feeding.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'He then declares a kong of the {{p5}}. What has that done to the p5?',
+        options: [
+          'All four copies are locked in his meld, so the tile can never finish anyone\'s hand and is safe to throw',
+          'It earns him a faan, so the p5 is now the most dangerous tile on the table',
+          'The p5 becomes a wild tile for the rest of the round',
+          'The p5 stays live in the wall for the other players to draw',
+        ],
+        correctIndex: 0,
+        explanation:
+            'A kong puts all four copies of that tile into one meld, so the tile cannot come again. It also cannot be anyone\'s winning tile, which makes it the safest thing in your hand.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Your hand {{m2}}{{m3}}{{m4}}{{m6}}{{m7}}{{m8}}{{s3}}{{s4}}{{s5}}{{east}}{{east}}{{p6}}{{p7}} is waiting on the p5 and the p8. He has just konged the p5. What is your real wait now?',
+        options: [
+          'The p8 alone, because every p5 is in his meld',
+          'The p5 and the p8, unchanged',
+          'The p5 alone, because a kong keeps the tile in play',
+          'Neither, because your hand is dead',
+        ],
+        correctIndex: 0,
+        explanation:
+            'The shape still reads as p5 and p8, but a kong removes every copy of the p5 from the wall. Only the p8 can still arrive.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'Now the hand {{m3}}{{m4}}{{m5}}{{m6}}{{m6}}{{m7}}{{p2}}{{p3}}{{p4}}{{s6}}{{s7}}{{s8}}{{east}}{{east}}, with the table set aside for a moment. If you throw one m6, how many live tiles finish the hand?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['11', 'eleven', '11 outs', 'eleven outs', '11 tiles'],
+        explanation:
+            'The run m3 m4 m5 m6 m7 waits on m2, m5 and m8, and you are holding one m5: four plus three plus four makes eleven.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these readings of the table are sound?',
+        options: [
+          'A tile an opponent has already thrown this turn is absolutely safe against him until he draws again',
+          'An exposed pung tells you which suit that player is collecting',
+          'A declared kong leaves the konged tile live in the wall',
+          'A player who keeps throwing one suit is telling you that suit is not what he needs',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 3],
+        explanation:
+            'A kong takes all four copies out of the wall, so that statement is exactly backwards. The other three are the readings the table gives you.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question:
+            'Match each thing you see on the table to the reading it gives you.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: 'Two exposed character pungs',
+            right:
+                'He is locked into characters, so live character tiles are dangerous',
+          ),
+          QuestionPair(
+            left: 'A declared kong of the p5',
+            right: 'Every p5 is gone, so the p5 is dead and safe',
+          ),
+          QuestionPair(
+            left: 'He threw the m3 twice in the first two rounds',
+            right:
+                'The m3 has already passed him twice, so it is close to safe',
+          ),
+          QuestionPair(
+            left: 'Nothing but pin in his pond for three rounds',
+            right: 'Pin is the suit he does not need',
+          ),
+        ],
+        explanation:
+            'Exposed melds and kongs are hard facts about which tiles are left. A discard pile is evidence about what a player wants, and it is why the tile that has already passed him is the cheaper risk.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You hold {{m3}}{{m4}}{{m5}}{{m6}}{{m6}}{{m7}}{{p2}}{{p3}}{{p4}}{{s6}}{{s7}}{{s8}}{{east}}{{east}}. The player across from you has two character pungs exposed, has thrown the m3 twice, and has never thrown an m6. Which one do you throw?',
+        options: [
+          'The m3: seven live tiles instead of eleven, but it is the tile that has already passed him twice',
+          'The m6: eleven live tiles is far too much to give up',
+          'The m7: four live tiles keeps the hand smallest',
+          'An east: give up the wait and play safe',
+        ],
+        correctIndex: 0,
+        explanation:
+            'Throwing the m3 leaves the m5 and m8 wait with seven live tiles, while the m6 would leave eleven. But the m6 is a live middle tile in the suit he is collecting, so giving up four outs to throw the tile he has already passed twice is the right price.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'Same hand, {{m3}}{{m4}}{{m5}}{{m6}}{{m6}}{{m7}}{{p2}}{{p3}}{{p4}}{{s6}}{{s7}}{{s8}}{{east}}{{east}}. He has just thrown a {{p3}} and has not drawn since. Which of your tiles is absolutely safe against him right now?',
+        options: ['p3', 'm6', 'east', 's8'],
+        correctIndex: 0,
+        explanation:
+            'A tile he has thrown within this turn cannot be his winning tile until he draws again. That is absolute safety, and it is why your own p3 is the free discard for this turn only.',
+      ),
+    ],
+  ),
+  Lesson(
+    id: '15-5',
+    stageId: 'stage15',
+    title: 'Push or Fold',
+    subtitle: 'When a small hand is not worth the risk',
+    dialogues: [
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Three faan or nothing. That is the wall every hand has to clear before it counts.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text: 'So a hand worth two faan is worth... nothing?',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Nothing on a discard. It cannot be declared at all, however perfect the wait looks.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Self-draw is the one faan that rescues it, which is why cheap hands live and die on the draw.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'A five-faan hand is a different animal. There, pushing is arithmetic, not hope.',
+      ),
+    ],
+    questions: [
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'What is the minimum a hand must be worth before it can be declared at all?',
+        options: ['1 faan', '2 faan', '3 faan', '5 faan'],
+        correctIndex: 2,
+        explanation:
+            'These rules use a three-faan floor, so a 1- or 2-faan hand is not a winning hand at all.',
+      ),
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'A hand is worth 2 faan as it stands: 平糊 plus 無花. Which 1-faan pattern can still lift it to exactly 3 when you finish the hand yourself?',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: [
+          'self-draw',
+          'self draw',
+          '自摸',
+          'self-draw faan',
+          'self draw faan',
+        ],
+        explanation:
+            '自摸 is worth 1 faan, so finishing on your own draw turns 2 into 3 — the only route this hand has to a legal win.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Your hand is 平糊 plus 無花, worth 2 faan. Another player discards the tile that would complete it. What happens?',
+        options: [
+          'You win and collect 8 points',
+          'You cannot declare the win, because the hand is only 2 faan',
+          'You win, but collect nothing',
+          'You win only if you are holding no flowers',
+        ],
+        correctIndex: 1,
+        explanation:
+            'Below the three-faan minimum the shape does not matter; the hand is simply not declarable, so the discard passes you by.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You complete the same 2-faan hand by drawing the winning tile yourself. What do you collect in total?',
+        options: ['8 points', '12 points', '24 points', '36 points'],
+        correctIndex: 1,
+        explanation:
+            '自摸 adds 1 faan for 3, which pays 4 from each of the other three players, so 12 in total.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'You are sitting on 2 faan and the player on your right has two exposed dragon melds. What is the realistic price of pushing for the win?',
+        options: [
+          'You might collect 12, and you might pay 24 or far more to a big hand',
+          'Nothing, because a 2-faan hand cannot lose',
+          'Only the 8 points you would have won',
+          'The same as folding, so it makes no difference',
+        ],
+        correctIndex: 0,
+        explanation:
+            'A self-drawn 3-faan hand is 12 in total, while a 5-faan discard costs you 24 alone and a limit hand costs 128.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question: 'Which of these push you toward folding rather than pushing?',
+        options: [
+          'Your hand is stuck at 2 faan and cannot be declared on a discard',
+          'An opponent has two exposed dragon melds and a pair of the third dragon',
+          'An opponent has thrown away two whole suits and kept only pins',
+          'Your wait is wide, with every copy still live',
+        ],
+        correctIndex: 0,
+        correctIndexes: [0, 1, 2],
+        explanation:
+            'The first three all point at a hand that cannot pay or a risk that is too big; a wide wait with every copy live is a reason to push, not to fold.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each situation to the decision it calls for.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: '2 faan 平糊, quiet table, one tile from a self-draw',
+            right: 'Push carefully: only the self-draw faan makes it legal',
+          ),
+          QuestionPair(
+            left: '5 faan 混一色, a two-sided wait, nobody looks close',
+            right: 'Push: 24 points off a discard is worth the risk',
+          ),
+          QuestionPair(
+            left:
+                '5 faan hand, but an opponent has three exposed melds and only discards honours',
+            right:
+                'Fold: that pattern usually means a hand bigger than the 24 you would win',
+          ),
+          QuestionPair(
+            left: '2 faan hand, two opponents showing big hands',
+            right: 'Fold now: it cannot be declared and the risk is real',
+          ),
+        ],
+        explanation:
+            'The size of your own hand and the size of theirs are the two numbers that decide every push.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'You have decided to fold. The player on your right discarded {{s5}} on her last discard and has not drawn since. Which discard is absolutely safe against her?',
+        options: ['s5', 's4', 'p6', 'east'],
+        correctIndex: 0,
+        explanation:
+            'A tile an opponent has already thrown this round cannot be her winning tile; once she draws again it only counts as relatively safe.',
+      ),
+    ],
+  ),
+  Lesson(
+    id: '15-6',
+    stageId: 'stage15',
+    title: 'Graduation Challenge',
+    subtitle: 'Everything, all at once',
+    dialogues: [
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'Last lesson. Nothing new today, just everything you already know, at table speed.',
+      ),
+      DialogueMessage(
+        speaker: 'you',
+        text: 'Waits, outs, discards, danger and faan, all in one breath?',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text: 'In one breath. That is what a real turn actually feels like.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text: 'Read the shape, count the outs, price the risk, then commit.',
+      ),
+      DialogueMessage(
+        speaker: 'mj',
+        text:
+            'And check the three-faan floor before you fall in love with a wait.',
+      ),
+    ],
+    questions: [
+      QuizQuestion(
+        type: QuizType.fillBlank,
+        question:
+            'How many different tiles would finish this hand? {{m3}}{{m4}}{{m5}}{{m6}}{{m7}}{{p2}}{{p3}}{{p4}}{{s6}}{{s7}}{{s8}}{{east}}{{east}}',
+        options: const [],
+        correctIndex: 0,
+        acceptedAnswers: ['3', 'three', '3 tiles', 'three tiles'],
+        explanation:
+            'The m3 to m7 block finishes on m2, m5 or m8, so three different tiles complete the hand.',
+      ),
+      QuizQuestion(
+        type: QuizType.multiChoice,
+        question:
+            'Which of these tiles would finish the hand below? {{m3}}{{m4}}{{m5}}{{m6}}{{m7}}{{p2}}{{p3}}{{p4}}{{s6}}{{s7}}{{s8}}{{east}}{{east}}',
+        options: ['{{m1}}', '{{m5}}', '{{p9}}', '{{m8}}'],
+        correctIndex: 1,
+        correctIndexes: [1, 3],
+        explanation:
+            'm5 turns the block into 345 plus 567, and m8 turns it into 345 plus 678; m1 has no m2 to sit beside and p9 is the wrong suit.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'Counting every copy still live, how many outs does this hand have? {{m3}}{{m4}}{{m5}}{{m6}}{{m7}}{{p2}}{{p3}}{{p4}}{{s6}}{{s7}}{{s8}}{{east}}{{east}}',
+        options: ['8', '11', '12', '13'],
+        correctIndex: 1,
+        explanation:
+            'Four m2, three m5 because you hold one, and four m8 add up to eleven live outs.',
+      ),
+      QuizQuestion(
+        type: QuizType.tileSelection,
+        question:
+            'You are holding these fourteen tiles. Which discard leaves the widest wait? {{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{m7}}{{p3}}{{p4}}{{p5}}{{s4}}{{s5}}{{s5}}{{east}}{{east}}',
+        options: ['s5', 's4', 'east', 'm2'],
+        correctIndex: 0,
+        explanation:
+            'Throwing s5 leaves the s4 s5 two-sided wait on s3 or s6 for eight outs; throwing s4 collapses it into a pair wait on s5 or east worth four.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'The hand above will score 平糊 plus 無花, two faan. Throwing s5 keeps eight outs on s3 and s6, but the player on your right has two exposed bamboo melds and has discarded nothing but pins and honours. What is the right play?',
+        options: [
+          'Throw s5 and push, because eight outs is a strong wait',
+          'Throw s4 and keep the four-out pair wait',
+          'Fold: throw the safest tile, because this hand cannot be declared on a discard at all',
+          'Throw m2 and keep both the s4 s5 wait and the s5 pair',
+        ],
+        correctIndex: 2,
+        explanation:
+            'Eight outs still only reach two faan, so a discard win is impossible and the sole route is self-draw; paying a bamboo hand for that is the worst trade at the table.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'A hand scores 混一色, 對對糊 and 無花, and is won off a discard. What does the discarder pay?',
+        options: ['32 points', '48 points', '64 points', '72 points'],
+        correctIndex: 1,
+        explanation:
+            'Three plus three plus one is seven faan, and seven faan off a discard pays 48 points.',
+      ),
+      QuizQuestion(
+        type: QuizType.matching,
+        question: 'Match each result to what it pays.',
+        options: const [],
+        correctIndex: 0,
+        pairs: const [
+          QuestionPair(
+            left: '3 faan, won off a discard',
+            right: '8 points from the discarder',
+          ),
+          QuestionPair(
+            left: '5 faan, self-draw',
+            right: '12 points from each player',
+          ),
+          QuestionPair(
+            left: '7 faan, won off a discard',
+            right: '48 points from the discarder',
+          ),
+          QuestionPair(
+            left: '10 faan, self-draw',
+            right: '64 points from each player',
+          ),
+        ],
+        explanation:
+            'The discard column pays the full amount once, while a self-draw splits half of it across three payers.',
+      ),
+      QuizQuestion(
+        type: QuizType.singleChoice,
+        question:
+            'A hand scores 清一色 7 and 對對糊 3. What is it worth, and what does a discarder pay?',
+        options: [
+          '7 faan, 48 points',
+          '10 faan, 128 points',
+          '10 faan, 192 points',
+          '13 faan, still capped at 128 points',
+        ],
+        correctIndex: 1,
+        explanation:
+            'Seven plus three is ten, which is also the ceiling; a 10-faan hand takes 128 off a discard, while 192 is what a self-draw collects in total.',
       ),
     ],
   ),

@@ -1,0 +1,292 @@
+{
+  "15-3": {
+    "title": "Choosing the Discard",
+    "subtitle": "Which tile keeps the most hand alive",
+    "dialogues": [
+      {
+        "speaker": "mj",
+        "text": "Fourteen tiles, and one of them has to go. The tile you throw decides which thirteen you keep, and those thirteen decide your wait."
+      },
+      {
+        "speaker": "mj",
+        "text": "So never throw the tile that merely looks ugly. Name every tile that would finish the hand, then count the live copies of each."
+      },
+      {
+        "speaker": "you",
+        "text": "And two different discards can both leave me waiting?"
+      },
+      {
+        "speaker": "mj",
+        "text": "Often. From the same fourteen tiles, one discard can leave eleven live tiles and another only four."
+      },
+      {
+        "speaker": "mj",
+        "text": "Read what the discard breaks. A spare tile sitting inside a run usually costs you the least."
+      }
+    ],
+    "questions": [
+      {
+        "type": "singleChoice",
+        "question": "These fourteen tiles: {{m2}}{{m4}}{{m5}}{{m6}}{{m7}}{{m8}}{{p6}}{{p7}}{{p8}}{{s2}}{{s3}}{{s4}}{{east}}{{east}}. Which discard keeps the most outs?",
+        "options": [
+          "The m2",
+          "The m5",
+          "The m8",
+          "An east"
+        ],
+        "correctIndex": 0,
+        "explanation": "Throwing the loose m2 leaves m4 m5 m6 m7 m8, which finishes on m3, m6 or m9 for eleven live copies. Throwing the m5 or the m8 leaves only the closed wait on m3, worth four."
+      },
+      {
+        "type": "fillBlank",
+        "question": "Same hand again: {{m2}}{{m4}}{{m5}}{{m6}}{{m7}}{{m8}}{{p6}}{{p7}}{{p8}}{{s2}}{{s3}}{{s4}}{{east}}{{east}}. After you throw the m2, how many live tiles can still finish the hand?",
+        "options": [],
+        "acceptedAnswers": [
+          "11",
+          "eleven",
+          "11 outs",
+          "eleven outs",
+          "11 tiles"
+        ],
+        "correctIndex": 0,
+        "explanation": "You wait on m3, m6 and m9, and you already hold one m6: four plus three plus four makes eleven."
+      },
+      {
+        "type": "tileSelection",
+        "question": "This fourteen-tile hand: {{m2}}{{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{p3}}{{p4}}{{p5}}{{s7}}{{s8}}{{s9}}{{east}}{{east}}. Which tile is the best discard?",
+        "options": [
+          "m2",
+          "m3",
+          "m6",
+          "p3"
+        ],
+        "correctIndex": 0,
+        "explanation": "Throwing one m2 keeps m2 m3 m4 m5 m6, waiting on m1, m4 and m7 for eleven outs. Throwing the m3 or the m6 breaks that block into a two-pair wait worth only four."
+      },
+      {
+        "type": "matching",
+        "question": "Take this hand: {{m2}}{{m3}}{{m4}}{{m5}}{{m5}}{{m6}}{{p2}}{{p3}}{{p4}}{{s6}}{{s7}}{{s8}}{{east}}{{east}}. Match each discard to the live tiles it leaves you.",
+        "options": [],
+        "pairs": [
+          {
+            "left": "Throw the m5",
+            "right": "11 live tiles"
+          },
+          {
+            "left": "Throw the m2",
+            "right": "7 live tiles"
+          },
+          {
+            "left": "Throw the m6",
+            "right": "4 live tiles"
+          },
+          {
+            "left": "Throw an east",
+            "right": "0 live tiles, the hand stops waiting"
+          }
+        ],
+        "correctIndex": 0,
+        "explanation": "The m5 is the spare tile inside the run, throwing the m2 leaves the two-sided wait on m4 and m7, throwing the m6 leaves only the m5 and east pair wait, and dropping an east leaves no wait at all."
+      },
+      {
+        "type": "singleChoice",
+        "question": "You hold {{m2}}{{m3}}{{m4}}{{m5}}{{m5}}{{m6}}{{p2}}{{p3}}{{p4}}{{s6}}{{s7}}{{s8}}{{east}}{{east}}. Two players at the table argue over the m2 and the m6. Which discard is better?",
+        "options": [
+          "The m2, because it leaves seven live tiles against four and both discards keep the hand waiting",
+          "The m6, because a pair wait is tidier than a two-sided wait",
+          "Either one, since both cost the same number of outs",
+          "Neither, because this hand can never reach a wait"
+        ],
+        "correctIndex": 0,
+        "explanation": "Throwing the m2 leaves the two-sided wait on m4 and m7 for seven live tiles. Throwing the m6 leaves the two-pair wait on m5 and east for four, and you are holding both of those pairs."
+      },
+      {
+        "type": "fillBlank",
+        "question": "Back to {{m2}}{{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{p3}}{{p4}}{{p5}}{{s7}}{{s8}}{{s9}}{{east}}{{east}}. If you throw one m3 instead, you end up waiting on the m2 and the east. How many live tiles is that wait?",
+        "options": [],
+        "acceptedAnswers": [
+          "4",
+          "four",
+          "4 outs",
+          "four outs",
+          "4 tiles"
+        ],
+        "correctIndex": 0,
+        "explanation": "You are already holding two m2 and two east, so only two copies of each remain in the game: four in total."
+      },
+      {
+        "type": "tileOrdering",
+        "question": "With {{m2}}{{m3}}{{m4}}{{m5}}{{m5}}{{m6}}{{p2}}{{p3}}{{p4}}{{s6}}{{s7}}{{s8}}{{east}}{{east}} in front of you, put these three discards in order from the fewest live tiles left to the most.",
+        "options": [],
+        "tiles": [
+          "m6",
+          "m2",
+          "m5"
+        ],
+        "correctIndex": 0,
+        "explanation": "Throwing the m6 leaves four live tiles, throwing the m2 leaves seven, and throwing the spare m5 leaves eleven."
+      },
+      {
+        "type": "multiChoice",
+        "question": "Which of these statements about choosing a discard are true?",
+        "options": [
+          "You count the live copies of every tile that would finish the hand, not just the number of different waits",
+          "A two-sided wait normally leaves more outs than a closed wait",
+          "Throwing a tile out of a pair always costs you more outs than throwing one out of a run",
+          "A discard that leaves the hand no longer waiting keeps zero outs"
+        ],
+        "correctIndex": 0,
+        "correctIndexes": [
+          0,
+          1,
+          3
+        ],
+        "explanation": "The spare tile inside a run is often the cheapest discard there is, so that pair statement is false. The other three are exactly how the counting works."
+      }
+    ]
+  },
+  "15-4": {
+    "title": "Reading the Table",
+    "subtitle": "Danger is what they have shown you",
+    "dialogues": [
+      {
+        "speaker": "mj",
+        "text": "Your outs are only half the story. The other half is what the other three players have already shown you."
+      },
+      {
+        "speaker": "mj",
+        "text": "An exposed pung names a suit. A kong takes four copies out of the game. A player who throws nothing but pin for three rounds is telling you pin is not what he needs."
+      },
+      {
+        "speaker": "you",
+        "text": "So the same hand can want a different tile at a different table?"
+      },
+      {
+        "speaker": "mj",
+        "text": "Same fourteen tiles, different table, different right answer. That is the whole lesson."
+      },
+      {
+        "speaker": "mj",
+        "text": "And when a big hand is sitting opposite you, fewer outs on a tile that has already passed him is the better trade."
+      }
+    ],
+    "questions": [
+      {
+        "type": "singleChoice",
+        "question": "The player across the table has two character pungs exposed and has thrown nothing but pin and bamboo for the last four rounds. What does that tell you?",
+        "options": [
+          "Characters are the suit he is collecting, so a live character tile is the dangerous discard",
+          "Characters are safe, because he already has two pungs of them",
+          "He has given up on characters, so character tiles are the safe ones",
+          "His discard pile says nothing, only his exposed melds count"
+        ],
+        "correctIndex": 0,
+        "explanation": "His exposed pungs name his suit, and a player who throws everything else is locked into that one suit, so his winning tiles live in it. That is the one suit you should not be feeding."
+      },
+      {
+        "type": "singleChoice",
+        "question": "He then declares a kong of the {{p5}}. What has that done to the p5?",
+        "options": [
+          "All four copies are locked in his meld, so the tile can never finish anyone's hand and is safe to throw",
+          "It earns him a faan, so the p5 is now the most dangerous tile on the table",
+          "The p5 becomes a wild tile for the rest of the round",
+          "The p5 stays live in the wall for the other players to draw"
+        ],
+        "correctIndex": 0,
+        "explanation": "A kong puts all four copies of that tile into one meld, so the tile cannot come again. It also cannot be anyone's winning tile, which makes it the safest thing in your hand."
+      },
+      {
+        "type": "singleChoice",
+        "question": "Your hand {{m2}}{{m3}}{{m4}}{{m6}}{{m7}}{{m8}}{{s3}}{{s4}}{{s5}}{{east}}{{east}}{{p6}}{{p7}} is waiting on the p5 and the p8. He has just konged the p5. What is your real wait now?",
+        "options": [
+          "The p8 alone, because every p5 is in his meld",
+          "The p5 and the p8, unchanged",
+          "The p5 alone, because a kong keeps the tile in play",
+          "Neither, because your hand is dead"
+        ],
+        "correctIndex": 0,
+        "explanation": "The shape still reads as p5 and p8, but a kong removes every copy of the p5 from the wall. Only the p8 can still arrive."
+      },
+      {
+        "type": "fillBlank",
+        "question": "Now the hand {{m3}}{{m4}}{{m5}}{{m6}}{{m6}}{{m7}}{{p2}}{{p3}}{{p4}}{{s6}}{{s7}}{{s8}}{{east}}{{east}}, with the table set aside for a moment. If you throw one m6, how many live tiles finish the hand?",
+        "options": [],
+        "acceptedAnswers": [
+          "11",
+          "eleven",
+          "11 outs",
+          "eleven outs",
+          "11 tiles"
+        ],
+        "correctIndex": 0,
+        "explanation": "The run m3 m4 m5 m6 m7 waits on m2, m5 and m8, and you are holding one m5: four plus three plus four makes eleven."
+      },
+      {
+        "type": "multiChoice",
+        "question": "Which of these readings of the table are sound?",
+        "options": [
+          "A tile an opponent has already thrown this turn is absolutely safe against him until he draws again",
+          "An exposed pung tells you which suit that player is collecting",
+          "A declared kong leaves the konged tile live in the wall",
+          "A player who keeps throwing one suit is telling you that suit is not what he needs"
+        ],
+        "correctIndex": 0,
+        "correctIndexes": [
+          0,
+          1,
+          3
+        ],
+        "explanation": "A kong takes all four copies out of the wall, so that statement is exactly backwards. The other three are the readings the table gives you."
+      },
+      {
+        "type": "matching",
+        "question": "Match each thing you see on the table to the reading it gives you.",
+        "options": [],
+        "pairs": [
+          {
+            "left": "Two exposed character pungs",
+            "right": "He is locked into characters, so live character tiles are dangerous"
+          },
+          {
+            "left": "A declared kong of the p5",
+            "right": "Every p5 is gone, so the p5 is dead and safe"
+          },
+          {
+            "left": "He threw the m3 twice in the first two rounds",
+            "right": "The m3 has already passed him twice, so it is close to safe"
+          },
+          {
+            "left": "Nothing but pin in his pond for three rounds",
+            "right": "Pin is the suit he does not need"
+          }
+        ],
+        "correctIndex": 0,
+        "explanation": "Exposed melds and kongs are hard facts about which tiles are left. A discard pile is evidence about what a player wants, and it is why the tile that has already passed him is the cheaper risk."
+      },
+      {
+        "type": "singleChoice",
+        "question": "You hold {{m3}}{{m4}}{{m5}}{{m6}}{{m6}}{{m7}}{{p2}}{{p3}}{{p4}}{{s6}}{{s7}}{{s8}}{{east}}{{east}}. The player across from you has two character pungs exposed, has thrown the m3 twice, and has never thrown an m6. Which one do you throw?",
+        "options": [
+          "The m3: seven live tiles instead of eleven, but it is the tile that has already passed him twice",
+          "The m6: eleven live tiles is far too much to give up",
+          "The m7: four live tiles keeps the hand smallest",
+          "An east: give up the wait and play safe"
+        ],
+        "correctIndex": 0,
+        "explanation": "Throwing the m3 leaves the m5 and m8 wait with seven live tiles, while the m6 would leave eleven. But the m6 is a live middle tile in the suit he is collecting, so giving up four outs to throw the tile he has already passed twice is the right price."
+      },
+      {
+        "type": "tileSelection",
+        "question": "Same hand, {{m3}}{{m4}}{{m5}}{{m6}}{{m6}}{{m7}}{{p2}}{{p3}}{{p4}}{{s6}}{{s7}}{{s8}}{{east}}{{east}}. He has just thrown a {{p3}} and has not drawn since. Which of your tiles is absolutely safe against him right now?",
+        "options": [
+          "p3",
+          "m6",
+          "east",
+          "s8"
+        ],
+        "correctIndex": 0,
+        "explanation": "A tile he has thrown within this turn cannot be his winning tile until he draws again. That is absolute safety, and it is why your own p3 is the free discard for this turn only."
+      }
+    ]
+  }
+}

@@ -1,0 +1,288 @@
+{
+  "15-5": {
+    "title": "Push or Fold",
+    "subtitle": "When a small hand is not worth the risk",
+    "dialogues": [
+      {
+        "speaker": "mj",
+        "text": "Three faan or nothing. That is the wall every hand has to clear before it counts."
+      },
+      {
+        "speaker": "you",
+        "text": "So a hand worth two faan is worth... nothing?"
+      },
+      {
+        "speaker": "mj",
+        "text": "Nothing on a discard. It cannot be declared at all, however perfect the wait looks."
+      },
+      {
+        "speaker": "mj",
+        "text": "Self-draw is the one faan that rescues it, which is why cheap hands live and die on the draw."
+      },
+      {
+        "speaker": "mj",
+        "text": "A five-faan hand is a different animal. There, pushing is arithmetic, not hope."
+      }
+    ],
+    "questions": [
+      {
+        "type": "singleChoice",
+        "question": "What is the minimum a hand must be worth before it can be declared at all?",
+        "options": [
+          "1 faan",
+          "2 faan",
+          "3 faan",
+          "5 faan"
+        ],
+        "correctIndex": 2,
+        "explanation": "These rules use a three-faan floor, so a 1- or 2-faan hand is not a winning hand at all."
+      },
+      {
+        "type": "fillBlank",
+        "question": "A hand is worth 2 faan as it stands: 平糊 plus 無花. Which 1-faan pattern can still lift it to exactly 3 when you finish the hand yourself?",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": [
+          "self-draw",
+          "self draw",
+          "自摸",
+          "self-draw faan",
+          "self draw faan"
+        ],
+        "explanation": "自摸 is worth 1 faan, so finishing on your own draw turns 2 into 3 — the only route this hand has to a legal win."
+      },
+      {
+        "type": "singleChoice",
+        "question": "Your hand is 平糊 plus 無花, worth 2 faan. Another player discards the tile that would complete it. What happens?",
+        "options": [
+          "You win and collect 8 points",
+          "You cannot declare the win, because the hand is only 2 faan",
+          "You win, but collect nothing",
+          "You win only if you are holding no flowers"
+        ],
+        "correctIndex": 1,
+        "explanation": "Below the three-faan minimum the shape does not matter; the hand is simply not declarable, so the discard passes you by."
+      },
+      {
+        "type": "singleChoice",
+        "question": "You complete the same 2-faan hand by drawing the winning tile yourself. What do you collect in total?",
+        "options": [
+          "8 points",
+          "12 points",
+          "24 points",
+          "36 points"
+        ],
+        "correctIndex": 1,
+        "explanation": "自摸 adds 1 faan for 3, which pays 4 from each of the other three players, so 12 in total."
+      },
+      {
+        "type": "singleChoice",
+        "question": "You are sitting on 2 faan and the player on your right has two exposed dragon melds. What is the realistic price of pushing for the win?",
+        "options": [
+          "You might collect 12, and you might pay 24 or far more to a big hand",
+          "Nothing, because a 2-faan hand cannot lose",
+          "Only the 8 points you would have won",
+          "The same as folding, so it makes no difference"
+        ],
+        "correctIndex": 0,
+        "explanation": "A self-drawn 3-faan hand is 12 in total, while a 5-faan discard costs you 24 alone and a limit hand costs 128."
+      },
+      {
+        "type": "multiChoice",
+        "question": "Which of these push you toward folding rather than pushing?",
+        "options": [
+          "Your hand is stuck at 2 faan and cannot be declared on a discard",
+          "An opponent has two exposed dragon melds and a pair of the third dragon",
+          "An opponent has thrown away two whole suits and kept only pins",
+          "Your wait is wide, with every copy still live"
+        ],
+        "correctIndex": 0,
+        "correctIndexes": [
+          0,
+          1,
+          2
+        ],
+        "explanation": "The first three all point at a hand that cannot pay or a risk that is too big; a wide wait with every copy live is a reason to push, not to fold."
+      },
+      {
+        "type": "matching",
+        "question": "Match each situation to the decision it calls for.",
+        "options": [],
+        "correctIndex": 0,
+        "pairs": [
+          {
+            "left": "2 faan 平糊, quiet table, one tile from a self-draw",
+            "right": "Push carefully: only the self-draw faan makes it legal"
+          },
+          {
+            "left": "5 faan 混一色, a two-sided wait, nobody looks close",
+            "right": "Push: 24 points off a discard is worth the risk"
+          },
+          {
+            "left": "5 faan hand, but an opponent has three exposed melds and only discards honours",
+            "right": "Fold: that pattern usually means a hand bigger than the 24 you would win"
+          },
+          {
+            "left": "2 faan hand, two opponents showing big hands",
+            "right": "Fold now: it cannot be declared and the risk is real"
+          }
+        ],
+        "explanation": "The size of your own hand and the size of theirs are the two numbers that decide every push."
+      },
+      {
+        "type": "tileSelection",
+        "question": "You have decided to fold. The player on your right discarded {{s5}} on her last discard and has not drawn since. Which discard is absolutely safe against her?",
+        "options": [
+          "s5",
+          "s4",
+          "p6",
+          "east"
+        ],
+        "correctIndex": 0,
+        "explanation": "A tile an opponent has already thrown this round cannot be her winning tile; once she draws again it only counts as relatively safe."
+      }
+    ]
+  },
+  "15-6": {
+    "title": "Graduation Challenge",
+    "subtitle": "Everything, all at once",
+    "dialogues": [
+      {
+        "speaker": "mj",
+        "text": "Last lesson. Nothing new today, just everything you already know, at table speed."
+      },
+      {
+        "speaker": "you",
+        "text": "Waits, outs, discards, danger and faan, all in one breath?"
+      },
+      {
+        "speaker": "mj",
+        "text": "In one breath. That is what a real turn actually feels like."
+      },
+      {
+        "speaker": "mj",
+        "text": "Read the shape, count the outs, price the risk, then commit."
+      },
+      {
+        "speaker": "mj",
+        "text": "And check the three-faan floor before you fall in love with a wait."
+      }
+    ],
+    "questions": [
+      {
+        "type": "fillBlank",
+        "question": "How many different tiles would finish this hand? {{m3}}{{m4}}{{m5}}{{m6}}{{m7}}{{p2}}{{p3}}{{p4}}{{s6}}{{s7}}{{s8}}{{east}}{{east}}",
+        "options": [],
+        "correctIndex": 0,
+        "acceptedAnswers": [
+          "3",
+          "three",
+          "3 tiles",
+          "three tiles"
+        ],
+        "explanation": "The m3 to m7 block finishes on m2, m5 or m8, so three different tiles complete the hand."
+      },
+      {
+        "type": "multiChoice",
+        "question": "Which of these tiles would finish the hand below? {{m3}}{{m4}}{{m5}}{{m6}}{{m7}}{{p2}}{{p3}}{{p4}}{{s6}}{{s7}}{{s8}}{{east}}{{east}}",
+        "options": [
+          "{{m1}}",
+          "{{m5}}",
+          "{{p9}}",
+          "{{m8}}"
+        ],
+        "correctIndex": 1,
+        "correctIndexes": [
+          1,
+          3
+        ],
+        "explanation": "m5 turns the block into 345 plus 567, and m8 turns it into 345 plus 678; m1 has no m2 to sit beside and p9 is the wrong suit."
+      },
+      {
+        "type": "singleChoice",
+        "question": "Counting every copy still live, how many outs does this hand have? {{m3}}{{m4}}{{m5}}{{m6}}{{m7}}{{p2}}{{p3}}{{p4}}{{s6}}{{s7}}{{s8}}{{east}}{{east}}",
+        "options": [
+          "8",
+          "11",
+          "12",
+          "13"
+        ],
+        "correctIndex": 1,
+        "explanation": "Four m2, three m5 because you hold one, and four m8 add up to eleven live outs."
+      },
+      {
+        "type": "tileSelection",
+        "question": "You are holding these fourteen tiles. Which discard leaves the widest wait? {{m2}}{{m3}}{{m4}}{{m5}}{{m6}}{{m7}}{{p3}}{{p4}}{{p5}}{{s4}}{{s5}}{{s5}}{{east}}{{east}}",
+        "options": [
+          "s5",
+          "s4",
+          "east",
+          "m2"
+        ],
+        "correctIndex": 0,
+        "explanation": "Throwing s5 leaves the s4 s5 two-sided wait on s3 or s6 for eight outs; throwing s4 collapses it into a pair wait on s5 or east worth four."
+      },
+      {
+        "type": "singleChoice",
+        "question": "The hand above will score 平糊 plus 無花, two faan. Throwing s5 keeps eight outs on s3 and s6, but the player on your right has two exposed bamboo melds and has discarded nothing but pins and honours. What is the right play?",
+        "options": [
+          "Throw s5 and push, because eight outs is a strong wait",
+          "Throw s4 and keep the four-out pair wait",
+          "Fold: throw the safest tile, because this hand cannot be declared on a discard at all",
+          "Throw m2 and keep both the s4 s5 wait and the s5 pair"
+        ],
+        "correctIndex": 2,
+        "explanation": "Eight outs still only reach two faan, so a discard win is impossible and the sole route is self-draw; paying a bamboo hand for that is the worst trade at the table."
+      },
+      {
+        "type": "singleChoice",
+        "question": "A hand scores 混一色, 對對糊 and 無花, and is won off a discard. What does the discarder pay?",
+        "options": [
+          "32 points",
+          "48 points",
+          "64 points",
+          "72 points"
+        ],
+        "correctIndex": 1,
+        "explanation": "Three plus three plus one is seven faan, and seven faan off a discard pays 48 points."
+      },
+      {
+        "type": "matching",
+        "question": "Match each result to what it pays.",
+        "options": [],
+        "correctIndex": 0,
+        "pairs": [
+          {
+            "left": "3 faan, won off a discard",
+            "right": "8 points from the discarder"
+          },
+          {
+            "left": "5 faan, self-draw",
+            "right": "12 points from each player"
+          },
+          {
+            "left": "7 faan, won off a discard",
+            "right": "48 points from the discarder"
+          },
+          {
+            "left": "10 faan, self-draw",
+            "right": "64 points from each player"
+          }
+        ],
+        "explanation": "The discard column pays the full amount once, while a self-draw splits half of it across three payers."
+      },
+      {
+        "type": "singleChoice",
+        "question": "A hand scores 清一色 7 and 對對糊 3. What is it worth, and what does a discarder pay?",
+        "options": [
+          "7 faan, 48 points",
+          "10 faan, 128 points",
+          "10 faan, 192 points",
+          "13 faan, still capped at 128 points"
+        ],
+        "correctIndex": 1,
+        "explanation": "Seven plus three is ten, which is also the ceiling; a 10-faan hand takes 128 off a discard, while 192 is what a self-draw collects in total."
+      }
+    ]
+  }
+}

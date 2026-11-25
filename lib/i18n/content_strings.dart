@@ -36,6 +36,8 @@ const Map<String, String> contentStringsZh = {
   'stage.stage13.subtitle': '封頂十番的大牌',
   'stage.stage14.title': '番數精通',
   'stage.stage14.subtitle': '計分、罕見牌型與封頂',
+  'stage.stage15.title': '實戰判斷',
+  'stage.stage15.subtitle': '叫糊、數牌、揀打出',
   'lesson.1-1.title': '歡迎來到麻將世界！',
   'lesson.1-1.subtitle': '甚麼是廣東麻將？',
   'lesson.1-2.title': '花色牌：萬子',

@@ -805,12 +805,16 @@ class MatchingInput extends StatelessWidget implements QuestionInput {
                             width: showCorrect || selected ? 2 : 1,
                           ),
                         ),
-                        child: Text(
-                          right,
-                          style: GoogleFonts.nunito(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w700,
-                            color: showCorrect || selected ? _greenDark : _textDark,
+                        child: Text.rich(
+                          TextSpan(
+                            children: parseTileMarkers(
+                              right,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                              color: showCorrect || selected
+                                  ? _greenDark
+                                  : _textDark,
+                            ),
                           ),
                         ),
                       ),
