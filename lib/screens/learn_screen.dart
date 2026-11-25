@@ -55,28 +55,39 @@ class _LearnScreenState extends State<LearnScreen> {
   /// Detect mascot expression from message text.
   MascotExpression _getMascotExpression(String text) {
     final lower = text.toLowerCase();
-    if (lower.contains('correct') || lower.contains('well done') ||
-        lower.contains('great') || lower.contains('excellent') ||
-        lower.contains('right') || lower.contains('good')) {
+    if (lower.contains('correct') ||
+        lower.contains('well done') ||
+        lower.contains('great') ||
+        lower.contains('excellent') ||
+        lower.contains('right') ||
+        lower.contains('good')) {
       return MascotExpression.happy;
     }
-    if (lower.contains('wrong') || lower.contains('try again') ||
-        lower.contains('not quite') || lower.contains('incorrect') ||
+    if (lower.contains('wrong') ||
+        lower.contains('try again') ||
+        lower.contains('not quite') ||
+        lower.contains('incorrect') ||
         lower.contains('no,')) {
       return MascotExpression.sad;
     }
-    if (lower.contains('wow') || lower.contains('amazing') ||
-        lower.contains('incredible') || lower.contains('unbelievable') ||
+    if (lower.contains('wow') ||
+        lower.contains('amazing') ||
+        lower.contains('incredible') ||
+        lower.contains('unbelievable') ||
         lower.contains('fantastic')) {
       return MascotExpression.excited;
     }
-    if (lower.contains('think') || lower.contains('consider') ||
-        lower.contains('strategy') || lower.contains('analyze') ||
+    if (lower.contains('think') ||
+        lower.contains('consider') ||
+        lower.contains('strategy') ||
+        lower.contains('analyze') ||
         lower.contains('plan')) {
       return MascotExpression.thinking;
     }
-    if (lower.contains('proud') || lower.contains('achievement') ||
-        lower.contains('unlocked') || lower.contains('congratulations') ||
+    if (lower.contains('proud') ||
+        lower.contains('achievement') ||
+        lower.contains('unlocked') ||
+        lower.contains('congratulations') ||
         lower.contains('congrats')) {
       return MascotExpression.content;
     }
@@ -105,8 +116,10 @@ class _LearnScreenState extends State<LearnScreen> {
     Future.delayed(const Duration(milliseconds: 100), () {
       final key = _stageKeys[target];
       if (key?.currentContext != null) {
-        Scrollable.ensureVisible(key!.currentContext!,
-            duration: const Duration(milliseconds: 400));
+        Scrollable.ensureVisible(
+          key!.currentContext!,
+          duration: const Duration(milliseconds: 400),
+        );
       }
     });
   }
@@ -141,23 +154,26 @@ class _LearnScreenState extends State<LearnScreen> {
                 width: 100,
                 height: 133,
                 errorBuilder: (context, error, stackTrace) =>
-                    Text('🐼',
-                        style:
-                            GoogleFonts.nunito(fontSize: 80)),
+                    Text('🐼', style: GoogleFonts.nunito(fontSize: 80)),
               ),
               const SizedBox(height: 24),
-              Text('Welcome to Ludi!',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.nunito(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w800,
-                      color: const Color(0xFF4CAF50))),
+              Text(
+                'Welcome to Ludi!',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.nunito(
+                  fontSize: 26,
+                  fontWeight: FontWeight.w800,
+                  color: const Color(0xFF4CAF50),
+                ),
+              ),
               const SizedBox(height: 12),
               Text(
                 'Learn board games step by step.\nI\'m your panda guide!',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.nunito(
-                    fontSize: 15, color: const Color(0xFF757575)),
+                  fontSize: 15,
+                  color: const Color(0xFF757575),
+                ),
               ),
               const SizedBox(height: 40),
               ElevatedButton(
@@ -175,10 +191,13 @@ class _LearnScreenState extends State<LearnScreen> {
   Widget _buildStageList(GameState game) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Learn',
-            style: GoogleFonts.nunito(
-                fontWeight: FontWeight.w800,
-                color: const Color(0xFF4CAF50))),
+        title: Text(
+          'Learn',
+          style: GoogleFonts.nunito(
+            fontWeight: FontWeight.w800,
+            color: const Color(0xFF4CAF50),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -186,14 +205,21 @@ class _LearnScreenState extends State<LearnScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 8),
-            Text('Choose Your Lesson',
-                style: GoogleFonts.nunito(
-                    fontSize: 20, fontWeight: FontWeight.w800)),
+            Text(
+              'Choose Your Lesson',
+              style: GoogleFonts.nunito(
+                fontSize: 20,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
             const SizedBox(height: 4),
             Text(
-                '${game.completedLessons} / ${game.stages.fold(0, (sum, s) => sum + s.lessonCount)} lessons completed',
-                style: GoogleFonts.nunito(
-                    fontSize: 13, color: const Color(0xFF757575))),
+              '${game.completedLessons} / ${game.stages.fold(0, (sum, s) => sum + s.lessonCount)} lessons completed',
+              style: GoogleFonts.nunito(
+                fontSize: 13,
+                color: const Color(0xFF757575),
+              ),
+            ),
             const SizedBox(height: 20),
             if (_selectedStageId == null)
               ..._buildStageCards(game)
@@ -209,8 +235,7 @@ class _LearnScreenState extends State<LearnScreen> {
     return game.stages.asMap().entries.map((entry) {
       final stageIdx = entry.key;
       final stage = entry.value;
-      final key = _stageKeys.putIfAbsent(
-          stage.id, () => GlobalKey());
+      final key = _stageKeys.putIfAbsent(stage.id, () => GlobalKey());
       // Completion of the previous stage drives the unlock (Duolingo-style).
       final prevStage = stageIdx > 0 ? game.stages[stageIdx - 1] : null;
       final prevCompleted = prevStage?.completedLessons ?? 0;
@@ -233,13 +258,17 @@ class _LearnScreenState extends State<LearnScreen> {
               color: stage.isUnlocked ? Colors.white : const Color(0xFFF5F5F5),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: stage.isUnlocked && stage.completedLessons > 0 &&
+                color:
+                    stage.isUnlocked &&
+                        stage.completedLessons > 0 &&
                         stage.completedLessons < stage.lessonCount
                     ? const Color(0xFF4CAF50)
                     : stage.isUnlocked
-                        ? const Color(0xFFE0E0E0)
-                        : const Color(0xFFEEEEEE),
-                width: stage.isUnlocked && stage.completedLessons > 0 &&
+                    ? const Color(0xFFE0E0E0)
+                    : const Color(0xFFEEEEEE),
+                width:
+                    stage.isUnlocked &&
+                        stage.completedLessons > 0 &&
                         stage.completedLessons < stage.lessonCount
                     ? 2
                     : 1,
@@ -257,11 +286,13 @@ class _LearnScreenState extends State<LearnScreen> {
                     shape: BoxShape.circle,
                   ),
                   child: Center(
-                    child: Icon(stage.icon,
-                        color: stage.isUnlocked
-                            ? stage.color
-                            : const Color(0xFFBDBDBD),
-                        size: 20),
+                    child: Icon(
+                      stage.icon,
+                      color: stage.isUnlocked
+                          ? stage.color
+                          : const Color(0xFFBDBDBD),
+                      size: 20,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 14),
@@ -269,21 +300,26 @@ class _LearnScreenState extends State<LearnScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(stage.localizedTitle,
-                          style: GoogleFonts.nunito(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                            color: stage.isUnlocked
-                                ? const Color(0xFF2D2D2D)
-                                : const Color(0xFFBDBDBD),
-                          )),
+                      Text(
+                        stage.localizedTitle,
+                        style: GoogleFonts.nunito(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: stage.isUnlocked
+                              ? const Color(0xFF2D2D2D)
+                              : const Color(0xFFBDBDBD),
+                        ),
+                      ),
                       const SizedBox(height: 2),
-                      Text(stage.localizedSubtitle,
-                          style: GoogleFonts.nunito(
-                              fontSize: 12,
-                              color: stage.isUnlocked
-                                  ? const Color(0xFF757575)
-                                  : const Color(0xFFBDBDBD))),
+                      Text(
+                        stage.localizedSubtitle,
+                        style: GoogleFonts.nunito(
+                          fontSize: 12,
+                          color: stage.isUnlocked
+                              ? const Color(0xFF757575)
+                              : const Color(0xFFBDBDBD),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -291,8 +327,11 @@ class _LearnScreenState extends State<LearnScreen> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     if (stage.isUnlocked && stage.progress >= 1.0)
-                      const Icon(Icons.check_circle_rounded,
-                          color: Color(0xFF2E7D32), size: 22)
+                      const Icon(
+                        Icons.check_circle_rounded,
+                        color: Color(0xFF2E7D32),
+                        size: 22,
+                      )
                     else if (stage.isUnlocked) ...[
                       Text(
                         '${stage.completedLessons}/${stage.lessonCount}',
@@ -303,15 +342,20 @@ class _LearnScreenState extends State<LearnScreen> {
                         ),
                       ),
                     ] else ...[
-                      Icon(Icons.lock_rounded,
-                          size: 18, color: const Color(0xFFBDBDBD)),
+                      Icon(
+                        Icons.lock_rounded,
+                        size: 18,
+                        color: const Color(0xFFBDBDBD),
+                      ),
                       const SizedBox(height: 4),
-                      Text(prevTotal > 0 ? '$prevCompleted/$prevTotal' : '',
-                          style: GoogleFonts.nunito(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xFF9E9E9E),
-                          )),
+                      Text(
+                        prevTotal > 0 ? '$prevCompleted/$prevTotal' : '',
+                        style: GoogleFonts.nunito(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                          color: const Color(0xFF9E9E9E),
+                        ),
+                      ),
                       const SizedBox(height: 4),
                       SizedBox(
                         width: 56,
@@ -334,8 +378,11 @@ class _LearnScreenState extends State<LearnScreen> {
                 ),
                 if (stage.isUnlocked) ...[
                   const SizedBox(width: 4),
-                  Icon(Icons.chevron_right_rounded,
-                      size: 20, color: stage.color),
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    size: 20,
+                    color: stage.color,
+                  ),
                 ],
               ],
             ),
@@ -362,22 +409,22 @@ class _LearnScreenState extends State<LearnScreen> {
           padding: const EdgeInsets.only(bottom: 16),
           child: Row(
             children: [
-              Icon(Icons.arrow_back_ios_rounded,
-                  size: 16, color: stage.color),
+              Icon(Icons.arrow_back_ios_rounded, size: 16, color: stage.color),
               const SizedBox(width: 4),
-              Text(stage.localizedTitle,
-                  style: GoogleFonts.nunito(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w800,
-                    color: stage.color,
-                  )),
+              Text(
+                stage.localizedTitle,
+                style: GoogleFonts.nunito(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
+                  color: stage.color,
+                ),
+              ),
             ],
           ),
         ),
       ),
       ...lessons.map((lesson) {
-        final key = _lessonKeys.putIfAbsent(
-            lesson.id, () => GlobalKey());
+        final key = _lessonKeys.putIfAbsent(lesson.id, () => GlobalKey());
         final completed = game.isLessonCompleted(lesson.id);
         final unlocked = game.isLessonUnlocked(lesson.id);
         final bestAccuracy = game.getLessonBestAccuracy(lesson.id);
@@ -396,8 +443,8 @@ class _LearnScreenState extends State<LearnScreen> {
                 color: isCurrent
                     ? const Color(0xFFE8F5E9)
                     : unlocked
-                        ? Colors.white
-                        : const Color(0xFFF5F5F5),
+                    ? Colors.white
+                    : const Color(0xFFF5F5F5),
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
                   color: isCurrent
@@ -415,16 +462,15 @@ class _LearnScreenState extends State<LearnScreen> {
                       shape: BoxShape.circle,
                       color: completed
                           ? (crowned
-                              ? const Color(0xFFF9A825)
-                              : const Color(0xFF2E7D32))
+                                ? const Color(0xFFF9A825)
+                                : const Color(0xFF2E7D32))
                           : isCurrent
-                              ? const Color(0xFF4CAF50)
-                              : unlocked
-                                  ? const Color(0xFFE8F5E9)
-                                  : Colors.transparent,
+                          ? const Color(0xFF4CAF50)
+                          : unlocked
+                          ? const Color(0xFFE8F5E9)
+                          : Colors.transparent,
                       border: !completed && !isCurrent && unlocked
-                          ? Border.all(
-                              color: const Color(0xFF4CAF50), width: 2)
+                          ? Border.all(color: const Color(0xFF4CAF50), width: 2)
                           : null,
                     ),
                     child: Center(
@@ -434,18 +480,24 @@ class _LearnScreenState extends State<LearnScreen> {
                                   ? Icons.workspace_premium_rounded
                                   : Icons.check_rounded,
                               color: Colors.white,
-                              size: crowned ? 20 : 18)
+                              size: crowned ? 20 : 18,
+                            )
                           : isCurrent
-                              ? Text('▶',
-                                  style: GoogleFonts.nunito(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w700))
-                              : !unlocked
-                                  ? Icon(Icons.lock_rounded,
-                                      size: 16,
-                                      color: const Color(0xFFBDBDBD))
-                                  : null,
+                          ? Text(
+                              '▶',
+                              style: GoogleFonts.nunito(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            )
+                          : !unlocked
+                          ? Icon(
+                              Icons.lock_rounded,
+                              size: 16,
+                              color: const Color(0xFFBDBDBD),
+                            )
+                          : null,
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -457,13 +509,14 @@ class _LearnScreenState extends State<LearnScreen> {
                           lesson.localizedTitle,
                           style: GoogleFonts.nunito(
                             fontSize: 14,
-                            fontWeight:
-                                unlocked ? FontWeight.w700 : FontWeight.w600,
+                            fontWeight: unlocked
+                                ? FontWeight.w700
+                                : FontWeight.w600,
                             color: completed
                                 ? const Color(0xFF9E9E9E)
                                 : unlocked
-                                    ? const Color(0xFF2D2D2D)
-                                    : const Color(0xFFBDBDBD),
+                                ? const Color(0xFF2D2D2D)
+                                : const Color(0xFFBDBDBD),
                             decoration: completed
                                 ? TextDecoration.lineThrough
                                 : null,
@@ -483,8 +536,11 @@ class _LearnScreenState extends State<LearnScreen> {
                     ),
                   ),
                   if (completed)
-                    Icon(Icons.check_circle_rounded,
-                        color: const Color(0xFF2E7D32), size: 20),
+                    Icon(
+                      Icons.check_circle_rounded,
+                      color: const Color(0xFF2E7D32),
+                      size: 20,
+                    ),
                 ],
               ),
             ),
@@ -525,11 +581,14 @@ class _LearnScreenState extends State<LearnScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Flexible(
-              child: Text(titleText,
-                  style: GoogleFonts.nunito(
-                      fontWeight: FontWeight.w800,
-                      color: const Color(0xFF4CAF50)),
-                  overflow: TextOverflow.ellipsis),
+              child: Text(
+                titleText,
+                style: GoogleFonts.nunito(
+                  fontWeight: FontWeight.w800,
+                  color: const Color(0xFF4CAF50),
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
             const SizedBox(width: 12),
             // Hearts indicator (hidden in review mode)
@@ -551,10 +610,7 @@ class _LearnScreenState extends State<LearnScreen> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                stageColor.withAlpha(8),
-                Colors.white,
-              ],
+              colors: [stageColor.withAlpha(8), Colors.white],
             ),
           ),
           child: Column(
@@ -563,12 +619,12 @@ class _LearnScreenState extends State<LearnScreen> {
                 child: game.quizFinished
                     ? _buildQuizResult(game)
                     : game.showFailure
-                        ? _buildFailureView(game)
-                        : game.dialogueIndex < game.dialogue.length
-                            ? (_showLessonIntro
-                                ? _buildLessonIntro(game)
-                                : _buildDialogueArea(game))
-                            : _buildQuizArea(game),
+                    ? _buildFailureView(game)
+                    : game.dialogueIndex < game.dialogue.length
+                    ? (_showLessonIntro
+                          ? _buildLessonIntro(game)
+                          : _buildDialogueArea(game))
+                    : _buildQuizArea(game),
               ),
             ],
           ),
@@ -593,14 +649,20 @@ class _LearnScreenState extends State<LearnScreen> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.favorite_rounded,
-                color: Color(0xFFE65100), size: 16),
+            const Icon(
+              Icons.favorite_rounded,
+              color: Color(0xFFE65100),
+              size: 16,
+            ),
             const SizedBox(width: 4),
-            Text('∞',
-                style: GoogleFonts.nunito(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w800,
-                    color: const Color(0xFFE65100))),
+            Text(
+              '∞',
+              style: GoogleFonts.nunito(
+                fontSize: 14,
+                fontWeight: FontWeight.w800,
+                color: const Color(0xFFE65100),
+              ),
+            ),
           ],
         ),
       );
@@ -609,9 +671,7 @@ class _LearnScreenState extends State<LearnScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: hearts <= 1
-            ? const Color(0xFFFFEBEE)
-            : const Color(0xFFFFF0F0),
+        color: hearts <= 1 ? const Color(0xFFFFEBEE) : const Color(0xFFFFF0F0),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -621,7 +681,9 @@ class _LearnScreenState extends State<LearnScreen> {
           (i) => Padding(
             padding: EdgeInsets.only(left: i > 0 ? 2 : 0),
             child: Icon(
-              i < hearts ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+              i < hearts
+                  ? Icons.favorite_rounded
+                  : Icons.favorite_border_rounded,
               size: 16,
               color: i < hearts
                   ? const Color(0xFFE53935)
@@ -664,7 +726,8 @@ class _LearnScreenState extends State<LearnScreen> {
   /// lesson so the teacher does not freeze on one face (Gary 2026-11-24 P2).
   MascotExpression _expressionFor(GameState game) {
     final text = game.dialogue[game.dialogueIndex].text.toLowerCase();
-    final hasKeyword = text.contains('correct') ||
+    final hasKeyword =
+        text.contains('correct') ||
         text.contains('well done') ||
         text.contains('great') ||
         text.contains('excellent') ||
@@ -680,7 +743,8 @@ class _LearnScreenState extends State<LearnScreen> {
         text.contains('strategy') ||
         text.contains('proud') ||
         text.contains('congrat');
-    if (hasKeyword) return _getMascotExpression(game.dialogue[game.dialogueIndex].text);
+    if (hasKeyword)
+      return _getMascotExpression(game.dialogue[game.dialogueIndex].text);
     const rotation = <MascotExpression>[
       MascotExpression.content,
       MascotExpression.thinking,
@@ -740,7 +804,9 @@ class _LearnScreenState extends State<LearnScreen> {
                 const SizedBox(height: 12),
                 Container(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 10, vertical: 4),
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFFFFF8E1),
                     borderRadius: BorderRadius.circular(10),
@@ -807,102 +873,100 @@ class _LearnScreenState extends State<LearnScreen> {
     final expression = _expressionFor(game);
 
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-        child: TweenAnimationBuilder<double>(
-          key: ValueKey(game.dialogueIndex),
-          tween: Tween(begin: 0.0, end: 1.0),
-          duration: const Duration(milliseconds: 350),
-          curve: Curves.easeOut,
-          builder: (context, value, child) {
-            return Opacity(
-              opacity: value,
-              child: Transform.translate(
-                offset: Offset(0, 30 * (1 - value)),
-                child: child,
-              ),
-            );
-          },
-          child: Column(
-            children: [
-              const Spacer(),
-              if (isSpeaker)
-                MascotWidget(size: MascotSize.medium.value, expression: expression)
-              else
-                Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE8B93E),
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withAlpha(15),
-                        blurRadius: 8,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Center(
-                    child: Text('🙋',
-                        style: GoogleFonts.nunito(fontSize: 36)),
-                  ),
-                ),
-              const SizedBox(height: 8),
-              Text(
-                isSpeaker ? 'Ludi Sensei' : 'You',
-                style: GoogleFonts.nunito(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                  color: isSpeaker
-                      ? const Color(0xFF4CAF50)
-                      : const Color(0xFFE8B93E),
-                ),
-              ),
-              const SizedBox(height: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      child: TweenAnimationBuilder<double>(
+        key: ValueKey(game.dialogueIndex),
+        tween: Tween(begin: 0.0, end: 1.0),
+        duration: const Duration(milliseconds: 350),
+        curve: Curves.easeOut,
+        builder: (context, value, child) {
+          return Opacity(
+            opacity: value,
+            child: Transform.translate(
+              offset: Offset(0, 30 * (1 - value)),
+              child: child,
+            ),
+          );
+        },
+        child: Column(
+          children: [
+            const Spacer(),
+            if (isSpeaker)
+              MascotWidget(
+                size: MascotSize.medium.value,
+                expression: expression,
+              )
+            else
               Container(
-                constraints: const BoxConstraints(maxWidth: 400),
-                padding: const EdgeInsets.all(18),
+                width: 80,
+                height: 80,
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(18),
+                  color: const Color(0xFFE8B93E),
+                  shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withAlpha(12),
-                      blurRadius: 12,
+                      color: Colors.black.withAlpha(15),
+                      blurRadius: 8,
                       offset: const Offset(0, 3),
                     ),
                   ],
                 ),
-                child: _buildDialogueBubble(msg),
-              ),
-              const SizedBox(height: 24),
-              Text(
-                'Tap to continue',
-                style: GoogleFonts.nunito(
-                  fontSize: 12,
-                  color: const Color(0xFFBDBDBD),
+                child: Center(
+                  child: Text('🙋', style: GoogleFonts.nunito(fontSize: 36)),
                 ),
               ),
-              const Spacer(),
-            ],
-          ),
+            const SizedBox(height: 8),
+            Text(
+              isSpeaker ? 'Ludi Sensei' : 'You',
+              style: GoogleFonts.nunito(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: isSpeaker
+                    ? const Color(0xFF4CAF50)
+                    : const Color(0xFFE8B93E),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Container(
+              constraints: const BoxConstraints(maxWidth: 400),
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(18),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(12),
+                    blurRadius: 12,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: _buildDialogueBubble(msg),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              'Tap to continue',
+              style: GoogleFonts.nunito(
+                fontSize: 12,
+                color: const Color(0xFFBDBDBD),
+              ),
+            ),
+            const Spacer(),
+          ],
         ),
+      ),
     );
   }
 
   /// Parse dialogue text, replacing {{tile_id}} markers with tile image widgets.
-  List<InlineSpan> _parseDialogueText(String text) =>
-      parseTileMarkers(text);
-
+  List<InlineSpan> _parseDialogueText(String text) => parseTileMarkers(text);
 
   Widget _buildDialogueBubble(DialogueMessage msg) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text.rich(
-          TextSpan(children: _parseDialogueText(msg.text)),
-        ),
+        Text.rich(TextSpan(children: _parseDialogueText(msg.text))),
         if (msg.tileIds != null && msg.tileIds!.isNotEmpty) ...[
           const SizedBox(height: 14),
           Center(
@@ -977,6 +1041,7 @@ class _LearnScreenState extends State<LearnScreen> {
     if (game.currentQuestions.isEmpty) return const SizedBox.shrink();
 
     final q = game.currentQuestions[game.currentQuestionIndex];
+    final prompt = splitTrailingHand(q.question);
 
     // Initialize shuffled tiles for ordering questions
     if (q.type == QuizType.tileOrdering &&
@@ -1026,19 +1091,36 @@ class _LearnScreenState extends State<LearnScreen> {
             ],
           ),
           const SizedBox(height: 20),
-          // Question (supports {{tile_id}} markers)
+          // Question (supports {{tile_id}} markers). A trailing run of tiles is
+          // the player's hand; it is laid out separately so it stays grouped.
           Text.rich(
-            TextSpan(children: _parseDialogueText(q.question)),
+            TextSpan(children: _parseDialogueText(prompt.text)),
             style: GoogleFonts.nunito(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-                color: const Color(0xFF2D2D2D)),
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              color: const Color(0xFF2D2D2D),
+            ),
           ),
+          if (prompt.handTiles.isNotEmpty) ...[
+            const SizedBox(height: 10),
+            Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 4,
+              runSpacing: 4,
+              children: [
+                for (final tile in prompt.handTiles)
+                  MahjongTile(tileId: tile, size: 36),
+              ],
+            ),
+          ],
           const SizedBox(height: 20),
 
           // ── Render by question type (one dispatch table, see
           // buildQuestionInput) ──
-          buildQuestionInput(question: q, config: _questionInputConfig(game, q)),
+          buildQuestionInput(
+            question: q,
+            config: _questionInputConfig(game, q),
+          ),
         ],
       ),
     );
@@ -1090,8 +1172,11 @@ class _LearnScreenState extends State<LearnScreen> {
   }
 
   void _submitTileOrdering(GameState game, QuizQuestion q) {
-    _submitAnswer(game, q, QuizAnswer.ordering(
-        List<String>.from(_shuffledOrderingTiles)));
+    _submitAnswer(
+      game,
+      q,
+      QuizAnswer.ordering(List<String>.from(_shuffledOrderingTiles)),
+    );
   }
 
   void _submitFillBlank(GameState game, QuizQuestion q) {
@@ -1099,7 +1184,11 @@ class _LearnScreenState extends State<LearnScreen> {
   }
 
   void _submitMatching(GameState game, QuizQuestion q) {
-    _submitAnswer(game, q, QuizAnswer.matching(Map<String, String>.from(_matches)));
+    _submitAnswer(
+      game,
+      q,
+      QuizAnswer.matching(Map<String, String>.from(_matches)),
+    );
   }
 
   // ── Quiz Result ──
@@ -1120,11 +1209,23 @@ class _LearnScreenState extends State<LearnScreen> {
     }
 
     // ── Review mode or not-passed: keep the classic result screen ──
-    return _buildClassicResultView(game, correct, wrong, totalQuestions, accuracy, passed);
+    return _buildClassicResultView(
+      game,
+      correct,
+      wrong,
+      totalQuestions,
+      accuracy,
+      passed,
+    );
   }
 
   // ═══ Celebration View (matches the design mockup) ═══
-  Widget _buildCelebrationView(GameState game, int correct, int total, int accuracy) {
+  Widget _buildCelebrationView(
+    GameState game,
+    int correct,
+    int total,
+    int accuracy,
+  ) {
     final elapsed = game.lessonElapsedSeconds;
     final mins = (elapsed ~/ 60).toString().padLeft(2, '0');
     final secs = (elapsed % 60).toString().padLeft(2, '0');
@@ -1132,8 +1233,10 @@ class _LearnScreenState extends State<LearnScreen> {
 
     // Stars based on accuracy
     int stars = 1;
-    if (accuracy >= 90) stars = 3;
-    else if (accuracy >= 70) stars = 2;
+    if (accuracy >= 90)
+      stars = 3;
+    else if (accuracy >= 70)
+      stars = 2;
 
     return Stack(
       children: [
@@ -1143,11 +1246,7 @@ class _LearnScreenState extends State<LearnScreen> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                Color(0xFF66BB6A),
-                Color(0xFF4CAF50),
-                Color(0xFF388E3C),
-              ],
+              colors: [Color(0xFF66BB6A), Color(0xFF4CAF50), Color(0xFF388E3C)],
             ),
           ),
         ),
@@ -1159,7 +1258,10 @@ class _LearnScreenState extends State<LearnScreen> {
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 20),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 28,
+                    vertical: 20,
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -1193,7 +1295,10 @@ class _LearnScreenState extends State<LearnScreen> {
                       // Stats card
                       Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 24,
+                          horizontal: 20,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(20),
@@ -1280,7 +1385,10 @@ class _LearnScreenState extends State<LearnScreen> {
                           },
                           style: OutlinedButton.styleFrom(
                             foregroundColor: Colors.white,
-                            side: const BorderSide(color: Colors.white, width: 2),
+                            side: const BorderSide(
+                              color: Colors.white,
+                              width: 2,
+                            ),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
                             ),
@@ -1372,7 +1480,14 @@ class _LearnScreenState extends State<LearnScreen> {
   }
 
   // ═══ Classic Result View (for review mode or not-passed) ═══
-  Widget _buildClassicResultView(GameState game, int correct, int wrong, int totalQuestions, int accuracy, bool passed) {
+  Widget _buildClassicResultView(
+    GameState game,
+    int correct,
+    int wrong,
+    int totalQuestions,
+    int accuracy,
+    bool passed,
+  ) {
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Column(
@@ -1390,14 +1505,12 @@ class _LearnScreenState extends State<LearnScreen> {
             game.isReviewMode
                 ? 'Review Complete!'
                 : passed
-                    ? 'Great Job!'
-                    : 'Keep Trying!',
+                ? 'Great Job!'
+                : 'Keep Trying!',
             style: GoogleFonts.nunito(
               fontSize: 26,
               fontWeight: FontWeight.w800,
-              color: passed
-                  ? const Color(0xFF4CAF50)
-                  : const Color(0xFFE8B93E),
+              color: passed ? const Color(0xFF4CAF50) : const Color(0xFFE8B93E),
             ),
           ),
           const SizedBox(height: 12),
@@ -1405,14 +1518,19 @@ class _LearnScreenState extends State<LearnScreen> {
           // Stats cards
           Row(
             children: [
-              _buildStatCard('Accuracy', '$accuracy%',
-                  passed ? const Color(0xFF2E7D32) : const Color(0xFFE8B93E)),
+              _buildStatCard(
+                'Accuracy',
+                '$accuracy%',
+                passed ? const Color(0xFF2E7D32) : const Color(0xFFE8B93E),
+              ),
               const SizedBox(width: 12),
-              _buildStatCard('Correct', '$correct',
-                  const Color(0xFF2E7D32)),
+              _buildStatCard('Correct', '$correct', const Color(0xFF2E7D32)),
               const SizedBox(width: 12),
-              _buildStatCard('Wrong', '$wrong',
-                  wrong > 0 ? const Color(0xFF4CAF50) : const Color(0xFF9E9E9E)),
+              _buildStatCard(
+                'Wrong',
+                '$wrong',
+                wrong > 0 ? const Color(0xFF4CAF50) : const Color(0xFF9E9E9E),
+              ),
             ],
           ),
           const SizedBox(height: 20),
@@ -1422,9 +1540,10 @@ class _LearnScreenState extends State<LearnScreen> {
             Text(
               '+${passed ? 20 : 5} XP',
               style: GoogleFonts.nunito(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFFE8B93E)),
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                color: const Color(0xFFE8B93E),
+              ),
             ),
             const SizedBox(height: 8),
           ],
@@ -1438,15 +1557,20 @@ class _LearnScreenState extends State<LearnScreen> {
               decoration: BoxDecoration(
                 color: const Color(0xFFFFF9E6),
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: const Color(0xFFE8B93E).withAlpha(80)),
+                border: Border.all(
+                  color: const Color(0xFFE8B93E).withAlpha(80),
+                ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.lightbulb_rounded,
-                          color: Color(0xFFE8B93E), size: 20),
+                      const Icon(
+                        Icons.lightbulb_rounded,
+                        color: Color(0xFFE8B93E),
+                        size: 20,
+                      ),
                       const SizedBox(width: 6),
                       Text(
                         'Review Mistakes',
@@ -1459,17 +1583,14 @@ class _LearnScreenState extends State<LearnScreen> {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  ...List.generate(
-                    wrong > 3 ? 3 : wrong,
-                    (i) {
-                      final waList = game.wrongAnswers;
-                      if (i < waList.length) {
-                        final wa = waList[waList.length - 1 - i];
-                        return _buildWrongAnswerItem(game, wa);
-                      }
-                      return const SizedBox.shrink();
-                    },
-                  ),
+                  ...List.generate(wrong > 3 ? 3 : wrong, (i) {
+                    final waList = game.wrongAnswers;
+                    if (i < waList.length) {
+                      final wa = waList[waList.length - 1 - i];
+                      return _buildWrongAnswerItem(game, wa);
+                    }
+                    return const SizedBox.shrink();
+                  }),
                   if (wrong > 3)
                     Padding(
                       padding: const EdgeInsets.only(top: 8),
@@ -1502,13 +1623,17 @@ class _LearnScreenState extends State<LearnScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF4CAF50),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14)),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
                 ),
-                child: Text('Done',
-                    style: GoogleFonts.nunito(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white)),
+                child: Text(
+                  'Done',
+                  style: GoogleFonts.nunito(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 12),
@@ -1524,11 +1649,16 @@ class _LearnScreenState extends State<LearnScreen> {
                   foregroundColor: const Color(0xFF4CAF50),
                   side: const BorderSide(color: Color(0xFF4CAF50)),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14)),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
                 ),
-                child: Text('Retry Review',
-                    style: GoogleFonts.nunito(
-                        fontSize: 15, fontWeight: FontWeight.w700)),
+                child: Text(
+                  'Retry Review',
+                  style: GoogleFonts.nunito(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
               ),
             ),
           ] else ...[
@@ -1541,13 +1671,17 @@ class _LearnScreenState extends State<LearnScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF4CAF50),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14)),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
                 ),
-                child: Text('Retry Quiz',
-                    style: GoogleFonts.nunito(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white)),
+                child: Text(
+                  'Retry Quiz',
+                  style: GoogleFonts.nunito(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 12),
@@ -1569,14 +1703,19 @@ class _LearnScreenState extends State<LearnScreen> {
                       });
                     },
                     icon: const Icon(Icons.replay_rounded, size: 18),
-                    label: Text('Review Wrong Answers ($wrong)',
-                        style: GoogleFonts.nunito(
-                            fontSize: 15, fontWeight: FontWeight.w700)),
+                    label: Text(
+                      'Review Wrong Answers ($wrong)',
+                      style: GoogleFonts.nunito(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: const Color(0xFFE8B93E),
                       side: const BorderSide(color: Color(0xFFE8B93E)),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14)),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
                     ),
                   ),
                 ),
@@ -1613,11 +1752,13 @@ class _LearnScreenState extends State<LearnScreen> {
                     ),
                   ),
                   const SizedBox(width: 4),
-                  Icon(Icons.arrow_forward_rounded,
-                      size: 18,
-                      color: game.hearts > 0
-                          ? const Color(0xFF4CAF50)
-                          : const Color(0xFFBDBDBD)),
+                  Icon(
+                    Icons.arrow_forward_rounded,
+                    size: 18,
+                    color: game.hearts > 0
+                        ? const Color(0xFF4CAF50)
+                        : const Color(0xFFBDBDBD),
+                  ),
                 ],
               ),
             ),
@@ -1638,16 +1779,22 @@ class _LearnScreenState extends State<LearnScreen> {
         ),
         child: Column(
           children: [
-            Text(value,
-                style: GoogleFonts.nunito(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w800,
-                    color: valueColor)),
+            Text(
+              value,
+              style: GoogleFonts.nunito(
+                fontSize: 22,
+                fontWeight: FontWeight.w800,
+                color: valueColor,
+              ),
+            ),
             const SizedBox(height: 2),
-            Text(label,
-                style: GoogleFonts.nunito(
-                    fontSize: 11,
-                    color: const Color(0xFF9E9E9E))),
+            Text(
+              label,
+              style: GoogleFonts.nunito(
+                fontSize: 11,
+                color: const Color(0xFF9E9E9E),
+              ),
+            ),
           ],
         ),
       ),
@@ -1663,8 +1810,7 @@ class _LearnScreenState extends State<LearnScreen> {
       return const SizedBox.shrink();
     }
 
-    if (wa.questionIndex < 0 ||
-        wa.questionIndex >= lesson.questions.length) {
+    if (wa.questionIndex < 0 || wa.questionIndex >= lesson.questions.length) {
       return const SizedBox.shrink();
     }
 
@@ -1695,8 +1841,11 @@ class _LearnScreenState extends State<LearnScreen> {
                 q.correctIndex < q.options.length) ...[
               Row(
                 children: [
-                  const Icon(Icons.check_circle_rounded,
-                      color: Color(0xFF2E7D32), size: 16),
+                  const Icon(
+                    Icons.check_circle_rounded,
+                    color: Color(0xFF2E7D32),
+                    size: 16,
+                  ),
                   const SizedBox(width: 4),
                   Text(
                     'Correct: ${q.options[q.correctIndex]}',
@@ -1733,20 +1882,24 @@ class _LearnScreenState extends State<LearnScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('💔',
-              style: GoogleFonts.nunito(fontSize: 64)),
+          Text('💔', style: GoogleFonts.nunito(fontSize: 64)),
           const SizedBox(height: 16),
-          Text('Out of Hearts!',
-              style: GoogleFonts.nunito(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w800,
-                  color: const Color(0xFF4CAF50))),
+          Text(
+            'Out of Hearts!',
+            style: GoogleFonts.nunito(
+              fontSize: 24,
+              fontWeight: FontWeight.w800,
+              color: const Color(0xFF4CAF50),
+            ),
+          ),
           const SizedBox(height: 8),
           Text(
             'Hearts refill daily, or go Premium for unlimited!',
             textAlign: TextAlign.center,
             style: GoogleFonts.nunito(
-                fontSize: 14, color: const Color(0xFF757575)),
+              fontSize: 14,
+              color: const Color(0xFF757575),
+            ),
           ),
           const SizedBox(height: 24),
           ElevatedButton(
@@ -1759,13 +1912,17 @@ class _LearnScreenState extends State<LearnScreen> {
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF4CAF50),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14)),
+                borderRadius: BorderRadius.circular(14),
+              ),
             ),
-            child: Text('Upgrade to Pro',
-                style: GoogleFonts.nunito(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white)),
+            child: Text(
+              'Upgrade to Pro',
+              style: GoogleFonts.nunito(
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              ),
+            ),
           ),
           const SizedBox(height: 12),
           TextButton(
@@ -1776,13 +1933,17 @@ class _LearnScreenState extends State<LearnScreen> {
                 Text(
                   'Next Lesson',
                   style: GoogleFonts.nunito(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xFFBDBDBD)),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFFBDBDBD),
+                  ),
                 ),
                 const SizedBox(width: 4),
-                const Icon(Icons.arrow_forward_rounded,
-                    size: 18, color: Color(0xFFBDBDBD)),
+                const Icon(
+                  Icons.arrow_forward_rounded,
+                  size: 18,
+                  color: Color(0xFFBDBDBD),
+                ),
               ],
             ),
           ),
@@ -1838,10 +1999,7 @@ class _PulseScoreCircleState extends State<_PulseScoreCircle>
     return AnimatedBuilder(
       animation: _animation,
       builder: (context, child) {
-        return Transform.scale(
-          scale: _animation.value,
-          child: child,
-        );
+        return Transform.scale(scale: _animation.value, child: child);
       },
       child: Container(
         width: 120,
@@ -1855,10 +2013,9 @@ class _PulseScoreCircleState extends State<_PulseScoreCircle>
           ),
           boxShadow: [
             BoxShadow(
-              color: (passed
-                      ? const Color(0xFF4CAF50)
-                      : const Color(0xFFE8B93E))
-                  .withAlpha(40),
+              color:
+                  (passed ? const Color(0xFF4CAF50) : const Color(0xFFE8B93E))
+                      .withAlpha(40),
               blurRadius: 16,
               offset: const Offset(0, 4),
             ),
