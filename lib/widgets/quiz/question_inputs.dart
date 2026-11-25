@@ -190,7 +190,7 @@ class ChoiceInput extends StatelessWidget implements QuestionInput {
                   child: showTiles
                       ? Row(
                           children: [
-                            MahjongTile(tileId: option, size: 84),
+                            MahjongTile(tileId: option, size: 48),
                             const Spacer(),
                             if (feedback && isCorrectOption)
                               const Icon(Icons.check_circle_rounded,
