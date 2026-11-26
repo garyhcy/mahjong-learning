@@ -7,6 +7,7 @@ import '../services/audio_service.dart';
 import '../services/app_i18n.dart';
 import '../models/mahjong_data.dart';
 import '../widgets/mascot_widget.dart';
+import '../widgets/daily_goal_card.dart';
 import '../widgets/stage_map.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -340,9 +341,15 @@ class HomeScreen extends StatelessWidget {
       (s) => s.isUnlocked && s.progress < 1.0,
     );
 
+    final goalStage = currentIndex >= 0 ? stages[currentIndex] : stages.last;
+
     return ListView(
-      padding: const EdgeInsets.only(top: 10, bottom: 40),
+      padding: const EdgeInsets.only(top: 6, bottom: 40),
       children: [
+        DailyGoalCard(
+          game: game,
+          onStartLesson: () => _openStage(context, game, goalStage),
+        ),
         StageMap(
           stages: stages,
           currentIndex: currentIndex,

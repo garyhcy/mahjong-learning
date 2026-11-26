@@ -2,12 +2,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'providers/game_state.dart';
 import 'providers/match_state.dart';
+import 'services/analytics_service.dart';
 import 'services/purchases_service.dart';
 import 'services/app_i18n.dart';
 import 'services/audio_service.dart';
@@ -27,6 +29,10 @@ Future<void> main() async {
   } catch (_) {
     // Firebase optional in local/dev until config is added.
   }
+  await AnalyticsService.instance.init();
+  AnalyticsService.instance.log('app_open', {
+    'platform': kIsWeb ? 'web' : defaultTargetPlatform.name,
+  });
   await PurchasesService.init();
   // Load audio preferences
   await AudioService().init();
@@ -36,6 +42,16 @@ Future<void> main() async {
   AppI18n.set(langKey == 'zh' ? DisplayLang.zh : DisplayLang.en);
   final gameState = GameState();
   await gameState.loadFromStorage();
+  final currentStage = gameState.stages.firstWhere(
+    (stage) => stage.isUnlocked && stage.progress < 1.0,
+    orElse: () => gameState.stages.last,
+  );
+  await AnalyticsService.instance.setUserProperties(
+    language: langKey,
+    isPro: gameState.isPremium,
+    stage: currentStage.id,
+    streak: gameState.streak,
+  );
   final matchState = MatchState();
   await matchState.load();
   await matchState.loadRooms();
@@ -46,7 +62,12 @@ Future<void> main() async {
 bool firebaseAvailable = false;
 
 class MahjongApp extends StatelessWidget {
-  const MahjongApp({super.key, required this.gameState, required this.matchState, required this.i18n});
+  const MahjongApp({
+    super.key,
+    required this.gameState,
+    required this.matchState,
+    required this.i18n,
+  });
 
   final GameState gameState;
   final MatchState matchState;
@@ -89,8 +110,10 @@ class MahjongApp extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF4CAF50),
                   foregroundColor: Colors.white,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 32,
+                    vertical: 16,
+                  ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
@@ -176,9 +199,7 @@ class _AuthFlowState extends State<_AuthFlow> {
           return const Scaffold(
             backgroundColor: Color(0xFFFFF8F0),
             body: Center(
-              child: CircularProgressIndicator(
-                color: Color(0xFF4CAF50),
-              ),
+              child: CircularProgressIndicator(color: Color(0xFF4CAF50)),
             ),
           );
         }
@@ -205,22 +226,29 @@ class _LanguageGateState extends State<_LanguageGate> {
     super.initState();
     _checkChosen();
   }
+
   Future<void> _checkChosen() async {
     final p = await SharedPreferences.getInstance();
-    if (mounted) setState(() => _hasChosen = p.getString('app_display_lang') != null);
+    if (mounted)
+      setState(() => _hasChosen = p.getString('app_display_lang') != null);
   }
+
   void _onLanguageSelected() {
     setState(() => _hasChosen = true);
   }
+
   @override
   Widget build(BuildContext context) {
     if (_hasChosen == null) {
       return const Scaffold(
         backgroundColor: Color(0xFFFFF8F0),
-        body: Center(child: CircularProgressIndicator(color: Color(0xFF4CAF50))),
+        body: Center(
+          child: CircularProgressIndicator(color: Color(0xFF4CAF50)),
+        ),
       );
     }
-    if (!_hasChosen!) return _LanguageSelectScreen(onSelected: _onLanguageSelected);
+    if (!_hasChosen!)
+      return _LanguageSelectScreen(onSelected: _onLanguageSelected);
     return widget.child;
   }
 }
@@ -233,6 +261,9 @@ class _LanguageSelectScreen extends StatelessWidget {
     final p = await SharedPreferences.getInstance();
     await p.setString('app_display_lang', lang == DisplayLang.zh ? 'zh' : 'en');
     AppI18n.set(lang);
+    AnalyticsService.instance.log('language_selected', {
+      'language': lang == DisplayLang.zh ? 'zh' : 'en',
+    });
     onSelected();
   }
 
@@ -248,19 +279,30 @@ class _LanguageSelectScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               // Logo
-              Image.asset('assets/images/topbar_logo.png', width: 120, height: 120),
+              Image.asset(
+                'assets/images/topbar_logo.png',
+                width: 120,
+                height: 120,
+              ),
               const SizedBox(height: 16),
-              Text(AppI18n.t('lang.title'),
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.nunito(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w800,
-                      color: const Color(0xFF2D2D2D))),
+              Text(
+                AppI18n.t('lang.title'),
+                textAlign: TextAlign.center,
+                style: GoogleFonts.nunito(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w800,
+                  color: const Color(0xFF2D2D2D),
+                ),
+              ),
               const SizedBox(height: 8),
-              Text(AppI18n.t('lang.changeLater'),
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.nunito(
-                      fontSize: 14, color: const Color(0xFF757575))),
+              Text(
+                AppI18n.t('lang.changeLater'),
+                textAlign: TextAlign.center,
+                style: GoogleFonts.nunito(
+                  fontSize: 14,
+                  color: const Color(0xFF757575),
+                ),
+              ),
               const SizedBox(height: 32),
               // ── 中文 ──
               ElevatedButton(
@@ -275,9 +317,13 @@ class _LanguageSelectScreen extends StatelessWidget {
                     side: const BorderSide(color: Color(0xFF4CAF50)),
                   ),
                 ),
-                child: Text('中文',
-                    style: GoogleFonts.nunito(
-                        fontSize: 20, fontWeight: FontWeight.w700)),
+                child: Text(
+                  '中文',
+                  style: GoogleFonts.nunito(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
               ),
               const SizedBox(height: 12),
               // ── English ──
@@ -293,9 +339,13 @@ class _LanguageSelectScreen extends StatelessWidget {
                     side: const BorderSide(color: Color(0xFF4CAF50)),
                   ),
                 ),
-                child: Text('English',
-                    style: GoogleFonts.nunito(
-                        fontSize: 20, fontWeight: FontWeight.w700)),
+                child: Text(
+                  'English',
+                  style: GoogleFonts.nunito(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
               ),
             ],
           ),
@@ -327,6 +377,7 @@ class _MainShellState extends State<MainShell> {
   @override
   void initState() {
     super.initState();
+    AnalyticsService.instance.screen('home');
     // Start BGM when entering the main app (if enabled).
     // Wrapped in .catchError so a BGM failure can never crash MainShell.
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -337,6 +388,10 @@ class _MainShellState extends State<MainShell> {
   void switchToTab(int index) {
     if (mounted && index != _currentIndex) {
       setState(() => _currentIndex = index);
+      const names = ['home', 'community', 'practice', 'more'];
+      if (index >= 0 && index < names.length) {
+        AnalyticsService.instance.screen(names[index]);
+      }
     }
   }
 
@@ -357,10 +412,7 @@ class _MainShellState extends State<MainShell> {
           return IndexedStack(
             index: _currentIndex,
             children: _screens
-                .map((s) => KeyedSubtree(
-                      key: ValueKey(lang),
-                      child: s,
-                    ))
+                .map((s) => KeyedSubtree(key: ValueKey(lang), child: s))
                 .toList(),
           );
         },
@@ -386,9 +438,21 @@ class _MainShellState extends State<MainShell> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     _navItem(0, Icons.home_rounded, AppI18n.t('nav.home')),
-                    _navItem(1, Icons.people_rounded, AppI18n.t('nav.community')),
-                    _navItem(2, Icons.school_rounded, AppI18n.t('nav.practice')),
-                    _navItem(3, Icons.more_horiz_rounded, AppI18n.t('nav.more')),
+                    _navItem(
+                      1,
+                      Icons.people_rounded,
+                      AppI18n.t('nav.community'),
+                    ),
+                    _navItem(
+                      2,
+                      Icons.school_rounded,
+                      AppI18n.t('nav.practice'),
+                    ),
+                    _navItem(
+                      3,
+                      Icons.more_horiz_rounded,
+                      AppI18n.t('nav.more'),
+                    ),
                   ],
                 ),
               ),
@@ -412,30 +476,31 @@ class _MainShellState extends State<MainShell> {
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeOut,
         builder: (context, value, child) {
-          return Transform.translate(
-            offset: Offset(0, value),
-            child: child,
-          );
+          return Transform.translate(offset: Offset(0, value), child: child);
         },
         child: SizedBox(
           width: 64,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon,
+              Icon(
+                icon,
+                color: active
+                    ? const Color(0xFF4CAF50)
+                    : const Color(0xFFBDBDBD),
+                size: 24,
+              ),
+              const SizedBox(height: 2),
+              Text(
+                label,
+                style: GoogleFonts.nunito(
+                  fontSize: 10,
+                  fontWeight: active ? FontWeight.w700 : FontWeight.w500,
                   color: active
                       ? const Color(0xFF4CAF50)
                       : const Color(0xFFBDBDBD),
-                  size: 24),
-              const SizedBox(height: 2),
-              Text(label,
-                  style: GoogleFonts.nunito(
-                    fontSize: 10,
-                    fontWeight: active ? FontWeight.w700 : FontWeight.w500,
-                    color: active
-                        ? const Color(0xFF4CAF50)
-                        : const Color(0xFFBDBDBD),
-                  )),
+                ),
+              ),
             ],
           ),
         ),

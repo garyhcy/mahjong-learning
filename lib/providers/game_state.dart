@@ -9,13 +9,14 @@ import '../models/mahjong_data.dart';
 import '../models/quiz_answer.dart';
 import '../services/cloud_sync_service.dart';
 import '../services/firebase_service.dart';
+import '../services/analytics_service.dart';
 import '../services/progress_storage.dart';
 import 'mixins/friends_mixin.dart';
 
 class GameState extends ChangeNotifier with FriendsMixin {
   GameState({ProgressStorage? storage, CloudSyncService? cloudSyncService})
-      : _storage = storage ?? ProgressStorage(),
-        _cloudSyncService = cloudSyncService ?? CloudSyncService();
+    : _storage = storage ?? ProgressStorage(),
+      _cloudSyncService = cloudSyncService ?? CloudSyncService();
 
   final ProgressStorage _storage;
   final CloudSyncService _cloudSyncService;
@@ -36,16 +37,18 @@ class GameState extends ChangeNotifier with FriendsMixin {
   // sharing the instances in `defaultStages` would leak unlock state between
   // GameState instances (and across tests / re-login).
   final List<LearningStage> _stages = defaultStages
-      .map((s) => LearningStage(
-            id: s.id,
-            title: s.title,
-            subtitle: s.subtitle,
-            icon: s.icon,
-            color: s.color,
-            lessonCount: s.lessonCount,
-            isUnlocked: s.isUnlocked,
-            completedLessons: s.completedLessons,
-          ))
+      .map(
+        (s) => LearningStage(
+          id: s.id,
+          title: s.title,
+          subtitle: s.subtitle,
+          icon: s.icon,
+          color: s.color,
+          lessonCount: s.lessonCount,
+          isUnlocked: s.isUnlocked,
+          completedLessons: s.completedLessons,
+        ),
+      )
       .toList();
 
   int _currentQuestionIndex = 0;
@@ -78,8 +81,10 @@ class GameState extends ChangeNotifier with FriendsMixin {
   List<int> _lessonCompletionTimestamps = [];
   Set<String> _practiceModesCompleted = {};
   int _speedChallengeWins = 0;
-  int _lastInactiveDays = 0; // days between last 2 active periods; used for comeback
-  double _lastQuizCorrectRatio = 0.0; // ratio of correct answers in last completed quiz
+  int _lastInactiveDays =
+      0; // days between last 2 active periods; used for comeback
+  double _lastQuizCorrectRatio =
+      0.0; // ratio of correct answers in last completed quiz
   final Map<String, int> _dailyTasks = {};
   String _lastActiveDate = '';
   int _consecutiveCorrect = 0;
@@ -93,6 +98,7 @@ class GameState extends ChangeNotifier with FriendsMixin {
   // ── Review mode ──
   bool _isReviewMode = false;
   List<QuizQuestion> _reviewQuestions = [];
+
   /// Wrong-answer entry that each review question came from (parallel list).
   final List<WrongAnswer> _reviewSources = [];
   int _reviewCorrectCount = 0;
@@ -119,8 +125,7 @@ class GameState extends ChangeNotifier with FriendsMixin {
   String? get currentLessonId => _currentLessonId;
   List<Lesson> get allLessons => allLessonsData;
   List<QuizQuestion> get currentQuestions => _currentQuestions;
-  int get completedLessons =>
-      _lessonCompleted.values.where((v) => v).length;
+  int get completedLessons => _lessonCompleted.values.where((v) => v).length;
   bool isLessonCompleted(String id) => _lessonCompleted[id] ?? false;
 
   /// Best accuracy (0-100) for a lesson across all attempts.
@@ -130,8 +135,9 @@ class GameState extends ChangeNotifier with FriendsMixin {
   /// Weighted stage accuracy (0-100). Weights = number of questions per lesson.
   /// Only completed lessons contribute.
   int getStageAccuracy(String stageId) {
-    final stageLessons =
-        allLessonsData.where((l) => l.stageId == stageId).toList();
+    final stageLessons = allLessonsData
+        .where((l) => l.stageId == stageId)
+        .toList();
     if (stageLessons.isEmpty) return 0;
     int totalWeight = 0;
     int weightedSum = 0;
@@ -145,6 +151,7 @@ class GameState extends ChangeNotifier with FriendsMixin {
     if (totalWeight == 0) return 0;
     return (weightedSum / totalWeight).round();
   }
+
   String? get targetStageId => _targetStageId;
   bool get cloudEnabled => _cloudEnabled;
   bool get cloudConnected => _cloudEnabled && _cloudUid != null;
@@ -161,10 +168,13 @@ class GameState extends ChangeNotifier with FriendsMixin {
   String get lastActiveDate => _lastActiveDate;
 
   // Achievement tracking getters
-  List<int> get lessonCompletionTimestamps => List.unmodifiable(_lessonCompletionTimestamps);
-  Set<String> get practiceModesCompleted => Set.unmodifiable(_practiceModesCompleted);
+  List<int> get lessonCompletionTimestamps =>
+      List.unmodifiable(_lessonCompletionTimestamps);
+  Set<String> get practiceModesCompleted =>
+      Set.unmodifiable(_practiceModesCompleted);
   int get speedChallengeWins => _speedChallengeWins;
-  int get lastInactiveDays => _lastInactiveDays;  double get lastQuizCorrectRatio => _lastQuizCorrectRatio;
+  int get lastInactiveDays => _lastInactiveDays;
+  double get lastQuizCorrectRatio => _lastQuizCorrectRatio;
 
   /// Lessons completed in last 30 minutes (for quick_learner achievement)
   int get lessonsCompletedInLast30Min {
@@ -216,13 +226,15 @@ class GameState extends ChangeNotifier with FriendsMixin {
   /// Independent from XP-based League (which rewards activity, not skill).
   int get skillRating {
     final totalLessons = allLessonsData.length;
-    final progress =
-        totalLessons == 0 ? 0.0 : (completedLessons / totalLessons);
+    final progress = totalLessons == 0
+        ? 0.0
+        : (completedLessons / totalLessons);
 
     // Accuracy proxy: penalize accumulated wrong answers relative to attempts.
     final attempts = completedLessons + _wrongAnswers.length;
-    final accuracy =
-        attempts == 0 ? 0.6 : (completedLessons / attempts).clamp(0.0, 1.0);
+    final accuracy = attempts == 0
+        ? 0.6
+        : (completedLessons / attempts).clamp(0.0, 1.0);
 
     // Momentum: consecutive-correct streak, capped.
     final momentum = (_consecutiveCorrect.clamp(0, 10)) / 10.0;
@@ -387,15 +399,33 @@ class GameState extends ChangeNotifier with FriendsMixin {
     }
   }
 
+  bool _isDailyTaskComplete(String taskId) {
+    switch (taskId) {
+      case 'complete_lesson':
+        return _lessonCompletedToday >= 1;
+      case 'streak_3':
+        return _consecutiveCorrect >= 3;
+      case 'earn_50xp':
+        return _dailyXpEarned >= 50;
+      default:
+        return false;
+    }
+  }
+
   void claimDailyTaskReward(String taskId) {
     final def = dailyTaskDefs[taskId];
     if (def == null) return;
-    final progress = _dailyTasks[taskId] ?? 0;
-    if (progress != 1) return;
+    // Derive completion from the live counters, not only the stored flag:
+    // progress restored from disk may not have been stamped yet.
+    if (!_isDailyTaskComplete(taskId)) return;
     if (_dailyTasks.containsKey('${taskId}_claimed')) return;
 
     _dailyTasks['${taskId}_claimed'] = 1;
     _xp += def.reward;
+    AnalyticsService.instance.log('daily_task_claim', {
+      'task_id': taskId,
+      'reward_xp': def.reward,
+    });
     _dailyXpEarned += def.reward;
     notifyListeners();
     _persist();
@@ -431,7 +461,8 @@ class GameState extends ChangeNotifier with FriendsMixin {
       _unlockedAchievements.add('five_lessons');
     }
     // #7 first_stage: complete Stage 1
-    if (_stages.isNotEmpty && _stages[0].completedLessons >= _stages[0].lessonCount) {
+    if (_stages.isNotEmpty &&
+        _stages[0].completedLessons >= _stages[0].lessonCount) {
       _unlockedAchievements.add('first_stage');
     }
     // #8 quick_learner: complete 3 lessons within 30 minutes
@@ -463,7 +494,8 @@ class GameState extends ChangeNotifier with FriendsMixin {
       _unlockedAchievements.add('twenty_lessons');
     }
     // #15 all_stages: complete all stages
-    if (_stages.isNotEmpty && _stages.every((s) => s.completedLessons >= s.lessonCount)) {
+    if (_stages.isNotEmpty &&
+        _stages.every((s) => s.completedLessons >= s.lessonCount)) {
       _unlockedAchievements.add('all_stages');
     }
     // #16 social_3: add 3 friends
@@ -514,8 +546,8 @@ class GameState extends ChangeNotifier with FriendsMixin {
 
   bool _isExplorerComplete() {
     // Every Learning Stage completed at least once
-    final stagesComplete = _stages.isNotEmpty &&
-        _stages.every((s) => s.completedLessons >= 1);
+    final stagesComplete =
+        _stages.isNotEmpty && _stages.every((s) => s.completedLessons >= 1);
     if (!stagesComplete) return false;
     // 5 practice modes completed at least once
     const requiredPracticeModes = {
@@ -525,7 +557,9 @@ class GameState extends ChangeNotifier with FriendsMixin {
       'rules_quiz',
       'speed_challenge',
     };
-    return requiredPracticeModes.every((m) => _practiceModesCompleted.contains(m));
+    return requiredPracticeModes.every(
+      (m) => _practiceModesCompleted.contains(m),
+    );
   }
 
   // ── Core gameplay ──
@@ -639,12 +673,14 @@ class GameState extends ChangeNotifier with FriendsMixin {
       if (!_isReviewMode) {
         final lessonId = _currentLessonId ?? '';
         final qIndex = _currentQuestions.indexOf(question);
-        _wrongAnswers.add(WrongAnswer(
-          lessonId: lessonId,
-          questionIndex: qIndex >= 0 ? qIndex : _currentQuestionIndex,
-          selectedIndices: selectedIndices,
-          userOrderJson: jsonEncode(answer.toJson()),
-        ));
+        _wrongAnswers.add(
+          WrongAnswer(
+            lessonId: lessonId,
+            questionIndex: qIndex >= 0 ? qIndex : _currentQuestionIndex,
+            selectedIndices: selectedIndices,
+            userOrderJson: jsonEncode(answer.toJson()),
+          ),
+        );
       }
 
       if (!_isPremium && !_isReviewMode) {
@@ -660,8 +696,7 @@ class GameState extends ChangeNotifier with FriendsMixin {
       }
     }
 
-    if (_currentQuestionIndex < _currentQuestions.length - 1 &&
-        !_showFailure) {
+    if (_currentQuestionIndex < _currentQuestions.length - 1 && !_showFailure) {
       _currentQuestionIndex++;
     } else if (!_showFailure) {
       _quizFinished = true;
@@ -674,12 +709,10 @@ class GameState extends ChangeNotifier with FriendsMixin {
     return isCorrect;
   }
 
-
   void _completeLesson() {
     if (_currentLessonId == null) return;
 
-    final alreadyCompleted =
-        _lessonCompleted[_currentLessonId] ?? false;
+    final alreadyCompleted = _lessonCompleted[_currentLessonId] ?? false;
     if (!alreadyCompleted) {
       _lessonCompleted[_currentLessonId!] = true;
       _xp += 20;
@@ -691,8 +724,9 @@ class GameState extends ChangeNotifier with FriendsMixin {
       _lessonCompletionTimestamps.add(DateTime.now().millisecondsSinceEpoch);
       // Keep only last 100 entries to avoid unbounded growth
       if (_lessonCompletionTimestamps.length > 100) {
-        _lessonCompletionTimestamps =
-            _lessonCompletionTimestamps.sublist(_lessonCompletionTimestamps.length - 100);
+        _lessonCompletionTimestamps = _lessonCompletionTimestamps.sublist(
+          _lessonCompletionTimestamps.length - 100,
+        );
       }
 
       // Compute inactive days for comeback achievement
@@ -708,8 +742,8 @@ class GameState extends ChangeNotifier with FriendsMixin {
       _lastQuizCorrectRatio = _correctAnswers / _currentQuestions.length;
       // Update best accuracy (best-track policy)
       if (_currentLessonId != null) {
-        final accuracy =
-            ((_correctAnswers / _currentQuestions.length) * 100).round();
+        final accuracy = ((_correctAnswers / _currentQuestions.length) * 100)
+            .round();
         final prev = _lessonBestAccuracy[_currentLessonId!] ?? 0;
         if (accuracy > prev) {
           _lessonBestAccuracy[_currentLessonId!] = accuracy;
@@ -735,8 +769,9 @@ class GameState extends ChangeNotifier with FriendsMixin {
       _streak = 1;
     } else {
       final last = DateTime.parse(_lastLessonDate!);
-      final gap =
-          _dateOnlyDate(DateTime.now()).difference(_dateOnlyDate(last)).inDays;
+      final gap = _dateOnlyDate(
+        DateTime.now(),
+      ).difference(_dateOnlyDate(last)).inDays;
       if (gap == 1) {
         _streak += 1;
       } else if (gap > 1) {
@@ -766,8 +801,7 @@ class GameState extends ChangeNotifier with FriendsMixin {
 
   void _syncStageProgress() {
     for (final stage in _stages) {
-      final stageLessons =
-          allLessonsData.where((l) => l.stageId == stage.id);
+      final stageLessons = allLessonsData.where((l) => l.stageId == stage.id);
       int completed = 0;
       for (final sl in stageLessons) {
         if (_lessonCompleted[sl.id] == true) completed++;
@@ -790,8 +824,9 @@ class GameState extends ChangeNotifier with FriendsMixin {
   }
 
   bool _isStageCompleted(LearningStage stage) {
-    final stageLessons =
-        allLessonsData.where((l) => l.stageId == stage.id).toList();
+    final stageLessons = allLessonsData
+        .where((l) => l.stageId == stage.id)
+        .toList();
     if (stageLessons.isEmpty) return false;
     return stageLessons.every((l) => _lessonCompleted[l.id] == true);
   }
@@ -809,8 +844,9 @@ class GameState extends ChangeNotifier with FriendsMixin {
 
     if (_lessonCompleted[lessonId] == true) return true;
 
-    final stageLessons =
-        allLessonsData.where((l) => l.stageId == lesson.stageId).toList();
+    final stageLessons = allLessonsData
+        .where((l) => l.stageId == lesson.stageId)
+        .toList();
     final idx = stageLessons.indexWhere((l) => l.id == lessonId);
     if (idx == 0) return true;
     final prevLessonId = stageLessons[idx - 1].id;
@@ -833,8 +869,9 @@ class GameState extends ChangeNotifier with FriendsMixin {
       }
       return 'Locked';
     }
-    final stageLessons =
-        allLessonsData.where((l) => l.stageId == lesson.stageId).toList();
+    final stageLessons = allLessonsData
+        .where((l) => l.stageId == lesson.stageId)
+        .toList();
     final idx = stageLessons.indexWhere((l) => l.id == lessonId);
     if (idx > 0) {
       return 'Complete "${stageLessons[idx - 1].title}" first';
@@ -952,8 +989,9 @@ class GameState extends ChangeNotifier with FriendsMixin {
     }
 
     final currentStage = _stages[stageNum - 1];
-    final stageLessons =
-        allLessonsData.where((l) => l.stageId == currentStage.id).toList();
+    final stageLessons = allLessonsData
+        .where((l) => l.stageId == currentStage.id)
+        .toList();
     stageLessons.sort((a, b) => a.id.compareTo(b.id));
 
     final idx = stageLessons.indexWhere((l) => l.id == _currentLessonId);
@@ -1004,7 +1042,8 @@ class GameState extends ChangeNotifier with FriendsMixin {
         (l) => l.id == wa.lessonId,
         orElse: () => allLessonsData.first,
       );
-      if (wa.questionIndex >= 0 && wa.questionIndex < lesson.localizedQuestions.length) {
+      if (wa.questionIndex >= 0 &&
+          wa.questionIndex < lesson.localizedQuestions.length) {
         final q = lesson.localizedQuestions[wa.questionIndex];
         if (!_reviewQuestions.contains(q)) {
           _reviewQuestions.add(q);
@@ -1043,9 +1082,11 @@ class GameState extends ChangeNotifier with FriendsMixin {
       // wrong-answer book, so reviewing actually reduces the backlog.
       if (_currentQuestionIndex < _reviewSources.length) {
         final src = _reviewSources[_currentQuestionIndex];
-        _wrongAnswers.removeWhere((wa) =>
-            wa.lessonId == src.lessonId &&
-            wa.questionIndex == src.questionIndex);
+        _wrongAnswers.removeWhere(
+          (wa) =>
+              wa.lessonId == src.lessonId &&
+              wa.questionIndex == src.questionIndex,
+        );
       }
     }
 
@@ -1062,8 +1103,9 @@ class GameState extends ChangeNotifier with FriendsMixin {
   /// Remove a single entry from the wrong-answer book.
   void removeWrongAnswer(String lessonId, int questionIndex) {
     final before = _wrongAnswers.length;
-    _wrongAnswers.removeWhere((wa) =>
-        wa.lessonId == lessonId && wa.questionIndex == questionIndex);
+    _wrongAnswers.removeWhere(
+      (wa) => wa.lessonId == lessonId && wa.questionIndex == questionIndex,
+    );
     if (_wrongAnswers.length == before) return;
     _persist();
     notifyListeners();
@@ -1115,7 +1157,8 @@ class GameState extends ChangeNotifier with FriendsMixin {
     await FirebaseService.saveProgress({
       'xp': _xp,
       'streak': _streak,
-      'currentStageId': _targetStageId ?? (_stages.isNotEmpty ? _stages[0].id : 'stage1'),
+      'currentStageId':
+          _targetStageId ?? (_stages.isNotEmpty ? _stages[0].id : 'stage1'),
       'completedStages': stageMap,
       'completedLessons': completedLessons,
       'achievements': _unlockedAchievements.toList(),
@@ -1158,8 +1201,7 @@ class GameState extends ChangeNotifier with FriendsMixin {
           (data['completedLessons'] as num?)?.toInt() ?? 0;
       if (cloudCompletedLessons > completedLessons) {
         // Sync lesson completion map
-        final cloudStageMap =
-            data['completedStages'] as Map<String, dynamic>?;
+        final cloudStageMap = data['completedStages'] as Map<String, dynamic>?;
         if (cloudStageMap != null) {
           for (final stage in _stages) {
             final entry = cloudStageMap[stage.id];
@@ -1178,26 +1220,39 @@ class GameState extends ChangeNotifier with FriendsMixin {
       }
 
       // Merge new tracking fields (union / max strategy)
-      final cloudTimestamps = (data['lessonCompletionTimestamps'] as List<dynamic>?)
-          ?.map((e) => (e is int) ? e : int.tryParse(e.toString()) ?? 0)
-          .where((t) => t > 0)
-          .toList() ?? [];
-      _lessonCompletionTimestamps = List.from({..._lessonCompletionTimestamps, ...cloudTimestamps});
+      final cloudTimestamps =
+          (data['lessonCompletionTimestamps'] as List<dynamic>?)
+              ?.map((e) => (e is int) ? e : int.tryParse(e.toString()) ?? 0)
+              .where((t) => t > 0)
+              .toList() ??
+          [];
+      _lessonCompletionTimestamps = List.from({
+        ..._lessonCompletionTimestamps,
+        ...cloudTimestamps,
+      });
       if (_lessonCompletionTimestamps.length > 100) {
         _lessonCompletionTimestamps = _lessonCompletionTimestamps.sublist(
-            _lessonCompletionTimestamps.length - 100);
+          _lessonCompletionTimestamps.length - 100,
+        );
       }
-      final cloudModes = (data['practiceModesCompleted'] as List<dynamic>?)
-          ?.map((e) => e.toString()).toSet() ?? <String>{};
+      final cloudModes =
+          (data['practiceModesCompleted'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toSet() ??
+          <String>{};
       _practiceModesCompleted = _practiceModesCompleted.union(cloudModes);
       final cloudSpeedWins = (data['speedChallengeWins'] as num?)?.toInt() ?? 0;
-      if (cloudSpeedWins > _speedChallengeWins) _speedChallengeWins = cloudSpeedWins;
-      final cloudInactiveDays = (data['lastInactiveDays'] as num?)?.toInt() ?? 0;
-      if (cloudInactiveDays > _lastInactiveDays) _lastInactiveDays = cloudInactiveDays;
+      if (cloudSpeedWins > _speedChallengeWins)
+        _speedChallengeWins = cloudSpeedWins;
+      final cloudInactiveDays =
+          (data['lastInactiveDays'] as num?)?.toInt() ?? 0;
+      if (cloudInactiveDays > _lastInactiveDays)
+        _lastInactiveDays = cloudInactiveDays;
 
       // Sync playerId from cloud (only accept well-formed LD#### IDs; regenerate if legacy)
       final cloudPlayerId = data['playerId'] as String?;
-      final isLocalValid = _playerId != null && RegExp(r'^LD\d{4}$').hasMatch(_playerId!);
+      final isLocalValid =
+          _playerId != null && RegExp(r'^LD\d{4}$').hasMatch(_playerId!);
       if (isLocalValid) {
         // Local already correct; if cloud is legacy/different, push local back to cloud
         if (cloudPlayerId != _playerId) {
@@ -1281,8 +1336,9 @@ class GameState extends ChangeNotifier with FriendsMixin {
 
     final lessonCompletedSnapshot = Map<String, bool>.from(_lessonCompleted);
     final lastHeartLossAtIso = _lastHeartLossAt?.toIso8601String();
-    final wrongAnswersJsonList =
-        _wrongAnswers.map((wa) => jsonEncode(wa.toJson())).toList();
+    final wrongAnswersJsonList = _wrongAnswers
+        .map((wa) => jsonEncode(wa.toJson()))
+        .toList();
 
     await _storage.save(
       xp: _xp,
@@ -1351,5 +1407,4 @@ class GameState extends ChangeNotifier with FriendsMixin {
       await ProgressStorage.savePlayerId(_playerId!);
     }
   }
-
 }

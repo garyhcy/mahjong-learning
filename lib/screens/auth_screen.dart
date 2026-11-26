@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart' show kIsWeb, kDebugMode, defaultTargetPlatform, TargetPlatform;
+import 'package:flutter/foundation.dart'
+    show kIsWeb, kDebugMode, defaultTargetPlatform, TargetPlatform;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart' show firebaseAvailable;
+import '../services/analytics_service.dart';
 import '../services/app_i18n.dart';
 import '../services/firebase_service.dart';
 import '../services/otp_service.dart';
@@ -30,6 +32,12 @@ class _AuthScreenState extends State<AuthScreen> {
   String? _demoOtpHint; // shown in demo mode for testing
 
   @override
+  void initState() {
+    super.initState();
+    AnalyticsService.instance.screen('auth');
+  }
+
+  @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
@@ -51,6 +59,7 @@ class _AuthScreenState extends State<AuthScreen> {
       if (_isLogin) {
         // Sign in — no OTP required for login (per Gary's spec).
         await FirebaseService.signIn(email, password);
+        AnalyticsService.instance.log('login', {'method': 'email'});
       } else {
         // Sign up — generate OTP and move to OTP screen.
         final code = await FirebaseService.signUp(email, password);
@@ -86,6 +95,7 @@ class _AuthScreenState extends State<AuthScreen> {
     });
     try {
       await action();
+      AnalyticsService.instance.log('login', {'method': 'social'});
     } on FirebaseAuthException catch (e) {
       setState(() => _errorMessage = _mapAuthError(e.code));
     } catch (_) {
@@ -133,6 +143,7 @@ class _AuthScreenState extends State<AuthScreen> {
       final result = await FirebaseService.verifyOtp(_pendingEmail!, code);
 
       if (result == OtpResult.success) {
+        AnalyticsService.instance.log('sign_up', {'method': 'email'});
         // Firebase mode: user is already created; auth state will switch.
         await OtpService.clear();
       } else {
@@ -170,7 +181,11 @@ class _AuthScreenState extends State<AuthScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppI18n.t('otp.resent').replaceAll('{email}', _pendingEmail ?? '')),
+            content: Text(
+              AppI18n.t(
+                'otp.resent',
+              ).replaceAll('{email}', _pendingEmail ?? ''),
+            ),
             behavior: SnackBarBehavior.floating,
             duration: const Duration(seconds: 3),
           ),
@@ -285,8 +300,11 @@ class _AuthScreenState extends State<AuthScreen> {
       controller: _emailController,
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
-      decoration: _inputDecoration(AppI18n.t('auth.email'), AppI18n.t('auth.emailHint'),
-          const Icon(Icons.email_outlined, size: 20)),
+      decoration: _inputDecoration(
+        AppI18n.t('auth.email'),
+        AppI18n.t('auth.emailHint'),
+        const Icon(Icons.email_outlined, size: 20),
+      ),
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
           return AppI18n.t('auth.enterEmail');
@@ -305,8 +323,11 @@ class _AuthScreenState extends State<AuthScreen> {
       obscureText: true,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (_) => _submit(),
-      decoration: _inputDecoration(AppI18n.t('auth.password'), null,
-          const Icon(Icons.lock_outlined, size: 20)),
+      decoration: _inputDecoration(
+        AppI18n.t('auth.password'),
+        null,
+        const Icon(Icons.lock_outlined, size: 20),
+      ),
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
           return AppI18n.t('auth.enterPassword');
@@ -320,7 +341,10 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   InputDecoration _inputDecoration(
-      String label, String? hint, Icon prefixIcon) {
+    String label,
+    String? hint,
+    Icon prefixIcon,
+  ) {
     return InputDecoration(
       labelText: label,
       hintText: hint,
@@ -342,7 +366,7 @@ class _AuthScreenState extends State<AuthScreen> {
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
         borderSide: const BorderSide(color: Color(0xFFEF5350)),
-        ),
+      ),
       labelStyle: GoogleFonts.nunito(color: const Color(0xFF9E9E9E)),
     );
   }
@@ -415,9 +439,13 @@ class _AuthScreenState extends State<AuthScreen> {
         const Expanded(child: Divider(color: Color(0xFFE0E0E0))),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Text(AppI18n.t('auth.or'),
-              style: GoogleFonts.nunito(
-                  fontSize: 13, color: const Color(0xFF9E9E9E))),
+          child: Text(
+            AppI18n.t('auth.or'),
+            style: GoogleFonts.nunito(
+              fontSize: 13,
+              color: const Color(0xFF9E9E9E),
+            ),
+          ),
         ),
         const Expanded(child: Divider(color: Color(0xFFE0E0E0))),
       ],
@@ -437,13 +465,19 @@ class _AuthScreenState extends State<AuthScreen> {
             borderRadius: BorderRadius.circular(14),
           ),
         ),
-        icon: const Icon(Icons.g_mobiledata, size: 28, color: Color(0xFF4285F4)),
-        label: Text(AppI18n.t('auth.continueWithGoogle'),
-            style: GoogleFonts.nunito(
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-              color: const Color(0xFF2D2D2D),
-            )),
+        icon: const Icon(
+          Icons.g_mobiledata,
+          size: 28,
+          color: Color(0xFF4285F4),
+        ),
+        label: Text(
+          AppI18n.t('auth.continueWithGoogle'),
+          style: GoogleFonts.nunito(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+            color: const Color(0xFF2D2D2D),
+          ),
+        ),
       ),
     );
   }
@@ -462,12 +496,14 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
         ),
         icon: const Icon(Icons.apple, size: 24, color: Colors.white),
-        label: Text(AppI18n.t('auth.continueWithApple'),
-            style: GoogleFonts.nunito(
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-            )),
+        label: Text(
+          AppI18n.t('auth.continueWithApple'),
+          style: GoogleFonts.nunito(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
+        ),
       ),
     );
   }
@@ -530,8 +566,10 @@ class OtpVerificationScreen extends StatefulWidget {
 }
 
 class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
-  final List<TextEditingController> _controllers =
-      List.generate(6, (_) => TextEditingController());
+  final List<TextEditingController> _controllers = List.generate(
+    6,
+    (_) => TextEditingController(),
+  );
   final List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
 
   @override
@@ -608,21 +646,29 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 Container(
                   margin: const EdgeInsets.only(top: 8),
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 14, vertical: 10),
+                    horizontal: 14,
+                    vertical: 10,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFFE8F5E9),
                     borderRadius: BorderRadius.circular(10),
-                    border:
-                        Border.all(color: const Color(0xFF4CAF50).withAlpha(76)),
+                    border: Border.all(
+                      color: const Color(0xFF4CAF50).withAlpha(76),
+                    ),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.info_outline,
-                          color: Color(0xFF4CAF50), size: 18),
+                      const Icon(
+                        Icons.info_outline,
+                        color: Color(0xFF4CAF50),
+                        size: 18,
+                      ),
                       const SizedBox(width: 8),
                       Text(
-                        AppI18n.t('otp.demoHint').replaceAll('{code}', widget.demoOtpHint ?? ''),
+                        AppI18n.t(
+                          'otp.demoHint',
+                        ).replaceAll('{code}', widget.demoOtpHint ?? ''),
                         style: GoogleFonts.nunito(
                           fontSize: 15,
                           fontWeight: FontWeight.w700,
@@ -639,17 +685,23 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
               if (widget.errorMessage != null) ...[
                 Container(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 14, vertical: 10),
+                    horizontal: 14,
+                    vertical: 10,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFFFFEBEE),
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
-                        color: const Color(0xFFEF5350).withAlpha(76)),
+                      color: const Color(0xFFEF5350).withAlpha(76),
+                    ),
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.error_outline,
-                          color: Color(0xFFEF5350), size: 18),
+                      const Icon(
+                        Icons.error_outline,
+                        color: Color(0xFFEF5350),
+                        size: 18,
+                      ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
@@ -680,8 +732,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF4CAF50),
                     foregroundColor: Colors.white,
-                    disabledBackgroundColor:
-                        const Color(0xFF4CAF50).withAlpha(150),
+                    disabledBackgroundColor: const Color(
+                      0xFF4CAF50,
+                    ).withAlpha(150),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
                     ),
@@ -693,8 +746,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           height: 22,
                           child: CircularProgressIndicator(
                             strokeWidth: 2.5,
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.white),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.white,
+                            ),
                           ),
                         )
                       : Text(
@@ -769,8 +823,10 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide:
-                    const BorderSide(color: Color(0xFF4CAF50), width: 2),
+                borderSide: const BorderSide(
+                  color: Color(0xFF4CAF50),
+                  width: 2,
+                ),
               ),
             ),
             onChanged: (value) => _onChanged(index, value),

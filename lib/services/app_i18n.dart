@@ -276,6 +276,9 @@ const Map<String, Map<String, String>> _strings = {
   'home.mahjongBasics': {'en': 'Mahjong Basics', 'zh': '麻將基礎'},
   'home.noStages': {'en': 'No stages available', 'zh': '暫無可用階段'},
   'home.lockedStage': {'en': 'Complete the previous stage to unlock this one!', 'zh': '完成上一階段才能解鎖此階段！'},
+  'home.dayStreak': {'en': '{n} day streak', 'zh': '連續 {n} 天'},
+  'home.todayGoal': {'en': "Today's goal", 'zh': '今日目標'},
+  'home.startLesson': {'en': 'Start a lesson', 'zh': '開始一課'},
 
   // ── Common ──
   'common.cancel': {'en': 'Cancel', 'zh': '取消'},

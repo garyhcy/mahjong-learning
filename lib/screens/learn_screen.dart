@@ -11,6 +11,7 @@ import '../widgets/mascot_widget.dart';
 import '../widgets/mahjong_tile.dart';
 import '../widgets/quiz/question_inputs.dart';
 import '../widgets/quiz/tile_markers.dart';
+import '../services/analytics_service.dart';
 import '../services/audio_service.dart';
 import '../services/app_i18n.dart';
 import 'paywall_screen.dart';
@@ -44,6 +45,7 @@ class _LearnScreenState extends State<LearnScreen> {
 
   // Lesson intro card (shown before the dialogue starts) — Gary 2026-11-24 D3a
   bool _showLessonIntro = false;
+  DateTime? _lessonStartedAt;
 
   // Quiz feedback state
   bool? _feedbackCorrect;
@@ -97,6 +99,7 @@ class _LearnScreenState extends State<LearnScreen> {
   @override
   void initState() {
     super.initState();
+    AnalyticsService.instance.screen('learn');
     _audio = AudioService();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final game = context.read<GameState>();
@@ -747,6 +750,11 @@ class _LearnScreenState extends State<LearnScreen> {
       _selectedOptions.clear();
     });
     game.loadLesson(lessonId);
+    _lessonStartedAt = DateTime.now();
+    AnalyticsService.instance.log('lesson_start', {
+      'lesson_id': lessonId,
+      'stage_id': game.currentLesson?.stageId ?? '',
+    });
   }
 
   /// True while the lesson is showing a dialogue step that can be advanced.
@@ -1190,11 +1198,52 @@ class _LearnScreenState extends State<LearnScreen> {
       HapticFeedback.heavyImpact();
     }
 
+    AnalyticsService.instance.log('quiz_answer', {
+      'lesson_id': game.currentLessonId ?? '',
+      'question_index': game.currentQuestionIndex,
+      'question_type': q.type.name,
+      'correct': isCorrect,
+    });
+
     final delay = Duration(milliseconds: isOrdering ? 1200 : 800);
     Future.delayed(delay, () {
       if (!mounted) return;
 
+      final unlockedBefore = game.stages
+          .where((stage) => stage.isUnlocked)
+          .map((stage) => stage.id)
+          .toSet();
       game.submitAnswer(answer, q);
+      if (game.quizFinished) {
+        final started = _lessonStartedAt;
+        final elapsed = started == null
+            ? 0
+            : DateTime.now().difference(started).inSeconds;
+        final total = game.currentQuestions.length;
+        final correct = game.correctAnswers;
+        AnalyticsService.instance.log('lesson_complete', {
+          'lesson_id': game.currentLessonId ?? '',
+          'stage_id': game.currentLesson?.stageId ?? '',
+          'correct': correct,
+          'total': total,
+          'accuracy': total == 0 ? 0 : ((correct / total) * 100).round(),
+          'duration_sec': elapsed,
+          'streak': game.streak,
+        });
+        for (final stage in game.stages) {
+          if (stage.isUnlocked && !unlockedBefore.contains(stage.id)) {
+            AnalyticsService.instance.log('stage_unlock', {
+              'stage_id': stage.id,
+              'stage_title': stage.title,
+            });
+          }
+        }
+        AnalyticsService.instance.setUserProperties(
+          isPro: game.isPremium,
+          stage: game.currentLesson?.stageId ?? '',
+          streak: game.streak,
+        );
+      }
 
       setState(() {
         _selectedOptions.clear();
