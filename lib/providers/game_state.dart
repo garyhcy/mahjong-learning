@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/achievement_def.dart';
 import '../models/daily_task_def.dart';
@@ -58,6 +59,9 @@ class GameState extends ChangeNotifier with FriendsMixin {
 
   bool _hasSeenOnboarding = false;
   bool _showOnboarding = false;
+
+  bool _placementDone = false;
+  int _placementStartStage = 0;
 
   List<DialogueMessage> _dialogue = [];
   int _dialogueIndex = 0;
@@ -119,6 +123,8 @@ class GameState extends ChangeNotifier with FriendsMixin {
   bool get quizFinished => _quizFinished;
   bool get showFailure => _showFailure;
   bool get hasSeenOnboarding => _hasSeenOnboarding;
+  bool get placementDone => _placementDone;
+  int get placementStartStage => _placementStartStage;
   bool get showOnboarding => _showOnboarding;
   List<DialogueMessage> get dialogue => _dialogue;
   int get dialogueIndex => _dialogueIndex;
@@ -331,6 +337,18 @@ class GameState extends ChangeNotifier with FriendsMixin {
       _applyDailyHeartRefill();
     }
     _resetDailyTasksIfNeeded();
+
+    final prefs = await SharedPreferences.getInstance();
+    _placementDone = prefs.getBool('placement_done') ?? false;
+    _placementStartStage = prefs.getInt('placement_start_stage') ?? 0;
+    // Migration: anyone who already made progress never sees placement.
+    if (!_placementDone &&
+        (_lessonCompleted.isNotEmpty || _xp > 0 || _placementStartStage > 0)) {
+      _placementDone = true;
+      _placementStartStage = 0;
+      await prefs.setBool('placement_done', true);
+    }
+
     _syncStageProgress();
     _updateStageUnlocks();
     _isLoaded = true;
@@ -820,6 +838,9 @@ class GameState extends ChangeNotifier with FriendsMixin {
       if (!currentStage.isUnlocked && _isStageCompleted(prevStage)) {
         currentStage.isUnlocked = true;
       }
+      if (i <= _placementStartStage) {
+        currentStage.isUnlocked = true;
+      }
     }
   }
 
@@ -930,6 +951,22 @@ class GameState extends ChangeNotifier with FriendsMixin {
       _persist();
       notifyListeners();
     }
+  }
+
+  /// Applies the onboarding placement result: stages up to [stageIndex] are
+  /// available, but nothing is marked complete.
+  Future<void> applyPlacement(int stageIndex) async {
+    _placementStartStage = stageIndex.clamp(0, _stages.length - 1);
+    _placementDone = true;
+    for (var i = 0; i <= _placementStartStage; i++) {
+      _stages[i].isUnlocked = true;
+    }
+    _targetStageId = _stages[_placementStartStage].id;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('placement_done', true);
+    await prefs.setInt('placement_start_stage', _placementStartStage);
+    _persist();
+    notifyListeners();
   }
 
   void navigateToStage(String stageId) {
@@ -1299,6 +1336,8 @@ class GameState extends ChangeNotifier with FriendsMixin {
     _lastHeartLossAt = null;
     _lastLessonDate = null;
     _hasSeenOnboarding = false;
+    _placementDone = false;
+    _placementStartStage = 0;
     _lessonCompleted.clear();
     _lessonBestAccuracy.clear();
     _lastLessonId = null;

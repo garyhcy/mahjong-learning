@@ -121,7 +121,13 @@ class HomeScreen extends StatelessWidget {
     final currentStageIndex = game.stages.indexWhere(
       (s) => s.isUnlocked && s.progress < 1.0,
     );
-    final stageIndex = currentStageIndex >= 0 ? currentStageIndex : 0;
+    final startIndex = game.placementStartStage.clamp(
+      0,
+      game.stages.length - 1,
+    );
+    final stageIndex = currentStageIndex >= startIndex
+        ? currentStageIndex
+        : startIndex;
     final stage = game.stages.isNotEmpty ? game.stages[stageIndex] : null;
     final title = stage?.localizedTitle ?? AppI18n.t('home.mahjongBasics');
     final stageNum = stageIndex + 1;
@@ -341,7 +347,14 @@ class HomeScreen extends StatelessWidget {
       (s) => s.isUnlocked && s.progress < 1.0,
     );
 
-    final goalStage = currentIndex >= 0 ? stages[currentIndex] : stages.last;
+    final startIndex = game.placementStartStage.clamp(0, stages.length - 1);
+    final visibleStages = startIndex > 0 ? stages.sublist(startIndex) : stages;
+    final visibleCurrent = currentIndex < startIndex
+        ? 0
+        : (currentIndex - startIndex).clamp(0, visibleStages.length - 1);
+    final goalStage = currentIndex >= startIndex
+        ? stages[currentIndex]
+        : stages[startIndex];
 
     return ListView(
       padding: const EdgeInsets.only(top: 6, bottom: 40),
@@ -350,13 +363,111 @@ class HomeScreen extends StatelessWidget {
           game: game,
           onStartLesson: () => _openStage(context, game, goalStage),
         ),
+        if (startIndex > 0)
+          _earlierStagesHeader(context, game, stages.sublist(0, startIndex)),
         StageMap(
-          stages: stages,
-          currentIndex: currentIndex,
+          stages: visibleStages,
+          currentIndex: visibleCurrent,
+          numberOffset: startIndex,
           onStageTap: (stage) => _openStage(context, game, stage),
           onLockedTap: (stage) => _showLockedStage(context, stage),
         ),
       ],
+    );
+  }
+
+  Widget _earlierStagesHeader(
+    BuildContext context,
+    GameState game,
+    List<LearningStage> earlier,
+  ) {
+    final cleared = earlier.where((stage) => stage.progress >= 1.0).length;
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 620),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+          child: Row(
+            children: [
+              Text(
+                AppI18n.t('home.earlierStages'),
+                style: GoogleFonts.nunito(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xFF8A8A8A),
+                ),
+              ),
+              const Spacer(),
+              TextButton(
+                onPressed: () => _showEarlierStages(context, game, earlier),
+                child: Text(
+                  AppI18n.t('home.review')
+                      .replaceAll('{done}', '$cleared')
+                      .replaceAll('{total}', '${earlier.length}'),
+                  style: GoogleFonts.nunito(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w800,
+                    color: const Color(0xFF2E7D32),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showEarlierStages(
+    BuildContext context,
+    GameState game,
+    List<LearningStage> earlier,
+  ) {
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: const Color(0xFFFFF8F0),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (sheetContext) => SafeArea(
+        child: ListView(
+          shrinkWrap: true,
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+          children: [
+            Text(
+              AppI18n.t('home.earlierStages'),
+              style: GoogleFonts.nunito(
+                fontSize: 16,
+                fontWeight: FontWeight.w900,
+              ),
+            ),
+            const SizedBox(height: 8),
+            for (var i = 0; i < earlier.length; i++)
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: Icon(
+                  earlier[i].progress >= 1.0
+                      ? Icons.workspace_premium_rounded
+                      : Icons.menu_book_rounded,
+                  color: earlier[i].color,
+                ),
+                title: Text(
+                  '${game.placementStartStage - earlier.length + i + 1}. '
+                  '${earlier[i].localizedTitle}',
+                  style: GoogleFonts.nunito(fontWeight: FontWeight.w800),
+                ),
+                subtitle: Text(
+                  '${(earlier[i].progress * 100).round()}%',
+                  style: GoogleFonts.nunito(fontSize: 12),
+                ),
+                onTap: () {
+                  Navigator.of(sheetContext).pop();
+                  _openStage(context, game, earlier[i]);
+                },
+              ),
+          ],
+        ),
+      ),
     );
   }
 

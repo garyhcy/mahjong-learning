@@ -18,6 +18,7 @@ import 'screens/home_screen.dart';
 import 'screens/community_screen.dart';
 import 'screens/practice_screen.dart';
 import 'screens/more_screen.dart';
+import 'screens/placement_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -204,6 +205,17 @@ class _AuthFlowState extends State<_AuthFlow> {
           );
         }
         if (snapshot.hasData && snapshot.data != null) {
+          final user = snapshot.data!;
+          final game = context.read<GameState>();
+          final createdAt = user.metadata.creationTime;
+          final freshAccount =
+              createdAt != null &&
+              DateTime.now().difference(createdAt) < const Duration(days: 2);
+          if (freshAccount &&
+              !game.placementDone &&
+              game.completedLessons == 0) {
+            return PlacementScreen(game: game, onDone: () => setState(() {}));
+          }
           return const MainShell();
         }
         return const AuthScreen();

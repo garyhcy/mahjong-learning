@@ -17,6 +17,7 @@ class StageMap extends StatefulWidget {
   final int currentIndex;
   final void Function(LearningStage stage) onStageTap;
   final void Function(LearningStage stage) onLockedTap;
+  final int numberOffset;
 
   const StageMap({
     super.key,
@@ -24,6 +25,7 @@ class StageMap extends StatefulWidget {
     required this.currentIndex,
     required this.onStageTap,
     required this.onLockedTap,
+    this.numberOffset = 0,
   });
 
   @override
@@ -151,7 +153,7 @@ class _StageMapState extends State<StageMap>
                 top: _topPad,
                 child: _StageTile(
                   stage: stage,
-                  number: i + 1,
+                  number: i + 1 + widget.numberOffset,
                   completed: completed,
                   locked: locked,
                   current: current,
