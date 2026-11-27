@@ -180,7 +180,7 @@ GitHub Pages 上線通常 1–2 分鐘。
 | 🟡 | 商店截圖、描述文案 | 待製作 |
 | ⚪ | Community Feed 改真實數據 | 後端待開發 |
 | ⚪ | Find a Match 約戰配對引擎（Cloud Functions + 場地 DB） | 後端待開發 |
-| ⚪ | 四人對局引擎 | 未實作 |
+| 🟢 | 單機四人實戰練習局（3 AI） | 已交付並部署（2026-11-27；見 `docs/superpowers/plans/2026-11-27-practice-table.md`） |
 
 ---
 

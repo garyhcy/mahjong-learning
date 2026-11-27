@@ -54,21 +54,20 @@ void main() {
     expect(score.faan, greaterThanOrEqualTo(7));
   });
 
-  test('below three faan cannot win', () {
+  test('a valid hand with only two faan cannot win', () {
     final score = scoreWin(
       concealed: [
         'm1', 'm2', 'm3', 'm4', 'm5', 'm6',
-        'p2', 'p3', 'p4', 's7', 's8', 's9',
-        'east', 'east',
+        'p2', 'p3', 'p4', 'east', 'east',
       ],
       melds: const [
         Meld(
-          kind: MeldKind.chow,
-          tiles: ['s1', 's2', 's3'],
+          kind: MeldKind.pong,
+          tiles: ['red', 'red', 'red'],
           fromPlayer: 1,
         ),
       ],
-      flowers: const ['f_spring'],
+      flowers: const ['f_plum'],
       seatWind: 'east',
       roundWind: 'east',
       selfDraw: false,

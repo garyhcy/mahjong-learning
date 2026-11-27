@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ludi/game/table_engine.dart';
-import 'package:ludi/game/tile_set.dart';
 
 void main() {
   test('deals thirteen tiles each and fourteen to the dealer', () {

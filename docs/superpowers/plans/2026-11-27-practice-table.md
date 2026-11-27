@@ -124,3 +124,15 @@
 - [ ] Step 2: 修正實機發現的 overflow、計時器、claim 卡死。
 - [ ] Step 3: 正式 build、commit、push main、更新 gh-pages，核對 `main.dart.js` bytes 與 sha256。
 - [ ] Step 4: 用可見文字如實報告未支援規則與未測分支。
+
+---
+
+## Delivery record（2026-11-27）
+
+- 已交付單機東圈一局：玩家坐東，對 3 個基本 AI；摸牌、打牌、碰、上、明槓、花牌補牌、食糊、自摸、流局及重新開局。
+- `TableController` 負責 AI 延時與 UI 狀態；Practice 頁新增「Play a hand」入口，結算顯示番種、番數與支付。
+- 修正：花牌補牌與 144 張牌牆、claim 時保留手牌、玩家副露顯示、3 番起糊（實機曾出現 2 番勝出）。
+- 驗證：`flutter test --no-pub` 61 tests passed；`flutter analyze --no-pub` 0 errors（既有 info/warning）；8 seeds playthrough、手機及桌面 widget test 通過。
+- 實機：QA 完成一局並見到出銃結算；正式站已進入 Practice table。
+- 部署：main `8d5762e`，gh-pages `7d3e31f`；`main.dart.js` 3,990,029 bytes，SHA-256 前 16 位 `14bd5a14db3f719f`，本地與遠端一致。
+- 未支援／未完整驗收：包牌、搶槓、一炮多響、莊家加成、坎坎糊、花么、天糊、地糊、槓上槓；自摸、槓、流局等分支主要靠引擎測試，未全部逐項實機操作。
