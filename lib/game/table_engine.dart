@@ -3,7 +3,6 @@ import 'dart:math';
 import 'faan_calculator.dart';
 import 'meld.dart';
 import 'tile_set.dart';
-import 'win_checker.dart';
 
 enum TablePhase { playing, awaitingClaim, finished }
 
@@ -235,12 +234,14 @@ class TableEngine {
         selfDraw: false,
       );
       if (score != null) {
-        options.add(ClaimOption(
-          player: p.seatIndex,
-          isWin: true,
-          tiles: [tile],
-          score: score,
-        ));
+        options.add(
+          ClaimOption(
+            player: p.seatIndex,
+            isWin: true,
+            tiles: [tile],
+            score: score,
+          ),
+        );
       }
     }
 
@@ -248,17 +249,21 @@ class TableEngine {
       if (p.seatIndex == discarder) continue;
       final count = p.hand.where((t) => t == tile).length;
       if (count >= 3) {
-        options.add(ClaimOption(
-          player: p.seatIndex,
-          meld: MeldKind.kong,
-          tiles: [tile, tile, tile, tile],
-        ));
+        options.add(
+          ClaimOption(
+            player: p.seatIndex,
+            meld: MeldKind.kong,
+            tiles: [tile, tile, tile, tile],
+          ),
+        );
       } else if (count >= 2) {
-        options.add(ClaimOption(
-          player: p.seatIndex,
-          meld: MeldKind.pong,
-          tiles: [tile, tile, tile],
-        ));
+        options.add(
+          ClaimOption(
+            player: p.seatIndex,
+            meld: MeldKind.pong,
+            tiles: [tile, tile, tile],
+          ),
+        );
       }
     }
 
@@ -279,21 +284,29 @@ class TableEngine {
         }
       }
       for (final shape in shapes) {
-        options.add(ClaimOption(
-          player: next,
-          meld: MeldKind.chow,
-          tiles: shape,
-        ));
+        options.add(
+          ClaimOption(player: next, meld: MeldKind.chow, tiles: shape),
+        );
       }
     }
 
     options.sort((a, b) {
       if (a.isWin != b.isWin) return a.isWin ? -1 : 1;
-      final rankA = a.meld == MeldKind.kong ? 0 : a.meld == MeldKind.pong ? 1 : 2;
-      final rankB = b.meld == MeldKind.kong ? 0 : b.meld == MeldKind.pong ? 1 : 2;
+      final rankA = a.meld == MeldKind.kong
+          ? 0
+          : a.meld == MeldKind.pong
+          ? 1
+          : 2;
+      final rankB = b.meld == MeldKind.kong
+          ? 0
+          : b.meld == MeldKind.pong
+          ? 1
+          : 2;
       if (rankA != rankB) return rankA.compareTo(rankB);
-      return _distance(discarder, a.player)
-          .compareTo(_distance(discarder, b.player));
+      return _distance(
+        discarder,
+        a.player,
+      ).compareTo(_distance(discarder, b.player));
     });
     return options;
   }
@@ -308,7 +321,9 @@ class TableEngine {
       winningTile = lastDiscard;
       selfDraw = false;
       phase = TablePhase.finished;
-      _log.add('${players[option.player].seatWind.toUpperCase()} wins on the discard!');
+      _log.add(
+        '${players[option.player].seatWind.toUpperCase()} wins on the discard!',
+      );
       pendingClaims.clear();
       return;
     }
@@ -329,11 +344,7 @@ class TableEngine {
         if (t != tile) p.hand.remove(t);
       }
     }
-    p.melds.add(Meld(
-      kind: kind,
-      tiles: option.tiles,
-      fromPlayer: from,
-    ));
+    p.melds.add(Meld(kind: kind, tiles: option.tiles, fromPlayer: from));
     players[from].discards.removeLast();
     lastDiscard = null;
     lastDiscarder = null;
@@ -361,7 +372,9 @@ class TableEngine {
   /// Applies the best non-human claim, or moves to the next player.
   void passClaims() {
     if (phase != TablePhase.awaitingClaim) return;
-    final aiClaims = pendingClaims.where((c) => !players[c.player].isHuman).toList();
+    final aiClaims = pendingClaims
+        .where((c) => !players[c.player].isHuman)
+        .toList();
     if (aiClaims.isEmpty) {
       pendingClaims.clear();
       phase = TablePhase.playing;
@@ -378,5 +391,6 @@ class TableEngine {
     drawForCurrent();
   }
 
-  String _tileLabel(String tile) => TileSet.isFlower(tile) ? tile : tile.toUpperCase();
+  String _tileLabel(String tile) =>
+      TileSet.isFlower(tile) ? tile : tile.toUpperCase();
 }

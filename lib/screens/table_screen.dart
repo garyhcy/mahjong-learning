@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../game/faan_calculator.dart';
 import '../game/meld.dart';
-import '../game/table_ai.dart';
 import '../game/table_controller.dart';
 import '../game/table_engine.dart';
 import '../services/app_i18n.dart';
@@ -17,9 +15,12 @@ String _t(String key, [Map<String, String>? params]) {
 }
 
 class TableScreen extends StatefulWidget {
-  const TableScreen({super.key, this.seed});
+  const TableScreen({super.key, this.seed, this.controller});
 
   final int? seed;
+
+  /// Injected by tests/QA; production screens create their own controller.
+  final TableController? controller;
 
   @override
   State<TableScreen> createState() => _TableScreenState();
@@ -31,9 +32,11 @@ class _TableScreenState extends State<TableScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = TableController(seed: widget.seed);
+    _controller = widget.controller ?? TableController(seed: widget.seed);
     _controller.addListener(_onChanged);
-    _controller.startNewHand();
+    if (widget.controller == null) {
+      _controller.startNewHand();
+    }
   }
 
   void _onChanged() {
@@ -42,9 +45,8 @@ class _TableScreenState extends State<TableScreen> {
 
   @override
   void dispose() {
-    _controller
-      ..removeListener(_onChanged)
-      ..dispose();
+    _controller.removeListener(_onChanged);
+    if (widget.controller == null) _controller.dispose();
     super.dispose();
   }
 
@@ -71,7 +73,13 @@ class _TableScreenState extends State<TableScreen> {
                         onBack: () => Navigator.of(context).pop(),
                       ),
                       _OpponentRow(engine: engine, compact: compact),
-                      Expanded(child: _TableBoard(engine: engine, compact: compact)),
+                      Expanded(
+                        child: _TableBoard(
+                          engine: engine,
+                          compact: compact,
+                          hasHumanClaim: _controller.hasHumanClaim,
+                        ),
+                      ),
                       if (_controller.hasHumanClaim)
                         _ClaimBar(controller: _controller),
                       _HandArea(controller: _controller, compact: compact),
@@ -139,8 +147,11 @@ class _Header extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.grid_view_rounded,
-                    size: 15, color: Color(0xFF56A85C)),
+                const Icon(
+                  Icons.grid_view_rounded,
+                  size: 15,
+                  color: Color(0xFF56A85C),
+                ),
                 const SizedBox(width: 6),
                 Text(
                   '${AppI18n.t('table.wall')} $wall',
@@ -261,10 +272,15 @@ class _OpponentPanel extends StatelessWidget {
 }
 
 class _TableBoard extends StatelessWidget {
-  const _TableBoard({required this.engine, required this.compact});
+  const _TableBoard({
+    required this.engine,
+    required this.compact,
+    required this.hasHumanClaim,
+  });
 
   final TableEngine engine;
   final bool compact;
+  final bool hasHumanClaim;
 
   @override
   Widget build(BuildContext context) {
@@ -325,7 +341,11 @@ class _TableBoard extends StatelessWidget {
                 ),
               ),
               Center(
-                child: _CenterTable(engine: engine, compact: compact),
+                child: _CenterTable(
+                  engine: engine,
+                  compact: compact,
+                  hasHumanClaim: hasHumanClaim,
+                ),
               ),
             ],
           );
@@ -418,21 +438,31 @@ class _RiverColumn extends StatelessWidget {
 }
 
 class _CenterTable extends StatelessWidget {
-  const _CenterTable({required this.engine, required this.compact});
+  const _CenterTable({
+    required this.engine,
+    required this.compact,
+    required this.hasHumanClaim,
+  });
 
   final TableEngine engine;
   final bool compact;
+  final bool hasHumanClaim;
 
   @override
   Widget build(BuildContext context) {
     final isHuman = engine.currentPlayer == 0;
+    final status = hasHumanClaim
+        ? AppI18n.t('table.claim')
+        : engine.phase == TablePhase.awaitingClaim
+        ? AppI18n.t('table.claimWindow')
+        : isHuman
+        ? AppI18n.t('table.yourTurn')
+        : _t('table.thinking', {'seat': engine.current.seatWind});
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          isHuman && engine.phase == TablePhase.playing
-              ? AppI18n.t('table.yourTurn')
-              : _t('table.thinking', {'seat': engine.current.seatWind}),
+          status,
           style: GoogleFonts.nunito(
             fontSize: compact ? 10 : 12,
             fontWeight: FontWeight.w700,
@@ -588,7 +618,9 @@ class _HandArea extends StatelessWidget {
                 ],
               ),
             ),
-          if (!controller.canDiscard && !controller.canDeclareWin)
+          if (!controller.canDiscard &&
+              !controller.canDeclareWin &&
+              !controller.hasHumanClaim)
             Padding(
               padding: const EdgeInsets.only(top: 4),
               child: Text(
@@ -710,20 +742,20 @@ class _ResultView extends StatelessWidget {
                 draw
                     ? Icons.waves_rounded
                     : won
-                        ? Icons.emoji_events_rounded
-                        : Icons.sentiment_dissatisfied_rounded,
+                    ? Icons.emoji_events_rounded
+                    : Icons.sentiment_dissatisfied_rounded,
                 size: 52,
-                color: won
-                    ? const Color(0xFFD49B22)
-                    : const Color(0xFF6D8E76),
+                color: won ? const Color(0xFFD49B22) : const Color(0xFF6D8E76),
               ),
               const SizedBox(height: 8),
               Text(
                 draw
                     ? AppI18n.t('table.draw')
                     : won
-                        ? AppI18n.t('table.youWin')
-                        : _t('table.aiWins', {'seat': winner?.seatWind.toUpperCase() ?? ''}),
+                    ? AppI18n.t('table.youWin')
+                    : _t('table.aiWins', {
+                        'seat': winner?.seatWind.toUpperCase() ?? '',
+                      }),
                 style: GoogleFonts.nunito(
                   fontSize: 26,
                   fontWeight: FontWeight.w900,
@@ -737,9 +769,7 @@ class _ResultView extends StatelessWidget {
                   child: Text(
                     AppI18n.t('table.drawDesc'),
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.nunito(
-                      color: const Color(0xFF6E7E72),
-                    ),
+                    style: GoogleFonts.nunito(color: const Color(0xFF6E7E72)),
                   ),
                 ),
               if (!draw && score != null) ...[
@@ -756,7 +786,13 @@ class _ResultView extends StatelessWidget {
                 Text(
                   engine.selfDraw
                       ? _t('table.selfDraw', {'n': '${score.selfDrawEach}'})
-                      : _t('table.discardWin', {'seat': engine.players[engine.lastDiscarder ?? 0].seatWind.toUpperCase(), 'n': '${score.discardPayout}'}),
+                      : _t('table.discardWin', {
+                          'seat': engine
+                              .players[engine.lastDiscarder ?? 0]
+                              .seatWind
+                              .toUpperCase(),
+                          'n': '${score.discardPayout}',
+                        }),
                   style: GoogleFonts.nunito(
                     fontSize: 13,
                     color: const Color(0xFF526357),

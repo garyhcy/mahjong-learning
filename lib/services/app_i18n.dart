@@ -465,6 +465,7 @@ const Map<String, Map<String, String>> _strings = {
   'table.pong': {'en': 'Pong', 'zh': '碰'},
   'table.pass': {'en': 'Pass', 'zh': '略過'},
   'table.claim': {'en': 'You can claim', 'zh': '你可以食糊／上碰槓'},
+  'table.claimWindow': {'en': 'Waiting for claims…', 'zh': '等待其他玩家決定…'},
   'table.declareWin': {'en': 'Declare win', 'zh': '食糊'},
   'table.selected': {'en': 'Selected {tile}', 'zh': '已選 {tile}'},
   'table.discard': {'en': 'Discard', 'zh': '打出'},
