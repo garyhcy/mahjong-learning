@@ -65,6 +65,7 @@ class TableEngine {
   bool selfDraw = false;
   String? winningTile;
   WinScore? winScore;
+  String? _lastDrawn;
 
   bool _canDiscard = false;
   final List<String> _log = [];
@@ -134,9 +135,11 @@ class TableEngine {
       return;
     }
     final player = players[index];
-    player.hand.add(wall.removeAt(0));
+    final tile = wall.removeAt(0);
+    player.hand.add(tile);
     _replaceFlowers(player);
     player.hand.sort(TileSet.compare);
+    _lastDrawn = player.hand.last;
   }
 
   void _replaceFlowers(TablePlayer player) {
@@ -190,6 +193,20 @@ class TableEngine {
     players[player].hand
       ..clear()
       ..addAll(tiles);
+  }
+
+  /// Ends the hand on a self-draw when [player] has a legal winning hand.
+  bool finishSelfDraw(int player) {
+    final score = scoreSelfDrawFor(player);
+    if (score == null) return false;
+    winnerIndex = player;
+    winScore = score;
+    winningTile = _lastDrawn ?? players[player].hand.last;
+    selfDraw = true;
+    phase = TablePhase.finished;
+    _canDiscard = false;
+    _log.add('${players[player].seatWind.toUpperCase()} wins by self-draw!');
+    return true;
   }
 
   WinScore? scoreSelfDrawFor(int player) {

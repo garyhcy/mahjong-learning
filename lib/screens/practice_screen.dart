@@ -7,6 +7,7 @@ import '../services/app_i18n.dart';
 import 'practice/tile_recognition_screen.dart';
 import 'practice/tile_matching_screen.dart';
 import 'learn_screen.dart';
+import 'table_screen.dart';
 import 'wrong_answers_screen.dart';
 import 'practice/sequence_sorting_screen.dart';
 import 'practice/rules_quiz_screen.dart';
@@ -92,6 +93,18 @@ class _PracticeContent extends StatelessWidget {
                 child: _DailyAttemptsCard(
                   attemptsRemaining: practiceState.attemptsRemaining,
                   isPremium: game.isPremium,
+                ),
+              ),
+            ),
+
+            // Live table practice (full hand against three AI opponents)
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
+                child: _TablePracticeCard(
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const TableScreen()),
+                  ),
                 ),
               ),
             ),
@@ -501,6 +514,74 @@ class _WeaknessCard extends StatelessWidget {
             ),
           ],
         ],
+      ),
+    );
+  }
+}
+
+class _TablePracticeCard extends StatelessWidget {
+  const _TablePracticeCard({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(18),
+        child: Ink(
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [Color(0xFF2E6B50), Color(0xFF43845F)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(18),
+          ),
+          padding: const EdgeInsets.all(18),
+          child: Row(
+            children: [
+              Container(
+                width: 46,
+                height: 46,
+                decoration: BoxDecoration(
+                  color: Colors.white.withAlpha(28),
+                  borderRadius: BorderRadius.circular(13),
+                ),
+                child: const Icon(Icons.table_restaurant_rounded,
+                    color: Colors.white, size: 25),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      AppI18n.t('table.play'),
+                      style: GoogleFonts.nunito(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      AppI18n.t('table.playDesc'),
+                      style: GoogleFonts.nunito(
+                        fontSize: 12,
+                        color: Colors.white.withAlpha(200),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(Icons.arrow_forward_rounded,
+                  color: Colors.white, size: 22),
+            ],
+          ),
+        ),
       ),
     );
   }

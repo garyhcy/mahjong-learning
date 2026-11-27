@@ -71,6 +71,7 @@ WinScore? scoreWin({
     );
     if (best == null || score.faan > best.faan) best = score;
   }
+  if (best == null || best.faan < 3) return null;
   return best;
 }
 
